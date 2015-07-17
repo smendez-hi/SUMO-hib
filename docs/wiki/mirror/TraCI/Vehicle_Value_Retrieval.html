@@ -1,0 +1,278 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Vehicle Value Retrieval</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Command_0xa4:_Get_Vehicle_Variable" id="Command_0xa4:_Get_Vehicle_Variable"></a><h2> <span class="mw-headline"> Command 0xa4: Get Vehicle Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Vehicle ID
+</th></tr></table>
+<p>Asks for the value of a certain variable of the named vehicle. The value returned is the state of the asked variable/value within the last simulation step. In the case the vehicle is loaded, but outside the network - due not being yet inserted into the network or being teleported within the current time step - a default "error" value is returned.
+</p><p>The following variable values can be retrieved, the type of the return value is also shown in the table.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Retrievable Vehicle Variables</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> id list (0x00)
+</td><td> stringList
+</td><td> Returns a list of ids of all vehicles currently running within the scenario (the given vehicle ID is ignored)
+</td></tr>
+<tr>
+<td> count (0x01)
+</td><td> int
+</td><td> Returns the number of vehicles currently running within the scenario (the given vehicle ID is ignored)
+</td></tr>
+<tr>
+<td> speed (0x40)
+</td><td> double
+</td><td> Returns the speed of the named vehicle within the last step [m/s]; error value: -1001
+</td></tr>
+<tr>
+<td> position (0x42)
+</td><td> position
+</td><td> Returns the position(two doubles) of the named vehicle within the last step [m,m]; error value: [-1001,-1001]
+</td></tr>
+<tr>
+<td> angle (0x43)
+</td><td> double
+</td><td> Returns the angle of the named vehicle within the last step [°]; error value: -1001
+</td></tr>
+<tr>
+<td> road id (0x50)
+</td><td> string
+</td><td> Returns the id of the edge the named vehicle was at within the last step; error value: ""
+</td></tr>
+<tr>
+<td> lane id (0x51)
+</td><td> string
+</td><td> Returns the id of the lane the named vehicle was at within the last step; error value: ""
+</td></tr>
+<tr>
+<td> lane index (0x52)
+</td><td> int
+</td><td> Returns the index of the lane the named vehicle was at within the last step; error value: -1001
+</td></tr>
+<tr>
+<td> type id (0x4f)
+</td><td> string
+</td><td> Returns the id of the type of the named vehicle
+</td></tr>
+<tr>
+<td> route id (0x53)
+</td><td> string
+</td><td> Returns the id of the route of the named vehicle
+</td></tr>
+<tr>
+<td> edges (0x54)
+</td><td> stringList
+</td><td> Returns the ids of the edges the vehicle's route is made of
+</td></tr>
+<tr>
+<td> color (0x45)
+</td><td> ubyte,ubyte,ubyte,ubyte
+</td><td> Returns the vehicle's color (RGBA; please note that A (alpha) is currently not used).
+</td></tr>
+<tr>
+<td> lane position (0x56)
+</td><td> double
+</td><td> The position of the vehicle along the lane (in [m]); error value: -1001
+</td></tr>
+<tr>
+<td> signal states (0x5b)
+</td><td> int
+</td><td> An integer encoding the state of a vehicle's signals, see <a href="../TraCI/Vehicle_Signalling.html" title="TraCI/Vehicle Signalling">TraCI/Vehicle Signalling</a> for more information.
+</td></tr>
+<tr>
+<td> CO2 emissions (id 0x60)
+</td><td> double
+</td><td> Vehicle's CO2 emissions in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>; error value: -1001
+</td></tr>
+<tr>
+<td> CO emissions (id 0x61)
+</td><td> double
+</td><td> Vehicle's CO emissions in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>; error value: -1001
+</td></tr>
+<tr>
+<td> HC emissions (id 0x62)
+</td><td> double
+</td><td> Vehicle's HC emissions in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>; error value: -1001
+</td></tr>
+<tr>
+<td> PMx emissions (id 0x63)
+</td><td> double
+</td><td> Vehicle's PMx emissions in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>; error value: -1001
+</td></tr>
+<tr>
+<td> NOx emissions (id 0x64)
+</td><td> double
+</td><td> Vehicle's NOx emissions in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>; error value: -1001
+</td></tr>
+<tr>
+<td> fuel consumption (id 0x65)
+</td><td> double
+</td><td> Vehicle's fuel consumption in ml during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>; error value: -1001
+</td></tr>
+<tr>
+<td> noise emission (id 0x66)
+</td><td> double
+</td><td> Noise generated by the vehicle in dBA, computed <a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=SUMO_HarmoinoiseBasedNoiseEmission&amp;action=edit&amp;redlink=1" class="new" title="SUMO HarmoinoiseBasedNoiseEmission (page does not exist)"> based on Harmonoise</a>; error value: -1001
+</td></tr>
+<tr>
+<td> best lanes (id 0xb2)
+</td><td> complex
+</td><td> Information about the wish to use subsequent edges' lanes.
+</td></tr>
+</table>
+<p><br />
+</p>
+<a name="Response_0xb4:_Vehicle_Variable" id="Response_0xb4:_Vehicle_Variable"></a><h2> <span class="mw-headline"> Response 0xb4: Vehicle Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td width="75" align="center"> &lt;return_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Vehicle ID
+</th><th style="border: 1pt solid;"> Return type of the variable
+</th><th style="border: 1pt solid;"> &lt;VARIABLE_VALUE&gt;
+</th></tr></table>
+<p>The respond to a <b>"Command Get Vehicle Variable"</b>.
+</p><p><b>best lanes (0xb2)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> ...
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of following edge information
+</th><th style="border: 1pt solid;"> edge information
+</th></tr></table>
+<p>Each edge information is:
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> string
+</td><td align="center"> byte
+</td><td align="center"> double
+</td><td align="center"> byte
+</td><td align="center"> double
+</td><td align="center"> byte
+</td><td align="center"> byte (signed)
+</td><td align="center"> byte
+</td><td align="center"> byte (unsigned)
+</td><td align="center"> byte
+</td><td align="center"> stringList
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> lane-id
+</th><th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> length
+</th><th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> occupation
+</th><th style="border: 1pt solid;"> value type <i>byte</i>
+</th><th style="border: 1pt solid;"> offset to best lane
+</th><th style="border: 1pt solid;"> value type <i>ubyte</i>
+</th><th style="border: 1pt solid;"> 0: lane may not be used for continuing drive, 1: it may be used
+</th><th style="border: 1pt solid;"> value type <i>stringlist</i>
+</th><th style="border: 1pt solid;"> list of best subsequent lanes
+</th></tr></table>
+<p><br />
+</p>
+<a name="Extended_retrieval_messages" id="Extended_retrieval_messages"></a><h2> <span class="mw-headline"> Extended retrieval messages </span></h2>
+<p>Some further messages require additional parameters.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Extended Variables Retrieval</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> Request ValueType
+</th><th> Response ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> edge travel time information (0x58)
+</td><td> compound (time, edgeID), see below
+</td><td> double
+</td><td> Returns the edge travel time for the given time as stored in the vehicle's internal container. If such a value does not exist, -1 is returned.
+</td></tr>
+<tr>
+<td> edge effort information (0x59)
+</td><td> compound (time, edgeID), see below
+</td><td> double
+</td><td> Returns the edge effort for the given time as stored in the vehicle's internal container. If such a value does not exist, -1 is returned.
+</td></tr>
+</table>
+<p><br />
+The request message contents are as following:
+</p><p><b>edge travel time information (0x58)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements (always=2)
+</th><th style="border: 1pt solid;"> value type <i>integer</i>
+</th><th style="border: 1pt solid;"> requested time (in s)
+</th><th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> edge id
+</th></tr></table>
+<p><br />
+<b>edge effort information (0x59)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements (always=2)
+</th><th style="border: 1pt solid;"> value type <i>integer</i>
+</th><th style="border: 1pt solid;"> requested time (in s)
+</th><th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> edge id
+</th></tr></table>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 4/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:265-0!1!0!!en!2!edit=0 and timestamp 20120718002157 -->
+</div><hr/><div id="lastmod">This page was last modified on 29 May 2012, at 09:13.</div>

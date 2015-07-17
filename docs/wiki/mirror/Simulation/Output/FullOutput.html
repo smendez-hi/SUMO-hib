@@ -1,0 +1,221 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Output/FullOutput</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>The idea behind this option is to improve the capabilities of the existing netstate-dump option.
+The produced XML Structure contains information about the edges, lanes, vehicles and traffic lights. The intention for this option was to 
+check the simulation results without having to record all the simulation commands e.g. traci. 
+</p>
+<a name="Instantiating_within_the_Simulation" id="Instantiating_within_the_Simulation"></a><h2> <span class="mw-headline">Instantiating within the Simulation</span></h2>
+<p>To force SUMO to build a file that contains the full dump, extend your command line parameter by <span style="color: #111144; font-weight: bold; white-space: pre;">--full-output <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>. <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a> is the name of the file the output will be written to. Any other file with this name will be overwritten, the destination folder must exist.
+</p>
+<a name="Generated_Output" id="Generated_Output"></a><h2> <span class="mw-headline">Generated Output</span></h2>
+<p>The full dump is a xml-file containing informtation about every edge, lane, vehicle and traffic light for each time step. 
+A full dump-file looks like this:
+</p>
+<pre class="xml">
+&lt;full-export&gt;
+   &lt;data timestep=&quot;&lt;TIME_STEP&gt;&quot;&gt;
+     
+    &lt;vehicles&gt;
+      &lt;vehicle id=&quot;&lt;VEHICLE_ID&gt;&quot; eclass=&quot;&lt;VEHICLE_ECLASS&gt;&quot; co2=&quot;&lt;VEHICLE_CO2&gt;&quot; co=&quot;&lt;VEHICLE_CO&gt;&quot; hc=&quot;&lt;VEHICLE_HC&gt;&quot; 
+      nox=&quot;&lt;VEHICLE_NOX&gt;&quot; pmx=&quot;&lt;VEHICLE_PMX&gt;&quot; noise=&quot;&lt;VEHICLE_NOISE&gt;&quot; route=&quot;&lt;VEHICLE_ROUTE&gt;&quot; type=&quot;&lt;VEHICLE_TYPE&gt;&quot; 
+      waiting=&quot;&lt;VEHICLE_WAITING&gt;&quot; lane=&quot;&lt;VEHICLE_LANE&gt;&quot; pos_lane=&quot;&lt;VEHICLE_POS_LANE&gt;&quot; speed=&quot;&lt;VEHICLE_SPEED&gt;&quot; 
+      angle=&quot;&lt;VEHICLE_ANGLE&gt;&quot; x=&quot;&lt;VEHICLE_POS_X&gt;&quot; y=&quot;&lt;VEHICLE_POS_Y&gt;&quot;/&gt;
+    
+        ... more vehicles ...
+ 
+    &lt;/vehicles&gt;
+
+   &lt;edges&gt;
+     
+      &lt;edge id=&quot;&lt;EDGE_ID&gt;&quot; traveltime=&quot;&lt;EDGE_TRAVELTIME&gt;&quot;&gt;
+       
+       &lt;lane id=&quot;&lt;LANE_ID&gt;&quot; co=&quot;&lt;LANE_CO&gt;&quot; co2=&quot;&lt;LANE_CO2&gt;&quot; nox=&quot;&lt;LANE_NOX&gt;&quot; pmx=&quot;&lt;LANE_CO&gt;&quot; 
+       hc=&quot;&lt;LANE_HC&gt;&quot; noise=&quot;&lt;LANE_NOISE&gt;&quot; fuel=&quot;&lt;LANE_FUEL&gt;&quot; maxspeed=&quot;&lt;LANE_MAXSPEED&gt;&quot; meanspeed=&quot;&lt;LANE_MEANSPEED&gt;&quot; 
+       occupancy=&quot;&lt;LANE_OCCUPANCY&gt;&quot; vehicle_count=&quot;&lt;LANE_VEHICLES_COUNT&gt;&quot;/&gt;
+
+            ... more lanes of the edge if exists
+
+      &lt;/edge&gt;
+      
+            ... more edges of the network
+
+   &lt;/edges&gt;
+
+&lt;/data&gt;
+
+... the next timestep ...
+
+&lt;/full-export&gt;
+</pre>
+<p>The meanings of the written values are given in the following table.
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> time_step
+</td><td> (simulation) seconds
+</td><td> The time step described by the values within this timestep-element
+</td></tr>
+<tr>
+<td class="inlxml"> id
+</td><td> id
+</td><td> The id of the vehicle/lane/edge
+</td></tr>
+<tr>
+<td class="inlxml"> eclass
+</td><td> id
+</td><td> The id of the specific emission class of the vehicle
+</td></tr>
+<tr>
+<td class="inlxml"> co2@vehicle
+</td><td> mg/s
+</td><td> The amount of CO2 emitted by the vehicle in the actual simulation step
+</td></tr>
+<tr>
+<td class="inlxml"> co2@lane
+</td><td> mg/s
+</td><td> The complete amount of CO2 emitted by the vehicles on this lane during the actual simulation step
+</td></tr>
+<tr>
+<td class="inlxml"> co@vehicle
+</td><td> mg/s
+</td><td> The amount of CO emitted by the vehicle in the actual simulation step
+</td></tr>
+<tr>
+<td class="inlxml"> co@lane
+</td><td> mg/s
+</td><td> The complete amount of CO emitted by the vehicles on this lane during the actual simulation step
+</td></tr>
+<tr>
+<td class="inlxml"> hc@vehicle
+</td><td> mg/s
+</td><td> The amount of HC emitted by the vehicle in the actual simulation step
+</td></tr>
+<tr>
+<td class="inlxml"> hc@lane
+</td><td> mg/s
+</td><td> The complete amount of HC emitted by the vehicles on this lane during the actual simulation step
+</td></tr>
+<tr>
+<td class="inlxml"> nox@vehicle
+</td><td> mg/s
+</td><td> The amount of NOX emitted by the vehicle in the actual simulation step
+</td></tr>
+<tr>
+<td class="inlxml"> nox@lane
+</td><td> mg/s
+</td><td> The complete amount of NOX emitted by the vehicles on this lane during the actual simulation step
+</td></tr>
+<tr>
+<td class="inlxml"> pmx@vehicle
+</td><td> mg/s
+</td><td> The amount of PMX emitted by the vehicle in the actual simulation step
+</td></tr>
+<tr>
+<td class="inlxml"> pmx@lane
+</td><td> mg/s
+</td><td> The complete amount of PMX emitted by the vehicles on this lane during the actual simulation step
+</td></tr>
+<tr>
+<td class="inlxml"> noise@lane
+</td><td> dB
+</td><td> The noise emitted by the vehicles on the specific lane
+</td></tr>
+<tr>
+<td class="inlxml"> route
+</td><td> id
+</td><td> The name of the route
+</td></tr>
+<tr>
+<td class="inlxml"> type
+</td><td> id
+</td><td> The name of the vehicle type
+</td></tr>
+<tr>
+<td class="inlxml"> waiting
+</td><td> seconds
+</td><td> The total time a vehicle is waiting
+</td></tr>
+<tr>
+<td class="inlxml"> lane
+</td><td> id
+</td><td> The name of the lane
+</td></tr>
+<tr>
+<td class="inlxml"> pos
+</td><td> meters
+</td><td> The position of the vehicle on a specific lane
+</td></tr>
+<tr>
+<td class="inlxml"> speed
+</td><td> km/h
+</td><td> The actual speed of the vehicle
+</td></tr>
+<tr>
+<td class="inlxml"> angle
+</td><td> degree
+</td><td> The angle of the vehicle
+</td></tr>
+<tr>
+<td class="inlxml"> pos_x
+</td><td> ---
+</td><td> The absolut X coordinate of the vehicle. The value depends on the given geographic projection.
+</td></tr>
+<tr>
+<td class="inlxml"> pos_y
+</td><td> ---
+</td><td> The absolut Y coordinate of the vehicle. The value depends on the given geographic projection
+</td></tr>
+<tr>
+<td class="inlxml"> traveltime
+</td><td> seconds
+</td><td> The mean travel time on the specific lane
+</td></tr>
+<tr>
+<td class="inlxml"> fuel@lane
+</td><td> l/km/h
+</td><td> The fuel consumption on the specific lane
+</td></tr>
+<tr>
+<td class="inlxml"> maxspeed
+</td><td> km/h
+</td><td> The maximum speed of the vehicles on the specific lane
+</td></tr>
+<tr>
+<td class="inlxml"> meanspeed
+</td><td> km/h
+</td><td> The mean speed of the vehicles on the specific lane
+</td></tr>
+<tr>
+<td class="inlxml"> occupancy
+</td><td>&nbsp;%
+</td><td> The occupancy of the lane in&nbsp;%
+</td></tr>
+<tr>
+<td class="inlxml"> vehicles_count
+</td><td> #veh
+</td><td> The number of vehicles on the lane
+</td></tr>
+</table>
+<a name="Notes" id="Notes"></a><h2> <span class="mw-headline">Notes</span></h2>
+<p>The generated files will be very large, you may pipe this output directly to a compression tool like bzip2. The advantage of this large file is that you can write some nice XML Stylesheets to export everything what is important to you, for example the states of the traffic lights and the travel times for the lanes.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 15/1000000
+Post-expand include size: 244/2097152 bytes
+Template argument size: 66/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:497-0!1!0!!en!2!edit=0 and timestamp 20120718063318 -->
+</div><hr/><div id="lastmod">This page was last modified on 15 June 2012, at 07:04.</div>

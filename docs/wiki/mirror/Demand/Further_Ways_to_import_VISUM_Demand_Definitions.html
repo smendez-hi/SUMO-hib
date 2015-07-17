@@ -1,0 +1,111 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Demand/Further Ways to import VISUM Demand Definitions</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>VISUM stores its demand in <a href="../Demand/Importing_O/D_Matrices.html" title="Demand/Importing O/D Matrices">OD-matrices which can be imported</a> using <a href="../OD2TRIPS.html" title="OD2TRIPS">OD2TRIPS</a>. Though, it may be interesting for using the computed assignments without performing a <a href="../Demand/Dynamic_User_Assignment.html" title="Demand/Dynamic User Assignment">dynamic user assignment</a>. The SUMO package contains some scripts which allow to process other VISUM data and are discussed in the following.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Importing_Turn_Percentages"><span class="tocnumber">1</span> <span class="toctext">Importing Turn Percentages</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Usability"><span class="tocnumber">1.1</span> <span class="toctext">Usability</span></a></li>
+<li class="toclevel-2"><a href="#See_Also"><span class="tocnumber">1.2</span> <span class="toctext">See Also</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Importing_Routes"><span class="tocnumber">2</span> <span class="toctext">Importing Routes</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Usability_2"><span class="tocnumber">2.1</span> <span class="toctext">Usability</span></a></li>
+<li class="toclevel-2"><a href="#See_Also_2"><span class="tocnumber">2.2</span> <span class="toctext">See Also</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Importing_Turn_Percentages" id="Importing_Turn_Percentages"></a><h1> <span class="mw-headline">Importing Turn Percentages</span></h1>
+<p>VISUM can save the defined/computed turning percentages at junctions. The format differs from <a href="../Demand/Routing_by_Turn_Probabilities.html" title="Demand/Routing by Turn Probabilities">turning probabilities format</a> used by <a href="../JTRROUTER.html" title="JTRROUTER">JTRROUTER</a>. The script <i><b>visum_convertTurnPercentages.py</b></i> converts VISUM turning percentages into <a href="../JTRROUTER.html" title="JTRROUTER">JTRROUTERs</a> <a href="../Demand/Routing_by_Turn_Probabilities.html" title="Demand/Routing by Turn Probabilities">turning definitions</a>.
+The tool requires the SUMO-network converted from VISUM, the turning probabilities from VISUM, and the name of the file into which the converted turning probabilities shall be written:
+</p>
+<pre>visum_convertTurnPercentages.py &lt;SUMO_NET&gt; &lt;VISUM_TURNINGS&gt; &lt;OUTPUT&gt;
+</pre>
+<p>The script is located in <i><b>&lt;SUMO_HOME&gt;</b></i>/tools/import/visum. It is written in Python.
+</p>
+<a name="Usability" id="Usability"></a><h2> <span class="mw-headline">Usability</span></h2>
+<p>It seems as using turning ratios for large areas would not make any sense. The resulting routes are very unrealistic as they contain many loops.
+</p>
+<a name="See_Also" id="See_Also"></a><h2> <span class="mw-headline">See Also</span></h2>
+<ul><li> <a href="../JTRROUTER.html" title="JTRROUTER">JTRROUTER</a> - page on the turning ratios router
+</li><li> <a href="../Demand/Routing_by_Turn_Probabilities.html" title="Demand/Routing by Turn Probabilities">Demand/Routing by Turn Probabilities</a> - further documentation on this tool's usage
+</li></ul>
+<p><br />
+</p>
+<a name="Importing_Routes" id="Importing_Routes"></a><h1> <span class="mw-headline">Importing Routes</span></h1>
+<p>VISUM can save the routes it computes during the assignment. The format differs from <a href="../Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html" title="Definition of Vehicles, Vehicle Types, and Routes">Definition of Vehicles, Vehicle Types, and Routes</a> used by <a href="../SUMO.html" title="SUMO">SUMO</a> and <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a>. The script <i><b>visum_convertRoutes.py</b></i> converts VISUM routes into <a href="../SUMO.html" title="SUMO">SUMO</a> routes.
+The tool requires the SUMO-network converted from VISUM, the routes exported from VISUM, and the name of the file into which the converted turning probabilities shall be written. Additional options are shown in the following table:
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--net-file <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-n <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Read the SUMO-network to map the routes onto from &lt;FILE&gt;; mandatory
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--visum-routes <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-r <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Read VISUM-routes to map from &lt;FILE&gt;; mandatory
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--output <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-o <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Write generated routes to &lt;FILE&gt;; mandatory
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--begin <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-b <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>
+</td><td valign="top"> Define the begin of the interval the vehicles are emitted within [s]; default: 0s
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--end <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-e <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>
+</td><td valign="top"> Define the end of the interval the vehicles are emitted within [s]; default: 3600s
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--prefix <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-p <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Add &lt;STRING&gt; as prefix to the IDs of generated vehicles; optional, default: no prefix
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--type <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-t <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Set the vehicle type to &lt;STRING&gt;; optional, default: no type
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--uniform</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-u</span>
+</td><td valign="top"> Vehicle departure times will be spread across the interval uniformly; optional, default: false
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--timeline <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-l <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Applies a daily time line. The time line must be given as a list of 24 floats, each describing the percentage of emissions from the original number for each hour of a day; optional, default: no timeline
+</td></tr>
+</table>
+<p>Example call:
+</p>
+<pre>visum_convertRoutes.py -n &lt;SUMO_NET&gt; -r &lt;VISUM_ROUTES&gt; -o &lt;OUTPUT&gt; --uniform
+</pre>
+<p>The script is located in <i><b>&lt;SUMO_HOME&gt;</b></i>/tools/import/visum. It is written in Python.
+</p>
+<a name="Usability_2" id="Usability_2"></a><h2> <span class="mw-headline">Usability</span></h2>
+<p>The routes can be directly used within <a href="../SUMO.html" title="SUMO">SUMO</a> / <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a>.
+</p>
+<a name="See_Also_2" id="See_Also_2"></a><h2> <span class="mw-headline">See Also</span></h2>
+<ul><li> <a href="../Demand/Importing_O/D_Matrices.html#Daily_Time_Lines" title="Demand/Importing O/D Matrices">Examples of daily time lines</a>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 119/1000000
+Post-expand include size: 3165/2097152 bytes
+Template argument size: 951/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:279-0!1!0!!en!2!edit=0 and timestamp 20120718063145 -->
+</div><hr/><div id="lastmod">This page was last modified on 27 October 2011, at 07:49.</div>

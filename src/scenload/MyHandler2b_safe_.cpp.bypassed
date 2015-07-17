@@ -1,0 +1,379 @@
+/*
+ * MyHandler2.cpp
+ *
+ *  Created on: Abril 9, 2012
+ *      Author: doancea
+ */
+
+#ifdef _MSC_VER
+#include <windows_config.h>
+#else
+#include <config.h>
+#endif
+
+#define elif else if
+
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <vector>
+#include <sstream>
+#include <xercesc/util/XMLString.hpp>
+#include "MyHandler2.h"
+#include "VehicleToTrack.h"
+#include "utils/options/OptionsCont.h"
+
+using namespace xercesc;
+
+MyHandler2::MyHandler2()
+{
+  if(OptionsCont::getOptions().getInt("verbosity"))  
+    std::cout << "MyHandler2::MyHandler2()\n";
+}
+
+bool MyHandler2::exists
+ (std::vector<VehicleToTrack>& _vec, const std::string& vehicle)
+{
+  if(OptionsCont::getOptions().getInt("verbosity"))  
+    std::cout << "The vector size is:  " << _vec.size() << "\n";
+  std::vector<VehicleToTrack>::const_iterator iter;
+  for (iter = _vec.begin(); iter != _vec.end(); ++iter) {
+    if (iter->getIdentifier() == vehicle) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void MyHandler2::startElement
+ (const XMLCh* const uri, const XMLCh* const localname,
+  const XMLCh* const qname, const Attributes& attrs)
+{
+  if(OptionsCont::getOptions().getInt("verbosity"))
+    std::cout << "MyHandler2::startElement(..." 
+              << "uri=" << uri
+              << ", localname=" << localname
+              << ", qname=" << qname
+//              << ", attrs=" << attrs
+              << ")" << std::endl;
+    
+	//Electrical characteristics.
+	VehicleToTrack vehicle;
+	char* message = xercesc::XMLString::transcode(localname);
+    
+  if(OptionsCont::getOptions().getInt("verbosity"))  
+    std::cout << "message=" << message << std::endl;
+
+	std::string val = "vehicleToTrack";
+	std::string dynamics = "dynamics";
+	std::string motor = "motor";
+	std::string battery = "battery";
+	std::string vehCharact = "VehicleCharacteristic";
+
+  if (message == val)
+  {
+    if(OptionsCont::getOptions().getInt("verbosity"))  
+      std::cout << "---Found a " << val << " element---" << std::endl;
+		processAttribute(vehicle, attrs);
+	}
+  if (message == vehCharact) 
+  {
+    if(OptionsCont::getOptions().getInt("verbosity"))
+      std::cout << "---Found a " << vehCharact << " element---" << std::endl;
+		std::string vehId = "id";
+		int lenght = attrs.getLength();
+		for (int var = 0; var < lenght; ++var) {
+			const XMLCh* attrName = attrs.getQName(var);
+			const XMLCh* attrValue = attrs.getValue(var);
+			char* name = xercesc::XMLString::transcode(attrName);
+			char* value = xercesc::XMLString::transcode(attrValue);
+      if (name == vehId) {
+        if(OptionsCont::getOptions().getInt("verbosity"))
+          std::cout << "---check1---" << std::endl;
+				std::stringstream ss;
+				std::string s;
+				ss << value;
+				ss >> s;
+        if (exists(vehicles, s)) {
+          if(OptionsCont::getOptions().getInt("verbosity"))
+            std::cout << "---check11---" << std::endl;
+					//The vehicle Id exists in vector.
+					//std::cout <<"vehCharact is already in...!" << std::endl;
+					std::vector<VehicleToTrack>::iterator iter;
+          for (iter = vehicles.begin(); iter != vehicles.end(); ++iter) {
+            if(OptionsCont::getOptions().getInt("verbosity"))
+              std::cout << "---check111---" << std::endl;
+						if (iter->getIdentifier() == s) {
+							std::cout << "---Found the element for the vehicle with id " << s << std::endl;
+              /*
+              if (message == dynamics)
+              {
+                if(OptionsCont::getOptions().getInt("verbosity"))
+                  std::cout << "---Found the " << dynamics << " element---" << std::endl;
+                processAttribute(*iter.base(), attrs);
+              }
+              if (message == motor)
+              {
+                if(OptionsCont::getOptions().getInt("verbosity"))
+                  std::cout << "---Found the " << motor << " element---" << std::endl;
+                processAttribute(*iter.base(), attrs);
+              }
+              if (message == battery)
+              {
+                if(OptionsCont::getOptions().getInt("verbosity"))
+                  std::cout << "---Found the " << battery << " element---" << std::endl;
+                processAttribute(*iter.base(), attrs);
+              }
+              */
+						}
+					}
+        } else {
+          vehicle.setIdentifier(value);
+            if(OptionsCont::getOptions().getInt("verbosity"))
+              std::cout << "---check12---" << std::endl;
+				}
+			}
+			XMLString::release(&name);
+			XMLString::release(&value);
+		}
+	}
+	if (message == dynamics)
+  {
+    if(OptionsCont::getOptions().getInt("verbosity"))
+      std::cout << "---Found the " << dynamics << " element---" << std::endl;
+    //processAttribute(*iter.base(), attrs);
+  }
+  if (message == motor)
+  {
+    if(OptionsCont::getOptions().getInt("verbosity"))
+      std::cout << "---Found the " << motor << " element---" << std::endl;
+    //processAttribute(*iter.base(), attrs);
+  }
+  if (message == battery)
+  {
+    if(OptionsCont::getOptions().getInt("verbosity"))
+      std::cout << "---Found the " << battery << " element---" << std::endl;
+    //processAttribute(*iter.base(), attrs);
+  }
+  XMLString::release(&message);
+	//XMLString::release(&_val);
+}
+
+/*
+void MyHandler2::processAttribute(VehicleToTrack *veh, const Attributes& attrs)
+{
+  processAttribute(veh,attrs);
+}
+*/
+  
+//!!!!Here you need to add another argument (vehicle) to set information to vehicle.
+void MyHandler2::processAttribute(VehicleToTrack& veh, const Attributes& attrs)
+{
+    
+    // FIXME (UXIO) VEROSITY ADJUST
+    std::cout << "MyHandler2::processAttribute(...) ----> " << std::endl;
+    
+	//std::ostream& out;
+
+	int length;
+
+  //Gets the number of elements.
+  length = attrs.getLength();
+  
+  std::cout << "attrs.getLength()=" << attrs.getLength() << std::endl;
+
+  //Process each attribute.
+  for (int var = 0; var < length; ++var)
+  {
+		const XMLCh* attrName;
+		attrName = attrs.getQName(var);
+		const XMLCh* attrValue;
+		attrValue = attrs.getValue(var);
+		char* _name = xercesc::XMLString::transcode(attrName);
+		char* _value = xercesc::XMLString::transcode(attrValue);
+		//std::cout << _name << " : " << _value << std::endl;
+		std::string id = "identifier";
+		std::string initBattery = "initialBattery";
+		std::string initialPoint = "initialPoint";
+		std::string finalPoint = "FinalPoint";
+		std::string vehicleType = "vehicleType";
+		std::string behaviour = "behaviour";
+		std::string overload = "overlioad";
+		std::string vehId = "id";
+		//dynamics.
+		std::string mass = "mas";
+		std::string coef_rolling_resistance = "coef_rolling_resistance";
+		std::string frontal_area = "frontal_area";
+		std::string coef_drag = "coef_drag";
+		//motor
+		std::string motor_eff = "motor_eff";
+		std::string gear_ratio = "gear_ratio";
+		std::string gear_system_eff = "gear_system_eff";
+		std::string regen_ratio = "regen_ratio";
+		//battery.
+		std::string cooper_loss_coef = "cooper_loss_coef";
+		std::string iron_loss_coef = "iron_loss_coef";
+		std::string windage_loss_coef = "windage_loss_coef";
+		std::string constant_loss = "constant_loss";
+		std::string heating_consumption = "heating_consumption";
+		std::string radio_consumption = "radio_consumption";
+		std::string lights = "lights";
+		std::string number_cells = "number_cells";
+		std::string peukert_coeff = "peukert_coeff";
+		std::string nominal_capacity = "nominal_capacity";
+		std::string time_charge = "time_charge";
+		std::string widescreen_cons = "widescreen_cons";
+		std::string as_consumption = "A_C_consumption";
+		std::string max_power = "max_power";
+
+		if (_name == id) {
+            // FIXME (UXIO) VEROSITY ADJUST
+            std::cout << "---check2---" << std::endl;
+			veh.setIdentifier(_value);
+		}else{
+            // FIXME (UXIO) VEROSITY ADJUST
+            std::cout << "---check3---" << std::endl;
+        }
+		if (_name == initBattery) {
+			veh.setInitialBattery(_value);
+		}
+		if (_name == initialPoint) {
+			veh.setInitialPoint(_value);
+		}
+		if (_name == finalPoint) {
+			veh.setFinalPoint(_value);
+		}
+		if (_name == vehicleType) {
+			veh.setVehicleType(_value);
+		}
+		if (_name == behaviour) {
+			veh.setBehaviour(_value);
+		}
+		if (_name == overload) {
+			veh.setOverload(_value);
+		}
+		/* Dynamics. */
+    elif(_name == mass)
+    {
+      if(OptionsCont::getOptions().getInt("loadVerbosity")){
+        std::cout << " (_name==mass)" << std::endl;
+        std::cout << " (_value==" << _value << std::endl;
+      }     
+      veh.setMass(_value);
+    }
+    else if (_name == coef_rolling_resistance) {
+      veh.setCoefRollingResistance(_value);
+    }
+    else if (_name == frontal_area) {
+      veh.setFrontalArea(_value);
+    }
+    else if (_name == coef_drag) {
+      veh.setCoefDrag(_value);
+    }
+    /* Motor. */
+    elif(_name == motor_eff)
+    {
+      if(OptionsCont::getOptions().getInt("loadVerbosity"))
+      {
+        std::cout << " (_name==motor_eff)" << std::endl;
+        std::cout << " (_value==" << _value << std::endl;
+      }      
+      veh.setMotorEff(_value);
+    }
+    else if (_name == gear_ratio) {
+      veh.setGearRatio(_value);
+    }
+    else if (_name == gear_system_eff) {
+      veh.setGearSystemEff(_value);
+    }
+    else if (_name == regen_ratio) {
+      veh.setRegenRatio(_value);
+    }
+    /* Battery. */
+    elif(_name == cooper_loss_coef)
+    {
+      if(OptionsCont::getOptions().getInt("loadVerbosity"))
+      {
+        std::cout << " (_name==cooper_loss_coef)" << std::endl;
+        std::cout << " (_value==" << _value << std::endl;
+      }      
+      veh.setCooperLossCoef(_value);
+    }
+    else if (_name == iron_loss_coef) {
+      veh.setIronLossCoef(_value);
+    }
+    else if (_name == windage_loss_coef) {
+      veh.setWindageLossCoef(_value);
+    }
+    else if (_name == constant_loss) {
+      veh.setConstantLoss(_value);
+    }
+    else if (_name == heating_consumption) {
+      veh.setHeatingConsumption(_value);
+    }
+    else if (_name == radio_consumption) {
+      veh.setRadioConsumption(_value);
+    }
+    else if (_name == lights) {
+      veh.setLights(_value);
+    }
+    elif(_name == number_cells)
+    {
+      if(OptionsCont::getOptions().getInt("loadVerbosity"))
+      {
+        std::cout << " (_name==number_cells" << std::endl;
+        std::cout << " (_value==" << _value << std::endl;
+      }
+      veh.setNumberCells(_value);
+    }
+    else if (_name == peukert_coeff) {
+      veh.setPeukertCoeff(_value);
+    }
+    else if (_name == nominal_capacity) {
+      veh.setNominalCapacity(_value);
+    }
+    else if (_name == time_charge) {
+      veh.setTimeCharge(_value);
+    }
+    else if (_name == widescreen_cons) {
+      veh.setWidescreenCons(_value);
+    }
+    else if (_name == as_consumption) {
+      veh.setAsConsumption(_value);
+    }
+    else if (_name == max_power) {
+      veh.setMaxPower(_value);
+    }
+    XMLString::release(&_name);
+    XMLString::release(&_value);
+  }
+  vehicles.push_back(veh);
+    
+    // FIXME (UXIO) VEROSITY ADJUST
+    std::cout << "MyHandler2::processAttribute(...) [500] "
+              << "vehicle=" << veh
+              << std::endl;
+    
+    // FIXME (UXIO) VEROSITY ADJUST
+    std::cout << "MyHandler2::processAttribute(...) <---- " << std::endl;    
+}
+
+void MyHandler2::fatalError(const SAXParseException& exception) {
+	char* message = XMLString::transcode(exception.getMessage());
+	std::cout << "Fatal Error: " << message << " at line: "
+			<< exception.getLineNumber() << std::endl;
+	XMLString::release(&message);
+}
+
+void MyHandler2::showVehiclesToTrack(std::vector<VehicleToTrack>& vehicles){
+
+	std::cout << "There are " << vehicles.size() << " vehicles\n"
+			<< "------Id--------Behaviour------\n";
+			std::vector<VehicleToTrack>::const_iterator iter;
+			for (iter = vehicles.begin(); iter != vehicles.end(); ++iter) {
+				std::cout << (iter)->getIdentifier() << " | " <<(iter)->getBehaviour() << "\n";
+
+			}
+}
+

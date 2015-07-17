@@ -1,0 +1,256 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Networks/Import/ArcView</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p><a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> is able to directly read binary ArcView databases ("shapefiles"). To convert such databases, at least three files are needed: a file with the extension ".dbf", one with the extension ".shp" and one with the extension ".shx". Additionally, having a projection file with the extension ".proj" is of benefit. The option to load a shape-file into <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> in order to convert it into a SUMO-network is named <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile-prefix <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> or <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> for short. Because shape-file descriptions use more than a single file, one has to supply the file name without extension, only. So, the following call to <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> should be used to import the road network stored in "my_shape_files.shp", "my_shape_files.shx", "my_shape_files.proj", and "my_shape_files.dbf":
+</p>
+<pre>netconvert --shapefile my_shape_files 
+</pre>
+<p>Unfortunately, shape files describe how information is stored physically, but neither which is stored nor how the entries of the according database (*.dbf) are named. Due to this, one has to examine how a given road network is stored within the database file and give this information to <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>; a plain call almost always fails.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Defining_the_Input"><span class="tocnumber">1</span> <span class="toctext">Defining the Input</span></a></li>
+<li class="toclevel-1"><a href="#ArcView_Import_Options"><span class="tocnumber">2</span> <span class="toctext">ArcView Import Options</span></a></li>
+<li class="toclevel-1"><a href="#Examples"><span class="tocnumber">3</span> <span class="toctext">Examples</span></a>
+<ul>
+<li class="toclevel-2"><a href="#.2736_NEW_YORK.27_from_TIGER_database"><span class="tocnumber">3.1</span> <span class="toctext">'36_NEW_YORK' from TIGER database</span></a></li>
+<li class="toclevel-2"><a href="#.27Frida.27_network_.28city_of_Osnabr.C3.BCck.29"><span class="tocnumber">3.2</span> <span class="toctext">'Frida' network (city of Osnabrück)</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Data_Quality"><span class="tocnumber">3.2.1</span> <span class="toctext">Data Quality</span></a></li>
+<li class="toclevel-3"><a href="#Demand"><span class="tocnumber">3.2.2</span> <span class="toctext">Demand</span></a></li>
+<li class="toclevel-3"><a href="#Conlusion"><span class="tocnumber">3.2.3</span> <span class="toctext">Conlusion</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Defining_the_Input" id="Defining_the_Input"></a><h1> <span class="mw-headline">Defining the Input</span></h1>
+<p>The table below shows which information <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> is trying to read from the given input files, what the standard values are, and how they can be changed. Also, it shows whether the information is mandatory - must be given - or optional.
+</p>
+<center><b>Table: Information <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> reads from shape-files</b></center>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ffdead;"> Information
+</th><th style="background:#ffdead;"> Mandatory
+</th><th style="background:#ffdead;"> Default field name
+</th><th style="background:#ffdead;"> Option
+</th></tr>
+<tr>
+<td> The id of an edge
+</td><td> y
+</td><td> <b>LINK_ID</b>
+</td><td> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.street-id <i>&lt;FIELD_NAME&gt;</i></span>
+</td></tr>
+<tr>
+<td> The name of an edge (not really used)
+</td><td> n
+</td><td> <b>ST_NAME</b>
+</td><td>
+</td></tr>
+<tr>
+<td> The name of the node the edge starts at
+</td><td> y
+</td><td> <b>REF_IN_ID</b>
+</td><td> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.from-id <i>&lt;FIELD_NAME&gt;</i></span>
+</td></tr>
+<tr>
+<td> The name of the node the edge ends at
+</td><td> y
+</td><td> <b>NREF_IN_ID</b>
+</td><td> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.to-id <i>&lt;FIELD_NAME&gt;</i></span>
+</td></tr>
+<tr>
+<td> The type of the street
+</td><td> n
+</td><td> <b>ST_TYP_AFT</b>
+</td><td> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.type-id <i>&lt;FIELD_NAME&gt;</i></span>
+</td></tr>
+<tr>
+<td> Speed category
+</td><td> n (see below)
+</td><td> <b>SPEED_CAT</b>
+</td><td>
+</td></tr>
+<tr>
+<td> Lane category
+</td><td> n (see below)
+</td><td> <b>LANE_CAT</b>
+</td><td>
+</td></tr>
+<tr>
+<td> Road class, used to determine the priority
+</td><td> n (see below)
+</td><td> <b>FUNC_CLASS</b>
+</td><td>
+</td></tr>
+<tr>
+<td> Allowed speed on a road
+</td><td> n (see below)
+</td><td> <b>SPEED</b>
+</td><td>
+</td></tr>
+<tr>
+<td> Number of lanes a road has
+</td><td> n (see below)
+</td><td> <b>NUMLANES</b> or <b>rnol</b>
+</td><td>
+</td></tr></table>
+<p>If being familiar with NavTeq, you may have noticed that the defaults are the ones that are used by NavTeq.
+</p><p>Some shape file databases do not contain explicit information about the edges' attributes (number of lanes, priority, allowed speed) at all. It is possible use <a href="../../SUMO_edge_type_file.html" title="SUMO edge type file">SUMO edge type file</a> for describing the edges' attributes. In this case, the column to retrieve an according street's type name from must be named using <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.type-id <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;ID&gt;</i></a></span> and a <a href="../../SUMO_edge_type_file.html" title="SUMO edge type file">SUMO edge type file</a> must be given to <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> using <span style="color: #111144; font-weight: bold; white-space: pre;">--type-files <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>. If something fails with the types or the explicit values, it can be catched using <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.use-defaults-on-failure</span>. In these cases, the default <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> values are used. Besides this, it is possible to load own <a href="../../Networks/Building_Networks_from_own_XML-descriptions.html#Connection_Descriptions" title="Networks/Building Networks from own XML-descriptions">connection descriptions</a>.
+</p>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />One can insert own attributes into the database using a GIS. This means, one can also insert own fields for the number of lanes, priority, or allowed speed, naming them as described above.</div>
+<p>ArcView-networks are encoded using geocoordinates which have to be converted to the cartesian coordinates system used by SUMO. To describe how to convert the coordinates, one should know in which UTM-zone your network is located. Use <a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=Projection_options&amp;action=edit&amp;redlink=1" class="new" title="Projection options (page does not exist)">projection options</a> to set the correct one.
+</p>
+<a name="ArcView_Import_Options" id="ArcView_Import_Options"></a><h1> <span class="mw-headline">ArcView Import Options</span></h1>
+<p>The complete list of options used for reading shapefiles is given in the table below. You may find further options which control the import behaviour on <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile-prefix <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Read shapefiles (ArcView, Tiger, ...) from files starting with 'FILE'
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.street-id <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Read edge ids from column STR
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.from-id <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Read from-node ids from column STR
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.to-id <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Read to-node ids from column STR
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.type-id <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Read type ids from column STR
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.use-defaults-on-failure</span>
+</td><td valign="top"> Uses edge type defaults on problems; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.all-bidirectional</span>
+</td><td valign="top"> Insert edges in both directions; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.guess-projection</span>
+</td><td valign="top"> Guess the proper projection; <i>default: <b>false</b></i>
+</td></tr></table>
+<p><br />
+</p>
+<a name="Examples" id="Examples"></a><h1> <span class="mw-headline">Examples</span></h1>
+<a name=".2736_NEW_YORK.27_from_TIGER_database" id=".2736_NEW_YORK.27_from_TIGER_database"></a><h2> <span class="mw-headline">'36_NEW_YORK' from TIGER database</span></h2>
+<p>The network is available at the <a href="ftp://ftp2.census.gov/geo/tiger/TIGER2008/36_NEW_YORK/36061_New_York_County/" class="external text" title="ftp://ftp2.census.gov/geo/tiger/TIGER2008/36_NEW_YORK/36061_New_York_County/" rel="nofollow">TIGER2008 ftp server (?)</a>. <b><font color="red">Missing copyright information; please add</font></b>.
+</p><p>Opening the edges-dbf (<i>tl_2008_36061_edges.dbf</i>) of which we hope that it contains information about roads shows us, that:
+</p>
+<ul><li> the from- and the to-nodes of the streets are described in fields named <b>TNIDF</b> and <b>TNIDT</b>, respectively.
+</li><li> the field <b>tlid</b> may be stored as the one to name the edges by
+</li><li> there is a further information about the type (mtfcc)
+</li></ul>
+<p>As a begin, we try to import the road graph. We use the information we have found and apply a projection:
+</p>
+<pre>netconvert -v --shapefile-prefix tl_2008_36061_edges -o net.net.xml \
+   --shapefile.from-id TNIDF --shapefile.to-id TNIDT --arcview.street-id tlid \
+   --shapefile.use-defaults-on-failure
+</pre>
+<p>As a result, we obtain the network shown below.
+</p><p><a href="../../images/Tl_2008_36061_edges.gif" class="image" title="Tl 2008 36061 edges.gif"><img alt="" src="../../images/Tl_2008_36061_edges.gif" width="400" height="414" border="0" /></a> 
+</p><p><b>Figure 1.1. The converted network of New York</b>
+</p><p>There are several issues one should note:
+</p>
+<ul><li> The types were not used - no information about their meanings was investigated
+</li><li> All roads are unidirectional
+</li><li> The projection has not been verified (though it should be valid)
+</li><li> Maybe the further files which are included in the zip contain additional information. This has not been investigated.
+</li></ul>
+<a name=".27Frida.27_network_.28city_of_Osnabr.C3.BCck.29" id=".27Frida.27_network_.28city_of_Osnabr.C3.BCck.29"></a><h2> <span class="mw-headline">'Frida' network (city of Osnabrück)</span></h2>
+<p>The network is available at the <a href="http://frida.intevation.org/" class="external text" title="http://frida.intevation.org/" rel="nofollow">Frida-homepage</a> and is licensed under the GPL.
+</p><p>Our main interest is of course the street network. The following files describe this: <i>strassen.dbf</i>, <i>strassen.shp</i>, <i>strassen.shx</i> ("strassen" is the german word for "streets"). When opening "strassen.dbf" we have to realize that there is only a few information stored herein - neither the node names are given nor the street attributes. Instead, the street attributes seem to be stored in an additional database and are references by type names (column "strTypID" - strassen_typ_id = street_type_id). Also, the names of this database's columns have other names than expected.
+</p><p>Ok, let's solve these problems one after another.
+</p>
+<ul><li> Different field naming
+</li></ul>
+<dl><dd>The only problem with this is that we can not extract street names properly. Still, within <a href="http://frida.intevation.org/" class="external text" title="http://frida.intevation.org/" rel="nofollow">FRIDA</a>, the edges are numbered, and we may use the street id as name.
+</dd><dd>The call has to be extended by: <span style="color: #111144; font-weight: bold; white-space: pre;">--arcview.street-id strShapeID</span>
+</dd></dl>
+<ul><li> Missing node names
+</li></ul>
+<dl><dd><a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> can deal with networks which do not have node names (since version 0.9.4).
+</dd></dl>
+<ul><li> Parsing street attributes from a <a href="../../SUMO_edge_type_file.html" title="SUMO edge type file">SUMO edge type file</a>
+</li></ul>
+<dl><dd>The possibility to describe edges using attributes was already available in <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> and may be used in combination with ArcView files since version 0.9.4. Still, the types have to be translated into XML. The generated file (<i>frida.typ.xml</i>) looks like this:
+</dd></dl>
+<pre class="xml">
+&lt;types&gt;
+    &lt;!-- &quot;noch nicht attributiert&quot; (= not yet attributed) --&gt;
+    &lt;type id=&quot;0&quot;  priority=&quot;1&quot; numLanes=&quot;1&quot; speed=&quot;13.89&quot;/&gt;
+    &lt;!-- &quot;Autobahn&quot; (highway) --&gt;
+    &lt;type id=&quot;1&quot;  priority=&quot;5&quot; numLanes=&quot;3&quot; speed=&quot;41.67&quot;/&gt;
+    &lt;!-- &quot;Bundesstrasse&quot; (motorway) --&gt;
+    &lt;type id=&quot;2&quot;  priority=&quot;4&quot; numLanes=&quot;1&quot; speed=&quot;22.22&quot;/&gt;
+    &lt;!-- &quot;Hauptstrasse&quot; (main (city) road) --&gt;
+    &lt;type id=&quot;3&quot;  priority=&quot;3&quot; numLanes=&quot;2&quot; speed=&quot;13.89&quot;/&gt;
+    &lt;!-- &quot;Nebenstrasse&quot; (lower priorised (city) road) --&gt;
+    &lt;type id=&quot;4&quot;  priority=&quot;2&quot; numLanes=&quot;1&quot; speed=&quot;13.89&quot;/&gt;
+    &lt;!-- &quot;Weg&quot; (path) --&gt;
+    &lt;type id=&quot;5&quot;  priority=&quot;1&quot; numLanes=&quot;1&quot; speed=&quot;5&quot;/&gt;
+    &lt;!-- &quot;Zone 30&quot; (lower street with a speed limit of 30km/h) --&gt;
+    &lt;type id=&quot;6&quot;  priority=&quot;2&quot; numLanes=&quot;1&quot; speed=&quot;8.33&quot;/&gt;
+    &lt;!-- &quot;Spielstrasse&quot; (a street where children may play (10km/h)) --&gt;
+    &lt;type id=&quot;7&quot;  priority=&quot;1&quot; numLanes=&quot;1&quot; speed=&quot;1.39&quot;/&gt;
+    &lt;!-- &quot;Fussgaengerzone&quot; (pedestrains zone) --&gt;
+    &lt;type id=&quot;8&quot;  priority=&quot;0&quot; numLanes=&quot;1&quot; speed=&quot;0.1&quot;/&gt;
+    &lt;!-- &quot;gesperrte Strasse&quot; (closed street) --&gt;
+    &lt;type id=&quot;9&quot;  priority=&quot;0&quot; numLanes=&quot;1&quot; speed=&quot;0.1&quot;/&gt;
+    &lt;!-- &quot;sonstige Strasse&quot; (something else) --&gt;
+    &lt;type id=&quot;10&quot; priority=&quot;0&quot; numLanes=&quot;1&quot; speed=&quot;0.1&quot;/&gt;
+    &lt;!-- &quot;Fussweg&quot; (way for pedestrians) --&gt;
+    &lt;type id=&quot;11&quot; priority=&quot;0&quot; numLanes=&quot;1&quot; speed=&quot;0.1&quot;/&gt;
+&lt;/types&gt;
+</pre>
+<p>The call has to be extended by: <span style="color: #111144; font-weight: bold; white-space: pre;">-t frida.typ.xml</span> <span style="color: #111144; font-weight: bold; white-space: pre;">--arcview.type-id strTypID</span>
+</p><p>After having applied all those changes, the network was buildable, but looked quite messy. After having played with geocoordinate projections, this was fixed. So the call (so far) looks like this:
+</p>
+<pre>netconvert --arcview strassen -o frida.net.xml \
+  --arcview.street-id strShapeID -t frida.typ.xml \
+  --arcview.type-id strTypID --use-projection
+</pre>
+<a name="Data_Quality" id="Data_Quality"></a><h3> <span class="mw-headline">Data Quality</span></h3>
+<p>Looking a bit deeper at the network, we had to realise two further problems. At first, highway on- and off-ramps are marked as "highway". this yields in a network where on- and offramps have the same number of lanes as the highways themselves. And it's definitely not fitting to reality, as the next picture shows:
+</p><p><a href="../../images/Frida_uni_highway_ramp.png" class="image" title="Frida uni highway ramp.png"><img alt="" src="../../images/Frida_uni_highway_ramp.png" width="400" height="230" border="0" /></a> 
+</p><p><b>Figure 2.2. Detail view showing problems with (unidirectional) highway on-/off-ramps</b>
+</p><p>Furthermore, all streets are unidirectional - even highways. This makes the network not usable for traffic simulations when left in the orignal state. Trying to convert the network with <span style="color: #111144; font-weight: bold; white-space: pre;">--arcview.all-bidi</span>, that means trying to insert edges bidirectional, makes the city usable, but the highways are even worse, now, because also the on-/off-ramps are bidirectional, then...
+</p><p><a href="../../images/Frida_bidi_highway_ramp.png" class="image" title="Frida bidi highway ramp.png"><img alt="" src="../../images/Frida_bidi_highway_ramp.png" width="400" height="230" border="0" /></a> 
+</p><p><b>Figure 2.3. Detail view showing problems with (bidirectional) highway on-/off-ramps</b>
+</p>
+<a name="Demand" id="Demand"></a><h3> <span class="mw-headline">Demand</span></h3>
+<p>There is no demand available for Frida - at least none we know about.
+</p>
+<a name="Conlusion" id="Conlusion"></a><h3> <span class="mw-headline">Conlusion</span></h3>
+<p>Using the current features we are able to parse the network from the Frida-project but we can not state it is completely usable for traffic simulations. At least areas around highways are not realistic, because on-/offramps lack an explicit declaration and are due to this as wide as the highways themselves. Furthermore, all streets within the network are coded in just one direction. Extending them to be bidirectional solves the problem in inner-city areas, but yields in an unacceptable result for highways.
+</p>
+<p style="border:1px solid #909090; padding:1px 4px 3px 4px"><a href="../../images/CC-BY-SA-small.png" class="image" title="Creative Commons License"><img alt="Creative Commons License" src="../../images//CC-BY-SA-small.png" width="80" height="15" border="0" /></a>
+This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/" class="external text" title="http://creativecommons.org/licenses/by-sa/3.0/" rel="nofollow">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>. The authors are listed in the history.</p>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 138/1000000
+Post-expand include size: 3647/2097152 bytes
+Template argument size: 1186/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:129-0!1!0!!en!2!edit=0 and timestamp 20120718063235 -->
+</div><hr/><div id="lastmod">This page was last modified on 6 March 2012, at 10:32.</div>

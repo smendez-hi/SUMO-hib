@@ -1,0 +1,220 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Basics/Using the Command Line Applications</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>Most of the applications from the SUMO package are command line tools. Currently, only <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a> is not. If you do not know what a "command line" is, we refer you to the page about <a href="../Basics/Basic_Computer_Skills.html#Running_Programs_from_the_Command_Line" title="Basics/Basic Computer Skills">basic computer skills</a>.
+</p><p>In the following, some peculiarities of the applications from the SUMO-suite are presented.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Using_SUMO_Applications_from_the_Command_Line"><span class="tocnumber">1</span> <span class="toctext">Using SUMO Applications from the Command Line</span></a></li>
+<li class="toclevel-1"><a href="#Options"><span class="tocnumber">2</span> <span class="toctext">Options</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Setting_Options_on_the_Command_Line"><span class="tocnumber">2.1</span> <span class="toctext">Setting Options on the Command Line</span></a></li>
+<li class="toclevel-2"><a href="#Option_Value_Types"><span class="tocnumber">2.2</span> <span class="toctext">Option Value Types</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Configuration_Files"><span class="tocnumber">3</span> <span class="toctext">Configuration Files</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Naming_Conventions_for_Configuration_Files"><span class="tocnumber">3.1</span> <span class="toctext">Naming Conventions for Configuration Files</span></a></li>
+<li class="toclevel-2"><a href="#Configuration_Files_vs._Command_Line_Parameter"><span class="tocnumber">3.2</span> <span class="toctext">Configuration Files vs. Command Line Parameter</span></a></li>
+<li class="toclevel-2"><a href="#Generating_Configuration_Files.2C_Templates_and_Schemata"><span class="tocnumber">3.3</span> <span class="toctext">Generating Configuration Files, Templates and Schemata</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Common_Options"><span class="tocnumber">4</span> <span class="toctext">Common Options</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Reporting_Options"><span class="tocnumber">4.1</span> <span class="toctext">Reporting Options</span></a></li>
+<li class="toclevel-2"><a href="#Random_Number_Options"><span class="tocnumber">4.2</span> <span class="toctext">Random Number Options</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Generating_and_Reading_Files"><span class="tocnumber">5</span> <span class="toctext">Generating and Reading Files</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Hints_on_using_XML"><span class="tocnumber">5.1</span> <span class="toctext">Hints on using XML</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Writing_files"><span class="tocnumber">6</span> <span class="toctext">Writing files</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Using_SUMO_Applications_from_the_Command_Line" id="Using_SUMO_Applications_from_the_Command_Line"></a><h1> <span class="mw-headline">Using SUMO Applications from the Command Line</span></h1>
+<p>SUMO applications are plain executables. You just start them by typing their name from the command line; for example <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a> is called by
+</p>
+<pre>netgenerate.exe
+</pre>
+<p>under Windows and by
+</p>
+<pre>netgenerate
+</pre>
+<p>under Linux.
+</p><p>This simply starts the application (<a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a> in this case). As no parameter have been given, the application does not know what to do and prints only an information about itself:
+</p>
+<pre>SUMO netgenerate Version dev-SVN-r9983
+ Copyright (C) 2001-2011 DLR and contributors; <a href="http://sumo.sourceforge.net" class="external free" title="http://sumo.sourceforge.net" rel="nofollow">http://sumo.sourceforge.net</a>
+ License GPLv3+: GNU GPL Version 3 or later &lt;<a href="http://gnu.org/licenses/gpl.html" class="external free" title="http://gnu.org/licenses/gpl.html" rel="nofollow">http://gnu.org/licenses/gpl.html</a>&gt;
+ Use --help to get the list of options.
+</pre>
+<a name="Options" id="Options"></a><h1> <span class="mw-headline">Options</span></h1>
+<p>Each application has a set of options which define which files shall be process or generated, or which define the application's behaviour. Normally, an application needs at least two parameter - an input file and an output file - but almost always more parameter are used for a fine-grained control. Each application's options are described within the application's description. In the following, it is described how options are set.
+</p>
+<a name="Setting_Options_on_the_Command_Line" id="Setting_Options_on_the_Command_Line"></a><h2> <span class="mw-headline">Setting Options on the Command Line</span></h2>
+<p>There are two kinds of options: boolean options which do not require an argument and are set to true if - and only if - the option is present and options with an argument. Setting an option with an argument on the command line consists of two parts - the option name and the option's value. For example, if one wants the simulation to load a certain road network, "mynet.net.xml", the following must be written:
+</p>
+<pre>--net mynet.net.xml
+</pre>
+<p>The '--' in front indicates that the option's long name is following ("net") in this case. After a whitespace the option's value must be given. It is also possible to use a '=' instead of the whitespace:
+</p>
+<pre>--net=mynet.net.xml
+</pre>
+<p>Some often used options have can be abbreviated, the abbreviation for the <span style="color: #111144; font-weight: bold; white-space: pre;">--net</span>-option is <span style="color: #111144; font-weight: bold; white-space: pre;">-n</span>. The following has the same effect as the two examples above:
+</p>
+<pre>-n mynet.net.xml
+</pre>
+<p>Please note that an abbreviation is indicated using a single '-'.
+</p>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />Not all abbreviations have the same meaning across the applications from the SUMO-suite.</div>
+<a name="Option_Value_Types" id="Option_Value_Types"></a><h2> <span class="mw-headline">Option Value Types</span></h2>
+<p>The SUMO applications know what kind of a value they expect to be set. For example, <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a> allows you to set the default number of lanes, which of course must be an integer value. In the case, a string or something else is given, this is recognized and the application answers with an error message on startup. Please note that the decimal point in a float is encoded using a dot (".").
+</p><p>A special case of value types are lists, for example the list of additional files to load into a simulation. When giving more than a single file, the files must be divided using ','. This also counts for lists of other value types, as integers or floating point numbers.
+</p>
+<a name="Configuration_Files" id="Configuration_Files"></a><h1> <span class="mw-headline">Configuration Files</span></h1>
+<p>Because the list of options may get very long, configuration files were introduced. You can set up a configuration file which contains all the parameter you want to start the application with and have to start the application with only this configuration file given.
+</p><p>A configuration file is an XML-file that has a root element named <span class="inlxml">configuration</span>.
+The options are written as element names, with the wanted value being stored in the attribute <span class="inlxml">value</span> (or <span class="inlxml">v</span>); the option <span style="color: #111144; font-weight: bold; white-space: pre;">--net-file <i>test.net.xml</i></span> given on the command line would become <span class="inlxml">&lt;net-file value="test.net.xml"/&gt;</span> within the configuration file. For the boolean options the value should be either "true", "on", "yes", "1", or "x" for the activation and "false", "off", "no", or "0" for deactivating the option (case does not matter here).
+</p><p>For the example above, the configuration file (let's save it under "test.sumocfg", see below) would look like:
+</p>
+<pre class="xml">
+&lt;configuration&gt;
+    &lt;input&gt;
+        &lt;net-file value=&quot;test.net.xml&quot;/&gt;
+        &lt;route-files value=&quot;test.rou.xml&quot;/&gt;
+        &lt;additional-files value=&quot;test.add.xml&quot;/&gt;
+    &lt;/input&gt;
+&lt;/configuration&gt;
+</pre>
+<p>The section <span class="inlxml">input</span> given above has only documentation purposes and no functional meaning.
+</p><p>A less verbose but equivalent version would look like:
+</p>
+<pre class="xml">
+&lt;configuration&gt;
+    &lt;n v=&quot;test.net.xml&quot;/&gt;
+    &lt;r v=&quot;test.rou.xml&quot;/&gt;
+    &lt;a v=&quot;test.add.xml&quot;/&gt;
+&lt;/configuration&gt;
+</pre>
+<p>The according <a href="../SUMO.html" title="SUMO">SUMO</a> execution call - working with both configuration versions - would be:
+</p>
+<pre>sumo.exe -c test.sumocfg
+</pre>
+<p>This means that instead of the parameters, we only give the name of the configuration file using the option <span style="color: #111144; font-weight: bold; white-space: pre;">--configuration-file <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> or <span style="color: #111144; font-weight: bold; white-space: pre;">-c <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>. If you want to give no further options on the command line it is possible to leave out the "-c" as well:
+</p>
+<pre>sumo.exe test.sumocfg
+</pre>
+<a name="Naming_Conventions_for_Configuration_Files" id="Naming_Conventions_for_Configuration_Files"></a><h2> <span class="mw-headline">Naming Conventions for Configuration Files</span></h2>
+<p>Dependencing on the targetted application, the configuration files' have different extensions. It is highly recommended to follow this convention. For using simulation configurations with <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a> this is even required - <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a> can only read simulation configurations named "*.sumocfg".
+</p><p>All conventions for configuration extensions can be found on the page on <a href="../Other/File_Extensions.html" title="Other/File Extensions">used file extensions</a>.
+</p>
+<a name="Configuration_Files_vs._Command_Line_Parameter" id="Configuration_Files_vs._Command_Line_Parameter"></a><h2> <span class="mw-headline">Configuration Files vs. Command Line Parameter</span></h2>
+<p>In addition to a configuration file, further command line parameter can also be given on the command line. Note that this is not true for the simulation gui <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a>, which needs all parameters inside the configuration file. If a parameter is set within the named configuration file as well as given on the command line, the value given on the command line is used (overwrites the one within the configuration file).
+</p>
+<a name="Generating_Configuration_Files.2C_Templates_and_Schemata" id="Generating_Configuration_Files.2C_Templates_and_Schemata"></a><h2> <span class="mw-headline">Generating Configuration Files, Templates and Schemata</span></h2>
+<p>The applications of the SUMO package allow you to generate configuration file templates. It is possible to save an empty configuration - a configuration template. This can be done using the <span style="color: #111144; font-weight: bold; white-space: pre;">--save-template <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>. In this case, the configuration will only contain the parameters, filled with their default values.
+</p><p>Also, it is possible to save a configuration file which contains the currently set values. An application can be forced to do this using the option <span style="color: #111144; font-weight: bold; white-space: pre;">--save-configuration <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>.
+</p><p>Last but not least one can generate an <a href="http://en.wikipedia.org/wiki/XML_Schema_%28W3C%29" class="external text" title="http://en.wikipedia.org/wiki/XML_Schema_%28W3C%29" rel="nofollow">XML schema</a> (using the option <span style="color: #111144; font-weight: bold; white-space: pre;">--save-schema <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>) to validate configuration files against. For the sumo application this schema should be equivalent to the one found at <a href="http://sumo.sourceforge.net/xsd/sumoConfiguration.xsd" class="external free" title="http://sumo.sourceforge.net/xsd/sumoConfiguration.xsd" rel="nofollow">http://sumo.sourceforge.net/xsd/sumoConfiguration.xsd</a> (respectively for the other executables). Please note that the schema is more strict than the sumo options parser since it only validates the verbose version given above.
+</p><p>In either case, if further information on the parameters is wanted, one can also pass the option <span style="color: #111144; font-weight: bold; white-space: pre;">--save-commented</span>. Then, some further comments on each parameter are generated.
+</p>
+<a name="Common_Options" id="Common_Options"></a><h1> <span class="mw-headline">Common Options</span></h1>
+<p>The applications from the SUMO suite share several options. They are given in the following.
+</p>
+<a name="Reporting_Options" id="Reporting_Options"></a><h2> <span class="mw-headline">Reporting Options</span></h2>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;"> Option
+</th><th style="background:#ddffdd;"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--verbose</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-v</span>
+</td><td valign="top"> The application is more verbose on the console in reporting what it is doing
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--no-warnings</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-W</span>
+</td><td valign="top"> Warnings will not be written to the console
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--print-options</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-p</span>
+</td><td valign="top"> The options are printed giving the currently set values
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--help</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-?</span>
+</td><td valign="top"> The application's help screen is printed
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--version</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-V</span>
+</td><td valign="top"> The version number and license notice are printed
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--log <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">-l</span>
+</td><td valign="top"> All outputs are written into the given file
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--message-log <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> All informational outputs (no errors and warnings) are written into the given file
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--error-log <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> All errors and warnings are written into the given file
+</td></tr>
+</table>
+<p>The logging options <span style="color: #111144; font-weight: bold; white-space: pre;">--log</span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--message-log</span> also enable the verbose output but only into the given file (unless <span style="color: #111144; font-weight: bold; white-space: pre;">--verbose</span> was given as well). Errors get always printed to the console (in addition to a possible log-file).
+</p>
+<a name="Random_Number_Options" id="Random_Number_Options"></a><h2> <span class="mw-headline">Random Number Options</span></h2>
+<p>These options configure how the seed of the random number generator is determined. The same seed leads to the same sequence of generated random numbers.
+</p><p>By default the seed is a hard-coded fixed value. So, as long as all configuration settings keep the same the outputs of several simulation runs will be exactly the same. To change this use one of the following options.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;"> Option
+</th><th style="background:#ddffdd;"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--seed <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>
+</td><td valign="top"> Set a particular seed for the random number generator. By using different values you can have different but still reproducible simulation runs.
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--random</span>
+</td><td valign="top"> Make SUMO choose a seed. If available the seed will be based on output of /dev/urandom otherwise the seed will be derived from current system time. This option has <b>precedence</b> over option <span style="color: #111144; font-weight: bold; white-space: pre;">--seed <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>.
+</td></tr>
+</table>
+<p><b>Attention</b>: The precedence of  <span style="color: #111144; font-weight: bold; white-space: pre;">--random</span> over <span style="color: #111144; font-weight: bold; white-space: pre;">--seed <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span> means that it is <b>impossible</b> to set <span style="color: #111144; font-weight: bold; white-space: pre;">--random</span> in a configuration file and overwrite it by <span style="color: #111144; font-weight: bold; white-space: pre;">--seed <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span> in the command line. There might be a solution to this in the future.
+</p>
+<a name="Generating_and_Reading_Files" id="Generating_and_Reading_Files"></a><h1> <span class="mw-headline">Generating and Reading Files</span></h1>
+<p>Almost all files the tools from the SUMO package read or generate are written in XML. You should get familiar with <a href="http://en.wikipedia.org/wiki/XML" class="external text" title="http://en.wikipedia.org/wiki/XML" rel="nofollow">XML</a> before starting to work with SUMO. SUMO allows you to import files from different sources, but "native" SUMO files - road network descriptions, route and/or demand descriptions, infrastructure descriptions, etc. etc. - are SUMO-specific, not following any standard. XML files can be read and written using a simple text editor and we usually do this. Nonetheless, several other tools exist and may be reused.
+</p><p>For some of the file types used by SUMO, a xsd (XML Schema Definition) exists. Please consult the page on <a href="../Other/File_Extensions.html" title="Other/File Extensions">file extensions</a> for a list of described file formats.
+</p>
+<a name="Hints_on_using_XML" id="Hints_on_using_XML"></a><h2> <span class="mw-headline">Hints on using XML</span></h2>
+<ul><li> The default viewer for XML files on Windows is the Internet Explorer. It may be used for validating your XML files. The syntax of an XML file should be valid if the Internet Explorer can completely load it.
+</li><li> <a href="http://www.eclipse.org/" class="external text" title="http://www.eclipse.org/" rel="nofollow">Eclipse</a> allows to write XML documents following a given <a href="http://en.wikipedia.org/wiki/XML_Schema_%28W3C%29" class="external text" title="http://en.wikipedia.org/wiki/XML_Schema_%28W3C%29" rel="nofollow">xsd (XML Schema Definition)</a>.
+</li></ul>
+<a name="Writing_files" id="Writing_files"></a><h1> <span class="mw-headline">Writing files</span></h1>
+<p>Several options expect a file name (<a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a>) to write into as parameter. When being given at the command line, the given path is assumed to be relative to the current working directory. When being given in a configuration file, the file path is assumed to be relative to the configuration file's path. Absolute paths are of course also allowed.
+</p><p>Usually, existing files with the same name are overwritten without a warning. The directory the output file shall be written into must exist.
+</p><p>Besides writing to a file, further special notations allow to:
+</p>
+<ul><li> write into the null-device (no output at all): use "NUL" or "/dev/null" for file name (both notations work platform independent)
+</li><li> write into a socket: use "&lt;HOST&gt;:&lt;PORT&gt;" for file name
+</li><li> write to stdout (print on command line): use "stdout" or "-" for file name
+</li><li> write to stderr: use "stderr" for file name
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 211/1000000
+Post-expand include size: 4258/2097152 bytes
+Template argument size: 1008/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:236-0!1!0!!en!2!edit=0 and timestamp 20120718063126 -->
+</div><hr/><div id="lastmod">This page was last modified on 28 June 2012, at 07:56.</div>

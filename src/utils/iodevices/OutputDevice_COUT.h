@@ -1,0 +1,72 @@
+/****************************************************************************/
+/// @file    OutputDevice_COUT.h
+/// @author  Daniel Krajzewicz
+/// @author  Michael Behrisch
+/// @date    2004
+/// @version $Id: OutputDevice_COUT.h 11671 2012-01-07 20:14:30Z behrisch $
+///
+// An output device that encapsulates cout
+/****************************************************************************/
+// SUMO, Simulation of Urban MObility; see http://sumo.sourceforge.net/
+// Copyright (C) 2001-2012 DLR (http://www.dlr.de/) and contributors
+/****************************************************************************/
+//
+//   This file is part of SUMO.
+//   SUMO is free software: you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation, either version 3 of the License, or
+//   (at your option) any later version.
+//
+/****************************************************************************/
+#ifndef OutputDevice_COUT_h
+#define OutputDevice_COUT_h
+
+
+// ===========================================================================
+// included modules
+// ===========================================================================
+#ifdef _MSC_VER
+#include <windows_config.h>
+#else
+#include <config.h>
+#endif
+
+#include "OutputDevice.h"
+
+
+// ===========================================================================
+// class definitions
+// ===========================================================================
+/**
+ * @class OutputDevice_COUT
+ * @brief An output device that encapsulates cout
+ */
+class OutputDevice_COUT : public OutputDevice {
+public:
+    /** @brief Constructor
+     * @exception IOError Should not be thrown by this implementation
+     */
+    OutputDevice_COUT();
+
+
+    /// @brief Destructor
+    ~OutputDevice_COUT() ;
+
+
+protected:
+    /// @name Methods that override/implement OutputDevice-methods
+    /// @{
+
+    /** @brief Returns the associated ostream
+     * @return cout
+     */
+    std::ostream& getOStream() ;
+    /// @}
+
+};
+
+
+#endif
+
+/****************************************************************************/
+

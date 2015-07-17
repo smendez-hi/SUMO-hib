@@ -1,0 +1,106 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module traci.simulation</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="traci.html"><font color="#ffffff">traci</font></a>.simulation</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/boni/Desktop/DanielTouched/sumo-0.14.0/tools/traci/simulation.py">/home/boni/Desktop/DanielTouched/sumo-0.14.0/tools/traci/simulation.py</a></font></td></tr></table>
+    <p><tt>@file&nbsp;&nbsp;&nbsp;&nbsp;simulation.py<br>
+@author&nbsp;&nbsp;Michael&nbsp;Behrisch<br>
+@date&nbsp;&nbsp;&nbsp;&nbsp;2011-03-15<br>
+@version&nbsp;$Id:&nbsp;simulation.py&nbsp;11671&nbsp;2012-01-07&nbsp;20:14:30Z&nbsp;behrisch&nbsp;$<br>
+&nbsp;<br>
+Python&nbsp;implementation&nbsp;of&nbsp;the&nbsp;TraCI&nbsp;interface.<br>
+&nbsp;<br>
+SUMO,&nbsp;Simulation&nbsp;of&nbsp;Urban&nbsp;MObility;&nbsp;see&nbsp;<a href="http://sumo.sourceforge.net/">http://sumo.sourceforge.net/</a><br>
+Copyright&nbsp;(C)&nbsp;2008-2012&nbsp;DLR&nbsp;(<a href="http://www.dlr.de/">http://www.dlr.de/</a>)&nbsp;and&nbsp;contributors<br>
+All&nbsp;rights&nbsp;reserved</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="struct.html">struct</a><br>
+</td><td width="25%" valign=top><a href="traci.constants.html">traci.constants</a><br>
+</td><td width="25%" valign=top><a href="traci.html">traci</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-convert2D"><strong>convert2D</strong></a>(edgeID, pos, laneIndex<font color="#909090">=0</font>, toGeo<font color="#909090">=False</font>)</dt></dl>
+ <dl><dt><a name="-convertRoad"><strong>convertRoad</strong></a>(x, y, isGeo<font color="#909090">=False</font>)</dt></dl>
+ <dl><dt><a name="-getArrivedIDList"><strong>getArrivedIDList</strong></a>()</dt><dd><tt><a href="#-getArrivedIDList">getArrivedIDList</a>()&nbsp;-&gt;&nbsp;list(string)<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getArrivedNumber"><strong>getArrivedNumber</strong></a>()</dt><dd><tt><a href="#-getArrivedNumber">getArrivedNumber</a>()&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getCurrentTime"><strong>getCurrentTime</strong></a>()</dt><dd><tt><a href="#-getCurrentTime">getCurrentTime</a>()&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getDeltaT"><strong>getDeltaT</strong></a>()</dt><dd><tt><a href="#-getDeltaT">getDeltaT</a>()&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getDepartedIDList"><strong>getDepartedIDList</strong></a>()</dt><dd><tt><a href="#-getDepartedIDList">getDepartedIDList</a>()&nbsp;-&gt;&nbsp;list(string)<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getDepartedNumber"><strong>getDepartedNumber</strong></a>()</dt><dd><tt><a href="#-getDepartedNumber">getDepartedNumber</a>()&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getDistance2D"><strong>getDistance2D</strong></a>(x1, y1, x2, y2, isGeo<font color="#909090">=False</font>, isDriving<font color="#909090">=False</font>)</dt><dd><tt><a href="#-getDistance2D">getDistance2D</a>(double,&nbsp;double,&nbsp;double,&nbsp;double,&nbsp;boolean,&nbsp;boolean)&nbsp;-&gt;&nbsp;double<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getDistanceRoad"><strong>getDistanceRoad</strong></a>(edgeID1, pos1, edgeID2, pos2, isDriving<font color="#909090">=False</font>)</dt><dd><tt><a href="#-getDistanceRoad">getDistanceRoad</a>(string,&nbsp;double,&nbsp;string,&nbsp;double,&nbsp;boolean)&nbsp;-&gt;&nbsp;double<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getEndingTeleportIDList"><strong>getEndingTeleportIDList</strong></a>()</dt><dd><tt><a href="#-getEndingTeleportIDList">getEndingTeleportIDList</a>()&nbsp;-&gt;&nbsp;list(string)<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getEndingTeleportNumber"><strong>getEndingTeleportNumber</strong></a>()</dt><dd><tt><a href="#-getEndingTeleportNumber">getEndingTeleportNumber</a>()&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getLoadedIDList"><strong>getLoadedIDList</strong></a>()</dt><dd><tt><a href="#-getLoadedIDList">getLoadedIDList</a>()&nbsp;-&gt;&nbsp;list(string)<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getLoadedNumber"><strong>getLoadedNumber</strong></a>()</dt><dd><tt><a href="#-getLoadedNumber">getLoadedNumber</a>()&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getMinExpectedNumber"><strong>getMinExpectedNumber</strong></a>()</dt><dd><tt><a href="#-getMinExpectedNumber">getMinExpectedNumber</a>()&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getNetBoundary"><strong>getNetBoundary</strong></a>()</dt><dd><tt><a href="#-getNetBoundary">getNetBoundary</a>()&nbsp;-&gt;&nbsp;((double,&nbsp;double),&nbsp;(double,&nbsp;double))<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getStartingTeleportIDList"><strong>getStartingTeleportIDList</strong></a>()</dt><dd><tt><a href="#-getStartingTeleportIDList">getStartingTeleportIDList</a>()&nbsp;-&gt;&nbsp;list(string)<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getStartingTeleportNumber"><strong>getStartingTeleportNumber</strong></a>()</dt><dd><tt><a href="#-getStartingTeleportNumber">getStartingTeleportNumber</a>()&nbsp;-&gt;&nbsp;integer<br>
+&nbsp;<br>
+.</tt></dd></dl>
+ <dl><dt><a name="-getSubscriptionResults"><strong>getSubscriptionResults</strong></a>()</dt><dd><tt><a href="#-getSubscriptionResults">getSubscriptionResults</a>()&nbsp;-&gt;&nbsp;dict(integer:&nbsp;&lt;value_type&gt;)<br>
+&nbsp;<br>
+Returns&nbsp;the&nbsp;subscription&nbsp;results&nbsp;for&nbsp;the&nbsp;last&nbsp;time&nbsp;step.<br>
+It&nbsp;is&nbsp;not&nbsp;possible&nbsp;to&nbsp;retrieve&nbsp;older&nbsp;subscription&nbsp;results&nbsp;than&nbsp;the&nbsp;ones<br>
+from&nbsp;the&nbsp;last&nbsp;time&nbsp;step.</tt></dd></dl>
+ <dl><dt><a name="-subscribe"><strong>subscribe</strong></a>(varIDs<font color="#909090">=(116,)</font>, begin<font color="#909090">=0</font>, end<font color="#909090">=2147483647L</font>)</dt><dd><tt><a href="#-subscribe">subscribe</a>(list(integer),&nbsp;double,&nbsp;double)&nbsp;-&gt;&nbsp;None<br>
+&nbsp;<br>
+Subscribe&nbsp;to&nbsp;one&nbsp;or&nbsp;more&nbsp;simulation&nbsp;values&nbsp;for&nbsp;the&nbsp;given&nbsp;interval.<br>
+A&nbsp;call&nbsp;to&nbsp;this&nbsp;method&nbsp;clears&nbsp;all&nbsp;previous&nbsp;subscription&nbsp;results.</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>subscriptionResults</strong> = {}</td></tr></table>
+</body></html>

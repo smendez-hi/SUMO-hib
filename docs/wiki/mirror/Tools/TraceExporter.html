@@ -1,0 +1,167 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Tools/TraceExporter</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>Full name: <b>traceExporter / auto-nomos</b>
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Usage"><span class="tocnumber">2</span> <span class="toctext">Usage</span></a></li>
+<li class="toclevel-1"><a href="#Example"><span class="tocnumber">3</span> <span class="toctext">Example</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Examplary_Config_File"><span class="tocnumber">3.1</span> <span class="toctext">Examplary Config File</span></a></li>
+<li class="toclevel-2"><a href="#Examplary_Mobility_File"><span class="tocnumber">3.2</span> <span class="toctext">Examplary Mobility File</span></a></li>
+<li class="toclevel-2"><a href="#Examplary_Activity_File"><span class="tocnumber">3.3</span> <span class="toctext">Examplary Activity File</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Availability"><span class="tocnumber">4</span> <span class="toctext">Availability</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction" id="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>This text covers how to convert netstate dumps from sumo for use in ns2 with help of the tool traceExporter.
+TraceExporter is written in Java. Hence, Java 1.5 Runtime Environment is required. 
+</p><p>A compiled jar-file is included in the sumo release 0.9.5 as 
+well as in the actual SVN developer repository. 
+However, generating a trace file that covers all penetration rates in one single file is included in the SVN-version only.
+</p><p>Since ns2 allows only positive x- and y-coordinates, the scenario is shifted accordingly if negative coordinates are used in the Sumo scenario.
+</p><p>As output you get three files: config, activity and mobility. All are tcl source files. Thus, they can be included into the tcl file that controls your ns2 simulation using the <code>source</code> command.
+The config file is used to set some opt( )-variables describing the simulation scenario. The times in which vehicles do their first and last movement are put into the activity-file to start and stop the according agents. The movements itself written into the mobility file. See below for exemplary output files.
+</p>
+<a name="Usage" id="Usage"></a><h2> <span class="mw-headline">Usage</span></h2>
+<p>The program is <code>traceExporter.jar</code> is located under tools/traceExporter. So, you have to change to this directory and type in the following command:
+</p>
+<pre> java -jar traceExporter.jar ns2 
+      -n NET_FILE 
+      -t TRACE_FILE 
+      -a ACTIVITY_FILE 
+      -m MOBILITY_FILE 
+      -c CONFIG_FILE 
+      -p PENTRATION_LEVEL 
+      -s SEED_VALUE 
+      -b BEGIN_TIME  -e END_TIME
+</pre>
+<p>Whereby the parameters has to be filles as follows:
+</p><p><b><code>-n &lt;NET_FILE&gt;</code></b>
+</p><p>Set &lt;NET_FILE&gt; to your sumo input. Required, type:filename
+</p><p><b><code>-t &lt;TRACE_FILE&gt;</code></b>
+</p><p>Set as &lt;TRACE_FILE&gt; the tracefile you want to be converted. Required, type:filename 
+</p><p><b><code>-a &lt;ACTIVITY_FILE&gt;</code></b>
+</p><p>In &lt;ACTIVITY_FILE&gt; will be written, when vehicles will be activated and deactivated in simulation. Required, type:filename
+</p><p><b><code>-m &lt;MOBILITY_FILE&gt;</code></b>
+</p><p>In &lt;MOBILITY_FILE&gt; you will find, when vehicles are moved and the corresponding position. Required, type:filename
+</p><p><b><code>-c &lt;CONFIG_FILE&gt;</code></b>
+</p><p>&lt;CONFIG_FILE&gt; holds information about simulation settings like extend, start/ stop time and number of vehicles in output. Required, type:filename
+</p><p><b><code>-p &lt;PENETRATION_LEVEL&gt;</code></b>
+</p><p>Pentration level means the ratio of selecting vehicles that will be traced for output. Penetration level of 1 equals no filtering and 0 means no vehicles will be selected. Required, type:float in [0, 1]
+</p><p>[SVN-version only] If you omit this flag, a single trace file is generated that includes all penetration rates.
+</p><p><b><code>-s &lt;SEED_VALUE&gt;</code></b>
+</p><p>Defines seed value for random number generator. Random numbers are used for selecting vehicles if penetration &lt; 1. Same seed results in same output, different seeds results in different output. Optional (pregiven), type:integer, default:0
+</p><p><b><code>-b BEGIN_TIME -e END_TIME</code></b>
+</p><p>The desired begin and end times must be given with parameters -b and -e.
+</p>
+<a name="Example" id="Example"></a><h2> <span class="mw-headline">Example</span></h2>
+<p>After executing the following sumo commands to accomplish the Sumo simulation:
+</p>
+<pre> sumo-netconvert -n=nodes.xml -e=edges.xml --output-file=net.xml --disable-normalize-node-positions
+ sumo-duarouter --flow-defs=flow.xml --net=net.xml --output-file=routes.xml
+ sumo -n net.xml -r routes.xml --netstate-dump netstate.xml
+</pre>
+<p>You will get:
+</p>
+<ul><li> &lt;NET_FILE&gt; = net.xml
+</li><li> &lt;TRACE_FILE&gt; = netstate.xml
+</li></ul>
+<p>Now you can use:
+</p>
+<pre> java -jar traceExporter.jar ns2 -n net.xml -t netstate.xml -a activity.tcl -m mobility.tcl -c config.tcl -p 1
+</pre>
+<p>And get:
+</p>
+<ul><li> &lt;CONFIG_FILE&gt; = config.tcl
+</li><li> &lt;ACTIVITY_FILE&gt; = activity.tcl
+</li><li> &lt;MOBILITY_FILE&gt; = mobility.tcl 
+</li></ul>
+<a name="Examplary_Config_File" id="Examplary_Config_File"></a><h3> <span class="mw-headline">Examplary Config File</span></h3>
+<p>This file should be included first using the tcl <code>source</code> command. It establishes a few variables that describes the simulation. Especially the number of node is stored in opt(nn).
+</p>
+<pre> # set number of nodes
+ set opt(nn) 75
+ # set activity file
+ set opt(af) $opt(config-path)
+ append opt(af) /activity_0.05
+ # set mobility file
+ set opt(mf) $opt(config-path)
+ append opt(mf) /mobility_0.05
+ # set start/stop time
+ set opt(start) 0.0
+ set opt(stop) 960.0
+ # set floor size
+ set opt(x) 20505
+ set opt(y) 105
+ set opt(min-x) 9495
+ set opt(min-y) 95
+</pre>
+<p>If the -p flag is omitted, all penetration rates are availabe through one set of files. The penetration rate for a certain ns2 simulation needs to be put into the tcl variable <code>opt(penetration)</code> before including the config file. The resulting number of nodes is then generated by a bunch of lines as the following:
+</p>
+<pre> if { $opt(penetration) &gt; 0.0 } { set opt(nn) 1 }
+ if { $opt(penetration) &gt; 6.756756756756757E-4 } { set opt(nn) 2 }
+ if { $opt(penetration) &gt; 0.0013513513513513514 } { set opt(nn) 3 }
+ if { $opt(penetration) &gt; 0.002027027027027027 } { set opt(nn) 4 }
+ if { $opt(penetration) &gt; 0.002702702702702703 } { set opt(nn) 5 }
+ ...
+ if { $opt(penetration) &gt; 0.9972972972972973 } { set opt(nn) 1477 }
+ if { $opt(penetration) &gt; 0.9979729729729729 } { set opt(nn) 1478 }
+ if { $opt(penetration) &gt; 0.9986486486486487 } { set opt(nn) 1479 }
+ if { $opt(penetration) &gt; 0.9993243243243243 } { set opt(nn) 1480 }
+</pre>
+<a name="Examplary_Mobility_File" id="Examplary_Mobility_File"></a><h3> <span class="mw-headline">Examplary Mobility File</span></h3>
+<p>After setting up an adequate number of nodes (see opt(nn)) into a <code>node_()</code> array with ascending indeces, the mobility file can be read. It sets the nodes to their initial position ...
+</p>
+<pre> $node_(0) set X_ 10010.621
+ $node_(0) set Y_ 95.05 
+ $node_(0) set Z_ 0.0 
+ $node_(1) set X_ 14103.43
+ $node_(1) set Y_ 95.05 
+ $node_(1) set Z_ 0.0 
+ ...
+</pre>
+<p>... and moves them to new positions on a per second base:
+</p>
+<pre> $ns_ at 0.0 "$node_(0) setdest 10016.319 95.05 5.69794"
+ $ns_ at 0.0 "$node_(1) setdest 14130.41 95.05 26.983"
+ $ns_ at 1.0 "$node_(0) setdest 10022.548 95.05 6.22927"
+ $ns_ at 1.0 "$node_(1) setdest 14157.391 95.05 26.9835"
+ $ns_ at 2.0 "$node_(0) setdest 10029.239 95.05 6.69121"
+ $ns_ at 2.0 "$node_(1) setdest 14184.391 95.05 26.9942"
+ ...
+</pre>
+<p>The lines are a little bit unsorted throughout the file. Thereby the conversion time is accelerated. It shouldn't influence ns2. 
+</p>
+<a name="Examplary_Activity_File" id="Examplary_Activity_File"></a><h3> <span class="mw-headline">Examplary Activity File</span></h3>
+<p>The activity file can be used to toggle agents on and off, just when their according node enters or leave the scenario.
+To make use of this, agents need to be put in an array called g(). It is assumed, that agents indeces accord to their associated nodes.
+</p>
+<pre> $ns_ at 0.0 "$g(0) start"
+ $ns_ at 417.0 "$g(0) stop"
+ $ns_ at 0.0 "$g(1) start"
+ $ns_ at 238.0 "$g(1) stop"
+ ...
+</pre>
+<hr />
+<a name="Availability" id="Availability"></a><h2> <span class="mw-headline">Availability</span></h2>
+<p>Source: The sources can be found within the SUMO-distribution (<b><i>&lt;SUMO_DIST&gt;</i>/tools/traceExporter</b>)
+</p><p>Portable: yes (uses Java/Python)
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 8/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:39-0!1!0!!en!2!edit=0 and timestamp 20120718063351 -->
+</div><hr/><div id="lastmod">This page was last modified on 12 September 2011, at 06:38.</div>

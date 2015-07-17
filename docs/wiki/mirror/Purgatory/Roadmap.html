@@ -1,0 +1,133 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Purgatory/Roadmap</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#0.9.6_.22We_need_a_release.22"><span class="tocnumber">1</span> <span class="toctext">0.9.6 "We need a release"</span></a></li>
+<li class="toclevel-1"><a href="#0.9.7_.22Testing_is_fun.22"><span class="tocnumber">2</span> <span class="toctext">0.9.7 "Testing is fun"</span></a></li>
+<li class="toclevel-1"><a href="#0.10_.22Clean.22"><span class="tocnumber">3</span> <span class="toctext">0.10 "Clean"</span></a></li>
+<li class="toclevel-1"><a href="#0.11_.22Another_One_Bites_the_Dust.22"><span class="tocnumber">4</span> <span class="toctext">0.11 "Another One Bites the Dust"</span></a></li>
+<li class="toclevel-1"><a href="#0.12_.22Scotty_is_dead.22"><span class="tocnumber">5</span> <span class="toctext">0.12 "Scotty is dead"</span></a></li>
+<li class="toclevel-1"><a href="#0.13_.22XML_consistency.22"><span class="tocnumber">6</span> <span class="toctext">0.13 "XML consistency"</span></a></li>
+<li class="toclevel-1"><a href="#0.14_.22Speed.22"><span class="tocnumber">7</span> <span class="toctext">0.14 "Speed"</span></a></li>
+<li class="toclevel-1"><a href="#1.0"><span class="tocnumber">8</span> <span class="toctext">1.0</span></a></li>
+<li class="toclevel-1"><a href="#After_being_retired"><span class="tocnumber">9</span> <span class="toctext">After being retired</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="0.9.6_.22We_need_a_release.22" id="0.9.6_.22We_need_a_release.22"></a><h2> <span class="mw-headline"> <font color="green">0.9.6 "We need a release"</font> </span></h2>
+<ul><li> <font color="green">solve <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1718704&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1718704&amp;group_id=45607&amp;atid=443421" rel="nofollow">GUILoadThread bug</a></font>
+</li><li> <font color="green">recheck whether netconvert indeed crashes</font>
+</li><li> <font color="green">improve on documentation (route loading and other <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1639308&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1639308&amp;group_id=45607&amp;atid=443421" rel="nofollow">route details</a>)</font>
+</li><li> <font color="green">automatic doc building (pdf and html)</font>
+</li></ul>
+<a name="0.9.7_.22Testing_is_fun.22" id="0.9.7_.22Testing_is_fun.22"></a><h2> <span class="mw-headline"> <font color="green">0.9.7 "Testing is fun"</font> </span></h2>
+<ul><li> Make all tests work on all platforms (a permanent goal which was achieved partly)
+<ul><li> ok: MSVC8
+</li><li> errors: NETCONVERT, NETGENERATE, SUMO, with gcc
+</li><li> still missing: SUMO-GUI
+</li></ul>
+</li><li> <font color="green">Remove all memory leaks reported by nvwa</font>
+<ul><li> <font color="green">ok: DUAROUTER, JTRROUTER, NETCONVERT, NETGENERATE, OD2TRIPS, DFROUTER, SUMO, SUMO-GUI</font>
+</li></ul>
+</li><li> <font color="green"><a href="../Specification.html" title="Specification">specification concerning car and route properties</a> (acceleration, deceleration, route start / end)</font>
+</li><li> <font color="green">use OutputDevice</font>
+<ul><li> <font color="green">done: NETCONVERT, NETGENERATE, OD2TRIPS, SUMO, SUMO-GUI, DUAROUTER, JTRROUTER, DFROUTER</font>
+</li><li> <font color="green">I have kept configuration output using plain ofstream</font>
+</li></ul>
+</li><li> <font color="green">check the status of the following files and dirs (in src)</font> (removed)
+<ul><li> <font color="green">giant_main.cpp</font> (removed)
+</li><li> <font color="green">netedit</font> (removed)
+</li><li> <font color="green">netedit_main.cpp</font> (removed)
+</li><li> <font color="green">tagreader.cpp</font> (removed)
+</li><li> <font color="green">tools dir</font> (removed)
+</li></ul>
+</li><li> <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1648747&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1648747&amp;group_id=45607&amp;atid=443424" rel="nofollow">PROJ and GDAL optional</a>
+</li><li> <font color="green">consolidate interfaces</font>
+<ul><li> <font color="green">sockets</font>
+</li></ul>
+</li><li> <font color="green">release-building patches</font>
+<ul><li> <font color="green">move generated pdfs into &lt;SUMO_DIST&gt;/docs</font>
+</li><li> <font color="green">extra targets for docs &amp; tests?</font>
+</li><li> <font color="green">links FAQ, Bibliography shall point to the wiki</font>
+</li><li> <font color="green">remove man pages from the documentation section</font>
+</li><li> <font color="green">remove additional data section</font>
+</li></ul>
+</li></ul>
+<a name="0.10_.22Clean.22" id="0.10_.22Clean.22"></a><h2> <span class="mw-headline"> 0.10 "Clean" </span></h2>
+<ul><li> <font color="green">better tests for detector output</font>
+</li><li> <font color="green">refactor detectors</font>
+</li></ul>
+<p><br />
+</p>
+<a name="0.11_.22Another_One_Bites_the_Dust.22" id="0.11_.22Another_One_Bites_the_Dust.22"></a><h2> <span class="mw-headline"> 0.11 "Another One Bites the Dust" </span></h2>
+<a name="0.12_.22Scotty_is_dead.22" id="0.12_.22Scotty_is_dead.22"></a><h2> <span class="mw-headline"> 0.12 "Scotty is dead" </span></h2>
+<ul><li> develop general statement about SUMO's future (what should be inside and what is definitely out of scope)
+</li></ul>
+<ul><li> resolve issues related to physics (<a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1639478&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1639478&amp;group_id=45607&amp;atid=443421" rel="nofollow">1639478</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1639479&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1639479&amp;group_id=45607&amp;atid=443421" rel="nofollow">1639479</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1645229&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1645229&amp;group_id=45607&amp;atid=443421" rel="nofollow">1645229</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1653274&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1653274&amp;group_id=45607&amp;atid=443421" rel="nofollow">1653274</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1673339&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1673339&amp;group_id=45607&amp;atid=443421" rel="nofollow">1673339</a>)
+</li><li> better collision and deadlock detection
+</li><li> remove beaming / transporter
+</li><li> no overlapping cars at edge borders (reported by Luebeck, no testcase / bugreport yet)
+</li><li> tests concerning car and route properties (acceleration, deceleration, route start / end)
+</li></ul>
+<ul><li> evaluate/add some real-life examples
+</li><li> implement <a href="../Specification.html" title="Specification">Specification</a>
+</li></ul>
+<p><br />
+</p>
+<ul><li> describe exception handling (see <a href="../Developer/Implementation_Notes/Error_Handling.html" title="Developer/Implementation Notes/Error Handling">Developer/Implementation Notes/Error Handling</a>)
+</li><li> document on coding conventions (see <a href="../Developer/CodeStyle.html" title="Developer/CodeStyle">Developer/CodeStyle</a>)
+</li></ul>
+<p><br />
+</p>
+<ul><li> <font color="green">maybe introduce unit testing</font>
+</li><li> write specifications and tests concerning basic functionality (lane changing, junction behavior)
+</li><li> describe and evaluate the implemented car-following model
+</li><li> consolidate (and publish(?)) inner-junction traffic
+</li><li> rework (and publish(!)) lane-changing
+</li><li> ns2connection
+</li></ul>
+<ul><li> refactoring
+<ul><li> recheck and describe interaction between files and outputs used by SUMO
+</li><li> remove static dictionaries, use one map implementation
+</li><li> recheck "module" dependencies
+</li><li> check the tools dir and translate needed ones to python
+</li><li> use html instead of shtml in generated pages?
+</li></ul>
+</li></ul>
+<ul><li> features
+<ul><li> consolidate vehicle class ideas and usage
+</li><li> add support for network database processing in NETCONVERT
+</li><li> correct NETCONVERT's SUMO-network importer
+</li></ul>
+</li></ul>
+<a name="0.13_.22XML_consistency.22" id="0.13_.22XML_consistency.22"></a><h2> <span class="mw-headline"> 0.13 "XML consistency" </span></h2>
+<ul><li> <font color="green">remove character data</font>
+</li><li> <font color="green">introduce option tag with key, value attributes</font>
+</li><li> develop an XML Schema and implement an <a href="http://xmsf.sourceforge.net/xsbc.html" class="external text" title="http://xmsf.sourceforge.net/xsbc.html" rel="nofollow">XSBC</a> parser
+</li></ul>
+<a name="0.14_.22Speed.22" id="0.14_.22Speed.22"></a><h2> <span class="mw-headline"> 0.14 "Speed" </span></h2>
+<ul><li> Multithreaded simulation
+</li><li> all calculations integer based instead of float (improves precision / predictability)
+</li></ul>
+<a name="1.0" id="1.0"></a><h2> <span class="mw-headline"> 1.0 </span></h2>
+<ul><li> update the about dialog&nbsp;;-)
+</li></ul>
+<p><br />
+</p>
+<a name="After_being_retired" id="After_being_retired"></a><h2> <span class="mw-headline"> After being retired </span></h2>
+<ul><li> As soon as we do not longer support routes defined in characters, one should revisit whether "myActiveRouteID" is really needed
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 41/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:31-0!1!0!!en!2!edit=0 and timestamp 20120718063259 -->
+</div><hr/><div id="lastmod">This page was last modified on 28 June 2012, at 08:00.</div>

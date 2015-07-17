@@ -1,0 +1,88 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Networks/Further Outputs</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p><a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>, <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a>, and <a href="../NETEDIT.html" title="NETEDIT">NETEDIT</a> allow to generate additional output files besides writing a SUMO network file. The will be presented in the following.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Writing.2FExporting_Networks"><span class="tocnumber">1</span> <span class="toctext">Writing/Exporting Networks</span></a>
+<ul>
+<li class="toclevel-2"><a href="#SUMO_Road_Networks"><span class="tocnumber">1.1</span> <span class="toctext">SUMO Road Networks</span></a></li>
+<li class="toclevel-2"><a href="#Plain_XML_Output"><span class="tocnumber">1.2</span> <span class="toctext">Plain XML Output</span></a></li>
+<li class="toclevel-2"><a href="#MATsim_Road_Networks"><span class="tocnumber">1.3</span> <span class="toctext">MATsim Road Networks</span></a></li>
+<li class="toclevel-2"><a href="#openDRIVE_Road_Networks"><span class="tocnumber">1.4</span> <span class="toctext">openDRIVE Road Networks</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Further_Outputs"><span class="tocnumber">2</span> <span class="toctext">Further Outputs</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Information_about_Geometry_Removal"><span class="tocnumber">2.1</span> <span class="toctext">Information about Geometry Removal</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Writing.2FExporting_Networks" id="Writing.2FExporting_Networks"></a><h1> <span class="mw-headline">Writing/Exporting Networks</span></h1>
+<p>If no other output option is given, <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> and <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a> will write the result of network import/generation as a SUMO network file into "net.net.xml". Otherwise the specified output will be generated.
+</p><p>Currently, the applications allow to write networks in the following formats:
+</p>
+<ul><li> SUMO road networks
+</li><li> plain XML definitions, as described in <a href="../Networks/Building_Networks_from_own_XML-descriptions.html" title="Networks/Building Networks from own XML-descriptions">Networks/Building Networks from own XML-descriptions</a>
+</li><li> MATsim networks
+</li></ul>
+<a name="SUMO_Road_Networks" id="SUMO_Road_Networks"></a><h2> <span class="mw-headline">SUMO Road Networks</span></h2>
+<p>This is the default output format, see above. The name of the file to write the network into can be given using the option <span style="color: #111144; font-weight: bold; white-space: pre;">--output-file <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>. <span style="color: #111144; font-weight: bold; white-space: pre;">--sumo-output <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--output <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> are synonymes.
+</p>
+<a name="Plain_XML_Output" id="Plain_XML_Output"></a><h2> <span class="mw-headline">Plain XML Output</span></h2>
+<p>Parsed node and edge definitions may be saved into a XML-files which have the same formats as the ones used for importing XML-networks (as described in <a href="../Networks/Building_Networks_from_own_XML-descriptions.html#Node_Descriptions" title="Networks/Building Networks from own XML-descriptions">Node Descriptions</a> and <a href="../Networks/Building_Networks_from_own_XML-descriptions.html#Node_Descriptions" title="Networks/Building Networks from own XML-descriptions">Edge Descriptions</a>). This shall ease processing of networks read from other formats than XML. The option <span style="color: #111144; font-weight: bold; white-space: pre;">--plain-output <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> forces <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> and <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a> to generate a file named "<a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a>.nod.xml" which contains the previously imported nodes, a file named "<a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a>.edg.xml" which contains the previously imported edges, and a file named "<a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a>.con.xml" which contains the previously imported connections. The edge file will contain the list of previously read edges and each edge will have the information about the edge's id, the allowed velocity, the number of lanes, and the from/to - nodes stored. Geometry information is stored only if the imported edge has a shape, meaning that it is not only a straight connection between the from/to-nodes. The lane spread type and the basic edge type are only saved if differing from defaults ("right" and "normal", respectively). Additionally, if one of the lanes prohibits/allows vehicle classes, this information is saved, too (see also "Defining allowed Vehicle Types").
+</p>
+<a name="MATsim_Road_Networks" id="MATsim_Road_Networks"></a><h2> <span class="mw-headline">MATsim Road Networks</span></h2>
+<p>To write the imported/generated network as a MATsim file, use the option <span style="color: #111144; font-weight: bold; white-space: pre;">--matsim-output <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>. The extension for MATsim networks is usually ".xml".
+</p><p>Please note that the capacity is computed by multiplying an edge's lane number with the capacity norm:
+</p>
+<pre>MAXIMUM_FLOW = LANE_NUMBER * CAPACITY_NORM
+</pre>
+<p>The value of CAPACITY_NORM is controlled via the option <span style="color: #111144; font-weight: bold; white-space: pre;">--capacity-norm <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span> (default: 1800).
+</p><p><br />
+</p>
+<a name="openDRIVE_Road_Networks" id="openDRIVE_Road_Networks"></a><h2> <span class="mw-headline">openDRIVE Road Networks</span></h2>
+<p>To write the imported/generated network as a openDRIVE file, use the option <span style="color: #111144; font-weight: bold; white-space: pre;">--opendrive-output <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>. The extension for openDRIVE networks is usually ".xodr".
+</p><p>Some notes:
+</p>
+<ul><li> The feature is currently under implementation
+</li><li> <span class="inlxml">road</span> - the normal ones
+<ul><li> the <span class="inlxml">type</span> is always set to "<span class="inlxml">town</span>" for the complete street
+</li><li> <span class="inlxml">link</span>
+<ul><li> The road is always connected to the nodes it is outgoing (<span class="inlxml">predecessor</span>) / incoming (<span class="inlxml">successor</span>) from/to
+</li></ul>
+</li><li> <span class="inlxml">planView</span>
+<ul><li> the geometry is given as lines only
+</li></ul>
+</li><li> no road widenings are modeled - if the number of lanes changes, the road changes
+</li><li> <span class="inlxml">elevationProfile</span> and <span class="inlxml">lateralProfile</span> do not contain relevant information
+</li><li> the roads are always unidirectional, this means only the center lane and the right lanes are given
+</li><li> <span class="inlxml">objects</span> and <span class="inlxml">signals</span> do not contain relevant information
+</li></ul>
+</li></ul>
+<a name="Further_Outputs" id="Further_Outputs"></a><h1> <span class="mw-headline">Further Outputs</span></h1>
+<a name="Information_about_Geometry_Removal" id="Information_about_Geometry_Removal"></a><h2> <span class="mw-headline">Information about Geometry Removal</span></h2>
+<p>The option <span style="color: #111144; font-weight: bold; white-space: pre;">--map-output <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> (or <span style="color: #111144; font-weight: bold; white-space: pre;">-M <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> for short) generates a file which contains the information about which edges have been joined (see chapter "Removing Geometry Nodes").
+</p><p>The format is a little bit strange and should be reworked in the next time. At the begin of each line of the generated file, you will find the id of an edge from the generated network. Then, divided by tabs, you will find the list of edge ids together with the corresponding edges' lengths, the edge consists of. The id is divided from the length by a ':'. This means if that an edge that was joined from the edges 'edge1', 'edge2', 'edge3', each having the length 10, 20, and 30m, respectively, it would appear in the file encoded as following:
+</p>
+<pre>edge1&lt;TAB&gt;edge1:10&lt;TAB&gt;edge2:20&lt;TAB&gt;edge3:30
+</pre>
+<p>If the edge was not build by joining other edges, the list of edge ids/length will have only one value, of course:
+</p>
+<pre>edge&lt;TAB&gt;edge:100
+</pre>
+<!-- 
+NewPP limit report
+Preprocessor node count: 78/1000000
+Post-expand include size: 1879/2097152 bytes
+Template argument size: 588/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:224-0!1!0!!en!2!edit=0 and timestamp 20120718034806 -->
+</div><hr/><div id="lastmod">This page was last modified on 28 June 2012, at 07:56.</div>

@@ -1,0 +1,101 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Developer/Documentation Build</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>When accessing SUMO web space, you will find an index page, and several additional HTML pages. You will also find a link to a wiki, a trac instance, and a blog. In the following, it is described how these documentation parts are build, and mirrored.
+</p><p>After some tries, we decided to work as following:
+</p>
+<ul><li> The documentation is "developed" within the wiki; the wiki refers to the state of the package as-is within the SVN.
+</li><li> The HTML documentation is generated from the wiki
+</li></ul>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Documentation_Parts"><span class="tocnumber">1</span> <span class="toctext">Documentation Parts</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Wiki"><span class="tocnumber">1.1</span> <span class="toctext">Wiki</span></a></li>
+<li class="toclevel-2"><a href="#HTML_pages"><span class="tocnumber">1.2</span> <span class="toctext">HTML pages</span></a></li>
+<li class="toclevel-2"><a href="#WebLog"><span class="tocnumber">1.3</span> <span class="toctext">WebLog</span></a></li>
+<li class="toclevel-2"><a href="#trac"><span class="tocnumber">1.4</span> <span class="toctext">trac</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#HTML_pages_generation"><span class="tocnumber">2</span> <span class="toctext">HTML pages generation</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Documentation_Parts" id="Documentation_Parts"></a><h1> <span class="mw-headline">Documentation Parts</span></h1>
+<a name="Wiki" id="Wiki"></a><h2> <span class="mw-headline">Wiki</span></h2>
+<p><b>scope</b>
+</p>
+<dl><dd>The wiki should include the complete user documentation, as well as finalised developer documents, and any kind of additional documentation as long as it is in a state which can be presented. Incomplete or outdated wiki documents should have the prefix "Purgatory/" and should not be linked from any other documents.
+</dd></dl>
+<p><b>rights</b>
+</p>
+<dl><dd>The rights to edit the wiki are given to known users on request.
+</dd></dl>
+<p><b>backup</b>
+</p>
+<dl><dd><font color="red">Redescribe</font>; Wiki-pages can be mirrored using <i>tools/build/mirrorWiki.py</i>
+</dd></dl>
+<p>There are currently two options for looking up information from wiki versions before 0.13.1
+</p>
+<ul><li> Use the wiki-history for an individual wiki page
+</li><li> Use the <i>sumo-user.pdf</i> included in older releases. This pdf was compiled from the wiki at the time of the release and should contain most of the wiki content.
+</li></ul>
+<a name="HTML_pages" id="HTML_pages"></a><h2> <span class="mw-headline">HTML pages</span></h2>
+<p><b>scope</b>
+</p>
+<dl><dd>HTML pages contain all information stored in the wiki at the time of the last release.
+</dd></dl>
+<p><b>rights</b>
+</p>
+<dl><dd>HTML pages are generated and uploaded by SUMO developers which have access to the web space.
+</dd></dl>
+<p><b>backup</b>
+</p>
+<dl><dd>A HTML-backup of the wiki is created as part of the linux build. The file <i><b>&lt;SUMO_HOME&gt;</b></i> <i>/Makefile.am</i> defines the task <i>wikidump</i> which calls the script <i>tools/build/buildHTMLDocs.py</i> to create an offline-browsable mirror (excluding special pages such as history and discussion). The backup is included in the regular release starting at version 0.13.1.
+</dd></dl>
+<a name="WebLog" id="WebLog"></a><h2> <span class="mw-headline">WebLog</span></h2>
+<p><b>scope</b>
+</p>
+<dl><dd>Should include information about current events.
+</dd></dl>
+<p><b>rights</b>
+</p>
+<dl><dd>SUMO developers are responsible for adding items to the blog.
+</dd></dl>
+<p><b>backup</b>
+</p>
+<dl><dd><font color="red">Missing!!!</font>
+</dd></dl>
+<a name="trac" id="trac"></a><h2> <span class="mw-headline">trac</span></h2>
+<p><b>scope</b>
+</p>
+<dl><dd>trac is used for planning releases and tracking bugs/other work items.
+</dd></dl>
+<p><b>rights</b>
+</p>
+<dl><dd>SUMO developers are allowed to modify trac.
+</dd></dl>
+<p><b>backup</b>
+</p>
+<dl><dd><font color="red">Missing!!!</font>
+</dd></dl>
+<a name="HTML_pages_generation" id="HTML_pages_generation"></a><h1> <span class="mw-headline">HTML pages generation</span></h1>
+<p>The HTML documentation pages are built from the wiki. All scripts needed are located in <i><b>&lt;SUMO_HOME&gt;</b></i>/tools/build. <code>buildHTMLDocs.py</code> is used to retrieve the HTML-representation of wiki-pages. If started with a parameter, this parameter is assumed to be the name of the page to retrieve. If no parameter is given, <code>getWikiPages.py</code> retrieves the list of all pages, first, from Special::AllPages.
+</p><p>Each of the pages to retrieve is read from the wiki and stripped so that it contains the article HTML only. Links are patched to match the depth of the folder the page is located in. <code>buildHTMLDocs.py</code> changes the links included in this result and retrieves the embedded images (only the "normal" version, no thumbnails) and saves the resulting HTML with no header/tail into a file located in "mirror" named using the articles' name. The folder "mirror" is generated.
+</p><p>All images found in the read pages are retrieved and stored in "mirror/images".
+</p><p>The HTML template is located in <i><b>&lt;SUMO_HOME&gt;</b></i>/docs/wiki as "index.html". <code>getWikiPages.py</code> reads the wiki-text of "SUMO User Documentation", extracts the content list, parses it into HTML, and embeds it into "index.html" between the comments &lt;!-- nav begins --&gt; and &lt;!-- nav ends --&gt;.
+</p><p>Then, the pages to convert stored in "mirror" are read and their content is inserted into "index.html" between the comments &lt;!-- content begins --&gt; and &lt;!-- content ends --&gt;. The so obtained HTML-pages are stored into "docs". 
+</p><p>The images stored in "mirror/images" are copied to "docs/images".
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 14/1000000
+Post-expand include size: 63/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:175-0!1!0!!en!2!edit=0 and timestamp 20120718063155 -->
+</div><hr/><div id="lastmod">This page was last modified on 22 December 2011, at 08:28.</div>

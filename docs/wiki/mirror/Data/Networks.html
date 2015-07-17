@@ -1,0 +1,39 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Data/Networks</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>You should read the main page on <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> before reading this.
+</p>
+<a name="OpenStreetMap-project" id="OpenStreetMap-project"></a><h1> <span class="mw-headline">OpenStreetMap-project</span></h1>
+<dl><dd><i>URL</i>: <a href="http://www.openstreetmap.org/" class="external free" title="http://www.openstreetmap.org/" rel="nofollow">http://www.openstreetmap.org/</a>
+</dd><dd><i>Area</i>: the complete world&nbsp;:-)
+</dd><dd><i>Demand data</i>: not available
+</dd><dd><i>Extraction</i>: 
+<dl><dd>1. <a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=OpenStreetMapDownload&amp;action=edit&amp;redlink=1" class="new" title="OpenStreetMapDownload (page does not exist)">OpenStreetMapDownload</a> explains how to obtain OSM-data.
+</dd><dd>2. <a href="../Networks/Import/OpenStreetMap.html" title="Networks/Import/OpenStreetMap">Networks/Import/OpenStreetMap</a> explains how to create Sumo-networks from OSM-data using <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>.
+</dd></dl>
+</dd><dd><i>Comments</i>: A great source of networks and man-made infrastucture. However, infrastructure data and definitions are still changing which complicates import.
+</dd><dd><i>See also</i>: <a href="../Data/Scenarios/TAPASCologne.html" title="Data/Scenarios/TAPASCologne">Data/Scenarios/TAPASCologne</a> - a complete scenario based on OSM and TAPAS
+</dd></dl>
+<a name="Frida-project" id="Frida-project"></a><h1> <span class="mw-headline">Frida-project</span></h1>
+<dl><dd><i>URL</i>: <a href="http://frida.intevation.org/" class="external free" title="http://frida.intevation.org/" rel="nofollow">http://frida.intevation.org/</a>
+</dd><dd><i>Area</i>: city of Osnabrück
+</dd><dd><i>Demand data</i>: not available
+</dd><dd><i>Extraction</i>: <b>netconvert --shapefile strassen -o frida2.net.xml --shapefile.street-id strShapeID -t frida.typ.xml --shapefile.type-id strTypID -v --proj "+proj=utm +ellps=bessel +units=m"</b>
+</dd><dd><i>Comments</i>: Not really applicable because the streets lack information about the number of lanes and the direction. Especially the second makes the converted network quite useless. Trying to use the option <b>--shapefile.all-bidi</b> solves the problem for inner-city roads but makes highway on/offramps bidirectional, too. The projection might be wrong as well, give <b>--proj.utm</b> a try.
+</dd><dd><i>See also</i>: 
+</dd><dd> <a href="../Networks/Import/ArcView.html" title="Networks/Import/ArcView">Networks/Import/ArcView</a> - (notes on) importing ArcView networks (shapefiles)
+</dd></dl>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 3/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:24-0!1!0!!en!2!edit=0 and timestamp 20120718063137 -->
+</div><hr/><div id="lastmod">This page was last modified on 12 September 2011, at 07:42.</div>

@@ -1,0 +1,126 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Basics/Basic Computer Skills</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Using_a_Text_Editor"><span class="tocnumber">2</span> <span class="toctext">Using a Text Editor</span></a></li>
+<li class="toclevel-1"><a href="#Working_with_Files_and_Folders"><span class="tocnumber">3</span> <span class="toctext">Working with Files and Folders</span></a></li>
+<li class="toclevel-1"><a href="#Running_Programs_from_the_Command_Line"><span class="tocnumber">4</span> <span class="toctext">Running Programs from the Command Line</span></a>
+<ul>
+<li class="toclevel-2"><a href="#SUMO_0.12.3_and_later"><span class="tocnumber">4.1</span> <span class="toctext">SUMO 0.12.3 and later</span></a></li>
+<li class="toclevel-2"><a href="#SUMO_0.12.2_and_earlier"><span class="tocnumber">4.2</span> <span class="toctext">SUMO 0.12.2 and earlier</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Configuring_Path_Settings"><span class="tocnumber">4.2.1</span> <span class="toctext">Configuring Path Settings</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Tips_for_using_the_Command-Line"><span class="tocnumber">5</span> <span class="toctext">Tips for using the Command-Line</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Copy_and_Paste"><span class="tocnumber">5.1</span> <span class="toctext">Copy and Paste</span></a></li>
+<li class="toclevel-2"><a href="#Repeating_previous_commands"><span class="tocnumber">5.2</span> <span class="toctext">Repeating previous commands</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction" id="Introduction"></a><h1> <span class="mw-headline">Introduction</span></h1>
+<p>To work with Sumo a few basic computer skills are needed (since Linux-users are
+probably familiar with these, all explanations refer to MS-Windows):
+</p>
+<a name="Using_a_Text_Editor" id="Using_a_Text_Editor"></a><h1> <span class="mw-headline">Using a <a href="http://en.wikipedia.org/wiki/Text_editor" class="external text" title="http://en.wikipedia.org/wiki/Text_editor" rel="nofollow">Text Editor</a></span></h1>
+<p>Sumo requires configuration files and data files for proper execution. 
+These files can be created and edited with a text editor. 
+</p><p>On windows you can open a basic text editor in the following way:
+</p>
+<pre>Start-&gt;All Programs-&gt;Accessories-&gt;NotePad
+</pre>
+<p>(Start-&gt;Alle Programme-&gt;Zubehör-&gt;Editor on a German installation of windows)
+</p><p>Notepad is a very basic text editor. You can increase your comfort and productivity by switching to 
+an editor with more features. Consider <a href="http://notepad-plus-plus.org/" class="external text" title="http://notepad-plus-plus.org/" rel="nofollow">Notepad++</a> or <a href="http://www.vim.org/download.php#pc" class="external text" title="http://www.vim.org/download.php#pc" rel="nofollow">vim</a> and also see this
+<a href="http://en.wikipedia.org/wiki/Comparison_of_text_editors" class="external text" title="http://en.wikipedia.org/wiki/Comparison_of_text_editors" rel="nofollow">comparison of text editors</a>
+</p><p><b>Note:</b> The files used with sumo have by convention names ending with <code>.xml</code> and variants of <code>.sumocfg</code>. Doing a double-click in explorer will probably not open up your favourite text editor. Either open the file from within your text editor or <a href="http://www.google.com/#q=windows+file+associations" class="external text" title="http://www.google.com/#q=windows+file+associations" rel="nofollow">learn</a> how to change file associations.
+</p>
+<a name="Working_with_Files_and_Folders" id="Working_with_Files_and_Folders"></a><h1> <span class="mw-headline">Working with Files and Folders</span></h1>
+<p>To work with the various files needed by Sumo you must be able to find them on
+your file system. For starters learn about using windows explorer
+<a href="http://www.teacherclick.com/winxp/t_4_1.htm" class="external text" title="http://www.teacherclick.com/winxp/t_4_1.htm" rel="nofollow">here</a> or
+<a href="http://www.google.com/#q=windows+explorer+tutorial" class="external text" title="http://www.google.com/#q=windows+explorer+tutorial" rel="nofollow">here</a>.
+</p>
+<a name="Running_Programs_from_the_Command_Line" id="Running_Programs_from_the_Command_Line"></a><h1> <span class="mw-headline">Running Programs from the Command Line </span></h1>
+<p>SUMO consists of many separate programs for different simulation-related tasks
+(a reference to all the seperate programs can be found in <a href="../SUMO_User_Documentation.html#Appendices" title="SUMO User Documentation">SUMO_User_Documentation#Appendices</a>).
+Only the program <i>sumo-gui.exe</i> <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a> has a graphical user interface (GUI).
+All other programs must be called from the <b>command line</b>.
+</p><p>At first you have to open the command line. On Windows, you have to start "<b>cmd.exe</b>" for this (Start-&gt;Execute-&gt;cmd.exe). A black window should appear. This is your command line. Since version 0.12.3 you can also double-click the file <b>start-command-line.bat</b> (see also <a href="#SUMO_0.12.3_and_later" title="">below</a>) to open a command line with useful environment variables set (it can be found in the same folder as all other sumo executables). When using Linux, you have to start a terminal (like <b>xterm</b>). 
+</p><p>The command line lets you start programs by typing the programs name followed by program options. Since this can be automated it is potentially more comfortable for repetetive tasks than using a GUI. Commands look like this
+</p>
+<pre> netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml 
+</pre>
+<p>Here <i>netconvert</i> is the name of the programm and the rest of the command sets options for this program.
+</p><p>The sections below should be sufficient to get you started using SUMO. For further information about the command line see <a href="../Basics/Using_the_Command_Line_Applications.html" title="Basics/Using the Command Line Applications">Basics/Using the Command Line Applications</a>. Also look <a href="http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/ntcmds_shelloverview.mspx" class="external text" title="http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/ntcmds_shelloverview.mspx" rel="nofollow">here</a> and <a href="http://ss64.com/nt/" class="external text" title="http://ss64.com/nt/" rel="nofollow">here</a>.
+</p>
+<a name="SUMO_0.12.3_and_later" id="SUMO_0.12.3_and_later"></a><h2> <span class="mw-headline"> SUMO 0.12.3 and later </span></h2>
+<p>In your SUMO release (all SUMO files and folders you downloaded) there is a directory <i>bin</i>. This directory contains a batch file named 
+<i>start-command-line.bat</i>. This batch file starts a command-line and makes sure that you can execute SUMO-programs. 
+</p>
+<ol><li> execute <i>start-command-line.bat </i> by double-clicking 
+</li><li> navigate to the directory containing your configuration and network files using the command <a href="http://ss64.com/nt/cd.html" class="external text" title="http://ss64.com/nt/cd.html" rel="nofollow">cd</a> (change directory)
+</li><li> enter a command such as 
+</li></ol>
+<pre> netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml 
+</pre>
+<p>and press <code>enter</code>
+</p>
+<a name="SUMO_0.12.2_and_earlier" id="SUMO_0.12.2_and_earlier"></a><h2> <span class="mw-headline"> SUMO 0.12.2 and earlier </span></h2>
+<p>To use the command line perform the following steps
+</p>
+<ol><li> Start-&gt;Run
+</li><li> type <code>cmd</code> and press <code>enter</code>.
+</li><li> navigate to the directory containing your configuration and network files using the command <a href="http://ss64.com/nt/cd.html" class="external text" title="http://ss64.com/nt/cd.html" rel="nofollow">cd</a> (change directory)
+</li><li> enter a command such as 
+</li></ol>
+<pre> netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml 
+</pre>
+<p>and press <code>enter</code>
+</p><p>If you receive an error like <i>command not found</i> your computer does not know where to find <i>netconvert.exe</i>
+</p><p>If the files of your SUMO release are located at <code>C:\sumo-0.12.2 </code>
+You can either type out the full path to <i>netconvert.exe</i> like this:
+</p>
+<pre> C:\sumo-0.12.2\bin\netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml 
+</pre>
+<p>and press <code>enter</code>.
+</p><p>Once this gets to cumbersome you can configure your <code>PATH</code> variable instead as explained below.
+</p>
+<a name="Configuring_Path_Settings" id="Configuring_Path_Settings"></a><h3> <span class="mw-headline"> Configuring Path Settings </span></h3>
+<p>To run programs from the command line comfortably you 
+must configure your <code>PATH</code> variable.
+</p>
+<ol><li> Right-click My Computer, and then click Properties.
+</li><li> Click the Advanced tab.
+</li><li> Click Environment variables.
+</li><li> Under user variables select PATH and click Edit. If no such variable exists you must create it with the <i>New</i>-Button
+</li><li> Append <code>;C:\Program Files\sumo-0.12.1\bin</code> to the end of the path value (don't delete the existing value!)      
+</li></ol>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />replace <code>C:\Program Files\sumo-0.12.1\</code> with your sumo directory</div>
+<div style="background: #ffcc44; padding: .5em; border: 1px dashed #ff8800; margin-right:10px; margin-left:10px;"><b>Caution:</b><br />you must close and reopen any existing command-line window for the new PATH setting to become effective</div>
+<a name="Tips_for_using_the_Command-Line" id="Tips_for_using_the_Command-Line"></a><h1> <span class="mw-headline"> Tips for using the Command-Line </span></h1>
+<a name="Copy_and_Paste" id="Copy_and_Paste"></a><h2> <span class="mw-headline"> Copy and Paste </span></h2>
+<p>The standard hotkeys for copy and paste do not work in the command-line. You can access an edit menu for copy/paste by right-clicking the command-line window. For increased convenience you can also right-click the title-bar of the command-line window and select properties. Then check the box <b>quick-edit</b> under the options-tab. You can now select text with the left mouse button and copy it using right-click. Another right-click is used to paste the copied text.
+</p>
+<a name="Repeating_previous_commands" id="Repeating_previous_commands"></a><h2> <span class="mw-headline"> Repeating previous commands </span></h2>
+<p>Hitting the <i>up</i>- and <i>down</i>-arrow buttons allows you to move through the history of previously entered commands. You can edit these commands or simply hit <i>enter</i> to execute them again.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 21/1000000
+Post-expand include size: 453/2097152 bytes
+Template argument size: 178/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:345-0!1!0!!en!2!edit=0 and timestamp 20120718063123 -->
+</div><hr/><div id="lastmod">This page was last modified on 5 January 2012, at 13:19.</div>

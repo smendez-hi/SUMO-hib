@@ -1,0 +1,145 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Output/Lane- or Edge-based Noise Measures</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>The edge/lane based noise output based on Harmonoise writes information about the noise produced on edges/lanes. The model was generated within the EC-project <a href="http://www.imagine-project.org/" class="external text" title="http://www.imagine-project.org/" rel="nofollow">Imagine</a>. Its description can be found in the deliverable
+18 of this project (<a href="http://www.imagine-project.org/bestanden/D18_WP3_HAR32TR-040922-DGMR20.pdf" class="external text" title="http://www.imagine-project.org/bestanden/D18_WP3_HAR32TR-040922-DGMR20.pdf" rel="nofollow">D18 The Harmonoise Engineering model</a>).
+</p>
+<div style="background: #ffc0a0; padding: .5em; border: 1px dashed #440000; margin-right:10px; margin-left:10px;"><b>Missing:</b><br />Add a model description here</div>
+<p><br />
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Instantiating_within_the_Simulation"><span class="tocnumber">1</span> <span class="toctext">Instantiating within the Simulation</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Edge-Based_Noise_Output"><span class="tocnumber">1.1</span> <span class="toctext">Edge-Based Noise Output</span></a></li>
+<li class="toclevel-2"><a href="#Lane-Based_Noise_Output"><span class="tocnumber">1.2</span> <span class="toctext">Lane-Based Noise Output</span></a></li>
+<li class="toclevel-2"><a href="#Attributes.2C_for_both_Edge-_and_Lane-Based_Noise_Output"><span class="tocnumber">1.3</span> <span class="toctext">Attributes, for both Edge- and Lane-Based Noise Output</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Generated_Output"><span class="tocnumber">2</span> <span class="toctext">Generated Output</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Edge-Based_Network_States"><span class="tocnumber">2.1</span> <span class="toctext">Edge-Based Network States</span></a></li>
+<li class="toclevel-2"><a href="#Lane-Based_Network_States"><span class="tocnumber">2.2</span> <span class="toctext">Lane-Based Network States</span></a></li>
+<li class="toclevel-2"><a href="#Value_Descriptions"><span class="tocnumber">2.3</span> <span class="toctext">Value Descriptions</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Notes"><span class="tocnumber">3</span> <span class="toctext">Notes</span></a></li>
+<li class="toclevel-1"><a href="#See_Also"><span class="tocnumber">4</span> <span class="toctext">See Also</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Instantiating_within_the_Simulation" id="Instantiating_within_the_Simulation"></a><h2> <span class="mw-headline">Instantiating within the Simulation</span></h2>
+<a name="Edge-Based_Noise_Output" id="Edge-Based_Noise_Output"></a><h3> <span class="mw-headline">Edge-Based Noise Output</span></h3>
+<p>An edge-based noise emissions output is defined way within an additional file as following:
+</p>
+<div class="inlxml">&lt;edgeData id="&lt;DETECTOR_ID&gt;" type="harmonoise" freq="&lt;FREQUENCY&gt;" file="&lt;OUTPUT_FILE&gt;" [excludeEmpty="true"]/&gt;</div>
+<a name="Lane-Based_Noise_Output" id="Lane-Based_Noise_Output"></a><h3> <span class="mw-headline">Lane-Based Noise Output</span></h3>
+<p>An edge-based noise emissions output is defined way within an additional file as following:
+</p>
+<div class="inlxml">&lt;laneData id="&lt;DETECTOR_ID&gt;" type="harmonoise" freq="&lt;FREQUENCY&gt;" file="&lt;OUTPUT_FILE&gt;" [excludeEmpty="true"]/&gt;</div>
+<a name="Attributes.2C_for_both_Edge-_and_Lane-Based_Noise_Output" id="Attributes.2C_for_both_Edge-_and_Lane-Based_Noise_Output"></a><h3> <span class="mw-headline">Attributes, for both Edge- and Lane-Based Noise Output</span></h3>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>id</b>
+</td><td> id (string)
+</td><td> The id of the detector
+</td></tr>
+<tr>
+<td class="inlxml"> <b>freq</b>
+</td><td> int (time)
+</td><td> The aggregation period the values the detector collects shall be summed up.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>file</b>
+</td><td> filename
+</td><td> The path to the output file. The path may be relative.
+</td></tr>
+<tr>
+<td class="inlxml"> begin
+</td><td> int (time)
+</td><td> The time to start writing (intervals starting before this time are discarded). If not given, the simulation's begin is used.
+</td></tr>
+<tr>
+<td class="inlxml"> end
+</td><td> int (time)
+</td><td> The time to end writing (intervals starting at or after this time are discarded). If not given the simulation's end is used.
+</td></tr>
+<tr>
+<td class="inlxml"> excludeEmpty
+</td><td> bool
+</td><td> If set, edges/lanes which were not use by a vehicle during this period will not be written; <i>default: false</i>.
+</td></tr></table>
+<a name="Generated_Output" id="Generated_Output"></a><h2> <span class="mw-headline">Generated Output</span></h2>
+<a name="Edge-Based_Network_States" id="Edge-Based_Network_States"></a><h3> <span class="mw-headline">Edge-Based Network States</span></h3>
+<a name="Lane-Based_Network_States" id="Lane-Based_Network_States"></a><h3> <span class="mw-headline">Lane-Based Network States</span></h3>
+<a name="Value_Descriptions" id="Value_Descriptions"></a><h3> <span class="mw-headline">Value Descriptions</span></h3>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> begin
+</td><td> (simulation) seconds
+</td><td> The first time step the values were collected in
+</td></tr>
+<tr>
+<td class="inlxml"> end
+</td><td> (simulation) seconds
+</td><td> The last time step + DELTA_T in which the reported values were collected
+</td></tr>
+<tr>
+<td class="inlxml"> edge@id
+</td><td> (edge) id
+</td><td> The name of the reported edge
+</td></tr>
+<tr>
+<td class="inlxml"> lane@id
+</td><td> (lane) id
+</td><td> The name of the reported lane
+</td></tr>
+<tr>
+<td class="inlxml"> sampledSeconds
+</td><td> s
+</td><td> Number seconds vehicles were measured on the edge/lane (may be subseconds if a vehicle enters/leaves the edge/lane)
+</td></tr>
+<tr>
+<td class="inlxml"> noise
+</td><td> dBA
+</td><td> The noise generated by the vehicles on the edge/lane during the interval
+</td></tr></table>
+<a name="Notes" id="Notes"></a><h2> <span class="mw-headline">Notes</span></h2>
+<p>Notes:
+</p>
+<ul><li> Per default, all edges are written, even those on which no vehicle drove. It can be disabled setting the <span class="inlxml">excludeEmpty</span> attribute to true.
+</li><li> The interval end is the interval begin + aggregation time, meaning that values were collected within these steps excluding the end time itself. If the simulation ends before the last interval is over, the interval will be prunned.
+</li><li> The output file will be generated, does not have to exist earlier and will be overwritten if existing without any warning. The folder the output file shall be generated in must exist.
+</li><li> If you need only information about the network states during certain time periods, you may constraint generation of the dumps by giving attributes "<span class="inlxml">begin="&lt;TIME&gt;[,&lt;TIME&gt;]+"</span>" and "<span class="inlxml">end="&lt;TIME&gt;[,&lt;TIME&gt;]+"</span>". When at least one combination is given, dumps will be written only if an according begin/end-pair exists for the current time. This means, only those intervals will be saved for which begin[x]&lt;=INTERVAL_END and end[x]&gt;=INTERVAL_BEGIN. All dumps will cover the complete simulation if no values for begin/end are given.
+</li></ul>
+<p><br />
+</p>
+<a name="See_Also" id="See_Also"></a><h2> <span class="mw-headline">See Also</span></h2>
+<ul><li> <a href="../../Simulation/Output/Lane-_or_Edge-based_Traffic_Measures.html" title="Simulation/Output/Lane- or Edge-based Traffic Measures">edge/lane-based network performace measures output</a> and <a href="../../Simulation/Output/Lane-_or_Edge-based_Emissions_Measures.html" title="Simulation/Output/Lane- or Edge-based Emissions Measures">edge/lane-based vehicular pollutant emission output</a> which have similar formats
+</li><li> The <a href="../../Tools/Visualization.html#mpl_dump_onNet.py" title="Tools/Visualization">mpl_dump_onNet.py</a> script can display values of this output as a colored net (and further <a href="../../Tools/Visualization.html" title="Tools/Visualization">visualization tools</a> exist).
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 21/1000000
+Post-expand include size: 167/2097152 bytes
+Template argument size: 28/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:243-0!1!0!!en!2!edit=0 and timestamp 20120718063322 -->
+</div><hr/><div id="lastmod">This page was last modified on 20 February 2012, at 09:26.</div>

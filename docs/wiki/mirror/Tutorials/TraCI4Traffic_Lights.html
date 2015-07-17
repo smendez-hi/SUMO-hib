@@ -1,0 +1,97 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Tutorials/TraCI4Traffic Lights</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>This tutorial wants to show how to use the Traffic Control Interface (in short TraCI) on a simple example. TraCI gives the possibility to control a running road traffic simulation. Therefore a TCP-based client/server architecture was established where SUMO acts as a server and the “controller” is the client. Our “controller” will be a Python-Script which receives informations about the actual state from the server and then sends instructions back.
+</p><p>It is assumed that road network building and routes definition is known from other tutorials, as <a href="../Tutorials/Hello_Sumo.html" title="Tutorials/Hello Sumo">Tutorials/Hello Sumo</a> or <a href="../Tutorials/Quick_Start.html" title="Tutorials/Quick Start">Tutorials/Quick Start</a>.
+</p><p>All files mentioned here can also be found in the <i><b>&lt;SUMO_HOME&gt;</b></i>/data/tutorial/traci_tls directory. The most recent version can be found in the SVN at <a href="http://sourceforge.net/apps/trac/sumo/browser/trunk/sumo/tests/complex/tutorial/traci_tls/data/" class="external text" title="http://sourceforge.net/apps/trac/sumo/browser/trunk/sumo/tests/complex/tutorial/traci_tls/data/" rel="nofollow"><i><b>&lt;SUMO_HOME&gt;</b></i>/tests/complex/tutorial/traci_tls/data/</a>.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Example_description"><span class="tocnumber">1</span> <span class="toctext">Example description</span></a></li>
+<li class="toclevel-1"><a href="#Data_preparation"><span class="tocnumber">2</span> <span class="toctext">Data preparation</span></a></li>
+<li class="toclevel-1"><a href="#Code"><span class="tocnumber">3</span> <span class="toctext">Code</span></a></li>
+<li class="toclevel-1"><a href="#Simulation"><span class="tocnumber">4</span> <span class="toctext">Simulation</span></a></li>
+<li class="toclevel-1"><a href="#TraCI"><span class="tocnumber">5</span> <span class="toctext">TraCI</span></a></li>
+<li class="toclevel-1"><a href="#Further_Notes"><span class="tocnumber">6</span> <span class="toctext">Further Notes</span></a></li>
+<li class="toclevel-1"><a href="#Appendix"><span class="tocnumber">7</span> <span class="toctext">Appendix</span></a>
+<ul>
+<li class="toclevel-2"><a href="#setRedYellowGreenState"><span class="tocnumber">7.1</span> <span class="toctext">setRedYellowGreenState</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Example_description" id="Example_description"></a><h1> <span class="mw-headline"> Example description </span></h1>
+<p>Our example plays on a simple signalized intersection with four approaches. We only have traffic on the horizontal axis and important vehicles (like trams, trains, fire engines, ...) on the vertical axis from north to south. On the approach in the north we have an induction loop to recognize entering vehicles. While no vehicle enters from the north we give all the time green on the horizontal axis but when a vehicle enters the inductions loop we switch immediately the signal so the vehicle can cross the intersection without a stop.
+</p><p><a href="../images/ScreenshotCross.gif" class="image" title="Image:ScreenshotCross.gif"><img alt="Image:ScreenshotCross.gif" src="../images//ScreenshotCross.gif" width="640" height="466" border="0" /></a>
+</p>
+<a name="Data_preparation" id="Data_preparation"></a><h1> <span class="mw-headline"> Data preparation </span></h1>
+<p>The net-definition can be found in the files <code>cross.nod.xml</code>, <code>cross.edg.xml</code>, <code>cross.con.xml</code> and <code>cross.det.xml</code>. The route data is generated randomly by the script. The vehicles leave the source according to a Poisson process approximated here by a binomial distribution. So a parameter <code>p=1./30</code> in the script means that a vehicle is generated every 30 seconds in average.
+</p>
+<a name="Code" id="Code"></a><h1> <span class="mw-headline"> Code </span></h1>
+<p>To start the simulation the script <a href="https://sourceforge.net/apps/trac/sumo/browser/trunk/sumo/tests/complex/tutorial/traci_tls/runner.py" class="external text" title="https://sourceforge.net/apps/trac/sumo/browser/trunk/sumo/tests/complex/tutorial/traci_tls/runner.py" rel="nofollow">&lt;SUMO_HOME&gt;/docs/tutorial/traci_tls/runner.py</a> has to be executed. It generates the routes, acts with the server and controls the traffic light. It makes use of the TraCI python API bundled with SUMO. The sources of the API can be found in <a href="http://sourceforge.net/apps/trac/sumo/browser/trunk/sumo/tools/traci/" class="external text" title="http://sourceforge.net/apps/trac/sumo/browser/trunk/sumo/tools/traci/" rel="nofollow">&lt;SUMO_HOME&gt;/tools/traci/</a>.
+</p>
+<a name="Simulation" id="Simulation"></a><h1> <span class="mw-headline"> Simulation </span></h1>
+<p>The main program is implemented in the script <code>runner.py</code>. There we first generate the routes as described above. Then <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a> is started with the config file <code>cross.sumo.cfg</code> wherein the server parameter is specified:
+</p>
+<pre class="xml">
+&lt;configuration&gt;
+ 	...
+    &lt;remote-port value=&quot;8813&quot;/&gt;
+&lt;/configuration&gt;
+</pre>
+<p>In the next step the script connects with the server via a call to <code>traci.init</code>. 
+Then we start to control the simulation. We let the server simulate one simulation step, read the induction loop and set the state of the traffic light until the end is reached where no vehicle exists on the road anymore. If we find a vehicle on the induction loop the <code>PROGRAM</code> is started where the sequence of states for the TL is specified. At the end we close the connection.
+</p>
+<a name="TraCI" id="TraCI"></a><h1> <span class="mw-headline"> TraCI </span></h1>
+<p>We want to run this simulation in SUMO, acting as a server, and control the signal dependent on the actual simulation state. For this task TraCI offers commands which are described in the corresponding article <a href="../TraCI.html" title="TraCI">TraCI</a> in detail. For this example we will use only four commands: <a href="../TraCI/Control-related_commands.html#Command_0x01:_Simulation_Step" title="TraCI/Control-related commands">Simulation Step</a>, <a href="../TraCI/Induction_Loop_Value_Retrieval.html#Command_0xa0:_Get_Induction_Loop_Variable" title="TraCI/Induction Loop Value Retrieval">Get Induction Loop Variable</a>, <a href="../TraCI/Change_Traffic_Lights_State.html" title="TraCI/Change Traffic Lights State">Change Traffic Lights State</a> and <a href="../TraCI/Control-related_commands.html#Command_0x7F:_Close_.28.29" title="TraCI/Control-related commands">Close</a>.
+</p><p>The commands are embedded in TCP messages but the direct client server communication is opaque to the user. The four commands needed in this tutorial are implemented in the methods <code>traci.simulationStep(step)</code>, <code>traci.inductionloop.getLastStepVehicleNumber(IndLoopID)</code>, <code>traci.trafficlights.setRedYellowGreenState(TLID, state)</code> and <code>traci.close()</code>.
+</p>
+<a name="Further_Notes" id="Further_Notes"></a><h1> <span class="mw-headline">Further Notes</span></h1>
+<p>Below, you'll find a description about the format of the message to use for sending a complete tls program to SUMO:
+</p>
+<ol><li> <b>value type compound</b> - should have the value 0x0F;
+</li><li> <b>item number</b> - <b>ignored</b>; can be any integer;
+</li><li> <b>value type string</b> - should have the value 0x0B;
+</li><li> <b>program ID</b> - an ID for the program; if the program exists, it will be overwritten;
+</li><li> <b>value type integer (always 0)</b> - <b>ignored</b>, can be any integer
+</li><li> <b>value type compound</b> - should have the value 0x0F;
+</li><li> <b>compound length (always 0!)</b> - <b>ignored</b>, can be any integer;
+</li><li> <b>value type integer</b> - should have the value 0x09;
+</li><li> <b>phase index</b> - number of the phase to start the program with;
+</li><li> <b>value type integer</b> should have the value 0x09;
+</li><li> <b>phase number</b> - number of phases;
+</li><li> <b>phases</b> - phases, as described below.
+</li></ol>
+<p>Single phase consists of:
+</p>
+<ol><li> <b>value type integer</b> - should have the value 0x09;
+</li><li> <b>duration</b> - the length of the phase in milliseconds;
+</li><li> <b>value type integer</b> - should have the value 0x09;
+</li><li> <b>unused</b> - can have any arbitrary value;
+</li><li> <b>value type integer</b> - should have the value 0x09;
+</li><li> <b>unused</b> - can have any arbitrary value;
+</li><li> <b>value type string</b> - should have the value 0x0B;
+</li><li> <b>State (light/priority-tuple)</b> - has to be a string defining states of each traffic light (signal) made of characters gGyYrGoO, where i-th character defines the state of the i-th traffic light (signal).
+</li></ol>
+<p><br />
+</p>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />The integer values associated with particular value types were taken from <a href="../TraCI/Protocol.html#Data_types" title="TraCI/Protocol"> here</a>.</div>
+<a name="Appendix" id="Appendix"></a><h1> <span class="mw-headline"> Appendix </span></h1>
+<p>The methods for sending and receiving the messages, <code>_recvExact()</code> and <code>_sendExact()</code>, respectively, are hidden in the script <code>traci/__init__.py</code> and there is no need to call them directly. In this section we will show the composition of a command using the example of <code>traci.trafficlights.setRedYellowGreenState</code>.
+</p>
+<a name="setRedYellowGreenState" id="setRedYellowGreenState"></a><h2> <span class="mw-headline"> setRedYellowGreenState </span></h2>
+<p>This method sets the state of a traffic light, so it gets the ID of the traffic light and the state as parameter. The state of a string defining the signal colors, as described in <a href="../Simulation/Traffic_Lights.html#Loading_new_TLS-Programs" title="Simulation/Traffic Lights">Simulation/Traffic Lights#Loading new TLS-Programs</a>. The command is described at <a href="../TraCI/Change_Traffic_Lights_State.html" title="TraCI/Change Traffic Lights State">TraCI/Change Traffic Lights State</a>.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 20/1000000
+Post-expand include size: 289/2097152 bytes
+Template argument size: 111/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:198-0!1!0!!en!2!edit=0 and timestamp 20120718081037 -->
+</div><hr/><div id="lastmod">This page was last modified on 23 April 2012, at 10:57.</div>

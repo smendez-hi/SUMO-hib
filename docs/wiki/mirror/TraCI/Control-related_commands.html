@@ -1,0 +1,95 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Control-related commands</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Control-related_commands"><span class="tocnumber">1</span> <span class="toctext">Control-related commands</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Command_0x00:_Get_Version"><span class="tocnumber">1.1</span> <span class="toctext">Command 0x00: Get Version</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Response_0x00:_Version"><span class="tocnumber">1.1.1</span> <span class="toctext">Response 0x00: Version</span></a>
+<ul>
+<li class="toclevel-4"><a href="#Tip"><span class="tocnumber">1.1.1.1</span> <span class="toctext">Tip</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="#Command_0x02:_Simulation_Step"><span class="tocnumber">1.2</span> <span class="toctext">Command 0x02: Simulation Step</span></a></li>
+<li class="toclevel-2"><a href="#Command_0x7F:_Close"><span class="tocnumber">1.3</span> <span class="toctext">Command 0x7F: Close</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Control-related_commands" id="Control-related_commands"></a><h1> <span class="mw-headline"> Control-related commands </span></h1>
+<a name="Command_0x00:_Get_Version" id="Command_0x00:_Get_Version"></a><h2> <span class="mw-headline"> Command 0x00: Get Version </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> -
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> no parameters
+</th></tr></table>
+<a name="Response_0x00:_Version" id="Response_0x00:_Version"></a><h3> <span class="mw-headline"> Response 0x00: Version </span></h3>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td><td width="75" align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> API Version
+</th><th style="border: 1pt solid;"> Identifier
+</th></tr></table>
+<p>The server responds to a <b>Get Version</b> command by sending two items:
+</p>
+<ul><li> an API Version of <b>2</b> identifies the current state of the TraCI API (sumo 0.13.1 or later). It is guaranteed to increase as soon as
+<ul><li> the TraCI message format (or its command format) changes
+</li><li> any TraCI command presented on these pages uses different parameters (either in data type, binary representation, or in meaning)
+</li></ul>
+</li><li> an Identifier string identifies the software version running on the TraCI server in human-readable form
+<ul><li> no guarantee is made regarding the content of this string
+</li><li> as an example, for SUMO 0.12.0, this string is "SUMO 0.12.0"
+</li></ul>
+</li></ul>
+<a name="Tip" id="Tip"></a><h4> <span class="mw-headline"> Tip </span></h4>
+<p>The client can find out if a particular command is supported by the current TraCI server (i.e., SUMO) by looking at the <a href="../TraCI/Protocol.html#Status_Response" title="TraCI/Protocol">status response</a> of the command. It may report "not implemented."
+</p>
+<a name="Command_0x02:_Simulation_Step" id="Command_0x02:_Simulation_Step"></a><h2> <span class="mw-headline"> Command 0x02: Simulation Step </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> TargetTime [ms]
+</th></tr></table>
+<p>Forces SUMO to perform simulation. If <i>TargetTime</i> is 0 (zero), SUMO performs exactly one time step. Otherwise SUMO performs the simulation until the given time step is reached. If the given time step is smaller than the simulation step then SUMO performs one simulation step.
+</p><p>The response of this command is a list of active <a href="../TraCI/Value_Retrieval_Subscription.html" title="TraCI/Value Retrieval Subscription">Subscription Responses</a> referring to the last step executed:
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td><td width="75" align="center"> &lt;SUBSCRIPTION RESPONSE&gt;
+</td><td width="75" align="center"> ...
+</td><td width="75" align="center"> &lt;SUBSCRIPTION RESPONSE&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Number of following subscription responses
+</th><th style="border: 1pt solid;"> &lt;RESPONSE#1&gt;
+</th><th style="border: 1pt solid;"> ...
+</th><th style="border: 1pt solid;"> &lt;RESPONSE#n&gt;
+</th></tr></table>
+<a name="Command_0x7F:_Close" id="Command_0x7F:_Close"></a><h2> <span class="mw-headline"> Command 0x7F: Close </span></h2>
+<p>Tells TraCI to close the connection to any client, stop simulation and shut down sumo.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 7/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:255-0!1!0!!en!2!edit=0 and timestamp 20120718063402 -->
+</div><hr/><div id="lastmod">This page was last modified on 28 March 2012, at 13:21.</div>

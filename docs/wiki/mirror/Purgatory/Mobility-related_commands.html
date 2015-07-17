@@ -1,0 +1,129 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Purgatory/Mobility-related commands</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Mobility-related_commands"><span class="tocnumber">1</span> <span class="toctext">Mobility-related commands</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Command_0x11:_Set_Maximum_Speed"><span class="tocnumber">1.1</span> <span class="toctext">Command 0x11: Set Maximum Speed</span></a></li>
+<li class="toclevel-2"><a href="#Command_0x12:_Stop_Node"><span class="tocnumber">1.2</span> <span class="toctext">Command 0x12: Stop Node</span></a></li>
+<li class="toclevel-2"><a href="#Command_0x14:_Slow_Down"><span class="tocnumber">1.3</span> <span class="toctext">Command 0x14: Slow Down</span></a></li>
+<li class="toclevel-2"><a href="#Command_0x13:_Change_Lane"><span class="tocnumber">1.4</span> <span class="toctext">Command 0x13: Change Lane</span></a></li>
+<li class="toclevel-2"><a href="#Command_0x30:_Change_Route"><span class="tocnumber">1.5</span> <span class="toctext">Command 0x30: Change Route</span></a></li>
+<li class="toclevel-2"><a href="#Command_0x31:_Change_Destination"><span class="tocnumber">1.6</span> <span class="toctext">Command 0x31: Change Destination</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Mobility-related_commands" id="Mobility-related_commands"></a><h1> <span class="mw-headline"> Mobility-related commands </span></h1>
+<a name="Command_0x11:_Set_Maximum_Speed" id="Command_0x11:_Set_Maximum_Speed"></a><h2> <span class="mw-headline"> Command 0x11: Set Maximum Speed </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td><td width="75" align="center"> float
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> NodeId
+</th><th style="border: 1pt solid;"> MaxSpeed
+</th></tr></table>
+<p>The vehicle identified by <i>NodeId</i> limits its speed to an individual maximum of <i>MaxSpeed</i>.
+<br />When the command is called with a negative value for <i>MaxSpeed</i>, the individual speed of a vehicle is reset to its original value.
+</p>
+<a name="Command_0x12:_Stop_Node" id="Command_0x12:_Stop_Node"></a><h2> <span class="mw-headline"> Command 0x12: Stop Node </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td><td width="75" align="center"> position
+</td><td width="75" align="center"> float
+</td><td width="75" align="center"> integer
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> NodeId
+</th><th style="border: 1pt solid;"> StopPosition
+</th><th style="border: 1pt solid;"> Radius
+</th><th style="border: 1pt solid;"> WaitTime [ms]
+</th></tr></table>
+<p>Use this command to stop a vehicle at a predetermined position. Whenever the vehicle given by <i>NodeId</i> reaches <i>StopPosition</i>, 
+it sets its maximum speed to 0 and waits for the amount of time specified by <i>WaitTime</i>. After that, it continues on its way. 
+<br />Though <i>StopPosition</i> can be given in any position format, the <i>Road Map</i> format should be preferred, as it is used internally by sumo. For any other format, sumo will compute the nearest road map position and stop the vehicle there. 
+<br />In any case, a <i>Stop Node</i> command containing the final road map position used by sumo 
+to stop the vehicle is added to the response command.
+Please note that <i>Radius</i> has an epsilon of 0.1m.
+</p>
+<a name="Command_0x14:_Slow_Down" id="Command_0x14:_Slow_Down"></a><h2> <span class="mw-headline"> Command 0x14: Slow Down </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td><td width="75" align="center"> float
+</td><td width="75" align="center"> integer
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> NodeId
+</th><th style="border: 1pt solid;"> MinSpeed
+</th><th style="border: 1pt solid;"> TimeIntervall [ms]
+</th></tr></table>
+<p>Tells the node identified by <i>NodeId</i> to reduce its driving speed down to <i>MinSpeed</i> 
+within the given <i>TimeIntervall</i>. The speed reduction will be linear.
+This command is provided to simulate different methods of slowing down, like instant breaking or coasting.
+</p>
+<a name="Command_0x13:_Change_Lane" id="Command_0x13:_Change_Lane"></a><h2> <span class="mw-headline"> Command 0x13: Change Lane </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td><td width="75" align="center"> byte
+</td><td width="75" align="center"> integer
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> NodeId
+</th><th style="border: 1pt solid;"> Lane
+</th><th style="border: 1pt solid;"> Time [ms]
+</th></tr></table>
+<p>The vehicle identified by <i>NodeId</i> tries to move to another <i>Lane</i> for the duration of <i>Time</i>. (Lanes are numbered sequentially starting with 0 at the right most lane)
+<br />After <i>Time</i> has expired, the constraint is removed. It's not guaranteed that the vehicle will actually change the lane, e.g. the defined route my require it to hold the lane or change to another one. If the vehicle passes a junction while on a fixed lane, it gets fixed to the corresponding lane on the succeeding road segment. If such a lane doesn't exist, the constraint is removed and all lanes may be used again by the vehicle.
+</p>
+<a name="Command_0x30:_Change_Route" id="Command_0x30:_Change_Route"></a><h2> <span class="mw-headline"> Command 0x30: Change Route </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td><td width="75" align="center"> string
+</td><td width="75" align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> NodeId
+</th><th style="border: 1pt solid;"> RoadId
+</th><th style="border: 1pt solid;"> TravelTime
+</th></tr></table>
+<p>Usually, each road within a simulation has an assigned travel time based on its length and allowed speed. To allow for dynamic rerouting, this command assigns
+an individual <i>TravelTime</i> to a specific road segment identified by <i>RoadId</i>. 
+<br />The set travel time is only visible to the appointed vehicle (<i>NodeId</i>).
+Setting a negative travel time will restore a typical travel time as mentioned above for the road segment. 
+<br />Before the simulation continues, 
+a new route is calculated for the vehicle.
+<br /><b>Note</b>: this command conflicts with routes that contain one or more edges of the road network multiple times. When rerouting a vehicle, SUMO determines a direct path between the vehicle's current edge and the target edge (end of route), thus the original route may be truncated!
+</p>
+<a name="Command_0x31:_Change_Destination" id="Command_0x31:_Change_Destination"></a><h2> <span class="mw-headline"> Command 0x31: Change Destination </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td><td width="75" align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> NodeId
+</th><th style="border: 1pt solid;"> RoadId
+</th></tr></table>
+<p>The destination of the vehicle identified by <i>NodeId</i> is changed to a new road segment (<i>RoadId</i>). The simulation continues after a route to the
+new target has been calculated.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 8/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:256-0!1!0!!en!2!edit=0 and timestamp 20120718063257 -->
+</div><hr/><div id="lastmod">This page was last modified on 12 September 2011, at 11:32.</div>

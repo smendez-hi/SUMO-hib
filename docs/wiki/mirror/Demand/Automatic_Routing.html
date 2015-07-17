@@ -1,0 +1,75 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Demand/Automatic Routing</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>There is another approach to vehicle routing which may be adequate in the following situations:
+</p>
+<ul><li> there is not enough time / computing power to wait for the dynamic user equilibrium
+</li><li> changes to the net occur while the simulation is running
+</li><li> vehicles need to adapt their route while running
+</li></ul>
+<p>In this case <a href="../SUMO.html" title="SUMO">SUMO</a> may be used directly for routing with either routes or trip files (or a mix) as input.
+The options related to this routing are:
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top"> Option
+</th><th style="background:#ddffdd;" valign="top"> Mandatory y/n
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--device.routing.probability <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span>
+</td><td>
+</td><td valign="top"> The probability for a vehicle to have a routing device
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--device.routing.knownveh <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td>
+</td><td valign="top"> Assign a device to named vehicles
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--device.routing.deterministic</span>
+</td><td>
+</td><td valign="top"> The devices are set deterministic using a fraction of 1000
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--device.routing.period <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td>
+</td><td valign="top"> The period with which the vehicle shall be rerouted
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--device.routing.pre-period <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td>
+</td><td valign="top"> The rerouting period before insertion/depart
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--device.routing.adaptation-weight <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span>
+</td><td>
+</td><td valign="top">  The weight of prior edge weights.
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--device.routing.adaptation-interval <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td>
+</td><td valign="top">  The interval for updating the edge weights.
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--device.routing.with-taz</span>
+</td><td>
+</td><td valign="top"> Use zones (districts) as routing end points
+</td></tr>
+</table>
+<p>If the routing is enabled for selected vehicles (either with the ".probability" or the ".knownveh" option), the average travel times in the net are collected for all edges. If a vehicle needs to be routed (either because it gets inserted or because a repeated route choice was enabled via the ".period" option) it chooses the shortest route to its destination edge (or district) according to the present edge weights (travel times). The update of the edge weights does not simply overwrite the old value but gives it a certain weight which may be modified with the ".adaption-weight" option. Since updating the weights of all edges in each simulation step means a major slowdown for the simulation this interval may be altered using the ".adaption-interval" option.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 49/1000000
+Post-expand include size: 1470/2097152 bytes
+Template argument size: 556/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:333-0!1!0!!en!2!edit=0 and timestamp 20120718063143 -->
+</div><hr/><div id="lastmod">This page was last modified on 26 September 2011, at 08:14.</div>

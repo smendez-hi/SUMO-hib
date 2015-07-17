@@ -1,0 +1,102 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Purgatory/ReroutingApproaches</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>There are different approaches to give new routes to a vehicle while the simulation is running. This page will summarize them.
+The categorization is twofold: internal vs. external and direct route setting vs. (Dijkstra) shortest path finding.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Internal"><span class="tocnumber">1</span> <span class="toctext">Internal</span></a></li>
+<li class="toclevel-1"><a href="#External"><span class="tocnumber">2</span> <span class="toctext">External</span></a></li>
+<li class="toclevel-1"><a href="#Route_setting"><span class="tocnumber">3</span> <span class="toctext">Route setting</span></a></li>
+<li class="toclevel-1"><a href="#Shortest_paths"><span class="tocnumber">4</span> <span class="toctext">Shortest paths</span></a></li>
+<li class="toclevel-1"><a href="#Actions_and_Actors"><span class="tocnumber">5</span> <span class="toctext">Actions and Actors</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Internal" id="Internal"></a><h2> <span class="mw-headline">Internal</span></h2>
+<p>SUMO supports a rerouter which is located on an edge for three different application scenarios:
+</p>
+<ul><li> forbidding an edge (all vehicles passing the rerouter are no longer allowed to drive on the specified edge and will look for a new shortest route to their destination)
+</li><li> giving a distribution of new destinations (the vehicle will choose the shortest route to the destination drawn from the distribution)
+</li><li> giving a distribution of new routes (the vehicle will draw a route from the distribution)
+</li></ul>
+<p><i>Edge weights?</i>
+Furthermore internal devices such as the C2C-device support rerouting even with different edge weights for each vehicle.
+</p>
+<a name="External" id="External"></a><h2> <span class="mw-headline">External</span></h2>
+<p>The TraCI interface supports setting an explicit route as well as shortest path route finding (also with vehicle specific weights).
+</p>
+<a name="Route_setting" id="Route_setting"></a><h2> <span class="mw-headline">Route setting</span></h2>
+<p>This is of course the most flexible approach. The drawback is that either the set of routes to choose from or the net has to be known to the one setting the route. Especially external applications would need to parse the SUMO net (or an equivalent) not only for the node/edge/connection information but also for forbidden vehicle types etc. If this information can change over time the external app has to be synchronized with the simulation, which is highly non-trivial.
+</p><p><br />
+</p>
+<a name="Shortest_paths" id="Shortest_paths"></a><h2> <span class="mw-headline">Shortest paths</span></h2>
+<p>SUMO has a flexible Dijkstra shortest path finder inside which can be used to find new routes. The edge weight used to find the shortest path is usually the quotient of edge length and maximum speed (minimum travel time) or the average travel time (<i>averaged over ...?</i>) but may be altered individually for each vehicle (<i>globally as well?</i>). The implementation is considerably fast to allow even for multiple reroutings of each vehicle during the simulation without measurable performance losses. The drawback is that not every route choice can be modeled via an appropriate edge cost, think for instance of minimizing left turns (<i>If we could assign weights to internal edges, we could model this!?</i>)
+Furthermore the shortest path algorithm does not allow for negative edge weights (<i>or is it flexible enough to fail on negative cycles only?</i>)
+</p>
+<a name="Actions_and_Actors" id="Actions_and_Actors"></a><h2> <span class="mw-headline">Actions and Actors</span></h2>
+<p>Route computation requires following actions:
+</p>
+<ul><li> determination of edge weights (by measuring/extrapolation)
+</li><li> storing of edge weights
+</li><li> triggering a route computation
+</li><li> route computation (algorithms for using stored values, weighting, and routes computation)
+</li><li> route acceptance
+</li></ul>
+<p><br />
+<b>Table 1: possible actors</b>
+</p>
+<table cellspacing="0" border="1">
+
+<tr>
+<th style="background:#ffdead;"> Action
+</th><th style="background:#ffdead;"> Actor(s)
+</th></tr>
+<tr>
+<td> determination of edge weights
+</td><td>
+<ul><li> vehicle (own travel time, received travel times, ...)
+</li><li> edge (mean travel time or other values, ...)
+</li><li> control center (reported jams, obtained travel times, ...)
+</li></ul>
+</td></tr>
+<tr>
+<td> storing of edge weights
+</td><td>
+<ul><li> vehicle (own knowledge, as within obtaining knowledge via V2V)
+</li><li> edge (mean values)
+</li><li> center (same as edge?)
+</li></ul>
+</td></tr>
+<tr>
+<td> triggering a route computation
+</td><td>
+<ul><li> vehicle itself (after obtaining a weight for own route)
+</li><li> center (via radio broadcast)
+</li></ul>
+</td></tr>
+<tr>
+<td> route computation
+</td><td>
+<ul><li> vehicle
+</li><li> external application
+</li></ul>
+</td></tr>
+<tr>
+<td> route acceptance
+</td><td> vehicle
+</td></tr></table>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 6/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:123-0!1!0!!en!2!edit=0 and timestamp 20120718063258 -->
+</div><hr/><div id="lastmod">This page was last modified on 6 September 2011, at 07:30.</div>

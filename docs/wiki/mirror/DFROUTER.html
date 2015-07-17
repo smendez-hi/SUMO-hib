@@ -1,0 +1,333 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">DFROUTER</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#From_30.000_feet"><span class="tocnumber">1</span> <span class="toctext">From 30.000 feet</span></a></li>
+<li class="toclevel-1"><a href="#Usage_Description"><span class="tocnumber">2</span> <span class="toctext">Usage Description</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Options"><span class="tocnumber">2.1</span> <span class="toctext">Options</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Configuration"><span class="tocnumber">2.1.1</span> <span class="toctext">Configuration</span></a></li>
+<li class="toclevel-3"><a href="#Input"><span class="tocnumber">2.1.2</span> <span class="toctext">Input</span></a></li>
+<li class="toclevel-3"><a href="#Output"><span class="tocnumber">2.1.3</span> <span class="toctext">Output</span></a></li>
+<li class="toclevel-3"><a href="#Processing"><span class="tocnumber">2.1.4</span> <span class="toctext">Processing</span></a></li>
+<li class="toclevel-3"><a href="#Time"><span class="tocnumber">2.1.5</span> <span class="toctext">Time</span></a></li>
+<li class="toclevel-3"><a href="#Report"><span class="tocnumber">2.1.6</span> <span class="toctext">Report</span></a></li>
+<li class="toclevel-3"><a href="#Random_Number"><span class="tocnumber">2.1.7</span> <span class="toctext">Random Number</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="From_30.000_feet" id="From_30.000_feet"></a><h1> <span class="mw-headline"> From 30.000 feet </span></h1>
+<p><b>DFROUTER</b> uses induction loop values to compute vehicle routes that may be used by <a href="SUMO.html" title="SUMO">SUMO</a>.
+</p>
+<dl><dd><b>Purpose:</b> Building vehicle routes from induction loop counts
+</dd><dd><b>System:</b> portable (Linux/Windows is tested); runs on command line
+</dd><dd><b>Input (mandatory):</b> 
+<dl><dd>A) a road network as generated via <a href="NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> or <a href="NETGENERATE.html" title="NETGENERATE">NETGENERATE</a>, see <a href="SUMO_User_Documentation.html#Network_Building" title="SUMO User Documentation">Building Networks</a> 
+</dd><dd>B) induction loop definitions
+</dd><dd>C) induction loop measures
+</dd></dl>
+</dd><dd><b>Output:</b> <a href="Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html" title="Definition of Vehicles, Vehicle Types, and Routes">Definition of Vehicles, Vehicle Types, and Routes</a> usable by <a href="SUMO.html" title="SUMO">SUMO</a>
+</dd><dd><b>Programming Language:</b> c++
+</dd></dl>
+<a name="Usage_Description" id="Usage_Description"></a><h1> <span class="mw-headline">Usage Description</span></h1>
+<a name="Options" id="Options"></a><h2> <span class="mw-headline">Options</span></h2>
+<p>You may use a XML schema definition file for setting up a DFROUTER configuration: <a href="http://sumo.sf.net/doc/current/docs/xsd/dfrouterConfiguration.xsd" class="external text" title="http://sumo.sf.net/doc/current/docs/xsd/dfrouterConfiguration.xsd" rel="nofollow">dfrouterConfiguration.xsd</a>.
+</p>
+<a name="Configuration" id="Configuration"></a><h3> <span class="mw-headline">Configuration</span></h3>
+<p>All applications of the <b>SUMO</b>-suite handle configuration options the same way. These options are discussed at <a href="Basics/Using_the_Command_Line_Applications.html#Configuration_Files" title="Basics/Using the Command Line Applications">Basics/Using the Command Line Applications#Configuration Files</a>.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-c <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--configuration-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Loads the named config on startup
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-configuration <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves current configuration into FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-template <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves a configuration template (empty) into FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-schema <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves the configuration schema into FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-commented</span>
+</td><td valign="top"> Adds comments to saved template, configuration, or schema; <i>default: <b>false</b></i>
+</td></tr>
+</table>
+<a name="Input" id="Input"></a><h3> <span class="mw-headline">Input</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-n <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--net-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Loads the SUMO-network FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-d <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--detector-files <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Loads detector descriptions from FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-f <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--measure-files <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Loads detector flows from FILE(s)
+</td></tr>
+</table>
+<a name="Output" id="Output"></a><h3> <span class="mw-headline">Output</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-o <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--routes-output <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves computed routes to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--routes-for-all</span>
+</td><td valign="top"> Forces DFROUTER to compute routes for in-between detectors; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--detector-output <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves typed detectors to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--detectors-poi-output <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves detector positions as pois to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--emitters-output <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves emitter definitions for source detectors to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--emitters-poi-output <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves emitter positions as pois to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--variable-speed-sign-output <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves variable seed sign definitions for sink detectors to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--end-reroute-output <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves rerouter definitions for sink detectors to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--validation-output <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top">
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--validation-output.add-sources</span>
+</td><td valign="top">
+</td></tr>
+</table>
+<a name="Processing" id="Processing"></a><h3> <span class="mw-headline">Processing</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--guess-empty-flows</span>
+</td><td valign="top">
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-h</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--highway-mode</span>
+</td><td valign="top"> Switches to highway-mode; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--ignore-invalid-detectors</span>
+</td><td valign="top"> Only warn about unparseable detectors; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--revalidate-detectors</span>
+</td><td valign="top"> Recomputes detector types even if given; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--revalidate-routes</span>
+</td><td valign="top"> Recomputes routes even if given; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--all-end-follower</span>
+</td><td valign="top"> Continues routes till the first street after a sink; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--keep-unfinished-routes</span>
+</td><td valign="top"> Keeps routes even if they have exhausted max-search-depth; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--keep-longer-routes</span>
+</td><td valign="top"> Keeps routes even if a shorter one exists; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--max-search-depth <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>
+</td><td valign="top"> Number of edges to follow a route without passing a detector; <i>default: <b>30</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--emissions-only</span>
+</td><td valign="top"> Writes only emission times; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--disallowed-edges <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Do not route on these edges
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--keep-turnarounds</span>
+</td><td valign="top"> Allow turnarounds as route continuations; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--min-route-length <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span>
+</td><td valign="top"> Minimum distance in meters between start and end node of every route.; <i>default: <b>-1</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--time-factor <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;TIME&gt;</i></a></span>
+</td><td valign="top"> Multiply flow times with TIME to get seconds; <i>default: <b>60</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--time-offset <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;TIME&gt;</i></a></span>
+</td><td valign="top"> Subtracts TIME seconds from (scaled) flow times; <i>default: <b>0</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--time-step <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;TIME&gt;</i></a></span>
+</td><td valign="top"> Expected distance between two successive data sets; <i>default: <b>60</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--calibrator-output</span>
+</td><td valign="top"> Write calibrators to FILE; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--include-unused-routes</span>
+</td><td valign="top">
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--revalidate-flows</span>
+</td><td valign="top">
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--remove-empty-detectors</span>
+</td><td valign="top"> Removes empty detectors from the list; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--strict-sources</span>
+</td><td valign="top">
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--scale <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span>
+</td><td valign="top"> Scale factor for flows; <i>default: <b>1</b></i>
+</td></tr>
+</table>
+<a name="Time" id="Time"></a><h3> <span class="mw-headline">Time</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-b <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;TIME&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--begin <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;TIME&gt;</i></a></span>
+</td><td valign="top"> Defines the begin time; Previous defs will be discarded; <i>default: <b>0</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-e <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;TIME&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--end <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;TIME&gt;</i></a></span>
+</td><td valign="top"> Defines the end time; Later defs will be discarded; Defaults to one day; <i>default: <b>86400</b></i>
+</td></tr>
+</table>
+<a name="Report" id="Report"></a><h3> <span class="mw-headline">Report</span></h3>
+<p>All applications of the <b>SUMO</b>-suite handle most of the reporting options the same way. These options are discussed at <a href="Basics/Using_the_Command_Line_Applications.html#Reporting_Options" title="Basics/Using the Command Line Applications">Basics/Using the Command Line Applications#Reporting Options</a>.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-v</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--verbose</span>
+</td><td valign="top"> Switches to verbose output; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-p</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--print-options</span>
+</td><td valign="top"> Prints option values before processing; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-?</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--help</span>
+</td><td valign="top"> Prints this screen
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-V</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--version</span>
+</td><td valign="top"> Prints the current version; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-W</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--no-warnings</span>
+</td><td valign="top"> Disables output of warnings; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-l <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--log <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Writes all messages to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--message-log <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Writes all non-error messages to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--error-log <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Writes all warnings and errors to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--report-empty-detectors</span>
+</td><td valign="top"> Lists detectors with no flow (enable -v); <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--print-absolute-flows</span>
+</td><td valign="top"> Prints aggregated detector flows; <i>default: <b>false</b></i>
+</td></tr>
+</table>
+<a name="Random_Number" id="Random_Number"></a><h3> <span class="mw-headline">Random Number</span></h3>
+<p>All applications of the <b>SUMO</b>-suite handle randomisation options the same way. These options are discussed at <a href="Basics/Using_the_Command_Line_Applications.html#Random_Number_Options" title="Basics/Using the Command Line Applications">Basics/Using the Command Line Applications#Random Number Options</a>.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--random</span>
+</td><td valign="top"> Initialises the random number generator with the current system time; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--seed <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>
+</td><td valign="top"> Initialises the random number generator with the given value; <i>default: <b>23423</b></i>
+</td></tr>
+</table>
+<hr />
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 392/1000000
+Post-expand include size: 9722/2097152 bytes
+Template argument size: 2816/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:49-0!1!0!!en!2!edit=0 and timestamp 20120718041349 -->
+</div><hr/><div id="lastmod">This page was last modified on 28 June 2012, at 07:51.</div>

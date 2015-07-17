@@ -1,0 +1,60 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Output</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p><a href="../SUMO.html" title="SUMO">SUMO</a> allows to generate a large number of different measures. All write the values they collect into files or a socket connection following the common rules for <a href="../Basics/Using_the_Command_Line_Applications.html#Writing_files" title="Basics/Using the Command Line Applications">writing files</a>. Per default, all are disabled, and have to be triggered individually. Some of the available outputs (<a href="../Simulation/Output/RawDump.html" title="Simulation/Output/RawDump">raw vehicle positions dump</a>, <a href="../Simulation/Output/TripInfo.html" title="Simulation/Output/TripInfo">trip information</a>, <a href="../Simulation/Output/VehRoutes.html" title="Simulation/Output/VehRoutes">vehicle routes information</a>, and <a href="../Simulation/Output/Summary.html" title="Simulation/Output/Summary">simulation state statistics</a>) are triggered using command line options, the others have to be defined within "additional files".
+</p><p><br />
+Below, the available outputs are listed, joined into groups of topic/aggregation type. Further information about each output can be found by following its link.
+</p>
+<ul><li> vehicle-based information, unaggregated
+<ul><li> <a href="../Simulation/Output/RawDump.html" title="Simulation/Output/RawDump">raw vehicle positions dump</a>: all vehicle positions over time<br /><i>contains</i>: positions and speeds for all vehicles for all simulated time steps<br /><i>used for</i>: obtaining movements of nodes (V2V, for ns-2)
+</li><li> <a href="../Simulation/Output/VTypeProbe.html" title="Simulation/Output/VTypeProbe">vehicle type probe</a>: positions of vehicles over time for a certain vehicle type (or all vehicles)
+</li><li> <a href="../Simulation/Output/EmissionOutput.html" title="Simulation/Output/EmissionOutput">emission output</a>: emission values of all vehicles for every simulation step
+</li><li> <a href="../Simulation/Output/FullOutput.html" title="Simulation/Output/FullOutput">full output</a>: various informtations for all edges, lanes and vehicles (good for visualisation purposes)
+</li><li> <a href="../Simulation/Output/VTKOutput.html" title="Simulation/Output/VTKOutput">vtk output</a>: generates Files in the well known <a href="http://www.vtk.org/" class="external text" title="http://www.vtk.org/" rel="nofollow">VTK</a> (Visualization Toolkit) format, to show the positions the speed value for every vehicle 
+</li><li> <a href="../Simulation/Output/FCDOutput.html" title="Simulation/Output/FCDOutput">fcd output</a>: Floating Car Data includes name, position, angle and type for every vehicle
+</li></ul>
+</li></ul>
+<ul><li> simulated detectors
+<ul><li> <a href="../Simulation/Output/Induction_Loops_Detectors_(E1).html" title="Simulation/Output/Induction Loops Detectors (E1)">e1-detectors</a>: simulated induction loops
+</li><li> <a href="../Simulation/Output/Instantaneous_Induction_Loops_Detectors.html" title="Simulation/Output/Instantaneous Induction Loops Detectors">instant induction loops</a>: simulated unaggregated induction loops
+</li><li> <a href="../Simulation/Output/Lanearea_Detectors_(E2).html" title="Simulation/Output/Lanearea Detectors (E2)">e2-detectors</a>: lanearea detectors - simulated vehicle tracking cameras
+</li><li> <a href="../Simulation/Output/Multi-Entry_Multi-Exit_Detectors_(E3).html" title="Simulation/Output/Multi-Entry Multi-Exit Detectors (E3)">e3-detectors</a>: simulated entry/exit detectors
+</li></ul>
+</li></ul>
+<ul><li> values for edges or lanes
+<ul><li> <a href="../Simulation/Output/Lane-_or_Edge-based_Traffic_Measures.html" title="Simulation/Output/Lane- or Edge-based Traffic Measures">edgelane traffic</a>: edge/lane-based network performace measures
+</li><li> <a href="../Simulation/Output/Lane-_or_Edge-based_Emissions_Measures.html" title="Simulation/Output/Lane- or Edge-based Emissions Measures">edgelane hbefa</a>: edge/lane-based vehicular pollutant emission; based on the HBEFA database
+</li><li> <a href="../Simulation/Output/Lane-_or_Edge-based_Noise_Measures.html" title="Simulation/Output/Lane- or Edge-based Noise Measures">Simulation/Output/Lane- or Edge-based Noise Measures</a>: edge/lane-based vehicular noise emission; based on Harmonoise
+</li><li> <a href="../Simulation/Output/QueueOutput.html" title="Simulation/Output/QueueOutput">queue output</a>: lane-based calculation of the actual tailback in front of a junction
+</li></ul>
+</li></ul>
+<ul><li> vehicle-based information
+<ul><li> <a href="../Simulation/Output/TripInfo.html" title="Simulation/Output/TripInfo">trip information</a>: aggregated information about each vehicle's journey
+</li><li> <a href="../Simulation/Output/VehRoutes.html" title="Simulation/Output/VehRoutes">vehicle routes information</a>: information about each vehicle's routes over simulation run
+</li></ul>
+</li></ul>
+<ul><li> simulation(network)-based information
+<ul><li> <a href="../Simulation/Output/Summary.html" title="Simulation/Output/Summary">simulation state statistics</a>: information about the current state of the simulation
+</li></ul>
+</li></ul>
+<ul><li> <a href="../Simulation/Output/Traffic_Lights.html" title="Simulation/Output/Traffic Lights">traffic lights-based information</a>
+<ul><li> <a href="../Simulation/Output/Traffic_Lights.html#TLS_States" title="Simulation/Output/Traffic Lights">traffic light states</a>: information about the state (lights) of a traffic light
+</li><li> <a href="../Simulation/Output/Traffic_Lights.html#TLS_Switches" title="Simulation/Output/Traffic Lights">stream-based traffic light switches</a>: information about the switches of a traffic light signal responsible for a certain link
+</li><li> <a href="../Simulation/Output/Traffic_Lights.html#TLS_Switch_States" title="Simulation/Output/Traffic Lights">traffic light states, by switch</a>: information about the states (lights) of a traffic light signal, written only when changed
+</li><li> <a href="../Simulation/Output/Traffic_Lights.html#Coupled_E2-Output" title="Simulation/Output/Traffic Lights">e2-detectors coupled to tls</a>: simulated vehicle tracking cameras triggered by tls
+</li></ul>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 1/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:146-0!1!0!!en!2!edit=0 and timestamp 20120717123354 -->
+</div><hr/><div id="lastmod">This page was last modified on 10 June 2012, at 13:30.</div>

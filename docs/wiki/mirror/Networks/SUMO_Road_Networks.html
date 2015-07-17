@@ -1,0 +1,213 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Networks/SUMO Road Networks</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table class="wikitable" style="width:25em; border-width:1px 1px; border-style:solid; border-color:#909090; background-color:#f8f8ff; font-size:90%; margin:1em 0em 1em 2em; padding:3px 6px">
+<caption> <b>Networks/SUMO Road Networks</b>
+</caption>
+<tr>
+<td width="45%"> Filename extension </td><td> .net.xml
+</td></tr>
+<tr>
+<td> Type of content </td><td> Map
+</td></tr>
+<tr>
+<td> Open format? </td><td> Yes
+</td></tr>
+<tr>
+<td> SUMO specific? </td><td> Yes
+</td></tr>
+<tr>
+<td> XML Schema
+</td><td> <a href="http://sumo.sf.net/doc/current/docs/xsd/net_file.xsd" class="external text" title="http://sumo.sf.net/doc/current/docs/xsd/net_file.xsd" rel="nofollow">net_file.xsd</a>
+</td></tr></table>
+<div class="thumb tright"><div class="thumbinner" style="width:402px;"><a href="../images/Eichstaett.net.png" class="image" title="Screenshot of a SUMO net file opened in sumo-gui. It shows the map of the German city Eichstätt."><img alt="" src="../images/Eichstaett.net.png" width="400" height="269" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify"><a href="../images/Eichstaett.net.png" class="internal" title="Enlarge"><img src="../images//magnify-clip.png" width="15" height="11" alt="" /></a></div>Screenshot of a SUMO net file opened in sumo-gui. It shows the map of the German city Eichstätt.</div></div></div>
+<p>A <b>SUMO network file</b> describes the traffic-related part of a map. It mainly contains the network of roads/ways, intersections/junctions, and traffic lights in a map (see the figure below). The format is internal to SUMO and reflects continuously SUMO's features. <b>Although being readable (XML) by human beings, a SUMO network file is not meant to be edited by hand.</b> Rather you should use <a href="../Networks/Building_Networks_from_own_XML-descriptions.html" title="Networks/Building Networks from own XML-descriptions">SUMO XML description files</a> together with <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>. You can also convert an existing map from various formats using <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> or generate geometrically simple, abstract road maps with <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a>. You may also use <a href="../NETEDIT.html" title="NETEDIT">NETEDIT</a> for building own road networks or for reworking the ones obtained from <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> or <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a>.
+</p><p><a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a> allows to create networks in a very comfortable way. For some small-sized tests of rerouting strategies, tls-signals etc., this is probably the best - read "fastest" - solution to get a network one can run some simulations at. The clear naming of the streets also eases defining own routes. But networks generated using <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a> are of course useless as soon as you want to simulate a real-world network.
+</p><p>Using <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> one can import road networks from several sources, among them VISUM, shape files, and OSM databases. This is of course the tool to use for setting up real-world networks.
+</p><p>Still, most examples within the data-section were written as XML files by hand and converted using <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> for several reasons. At first, the examples are small enough and one may steer the output better than when using <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a>. Furthermore, defining own networks using XML-data is more flexible.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Network_Format"><span class="tocnumber">1</span> <span class="toctext">Network Format</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Edges_and_Lanes"><span class="tocnumber">1.1</span> <span class="toctext">Edges and Lanes</span></a></li>
+<li class="toclevel-2"><a href="#Nodes"><span class="tocnumber">1.2</span> <span class="toctext">Nodes</span></a></li>
+<li class="toclevel-2"><a href="#Coordinates_and_alignment"><span class="tocnumber">1.3</span> <span class="toctext">Coordinates and alignment</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Software_for_Viewing.2C_Editing_and_Processing"><span class="tocnumber">2</span> <span class="toctext">Software for Viewing, Editing and Processing</span></a></li>
+<li class="toclevel-1"><a href="#Further_Documentation"><span class="tocnumber">3</span> <span class="toctext">Further Documentation</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Network_Format" id="Network_Format"></a><h2> <span class="mw-headline">Network Format</span></h2>
+<p>At a coarse scale, a SUMO network is a directed graph. "Nodes" represent intersections/junctions, and "edges" roads/streets. In addition to this basic structure, a SUMO network contains further traffic related information:
+</p>
+<ul><li> every street (edge) as a collection of lanes,
+</li><li> the position, shape and speed limit of every lane,
+</li><li> the right of way regulation,
+</li><li> the connections between lanes at junctions (nodes), and
+</li><li> the position and logic of the traffic lights.
+</li></ul>
+<a name="Edges_and_Lanes" id="Edges_and_Lanes"></a><h3> <span class="mw-headline">Edges and Lanes</span></h3>
+<p>The attributes of an edge are:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> id
+</td><td> id (string)
+</td><td> The id of the edge
+</td></tr>
+<tr>
+<td class="inlxml"> from
+</td><td> id (string)
+</td><td> The id of the node it starts at
+</td></tr>
+<tr>
+<td class="inlxml"> to
+</td><td> id (string)
+</td><td> The id of the node it ends at
+</td></tr>
+<tr>
+<td class="inlxml"> priority
+</td><td> integer
+</td><td> Indicates how important the road is (optional)
+</td></tr>
+<tr>
+<td class="inlxml"> function
+</td><td> enum ( "normal", "internal", "connector" )
+</td><td> An abstract edge purpose (optional with default "normal")
+</td></tr></table>
+<p>For the simulation, only the "function" attribute is of interest. It describes how the edge is used, and whether it is an edge that can be found within the real world or only a helper construct used for assignment, f.e. The following purposes are defined:
+</p>
+<ul><li> normal: The edge is a plain part of a road network, like a highway or a normal street which connects two roads
+</li><li> connector: The edge is a macroscopic connector - not a part of the real world road network. Still, within the simulation, no distinction is made between "connector" roads and "normal" nodes. Only <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a> allows to hide connector edges.
+</li><li> internal: The edge is a part of an intersection (is located within the intersection). The usage within the simulation differs from the one of normal edges.
+</li></ul>
+<p>Each edge includes the definitions of lanes it consists of. Each lane is defnied by:
+</p>
+<ul><li> id: The id of the lane
+</li><li> depart: Information whether vehicles starting on this edge normally use this lane (=1) or not (=0)
+</li><li> vclasses: The list of vehicle classes allowed/disallowed on this lane
+</li><li> speed: The maximum velocity allowed on this lane
+</li><li> length: The length of this lane
+</li></ul>
+<p>Furthermore, a lane contains a shape. Even though the network is shifted to start at (0,0), it is not guaranteed that all of the network's parts have positive coordinates.
+</p>
+<a name="Nodes" id="Nodes"></a><h3> <span class="mw-headline">Nodes</span></h3>
+<p>Some notes:
+</p>
+<ul><li> It is possible that two different nodes have the same position
+</li></ul>
+<a name="Coordinates_and_alignment" id="Coordinates_and_alignment"></a><h3> <span class="mw-headline">Coordinates and alignment</span></h3>
+<p>The networks are using cartesian coordinates where the leftmost node is at x=0 and the node being most at the bottom is at y=0. This means that when being imported, <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> and <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a> are projecting the network, first, if the original network was not using cartesian coordinates. Then, they move the road network to the origin at (0,0). 
+</p><p>This process is documented within the generated network within the element <span class="inlxml">location</span>. You may find here the following attributes:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> netOffset
+</td><td> offset (<a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;2D-POSITION&gt;</i></a>)
+</td><td> The offset applied for moving the network to (0,0)
+</td></tr>
+<tr>
+<td class="inlxml"> convBoundary
+</td><td> boundary (<a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;2D-BOUNDING_BOX&gt;</i></a>)
+</td><td> The boundary spanning over the nodes of the converted network (the network as now given)
+</td></tr>
+<tr>
+<td class="inlxml"> origBoundary
+</td><td> boundary (<a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;2D-BOUNDING_BOX&gt;</i></a>)
+</td><td> The network's initial boundary before projecting and translating it
+</td></tr>
+<tr>
+<td class="inlxml"> projParameter
+</td><td> projection parameter
+</td><td> Information how the network was projected (see below)
+</td></tr></table>
+<p><span class="inlxml">projParameter</span> may not necessaraly be a proj-string. This is only the case if the network was projected using proj from another coordinate system. The following encodings are currently used:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Encoding
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> '!'
+</td><td> No projection was applied.
+</td></tr>
+<tr>
+<td class="inlxml"> '-'
+</td><td> "Simple" projection was applied
+</td></tr>
+<tr>
+<td class="inlxml"> '.'
+</td><td>&nbsp;?
+</td></tr>
+<tr>
+<td class="inlxml"> proj-definition (<a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;PROJ_DEFINITION&gt;</i></a>)
+</td><td> The projection was done using proj, initialising it using these parameter.
+</td></tr></table>
+<p>For obtaining the original coordinates from the x/y-coordinates SUMO reports, one has to subtract the network offset first. Then, one has to apply an inverse transformation of the initial projection, regarding <span class="inlxml">projParameter</span>. For proj-projected networks, one can use proj's function named pj_inv which performs the inverse transformation. proj has to be initialised with the projection parameters from <span class="inlxml">projParameter</span>, first. For proj-projected networks this would look like:
+</p>
+<pre>Position2D cartesian = sumoXY(x, y);
+projPJ myProjection = pj_init_plus(projParameter.c_str());
+cartesian.sub(netOffset);
+projUV p;
+p.u = cartesian.x();
+p.v = cartesian.y();
+p = pj_inv(p, myProjection);
+p.u *= RAD_TO_DEG;
+p.v *= RAD_TO_DEG;
+cartesian.set((SUMOReal) p.u, (SUMOReal) p.v);
+</pre>
+<p>For networks with no projection (<span class="inlxml">projParameter</span>='!'), only the offset must be applied. For networks with "simple" projection (<span class="inlxml">projParameter</span>='-'), a back-projection method is currently not known.
+</p><p><br />
+SUMO road networks are meant to be aligned to the north. Of course, it is up to the user how he defines a road network, but when being imported from sources as Open Street Map or shape files, the up-direction is meant to correspond to north.
+</p>
+<a name="Software_for_Viewing.2C_Editing_and_Processing" id="Software_for_Viewing.2C_Editing_and_Processing"></a><h2> <span class="mw-headline"> Software for Viewing, Editing and Processing </span></h2>
+<p>To create a SUMO network file, <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> helps to generate it from maps in other formats and <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a> constructs a new map with simple geometries. <a href="../SUMO.html" title="SUMO">SUMO</a> performs its simulation directly in the map of this file. Other SUMO tools like duarouter also use this file to generate the demand for the map.
+</p><p>The SUMO net file is not meant for direct editing. Convert it to the <a href="../Networks/Building_Networks_from_own_XML-descriptions.html" title="Networks/Building Networks from own XML-descriptions">SUMO native XML descriptions</a> with <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> instead. You can then process these files by hand or, for example, with <a href="http://eworld.sourceforge.net" class="external text" title="http://eworld.sourceforge.net" rel="nofollow">eWorld</a>.
+</p><p>An application for editing the networks named <a href="../NETEDIT.html" title="NETEDIT">NETEDIT</a> is available for project partners. It is not part of the open source release. Please ask us directly.
+</p><p><br />
+</p>
+<a name="Further_Documentation" id="Further_Documentation"></a><h2> <span class="mw-headline">Further Documentation</span></h2>
+<ul><li> Network Import
+<ul><li><ul><li> <a href="../Networks/Building_Networks_from_own_XML-descriptions.html" title="Networks/Building Networks from own XML-descriptions">Defining own networks using XML and NETCONVERT</a>
+</li><li> <a href="../Networks/Import.html" title="Networks/Import">Importing networks from other applications using NETCONVERT</a>
+</li></ul>
+</li><li> <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> manual
+</li></ul>
+</li><li> Generation of abstract road networks
+<ul><li> <a href="../Networks/Abstract_Network_Generation.html" title="Networks/Abstract Network Generation">Generating abstract networks using NETGENERATE</a>
+</li><li> <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a> manual
+</li></ul>
+</li><li> <a href="../NETEDIT.html" title="NETEDIT">NETEDIT</a> manual
+</li><li> <a href="../Developer/Network_Building_Process.html" title="Developer/Network Building Process">Developer/Network Building Process</a>
+</li></ul>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />Please see the <a href="../ChangeLog.html" title="ChangeLog">ChangeLog</a> when dealing with networks generated by old versions of <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> / <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a>.</div>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 64/1000000
+Post-expand include size: 1063/2097152 bytes
+Template argument size: 423/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:185-0!1!0!!en!2!edit=0 and timestamp 20120718050739 -->
+</div><hr/><div id="lastmod">This page was last modified on 28 June 2012, at 07:54.</div>

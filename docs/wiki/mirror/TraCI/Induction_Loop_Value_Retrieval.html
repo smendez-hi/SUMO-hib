@@ -1,0 +1,173 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Induction Loop Value Retrieval</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Command_0xa0:_Get_Induction_Loop_Variable"><span class="tocnumber">1</span> <span class="toctext">Command 0xa0: Get Induction Loop Variable</span></a></li>
+<li class="toclevel-1"><a href="#Response_0xb0:_Induction_Loop_Variable"><span class="tocnumber">2</span> <span class="toctext">Response 0xb0: Induction Loop Variable</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Response_to_.22last_step.27s_vehicle_data.22_.280x17.29"><span class="tocnumber">2.1</span> <span class="toctext">Response to "last step's vehicle data" (0x17)</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Notes"><span class="tocnumber">3</span> <span class="toctext">Notes</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Command_0xa0:_Get_Induction_Loop_Variable" id="Command_0xa0:_Get_Induction_Loop_Variable"></a><h2> <span class="mw-headline"> Command 0xa0: Get Induction Loop Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Induction Loop ID
+</th></tr></table>
+<p>Asks for the value of a certain variable of the named <a href="../Simulation/Output/Induction_Loops_Detectors_(E1).html" title="Simulation/Output/Induction Loops Detectors (E1)">induction loop (e1 detector)</a>. The value returned is the state of the asked variable/value within the last simulation step. Please note that for asking values from your <a href="../Simulation/Output/Induction_Loops_Detectors_(E1).html" title="Simulation/Output/Induction Loops Detectors (E1)">induction loops</a> with TraCI, you have to:
+</p>
+<ul><li> define them
+</li><li> set their frequency to 1s
+</li></ul>
+<p>The following variable values can be retrieved, the type of the return value is also shown in the table.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Retrievable Induction Loop Variables</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> id list (0x00)
+</td><td> stringList
+</td><td> Returns a list of ids of all induction loops within the scenario (the given Induction Loop ID is ignored)
+</td></tr>
+<tr>
+<td> position (0x42)
+</td><td> double
+</td><td> Returns the position of the induction loop at it's lane, counted from the lane's begin, in meters.
+</td></tr>
+<tr>
+<td> lane ID (0x51)
+</td><td> string
+</td><td> Returns the ID of the lane the induction loop is placed at.
+</td></tr>
+<tr>
+<td> count (0x01)
+</td><td> int
+</td><td> Returns the number of induction loops within the scenario (the given Induction Loop ID is ignored)
+</td></tr>
+<tr>
+<td> last step vehicle number (0x10)
+</td><td> integer
+</td><td> Returns the number of vehicles that were on the named induction loop within the last simulation step [#]; <div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />This value corresponds to the <i>nVehEntered</i> measure of <a href="../Simulation/Output/Induction_Loops_Detectors_(E1).html" title="Simulation/Output/Induction Loops Detectors (E1)">induction loops</a>.</div>
+</td></tr>
+<tr>
+<td> last step mean speed (0x11)
+</td><td> double
+</td><td> Returns the mean speed of vehicles that were on the named induction loop within the last simulation step [m/s]
+</td></tr>
+<tr>
+<td> last step vehicle ids (0x12)
+</td><td> stringList
+</td><td> Returns the list of ids of vehicles that were on the named induction loop in the last simulation step
+</td></tr>
+<tr>
+<td> last step occupancy (0x13)
+</td><td> double
+</td><td> Returns the percentage of time the detector was occupied by a vehicle [%]
+</td></tr>
+<tr>
+<td> last step mean vehicle length (0x15)
+</td><td> double
+</td><td> The mean length of vehicles which were on the detector in the last step [m]
+</td></tr>
+<tr>
+<td> last step's time since last detection (0x16)
+</td><td> double
+</td><td> The time since last detection [s]
+</td></tr>
+<tr>
+<td> last step's vehicle data (0x17)
+</td><td> complex (see below)
+</td><td> A complex structure containing several information about vehicles which passed the detector
+</td></tr>
+</table>
+<a name="Response_0xb0:_Induction_Loop_Variable" id="Response_0xb0:_Induction_Loop_Variable"></a><h2> <span class="mw-headline"> Response 0xb0: Induction Loop Variable  </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td width="75" align="center"> &lt;return_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Induction Loop ID
+</th><th style="border: 1pt solid;"> Return type of the variable
+</th><th style="border: 1pt solid;"> &lt;VARIABLE_VALUE&gt;
+</th></tr></table>
+<p>The respond to a <b>"Command Get Induction Loop Variable"</b>.
+</p>
+<a name="Response_to_.22last_step.27s_vehicle_data.22_.280x17.29" id="Response_to_.22last_step.27s_vehicle_data.22_.280x17.29"></a><h3> <span class="mw-headline">Response to "last step's vehicle data" (0x17)</span></h3>
+<p>The return type is "complex", the following fields are:
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> ubyte
+</td><td width="75" align="center"> int
+</td><td width="150" align="center"> &lt;INFORMATION_PACKET&gt;
+</td><td width="150" align="center"> ...
+</td><td width="150" align="center"> &lt;INFORMATION_PACKET&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> "int"
+</th><th style="border: 1pt solid;"> number of information packets
+</th><th style="border: 1pt solid;"> &lt;INFORMATION_PACKET&gt;
+</th><th style="border: 1pt solid;"> ...
+</th><th style="border: 1pt solid;"> &lt;INFORMATION_PACKET&gt;
+</th></tr></table>
+<p>Where each information packet looks like:
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td width="75" align="center"> double
+</td><td width="150" align="center"> ubyte
+</td><td width="75" align="center"> double
+</td><td width="150" align="center"> ubyte
+</td><td width="75" align="center"> double
+</td><td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> "string"
+</th><th style="border: 1pt solid;"> Vehicle ID
+</th><th style="border: 1pt solid;"> "double"
+</th><th style="border: 1pt solid;"> Vehicle Length
+</th><th style="border: 1pt solid;"> "double"
+</th><th style="border: 1pt solid;"> Entry Time [s]
+</th><th style="border: 1pt solid;"> "double"
+</th><th style="border: 1pt solid;"> Leave Time [s]
+</th><th style="border: 1pt solid;"> "string"
+</th><th style="border: 1pt solid;"> Vehicle Type ID
+</th></tr></table>
+<a name="Notes" id="Notes"></a><h2> <span class="mw-headline"> Notes </span></h2>
+<ul><li> You can find <a href="../Simulation/Output/Induction_Loops_Detectors_(E1).html" title="Simulation/Output/Induction Loops Detectors (E1)">some further description on induction loops</a>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 10/1000000
+Post-expand include size: 262/2097152 bytes
+Template argument size: 126/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:260-0!1!0!!en!2!edit=0 and timestamp 20120718063404 -->
+</div><hr/><div id="lastmod">This page was last modified on 28 October 2011, at 11:57.</div>

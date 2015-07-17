@@ -1,0 +1,246 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Demand/Shortest or Optimal Path Routing</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Trip_Definitions"><span class="tocnumber">2</span> <span class="toctext">Trip Definitions</span></a></li>
+<li class="toclevel-1"><a href="#Flow_Definitions"><span class="tocnumber">3</span> <span class="toctext">Flow Definitions</span></a></li>
+<li class="toclevel-1"><a href="#Usage_Examples"><span class="tocnumber">4</span> <span class="toctext">Usage Examples</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction" id="Introduction"></a><h1> <span class="mw-headline">Introduction</span></h1>
+<p><a href="../DUAROUTER.html" title="DUAROUTER">DUAROUTER</a> can be used to import demand data given by source and destination edges (so called <i>trips</i> and <i>flows </i>). 
+Furthermore, it can be used to repair an existing <i>route</i>-file i.e. if a given route has an unconnected edge list. To achieve dynamic user assignment, <a href="../DUAROUTER.html" title="DUAROUTER">DUAROUTER</a> and <a href="../SUMO.html" title="SUMO">SUMO</a> must be called iteratively. This is described in <a href="../Demand/Dynamic_User_Assignment.html" title="Demand/Dynamic User Assignment">Demand/Dynamic User Assignment</a>.
+</p><p><br />
+</p>
+<a name="Trip_Definitions" id="Trip_Definitions"></a><h1> <span class="mw-headline">Trip Definitions</span></h1>
+<p>Trip definitions that can be laid into the network may be supplied to the router using an XML-file. The syntax of a single trip definition is: <span class="inlxml">&lt;tripdef id="&lt;ID&gt;" depart="&lt;TIME&gt;" from="&lt;ORIGIN_EDGE_ID&gt;" to="&lt;DESTINATION_EDGE_ID&gt;" [type="&lt;VEHICLE_TYPE&gt;"] [period="&lt;INT&gt;" repno="&lt;INT&gt;"] [color="&lt;COLOR&gt;"]/&gt;</span>. 
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> id
+</td><td> id (string)
+</td><td> The name of vehicles that will be generated using this trip definition (a running number if not given)
+</td></tr>
+<tr>
+<td class="inlxml"> <b>depart</b>
+</td><td> int
+</td><td> The departure time of the (first) vehicle which is generated using this trip definition
+</td></tr>
+<tr>
+<td class="inlxml"> from
+</td><td> edge id
+</td><td> The name of the edge the route starts at; the edge must be a part of the used network
+</td></tr>
+<tr>
+<td class="inlxml"> to
+</td><td> edge id
+</td><td> The name of the edge the route ends at; the edge must be a part of the used network
+</td></tr>
+<tr>
+<td class="inlxml"> fromtaz
+</td><td> district id
+</td><td> The name of the district the route starts at
+</td></tr>
+<tr>
+<td class="inlxml"> totaz
+</td><td> district id
+</td><td> The name of the district the route ends at
+</td></tr>
+<tr>
+<td class="inlxml"> period
+</td><td> int
+</td><td> The time after which another vehicle with the same route shall be inserted (optional)
+</td></tr>
+<tr>
+<td class="inlxml"> repno
+</td><td> int
+</td><td> The number of vehicles to insert which share the same route (optional)
+</td></tr>
+<tr>
+<td class="inlxml"> color
+</td><td> color
+</td><td> This generated vehicle's color
+</td></tr>
+<tr>
+<td class="inlxml"> departLane
+</td><td> int/string (&ge;0,"random","free","departlane")
+</td><td> The lane on which the vehicle shall be inserted
+</td></tr>
+<tr>
+<td class="inlxml"> departPos
+</td><td> float(m)/string ("random","free","random_free","base")
+</td><td> The position at which the vehicle shall enter the net; "free" means the point closest to the start of the departlane where it is possible to insert the vehicle. "random_free" tries forcefully to find a free random position and if that fails, places the vehicle at the next "free" position. "base" sets the vehicle's depart position to the vehicle's length + eps (eps=.1m), this means the vehicle is completely at the begin of the depart lane.
+</td></tr>
+<tr>
+<td class="inlxml"> departSpeed
+</td><td> float(m/s)/string (&ge;0,"random","max")
+</td><td> The speed with which the vehicle shall enter the network.
+</td></tr>
+<tr>
+<td class="inlxml"> arrivalLane
+</td><td> int/string (&ge;0,"current")
+</td><td> The lane at which the vehicle shall leave the network <div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />see <a href="../Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#Vehicles_and_Routes" title="Definition of Vehicles, Vehicle Types, and Routes">Definition of Vehicles, Vehicle Types, and Routes#Vehicles and Routes</a></div>
+</td></tr>
+<tr>
+<td class="inlxml"> arrivalPos
+</td><td> float(m)/string (&ge;0<sup>(1)</sup>,"random","max")
+</td><td> The position at which the vehicle shall leave the network <div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />see <a href="../Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#Vehicles_and_Routes" title="Definition of Vehicles, Vehicle Types, and Routes">Definition of Vehicles, Vehicle Types, and Routes#Vehicles and Routes</a></div>
+</td></tr>
+<tr>
+<td class="inlxml"> arrivalSpeed
+</td><td> float(m/s)/string (&ge;0,"current")
+</td><td> The speed with which the vehicle shall leave the network <div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />see <a href="../Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#Vehicles_and_Routes" title="Definition of Vehicles, Vehicle Types, and Routes">Definition of Vehicles, Vehicle Types, and Routes#Vehicles and Routes</a></div>
+</td></tr></table>
+<a name="Flow_Definitions" id="Flow_Definitions"></a><h1> <span class="mw-headline">Flow Definitions</span></h1>
+<p>Flow amounts share most of the parameter with trip definitions. The syntax is: <span class="inlxml">&lt;flow id="&lt;ID&gt;" from="&lt;ORIGIN_EDGE_ID&gt;" to="&lt;DESTINATION_EDGE_ID&gt;" begin="&lt;INTERVAL_BEGIN&gt;" end="&lt;INTERVAL_END&gt;" no="&lt;VEHICLES_TO_INSERT&gt;" [type="&lt;VEHICLE_TYPE&gt;"] [color="&lt;COLOR&gt;"]/&gt;</span>. Notice the following differences: the vehicle does not take a certain departure time as not only one vehicle is described by this parameter, but a set of, given within the attribute "no" (short for number). The departure times are spread uniformly within the time interval described by &lt;INTERVAL_BEGIN&gt; and &lt;INTERVAL_END&gt;. All these three attributes must be integer values. The values "period" and "repno" are not used herein. Flow definitions can also be embedded into an interval tag. In this case one can (but does not have to) leave the tags <span class="inlxml">begin</span> and <span class="inlxml">end</span> out. So the following two snipples mean the same:
+</p>
+<pre class="xml">
+&lt;flows&gt;
+    &lt;flow id=&quot;0&quot; from=&quot;edge0&quot; to=&quot;edge1&quot; begin=&quot;0&quot; end=&quot;3600&quot; no=&quot;100&quot;/&gt;
+&lt;/flows&gt;
+</pre>
+<p>and
+</p>
+<pre class="xml">
+&lt;flows&gt;
+    &lt;interval begin=&quot;0&quot; end=&quot;3600&quot;&gt;
+        &lt;flow id=&quot;0&quot; from=&quot;edge0&quot; to=&quot;edge1&quot; no=&quot;100&quot;/&gt;
+    &lt;/interval&gt;
+&lt;/flows&gt;
+</pre>
+<p>Let's review flow parameter:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>id</b>
+</td><td> id (string)
+</td><td> The name of vehicles that will be generated using this trip definition; vehicles and routes will be named "&lt;id&gt;_&lt;RUNNING&gt;" where &lt;RUNNING&gt; is a number starting at 0 and increased for each vehicle.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>from</b>
+</td><td> edge id
+</td><td> The name of the edge the routes start at; the edge must be a part of the used network
+</td></tr>
+<tr>
+<td class="inlxml"> to<sup>(1)</sup>
+</td><td> edge id
+</td><td> The name of an the edge the routes end at; the edge must be a part of the used network
+</td></tr>
+<tr>
+<td class="inlxml"> type
+</td><td> type id
+</td><td> The type id of the vehicles to generate
+</td></tr>
+<tr>
+<td class="inlxml"> begin
+</td><td> int
+</td><td> The begin time for the described interval
+</td></tr>
+<tr>
+<td class="inlxml"> end
+</td><td> int
+</td><td> The end time for the interval; must be greater than &lt;begin&gt;; vehicles will be inserted between &lt;begin&gt; and &lt;end&gt;-1
+</td></tr>
+<tr>
+<td class="inlxml"> no
+</td><td> int
+</td><td> The number of vehicles that shall be inserted during this interval
+</td></tr>
+<tr>
+<td class="inlxml"> color
+</td><td> color
+</td><td> Defines the color of the vehicles and their routes
+</td></tr>
+<tr>
+<td class="inlxml"> departLane
+</td><td> int/string (&ge;0,"random","free","departlane")
+</td><td> The lane on which the vehicle shall be inserted
+</td></tr>
+<tr>
+<td class="inlxml"> departPos
+</td><td> float(m)/string ("random","free","random_free","base")
+</td><td> The position at which the vehicle shall enter the net; "free" means the point closest to the start of the departlane where it is possible to insert the vehicle. "random_free" tries forcefully to find a free random position and if that fails, places the vehicle at the next "free" position. "base" sets the vehicle's depart position to the vehicle's length + eps (eps=.1m), this means the vehicle is completely at the begin of the depart lane.
+</td></tr>
+<tr>
+<td class="inlxml"> departSpeed
+</td><td> float(m/s)/string (&ge;0,"random","max")
+</td><td> The speed with which the vehicle shall enter the network.
+</td></tr>
+<tr>
+<td class="inlxml"> arrivalLane
+</td><td> int/string (&ge;0,"current")
+</td><td> The lane at which the vehicle shall leave the network <div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />see <a href="../Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#Vehicles_and_Routes" title="Definition of Vehicles, Vehicle Types, and Routes">Definition of Vehicles, Vehicle Types, and Routes#Vehicles and Routes</a></div>
+</td></tr>
+<tr>
+<td class="inlxml"> arrivalPos
+</td><td> float(m)/string (&ge;0<sup>(1)</sup>,"random","max")
+</td><td> The position at which the vehicle shall leave the network <div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />see <a href="../Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#Vehicles_and_Routes" title="Definition of Vehicles, Vehicle Types, and Routes">Definition of Vehicles, Vehicle Types, and Routes#Vehicles and Routes</a></div>
+</td></tr>
+<tr>
+<td class="inlxml"> arrivalSpeed
+</td><td> float(m/s)/string (&ge;0,"current")
+</td><td> The speed with which the vehicle shall leave the network <div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />see <a href="../Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#Vehicles_and_Routes" title="Definition of Vehicles, Vehicle Types, and Routes">Definition of Vehicles, Vehicle Types, and Routes#Vehicles and Routes</a></div>
+</td></tr></table>
+<p><sup>(1)</sup> <a href="../JTRROUTER.html" title="JTRROUTER">JTRROUTER</a> does not need this parameter, <a href="../DUAROUTER.html" title="DUAROUTER">DUAROUTER</a> requires it
+</p>
+<a name="Usage_Examples" id="Usage_Examples"></a><h1> <span class="mw-headline">Usage Examples</span></h1>
+<p><code>duarouter --trip-files trips.xml --net-file road.net.xml --output-file result.rou.xml</code>
+</p><p>the file <i>trips.xml </i> given below must contain edges contained in the network
+file <i>road.net.xml </i>. 
+</p>
+<pre class="xml">
+    &lt;trips&gt;
+        &lt;tripdef id=&quot;1625993_25&quot; depart=&quot;25&quot; from=&quot;-15229224#3&quot; to=&quot;4474184&quot;/&gt;
+        &lt;tripdef id=&quot;1542480_35&quot; depart=&quot;35&quot; from=&quot;-46771582&quot;   to=&quot;-24038909#1&quot;/&gt;
+        &lt;tripdef id=&quot;1544282_35&quot; depart=&quot;35&quot; from=&quot;20554351#2&quot;  to=&quot;-4876083#5&quot;/&gt;
+        &lt;tripdef id=&quot;1565407_35&quot; depart=&quot;35&quot; from=&quot;-25771472#1&quot; to=&quot;-25160470#0&quot;/&gt;
+        &lt;tripdef id=&quot;1620115_45&quot; depart=&quot;45&quot; from=&quot;11279351#3&quot;  to=&quot;5198584#1&quot;/&gt;
+        &lt;tripdef id=&quot;1647560_45&quot; depart=&quot;45&quot; from=&quot;54048879#0&quot;  to=&quot;-52105434#0&quot;/&gt;
+        &lt;tripdef id=&quot;3761248_45&quot; depart=&quot;45&quot; from=&quot;-31928311&quot;   to=&quot;23792451#7&quot;/&gt;
+    &lt;/trips&gt;
+</pre>
+<p><br />
+Trips may contain source and destination districts as well as edges. If the
+districts shall be used for routing this has to be specified using the option "--with-taz". Furthermore (if the net does not contain the districts) a districts file needs to be provided:
+</p>
+<pre>duarouter --trip-files=&lt;TRIP_DEFS&gt; --net-file=&lt;SUMO_NET&gt; \
+  --output-file=MySUMORoutes.rou.xml --taz-files=&lt;DISTRICTS&gt; --with-taz
+</pre>
+<p><br />
+</p><p>As we have to read in the flow definitions completely into the memory - something we do not have to do necessarily with trips, an extra parameter (-f or --flows) is used to make them known by the router:
+</p>
+<pre>duarouter --flows=&lt;FLOW_DEFS&gt; --net=&lt;SUMO_NET&gt; \
+  --output-file=MySUMORoutes.rou.xml -b &lt;UINT&gt; -e &lt;UINT&gt;
+</pre>
+<p>Remind that one can not insert flow descriptions into a trip definitions file. The opposite (some trip definitions within a flow descriptions file) is possible. You also can give both files at the input file, for example:
+</p>
+<pre>duarouter --flows=&lt;FLOW_DEFS&gt; --trip-files=&lt;TRIP_DEFS&gt; --net=&lt;SUMO_NET&gt; \
+  --output-file=MySUMORoutes.rou.xml -b &lt;UINT&gt; -e &lt;UINT&gt;
+</pre>
+<!-- 
+NewPP limit report
+Preprocessor node count: 48/1000000
+Post-expand include size: 1278/2097152 bytes
+Template argument size: 462/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:351-0!1!0!!en!2!edit=0 and timestamp 20120718063153 -->
+</div><hr/><div id="lastmod">This page was last modified on 20 February 2012, at 09:57.</div>

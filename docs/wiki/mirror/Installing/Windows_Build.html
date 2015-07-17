@@ -1,0 +1,116 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Installing/Windows Build</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>This document describes how to build Sumo under Windows using only freely
+available (this does <b>not</b> mean "open source") tools. Instructions on how to build SUMO on Windows using an Open Source toolchain are included in our <a href="../Installing/Linux_Build.html" title="Installing/Linux Build">building on Linux</a> pages. 
+</p><p>Please read the whole document before you start, there are some detours and shortcuts included.
+</p><p>If you do not need the GUI, you can skip everything concerning Fox.
+If you don't need precise geodata conversion, you can skip everything concerning GDAL, Proj and FWTools.
+</p>
+<ul><li>Download <a href="https://www.microsoft.com/germany/msdn/vstudio/products/express/download.mspx" class="external text" title="https://www.microsoft.com/germany/msdn/vstudio/products/express/download.mspx" rel="nofollow">Visual C++ 2010 Express Edition</a> (or a newer one). (There is no need to install a separate <a href="http://en.wikipedia.org/wiki/Microsoft_Windows_SDK" class="external text" title="http://en.wikipedia.org/wiki/Microsoft_Windows_SDK" rel="nofollow">Platform SDK</a> any longer.)
+</li><li><a href="http://www.python.org/download/" class="external text" title="http://www.python.org/download/" rel="nofollow">Download Python for Windows</a> and install it. It is used to dynamically include the SVN revision into compilation. (The build will work without it, but you may see nasty warnings and even editor windows popping up.) Python 3 won't work, we use Python 2.7.
+</li><li>Download the <a href="http://xml.apache.org/xerces-c/" class="external text" title="http://xml.apache.org/xerces-c/" rel="nofollow">Xerces-C</a> prebuilt <a href="http://xerces.apache.org/xerces-c/download.cgi" class="external text" title="http://xerces.apache.org/xerces-c/download.cgi" rel="nofollow">binaries</a> for your Visual Studio version (for VS 2010 you need the *windows-vc-10.0.zip), the <a href="http://www.fox-toolkit.org/" class="external text" title="http://www.fox-toolkit.org/" rel="nofollow">Fox</a> sources (<a href="http://www.fox-toolkit.org/ftp/fox-1.6.36.zip" class="external text" title="http://www.fox-toolkit.org/ftp/fox-1.6.36.zip" rel="nofollow">Version 1.6.36</a> is confirmed to work) and either the <a href="http://fwtools.maptools.org/" class="external text" title="http://fwtools.maptools.org/" rel="nofollow">FWTools</a> (<a href="http://home.gdal.org/fwtools/FWTools113.exe" class="external text" title="http://home.gdal.org/fwtools/FWTools113.exe" rel="nofollow">Version 1.1.3</a> should work) or <a href="http://download.osgeo.org/proj/" class="external text" title="http://download.osgeo.org/proj/" rel="nofollow">PROJ</a> and <a href="http://trac.osgeo.org/gdal/wiki/DownloadSource" class="external text" title="http://trac.osgeo.org/gdal/wiki/DownloadSource" rel="nofollow">GDAL</a> sources separately.
+</li><li>Note on installation paths: MSVC seems to have difficulties with include and library paths containing spaces (for instance <tt>C:\Program Files</tt>). Thus try to avoid installing any of the following libraries in such paths.
+</li></ul>
+<p>Please note that for compiling from svn either <a href="http://www.python.org/" class="external text" title="http://www.python.org/" rel="nofollow">Python</a> has to be installed on your system (which is a good idea, because also many Sumo tools are python scripts) or you have to undefine HAVE_VERSION_H in src/windows_config.h.
+</p><p><br />
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Libraries"><span class="tocnumber">1</span> <span class="toctext">Libraries</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Xerces-C"><span class="tocnumber">1.1</span> <span class="toctext">Xerces-C</span></a></li>
+<li class="toclevel-2"><a href="#Fox"><span class="tocnumber">1.2</span> <span class="toctext">Fox</span></a></li>
+<li class="toclevel-2"><a href="#PROJ_and_GDAL"><span class="tocnumber">1.3</span> <span class="toctext">PROJ and GDAL</span></a>
+<ul>
+<li class="toclevel-3"><a href="#FWTools"><span class="tocnumber">1.3.1</span> <span class="toctext">FWTools</span></a></li>
+<li class="toclevel-3"><a href="#Building_from_source"><span class="tocnumber">1.3.2</span> <span class="toctext">Building from source</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Sumo"><span class="tocnumber">2</span> <span class="toctext">Sumo</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Configuration"><span class="tocnumber">2.1</span> <span class="toctext">Configuration</span></a></li>
+<li class="toclevel-2"><a href="#Build"><span class="tocnumber">2.2</span> <span class="toctext">Build</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Troubleshooting"><span class="tocnumber">3</span> <span class="toctext">Troubleshooting</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Linker_reports_something_similar_to_.22LINK_:_fatal_error_LNK1104:_cannot_open_file_.27C:.5CProgram.obj.27.22"><span class="tocnumber">3.1</span> <span class="toctext">Linker reports something similar to "LINK&nbsp;: fatal error LNK1104: cannot open file 'C:\Program.obj'"</span></a></li>
+<li class="toclevel-2"><a href="#Failure_on_pre-build_event"><span class="tocnumber">3.2</span> <span class="toctext">Failure on pre-build event</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Libraries" id="Libraries"></a><h2> <span class="mw-headline">Libraries</span></h2>
+<a name="Xerces-C" id="Xerces-C"></a><h3> <span class="mw-headline">Xerces-C</span></h3>
+<p>Up to (and including) sumo 0.10.3 (precisely up to svn revision 6993) sumo used xerces-c 2.8 by default, now it uses xerces-c 3.0.1. The changes needed to compile with a different xerces version should be limited to changing <a href="http://apps.sourceforge.net/trac/sumo/browser/trunk/sumo/src/windows_config.h" class="external text" title="http://apps.sourceforge.net/trac/sumo/browser/trunk/sumo/src/windows_config.h" rel="nofollow">src/windows_config.h</a>, <a href="http://apps.sourceforge.net/trac/sumo/browser/trunk/sumo/build/msvc10/Win32.props" class="external text" title="http://apps.sourceforge.net/trac/sumo/browser/trunk/sumo/build/msvc10/Win32.props" rel="nofollow">build/msvc10/Win32.props</a> and / or <a href="http://apps.sourceforge.net/trac/sumo/browser/trunk/sumo/build/msvc10/x64.props" class="external text" title="http://apps.sourceforge.net/trac/sumo/browser/trunk/sumo/build/msvc10/x64.props" rel="nofollow">build/msvc10/x64.props</a>.
+</p>
+<ul><li>You just need to install <a href="http://www.apache.org/dist/xerces/c/3/binaries/xerces-c-3.1.1-x86-windows-vc-10.0.zip" class="external text" title="http://www.apache.org/dist/xerces/c/3/binaries/xerces-c-3.1.1-x86-windows-vc-10.0.zip" rel="nofollow">the binary Xerces 3.1.1 distribution</a> or its <a href="http://www.apache.org/dist/xerces/c/3/binaries/xerces-c-3.1.1-x86_64-windows-vc-10.0.zip" class="external text" title="http://www.apache.org/dist/xerces/c/3/binaries/xerces-c-3.1.1-x86_64-windows-vc-10.0.zip" rel="nofollow">64bit version</a> for the 64bit build.
+</li><li>Create a environment variable XERCES pointing to your xerces-c directory, e.g.
+</li></ul>
+<pre>set XERCES=D:\libs\xerces-c-3.1.1-x86-windows-vc-10.0.
+</pre>
+<ul><li>Copy dll-files <code>%XERCES%\bin\xerces-c_3_1.dll</code> and <code>%XERCES%\bin\xerces-c_3_1D.dll</code> to some directory which is in your PATH (last resort: into windows' system32 directory).
+</li><li>For the 64bit build the name of the variable is XERCES_64
+</li></ul>
+<a name="Fox" id="Fox"></a><h3> <span class="mw-headline">Fox</span></h3>
+<ul><li>If you don't need a GUI, you can skip this section.
+</li><li>Up to (and including) sumo 0.10.3 (precisely up to svn revision 7025) sumo used fox 1.4, now it uses fox 1.6. The building instructions are the same just replace 1.6 by 1.4 (and FOX16 by FOX14) whereever you need it.
+</li><li>Go to the fox directory and open the VC project e.g. D:\libs\fox-1.6.36\windows\vcpp\win32.dsw.
+</li><li>Confirm the conversion to VC 10.0 and build the foxdll project as release and debug (if you think you might wish to use the Visual Studio debugger) version. If you want to build for the 64bit platform you need to add a new configuration to the foxdll project using the <a href="http://msdn.microsoft.com/en-us/library/t1hy4dhz(VS.80).aspx" class="external text" title="http://msdn.microsoft.com/en-us/library/t1hy4dhz(VS.80).aspx" rel="nofollow">Configuration Manager</a>.
+</li><li>You might get approximately 240 warnings and one error, which can be ignored.
+</li><li>Errors on not finding windows.h mean the SDK was not installed properly.
+</li><li>Create a environment variable FOX16 pointing to your fox directory, e.g.
+</li></ul>
+<pre>set FOX16=D:\libs\fox-1.6.36.
+</pre>
+<ul><li>Copy dll-files <code>%FOX16%\libs\fox-1.6.36\lib\FOXDLL-1.6.dll</code> and <code>%FOX16%\lib\FOXDLLD-1.6.dll</code> to some directory which is in your PATH (last resort: into windows' system32 directory).
+</li></ul>
+<a name="PROJ_and_GDAL" id="PROJ_and_GDAL"></a><h3> <span class="mw-headline">PROJ and GDAL</span></h3>
+<p>If you don't need transformation of geocoordinates you can disable proj and gdal in <a href="http://apps.sourceforge.net/trac/sumo/browser/trunk/sumo/src/windows_config.h" class="external text" title="http://apps.sourceforge.net/trac/sumo/browser/trunk/sumo/src/windows_config.h" rel="nofollow">src/windows_config.h</a>, <a href="http://apps.sourceforge.net/trac/sumo/browser/trunk/sumo/build/msvc10/Win32.props" class="external text" title="http://apps.sourceforge.net/trac/sumo/browser/trunk/sumo/build/msvc10/Win32.props" rel="nofollow">build/msvc10/Win32.props</a> and / or <a href="http://apps.sourceforge.net/trac/sumo/browser/trunk/sumo/build/msvc10/x64.props" class="external text" title="http://apps.sourceforge.net/trac/sumo/browser/trunk/sumo/build/msvc10/x64.props" rel="nofollow">build/msvc10/x64.props</a> and skip this section.
+Otherwise you have the choice between downloading the binary FWTools distribution or compiling for yourself. Building from source should only be necessary if you want a 64bit build or if you want to ship a copy of the sumo executable(s) without the need to ship the FWTools as well.
+</p>
+<a name="FWTools" id="FWTools"></a><h4> <span class="mw-headline">FWTools</span></h4>
+<ul><li>Just execute the binary and select a target directory.
+</li><li>Create a environment variable PROJ_GDAL pointing to that directory, e.g.
+</li></ul>
+<pre>set PROJ_GDAL=D:\libs\FWTools1.1.3.
+</pre>
+<ul><li>Add <code>%PROJ_GDAL%\bin</code> to your PATH (or copy the contents to some directory in your PATH).
+</li></ul>
+<a name="Building_from_source" id="Building_from_source"></a><h4> <span class="mw-headline">Building from source</span></h4>
+<p>If you want to build for some reason PROJ and GDAL yourself, please follow the relevant <a href="http://trac.osgeo.org/proj/browser/trunk/proj/README" class="external text" title="http://trac.osgeo.org/proj/browser/trunk/proj/README" rel="nofollow">build instructions for PROJ</a> and <a href="http://trac.osgeo.org/gdal/wiki/BuildingOnWindows" class="external text" title="http://trac.osgeo.org/gdal/wiki/BuildingOnWindows" rel="nofollow">for GDAL</a>. You should install in a common directory then and let the PROJ_GDAL variable point to it as above.
+You should also copy proj.dll and gdal*.dll to a directory in your PATH.
+</p><p>If you do a 64bit build, the name of the environment variable needs to be PROJ_GDAL_64.
+</p>
+<a name="Sumo" id="Sumo"></a><h2> <span class="mw-headline">Sumo</span></h2>
+<a name="Configuration" id="Configuration"></a><h3> <span class="mw-headline">Configuration</span></h3>
+<ul><li>If you installed all libraries and defined the environment variables correctly there is no need for further configuration and you can skip to the build section.
+</li><li>The Visual Studio build is configured using .props files in the build/msvc10 subdirectory. If you change some setting which should apply to all subprojects, be sure to edit those files (either with a text editor or the property manager of Visual Studio) and not the project configuration (.vcxproj).
+</li><li>If you do not like to define the places of the includes and libraries via environment variables you can enter the location directly into x64.props or Win32.props (or both, depending on your target platforms). You should also disable PROJ and GDAL in those files (if you don't need them) by setting the value for the appropriate "LIB" Usermacro to the empty string.
+</li></ul>
+<a name="Build" id="Build"></a><h3> <span class="mw-headline">Build</span></h3>
+<ul><li>Open the project sumo\build\msvc10\prj.sln and build the configurations you need.
+</li></ul>
+<a name="Troubleshooting" id="Troubleshooting"></a><h2> <span class="mw-headline">Troubleshooting</span></h2>
+<a name="Linker_reports_something_similar_to_.22LINK_:_fatal_error_LNK1104:_cannot_open_file_.27C:.5CProgram.obj.27.22" id="Linker_reports_something_similar_to_.22LINK_:_fatal_error_LNK1104:_cannot_open_file_.27C:.5CProgram.obj.27.22"></a><h3> <span class="mw-headline">Linker reports something similar to "LINK&nbsp;: fatal error LNK1104: cannot open file 'C:\Program.obj'"</span></h3>
+<p>You probably have installed a library to a path containing white spaces in its name. In such a case, the according environment variable should be embedded in quotes (").<br />Example: set FOX="D:\my libs\fox-1.6.36".
+</p>
+<a name="Failure_on_pre-build_event" id="Failure_on_pre-build_event"></a><h3> <span class="mw-headline">Failure on pre-build event</span></h3>
+<p>If Visual Studio reports a failed pre-build event you can safely ignore this, unless you are building from the subversion repository. In this case you should probably install Python.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 13/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:37-0!1!0!!en!2!edit=0 and timestamp 20120718063225 -->
+</div><hr/><div id="lastmod">This page was last modified on 10 June 2012, at 12:38.</div>

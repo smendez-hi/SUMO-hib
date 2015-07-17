@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/NewXMLSchema"
+	xmlns:tns="http://www.example.org/NewXMLSchema" elementFormDefault="qualified">
+	<element name="vehicles">
+		<annotation>
+			<documentation>The vehicle element
+			</documentation>
+		</annotation>
+		<complexType>
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element name="useCase">
+					<complexType>
+						<sequence>
+							<element name="vehiclesToTrack" type="tns:vehiclesToTrack"
+								minOccurs="0" maxOccurs="unbounded">
+							</element>
+						</sequence>
+						<attribute name="case">
+							<simpleType>
+								<restriction base="string">
+									<enumeration value="Delivery van" />
+									<enumeration value="Shuttle bus" />
+									<enumeration value="Taxi" />
+									<enumeration value="Private car I" />
+									<enumeration value="Private car II" />
+									<enumeration value="Patrol car" />
+									<enumeration value="Car sharing" />
+								</restriction>
+							</simpleType>
+						</attribute>
+					</complexType>
+				</element>
+			</choice>
+		</complexType>
+	</element>
+
+	<complexType name="electricVehicleCharacteristics">
+        <annotation>
+        	<documentation>charcteristics of the electric cars</documentation>
+        </annotation>
+        <sequence>
+			<element name="dynamics">
+				<complexType>
+					<attribute name="mass" type="positiveInteger" use="required" />
+					<attribute name="coef_rolling_resistance" type="float"
+						use="required" />
+					<attribute name="frontal_area" type="float" use="required" />
+					<attribute name="coef_drag" type="float" use="required" />
+				</complexType>
+			</element>
+			<element name="motor">
+				<complexType>
+					<attribute name="motor_eff" type="float" />
+					<attribute name="gear_ratio" type="float" />
+					<attribute name="gear_system_eff" type="float" />
+					<attribute name="regen_ratio" type="float" />
+				</complexType>
+			</element>
+			<element name="battery">
+				<complexType>
+					<attribute name="cooper_loss_coef" type="float" />
+					<attribute name="iron_loss_coef" type="float" />
+					<attribute name="windage_loss_coef" type="float" />
+					<attribute name="constant_loss" type="float" />
+					<attribute name="heating_consumption" type="float" />
+					<attribute name="radio_consumption" type="float" />
+					<attribute name="lights" type="float" />
+					<attribute name="number_cells" type="float" />
+					<attribute name="peukert_coeff" type="float" />
+					<attribute name="nominal_capacity" type="float" />
+					<attribute name="time_charge" type="float" />
+					<attribute name="widescreen_cons" type="float" />
+					<attribute name="A_C_consumption" type="float" />
+					<attribute name="max_power" type="float" />
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="nonElectricVehicleCharacteristics">
+        <annotation>
+        	<documentation>characteristics of the combustion vehicles</documentation>
+        </annotation>
+        <sequence>
+			<element name="dynamics">
+				<complexType>
+					<attribute name="mass" type="positiveInteger" use="required" />
+					<attribute name="coef_rolling_resistance" type="float"
+						use="required" />
+					<attribute name="frontal_area" type="float" use="required" />
+					<attribute name="coef_drag" type="float" use="required" />
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="vehicleCharacteristics">
+        <annotation>
+        	<documentation>vehicle characteristics</documentation>
+        </annotation>
+        <sequence>
+			<element maxOccurs="unbounded" name="VehicleCharacteristic">
+				<complexType>
+					<complexContent>
+						<extension base="tns:characteristics">
+							<choice>
+								<element name="electricVehicleCharacteristics" type="tns:electricVehicleCharacteristics" />
+								<element name="nonElectricVehicleCharacteristics" type="tns:nonElectricVehicleCharacteristics" />
+							</choice>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="characteristics">
+		<annotation>
+			<documentation>vehicle characteristics</documentation>
+		</annotation></complexType>
+
+	<complexType name="vehiclesToTrack">
+		<annotation>
+			<documentation>Vehicles on track definition</documentation>
+		</annotation>
+		<sequence>
+			<element name="vehicleCharacteristics" maxOccurs="1">
+				<complexType>
+					<complexContent>
+						<extension base="tns:characteristics">
+							<choice>
+								<element name="electricVehicleCharacteristics" type="tns:electricVehicleCharacteristics" />
+								<element name="nonElectricVehicleCharacteristics" type="tns:nonElectricVehicleCharacteristics" />
+							</choice>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+		</sequence>
+		<attribute name="identifier" type="string" />
+		<attribute name="behaviour">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="Emergency" />
+					<enumeration value="Normal" />
+					<enumeration value="Aggressive" />
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="initialBattery" type="string" />
+		<attribute name="overload" type="string" />
+		<attribute name="vehicleType">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="Temsa" />
+					<enumeration value="Pininfarina" />
+				</restriction>
+			</simpleType>
+		</attribute>
+	</complexType>
+</schema>

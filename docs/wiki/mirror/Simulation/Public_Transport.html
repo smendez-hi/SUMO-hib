@@ -1,0 +1,70 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Public Transport</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>It is possible to define positions of bus stops and let vehicles ("busses") stop at these positions for a pre-given time. Definitions of bus stop locations in SUMO have the following format: <span class="inlxml">&lt;busStop id="&lt;BUS_STOP_ID&gt;" lane="&lt;LANE_ID&gt;" startPos="&lt;STARTING_POSITION&gt;" endPos="&lt;ENDING_POSITION&gt;" [line="&lt;LINE_ID&gt;[ &lt;LINE_ID&gt;]*"]/&gt;</span>. That means that a bus stop is an area on a lane. The parameters have the following meanings:
+</p>
+<table cellspacing="0" border="1" align="center">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>id</b>
+</td><td> id (string)
+</td><td> The name of the bus stop; must be unique
+</td></tr>
+<tr>
+<td class="inlxml"> <b>lane</b>
+</td><td> string-id
+</td><td> The name of the lane the busstop shall be located at
+</td></tr>
+<tr>
+<td class="inlxml"> <b>startPos</b>
+</td><td> float
+</td><td> The begin position on the lane (the lower position on the lane) in meters
+</td></tr>
+<tr>
+<td class="inlxml"> endPos
+</td><td> float
+</td><td> The end position on the lane (the higher position on the lane) in meters
+</td></tr>
+<tr>
+<td class="inlxml"> line
+</td><td> string list
+</td><td> A list of names separated by spaces (' ') meant to be the names of the bus lines that stop at this bus stop. This is only used for visualisation purposes.
+</td></tr></table>
+<div style="background: #ffcc44; padding: .5em; border: 1px dashed #ff8800; margin-right:10px; margin-left:10px;"><b>Caution:</b><br />Please note that bus stops must be added to a config via the <i>--additional-files</i> parameter</div>
+<p>Vehicles must be informed that they must stop at a bus stop. The following example shows how this should be done (taken from <i> </i><b>&lt;SUMO_HOME&gt;</b><i>/examples/sumo/busses</i>):
+</p>
+<pre class="xml">
+    &lt;vtype id=&quot;BUS&quot; accel=&quot;2.6&quot; decel=&quot;4.5&quot; sigma=&quot;0.5&quot; length=&quot;15&quot; maxspeed=&quot;70&quot;
+            color=&quot;1,1,0&quot;/&gt;
+
+    &lt;vehicle id=&quot;0&quot; type=&quot;BUS&quot; depart=&quot;0&quot; color=&quot;1,1,0&quot;&gt;
+        &lt;route edges=&quot;2/0to2/1 2/1to1/1 1/1to1/2 1/2to0/2
+             0/2to0/1 0/1to0/0 0/0to1/0 1/0to2/0 2/0to2/1&quot;/&gt;
+        &lt;stop bus_stop=&quot;busstop1&quot; duration=&quot;20&quot;/&gt;
+        &lt;stop bus_stop=&quot;busstop2&quot; duration=&quot;20&quot;/&gt;
+        &lt;stop bus_stop=&quot;busstop3&quot; duration=&quot;20&quot;/&gt;
+        &lt;stop bus_stop=&quot;busstop4&quot; duration=&quot;20&quot;/&gt;
+    &lt;/vehicle&gt;
+</pre>
+<p>What is defined here is a vehicle named "0" being a "BUS". "BUS" is a referenced type declared earlier. The vehicle has an embedded route (written by hand in this case) and a list of stop places. Each stop place is described by two attributes, "bus_stop" and "duration" where "bus_stop" is the name of the bus stop the vehicle shall halt at and "duration" is the time the vehicle shall wait at the bus stop in seconds. Please remark that the order of bus stops the vehicle shall halt at must be correct.
+</p><p>You may also let a vehicle stop at another position than a bus stop. The short definition of a vehicle's stop is: <span class="inlxml">&lt;stop  bus_stop="&lt;BUS_STOP_ID&gt;" | ( lane="&lt;LANE_ID&gt;" endPos="&lt;POSITION_AT_LANE&gt;" ) duration="&lt;HALTING_DURATION&gt;"/&gt;</span>. This means you can either use a bus stop or a lane position to define where a vehicle has to stop.
+For a complete list of attributes for the "stop"-element of a vehicle see <a href="../Specification.html#Stops" title="Specification">Specification#Stops</a>.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 13/1000000
+Post-expand include size: 253/2097152 bytes
+Template argument size: 93/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:232-0!1!0!!en!2!edit=0 and timestamp 20120717233828 -->
+</div><hr/><div id="lastmod">This page was last modified on 20 February 2012, at 09:40.</div>

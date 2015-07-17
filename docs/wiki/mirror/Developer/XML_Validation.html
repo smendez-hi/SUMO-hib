@@ -1,0 +1,76 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Developer/XML Validation</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Status_Quo_.282011-07-21.29" id="Status_Quo_.282011-07-21.29"></a><h1> <span class="mw-headline">Status Quo (2011-07-21)</span></h1>
+<ul><li> The current build scripts for windows and linux execute <a href="http://sourceforge.net/apps/trac/sumo/browser/trunk/sumo/tools/xml/schemaCheck.py" class="external text" title="http://sourceforge.net/apps/trac/sumo/browser/trunk/sumo/tools/xml/schemaCheck.py" rel="nofollow">schemaCheck.py</a> with results visible on the <a href="http://sumo.sf.net/daily/" class="external text" title="http://sumo.sf.net/daily/" rel="nofollow">daily build page</a>.
+</li><li> This script uses <a href="http://codespeak.net/lxml/validation.html#xmlschema" class="external text" title="http://codespeak.net/lxml/validation.html#xmlschema" rel="nofollow">lxml</a> (if available) or <a href="http://xerces.apache.org/xerces-c/sax2count-3.html" class="external text" title="http://xerces.apache.org/xerces-c/sax2count-3.html" rel="nofollow">Sax2Count</a> (on windows only). The latter comes together with the binary xerces windows distribution.
+</li><li> Only files which have a schema declaration in the root element and are of the following type (and fit the following naming scheme) are checked:
+<ul><li> netconvert inputs
+<ul><li> edges "*.edg.xml"
+</li><li> nodes "*.nod.xml"
+</li><li> connections "*.con.xml"
+</li><li> types "*.typ.xml"
+</li></ul>
+</li><li> sumo nets "*.net.xml", "net.netgen", "net.netconvert"
+</li><li> route files "*.rou.xml", "routes.duarouter", "alts.duarouter", "routes.jtrrouter" (still not complete)
+</li><li> configuration files "*.????cfg"
+</li></ul>
+</li><li> There is the possibility to generate the XML schema for the configurations (command line option <span style="color: #111144; font-weight: bold; white-space: pre;">--save-schema <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>)
+</li></ul>
+<a name="Still_missing" id="Still_missing"></a><h2> <span class="mw-headline">Still missing</span></h2>
+<ul><li> schemata for the additional and the output files
+</li><li> documentation on how to use schemata
+</li><li> (optional) validation at loading
+</li><li> synchronize documentation, Specification, schema and implementation
+</li></ul>
+<a name="portable_testing_application_.28only_kept_for_reference.29" id="portable_testing_application_.28only_kept_for_reference.29"></a><h2> <span class="mw-headline">portable testing application (only kept for reference)</span></h2>
+<p>28.10.2009: I made a small search on possible tools for validating XML files which are using Python. It seems as two are majorly used:
+</p>
+<ul><li> <a href="http://codespeak.net/lxml/validation.html#xmlschema" class="external text" title="http://codespeak.net/lxml/validation.html#xmlschema" rel="nofollow">lxml</a>
+</li><li> <a href="http://www.ltg.ed.ac.uk/~ht/xsv-status.html" class="external text" title="http://www.ltg.ed.ac.uk/~ht/xsv-status.html" rel="nofollow">XSV</a>
+</li></ul>
+<p>further candidates:
+</p>
+<ul><li> <a href="http://www.garshol.priv.no/download/software/xmlproc/" class="external text" title="http://www.garshol.priv.no/download/software/xmlproc/" rel="nofollow">xmlproc</a>
+</li><li> <a href="http://www.familieleuthe.de/MiniXsv.html" class="external text" title="http://www.familieleuthe.de/MiniXsv.html" rel="nofollow">minixsv</a>
+</li></ul>
+<p>A short comparison:
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+
+<tr>
+<th>
+</th><th> lxml
+</th><th> XSV
+</th><th> xmlproc
+</th><th> minixsv
+</th></tr>
+<tr>
+<td> <b>Execution Type</b>
+</td><td> library
+</td><td> application
+</td><td> library
+</td><td> library
+</td></tr>
+<tr>
+<td> <b>Dependencies</b>
+</td><td> libxml 2.6.21 or later, libxslt 1.1.15
+</td><td>&nbsp;?
+</td><td>&nbsp;?
+</td><td> genxmlif
+</td></tr>
+</table>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 11/1000000
+Post-expand include size: 192/2097152 bytes
+Template argument size: 66/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:297-0!1!0!!en!2!edit=0 and timestamp 20120718063213 -->
+</div><hr/><div id="lastmod">This page was last modified on 19 March 2012, at 14:18.</div>

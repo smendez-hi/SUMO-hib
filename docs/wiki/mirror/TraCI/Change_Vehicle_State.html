@@ -1,0 +1,480 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Change Vehicle State</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Command_0xc4:_Change_Vehicle_State" id="Command_0xc4:_Change_Vehicle_State"></a><h1> <span class="mw-headline"> Command 0xc4: Change Vehicle State </span></h1>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td align="center"> &lt;value_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Vehicle ID
+</th><th style="border: 1pt solid;"> Type of the value
+</th><th style="border: 1pt solid;"> New Value
+</th></tr></table>
+<p>Changes the state of a vehicle. Because it is possible to change different values of a vehicle, the number of parameter to supply and their types differ between commands. The following values can be changed, the parameter which must be given are also shown in the table.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Changeable Vehicle Variables</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> max speed (0x11)
+</td><td> double
+</td><td> Sets the vehicle's maximum speed to the given value
+</td></tr>
+<tr>
+<td> stop (0x12)
+</td><td> compound (string, double, byte, double), see below
+</td><td> Lets the vehicle stop at the given edge, at the given position and lane. The vehicle will stop for the given duration.
+</td></tr>
+<tr>
+<td> change lane (0x13)
+</td><td> compound (byte, double), see below
+</td><td> Forces a lane change to the lane with the given index; if successful, the lane will be chosen for the given amount of time.
+</td></tr>
+<tr>
+<td> slow down (0x14)
+</td><td> compound (double, double), see below
+</td><td> Reduces the speed to the given for the given amount of time.
+</td></tr>
+<tr>
+<td> change target (0x31)
+</td><td> string (destination edge id)
+</td><td> The vehicle's destination edge is set to the given. The route is rebuilt.
+</td></tr>
+<tr>
+<td> speed (0x40)
+</td><td> double (new speed)
+</td><td> Sets the vehicle speed to the given value. The speed will be followed until a new is given. If -1 is given, the vehicle follows the car-following rules again.
+</td></tr>
+<tr>
+<td> color (0x45)
+</td><td> ubyte,ubyte,ubyte,ubyte (RGBA)
+</td><td> Sets the vehicle's color; please note that A (alpha) is currently not used.
+</td></tr>
+<tr>
+<td> change route by id (0x53)
+</td><td> string (route id)
+</td><td> Assigns the named route to the vehicle, assuming a) the named route exists, and b) it starts on the edge the vehicle is currently at<sup>(1)</sup><sup>(2)</sup>.
+</td></tr>
+<tr>
+<td> change route (0x57)
+</td><td> stringList (ids of edges to pass)
+</td><td> Assigns the list of edges as the vehicle's new route assuming the first edge given is the one the vehicle is curently at<sup>(1)</sup><sup>(2)</sup>.
+</td></tr>
+<tr>
+<td> change edge travel time information (0x58)
+</td><td> compound (begin time, end time, edgeID, value), see below
+</td><td> Inserts the information about the travel time of edge "edgeID" valid from begin time to end time into the vehicle's internal edge weights container.
+</td></tr>
+<tr>
+<td> change edge effort information (0x59)
+</td><td> compound (begin time, end time, edgeID, value), see below
+</td><td> Inserts the information about the effort of edge "edgeID" valid from begin time to end time into the vehicle's internal edge weights container.
+</td></tr>
+<tr>
+<td> signal states (0x5b)
+</td><td> int
+</td><td> Sets a new state of signals, please see the comments on <a href="../TraCI/Vehicle_Signalling.html" title="TraCI/Vehicle Signalling">TraCI/Vehicle Signalling</a> for more information.
+</td></tr>
+<tr>
+<td> move to (0x5c)
+</td><td> compound (lane ID, position along lane)
+</td><td> Moves the vehicle to a new position, see comments below.
+</td></tr>
+<tr>
+<td> reroute (compute new route) by travel time (0x90)
+</td><td> compound (&lt;empty&gt;), see below
+</td><td> Computes a new route using the vehicle's internal and the global edge travel time information. Replaces the current route by the found<sup>(2)</sup>.
+</td></tr>
+<tr>
+<td> reroute (compute new route) by effort (0x91)
+</td><td> compound (&lt;empty&gt;), see below
+</td><td> Computes a new route using the vehicle's internal and the global edge effort information. Replaces the current route by the found<sup>(2)</sup>.
+</td></tr>
+<tr>
+<td> speed mode (0xb3)
+</td><td> int bitset (see below)
+</td><td> Sets how the values set by speed (0x40) and slowdown (0x14) shall be treated. See below.
+</td></tr>
+<tr>
+<td> add (0x80)
+</td><td> complex (see below)
+</td><td> Adds the defined vehicle. See below.
+</td></tr>
+<tr>
+<td> remove (0x81)
+</td><td> complex (see below)
+</td><td> Removes the defined vehicle. See below.
+</td></tr>
+</table>
+<p>Please note:
+</p><p>(1): The first occurrence of the edge is currently at is searched within the new route; the vehicle continues the route from this point in the route from. If the edge the vehicle is currently does not exist within the new route, an error is generated.
+(2): changing the route works only if the vehicle is not within an intersection.
+</p><p>The message contents are as following:
+</p><p><b>max speed (0x11)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> New Maximum Speed
+</th></tr></table>
+<p><b>stop (0x12)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> integer
+</td><td align="center"> byte
+</td><td align="center"> string
+</td><td align="center"> byte
+</td><td align="center"> double
+</td><td align="center"> byte
+</td><td align="center"> byte
+</td><td align="center"> byte
+</td><td align="center"> int
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> item number (always 4)
+</th><th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> Edge ID
+</th><th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> Position
+</th><th style="border: 1pt solid;"> value type <i>byte</i>
+</th><th style="border: 1pt solid;"> Lane Index
+</th><th style="border: 1pt solid;"> value type <i>int</i>
+</th><th style="border: 1pt solid;"> Duration [ms]
+</th></tr></table>
+<p><b>change lane (0x13)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> integer
+</td><td align="center"> byte
+</td><td align="center"> byte
+</td><td align="center"> byte
+</td><td align="center"> int
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> item number (always 2)
+</th><th style="border: 1pt solid;"> value type <i>byte</i>
+</th><th style="border: 1pt solid;"> Lane Index
+</th><th style="border: 1pt solid;"> value type <i>int</i>
+</th><th style="border: 1pt solid;"> Duration [ms]
+</th></tr></table>
+<p><b>slow down (0x14)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> integer
+</td><td align="center"> byte
+</td><td align="center"> double
+</td><td align="center"> byte
+</td><td align="center"> int
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> item number (always 2)
+</th><th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> Speed
+</th><th style="border: 1pt solid;"> value type <i>int</i>
+</th><th style="border: 1pt solid;"> Duration [ms]
+</th></tr></table>
+<p><b>change target (0x31)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td width="150" align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> Edge ID
+</th></tr></table>
+<p><br />
+<b>change route by id (0x54)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td width="150" align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> Route ID
+</th></tr></table>
+<p><br />
+<b>change route (0x57)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td width="150" align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>string list</i>
+</th><th style="border: 1pt solid;"> number of elements
+</th><th style="border: 1pt solid;"> Edge ID
+</th></tr></table>
+<p><br />
+<b>change edge travel time information (0x58)</b>
+</p><p>This command can be sent using 4, 2, or 1 parameters. In the first form, it adds a new override of edge information to the list of existing overrides for the given vehicle, valid from begin time to end time. In the second form, it adds a new override that is valid throughout the simulation, replacing an earlier one for the same edge. In the third form, it removes as earlier override for the given edge, valid throughout the simulation.
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> string
+</td><td align="center"> byte
+</td><td align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements (always=4)
+</th><th style="border: 1pt solid;"> value type <i>integer</i>
+</th><th style="border: 1pt solid;"> begin time (in s)
+</th><th style="border: 1pt solid;"> value type <i>integer</i>
+</th><th style="border: 1pt solid;"> end time (in s)
+</th><th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> edge id
+</th><th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> travel time value (in s)
+</th></tr></table>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> string
+</td><td align="center"> byte
+</td><td align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements  (always=2)
+</th><th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> edge id
+</th><th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> travel time value (in s)
+</th></tr></table>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements  (always=1)
+</th><th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> edge id
+</th></tr></table>
+<p><br />
+<b>change edge effort information (0x59)</b>
+</p><p>This command can be sent using 4, 2, or 1 parameters. In the first form, it adds a new override of edge information to the list of existing overrides for the given vehicle, valid from begin time to end time. In the second form, it adds a new override that is valid throughout the simulation, replacing an earlier one for the same edge. In the third form, it removes as earlier override for the given edge, valid throughout the simulation.
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> string
+</td><td align="center"> byte
+</td><td align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements (always=4)
+</th><th style="border: 1pt solid;"> value type <i>integer</i>
+</th><th style="border: 1pt solid;"> begin time (in s)
+</th><th style="border: 1pt solid;"> value type <i>integer</i>
+</th><th style="border: 1pt solid;"> end time (in s)
+</th><th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> edge id
+</th><th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> effort value (abstract)
+</th></tr></table>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> string
+</td><td align="center"> byte
+</td><td align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements (always=2)
+</th><th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> edge id
+</th><th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> effort value (abstract)
+</th></tr></table>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements (always=1)
+</th><th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> edge id
+</th></tr></table>
+<p><b>reroute (compute new route) by travel time (0x90)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements (always=0)
+</th></tr></table>
+<p><b>reroute (compute new route) by effort (0x91)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements (always=0)
+</th></tr></table>
+<p><br />
+<b>reroute (compute new route) by effort (0x91)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> string
+</td><td align="center"> byte
+</td><td align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements (always=2)
+</th><th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> lane ID
+</th><th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> Position along the lane.
+</th></tr></table>
+<p>The vehicle will be renamed from its lane and moved to the given position on the given lane. No collision checks are done, this means that moving the vehicle may cause in collisions or in situations yielding in such. The vehicle keeps its speed - in the next time step it is at given position + speed. Note that the lane must be a part of the following route, this means it must be either a part of the edge the vehicle is currently on or a part of an edge the vehicle will pass in future; setting a new route before moving the vehicle if needed should work.
+</p><p><b>speed mode (0xb3)</b>
+</p><p>Per default, the vehicle is using the given speed regarding the safe gap, the maximum acceleration, and the maximum deceleration. One can control this behavior using the speed mode (0xb3) command, the given integer is a bitset with the following fields:
+</p>
+<ul><li> bit0: Regard safe speed
+</li><li> bit1: Regard maximum acceleration
+</li><li> bit2: Regard maximum deceleration
+</li></ul>
+<p>Setting the bit enables the check (the according value is regarded), keeping the bit==zero disables the check.
+</p><p><br />
+</p><p><b>add (0x80)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> string
+</td><td align="center"> byte
+</td><td align="center"> string
+</td><td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> double
+</td><td align="center"> byte
+</td><td align="center"> double
+</td><td align="center"> byte
+</td><td align="center"> byte
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements (always=6)
+</th><th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> vehicle type ID (must exist)
+</th><th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> route ID (must exist)
+</th><th style="border: 1pt solid;"> value type <i>integer</i>
+</th><th style="border: 1pt solid;"> depart time
+</th><th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> depart position
+</th><th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> depart speed
+</th><th style="border: 1pt solid;"> value type <i>byte</i>
+</th><th style="border: 1pt solid;"> depart lane
+</th></tr></table>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />Please note that the values are not checked in a very elaborated way. Make sure they are correct before sending.</div>
+<p>If zero or a negative departure speed is set, one of the following fixed speed settings will be used:
+</p>
+<pre>*  0: DEPART_SPEED_DEFAULT
+* -2: DEPART_SPEED_RANDOM
+* -3: DEPART_SPEED_MAX
+</pre>
+<p><b>remove (0x81)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> byte
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>byte</i>
+</th><th style="border: 1pt solid;"> reason
+</th></tr></table>
+<p>The following reasons may be given:
+</p>
+<ul><li> 0: NOTIFICATION_TELEPORT
+</li><li> 1: NOTIFICATION_PARKING
+</li><li> 2: NOTIFICATION_ARRIVED
+</li><li> 3: NOTIFICATION_VAPORIZED
+</li><li> 4: NOTIFICATION_TELEPORT_ARRIVED
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 7/1000000
+Post-expand include size: 248/2097152 bytes
+Template argument size: 112/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:284-0!1!0!!en!2!edit=0 and timestamp 20120718014115 -->
+</div><hr/><div id="lastmod">This page was last modified on 3 April 2012, at 12:09.</div>

@@ -1,0 +1,567 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Definition of Vehicles, Vehicle Types, and Routes</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table class="wikitable" style="width:25em; border-width:1px 1px; border-style:solid; border-color:#909090; background-color:#f8f8ff; font-size:90%; margin:1em 0em 1em 2em; padding:3px 6px">
+<caption> <b>Definition of Vehicles, Vehicle Types, and Routes</b>
+</caption>
+<tr>
+<td width="45%"> Filename extension </td><td> .rou.xml
+</td></tr>
+<tr>
+<td> Type of content </td><td> Vehicles, Vehicle Types, and Routes
+</td></tr>
+<tr>
+<td> Open format? </td><td> Yes
+</td></tr>
+<tr>
+<td> SUMO specific? </td><td> Yes
+</td></tr>
+<tr>
+<td> XML Schema
+</td><td> <a href="http://sumo.sf.net/doc/current/docs/xsd/routes_file.xsd" class="external text" title="http://sumo.sf.net/doc/current/docs/xsd/routes_file.xsd" rel="nofollow">routes_file.xsd</a>
+</td></tr></table>
+<p>The most simple way to get own routes is to edit a routes file by hand, but only if the number of different routes is not too high. Before starting, it is important to know that a vehicle in SUMO consists of three parts: a vehicle type which describes the vehicle's physical properties, a route the vehicle shall take, and the vehicle itself. Both routes and vehicle types can be shared by several vehicles. 
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Vehicle_Types"><span class="tocnumber">1</span> <span class="toctext">Vehicle Types</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Vehicle_Length"><span class="tocnumber">1.1</span> <span class="toctext">Vehicle Length</span></a></li>
+<li class="toclevel-2"><a href="#Abstract_Vehicle_Class"><span class="tocnumber">1.2</span> <span class="toctext">Abstract Vehicle Class</span></a></li>
+<li class="toclevel-2"><a href="#Vehicle_Emission_Classes"><span class="tocnumber">1.3</span> <span class="toctext">Vehicle Emission Classes</span></a></li>
+<li class="toclevel-2"><a href="#Visualization"><span class="tocnumber">1.4</span> <span class="toctext">Visualization</span></a></li>
+<li class="toclevel-2"><a href="#Car-Following_Models"><span class="tocnumber">1.5</span> <span class="toctext">Car-Following Models</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Vehicles_and_Routes"><span class="tocnumber">2</span> <span class="toctext">Vehicles and Routes</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Repeated_vehicles"><span class="tocnumber">2.1</span> <span class="toctext">Repeated vehicles</span></a></li>
+<li class="toclevel-2"><a href="#Routes"><span class="tocnumber">2.2</span> <span class="toctext">Routes</span></a></li>
+<li class="toclevel-2"><a href="#A_Vehicle.27s_depart_and_arrival_parameter"><span class="tocnumber">2.3</span> <span class="toctext">A Vehicle's depart and arrival parameter</span></a>
+<ul>
+<li class="toclevel-3"><a href="#departLane"><span class="tocnumber">2.3.1</span> <span class="toctext">departLane</span></a></li>
+<li class="toclevel-3"><a href="#departPos"><span class="tocnumber">2.3.2</span> <span class="toctext">departPos</span></a></li>
+<li class="toclevel-3"><a href="#departSpeed"><span class="tocnumber">2.3.3</span> <span class="toctext">departSpeed</span></a></li>
+<li class="toclevel-3"><a href="#arrivalLane"><span class="tocnumber">2.3.4</span> <span class="toctext">arrivalLane</span></a></li>
+<li class="toclevel-3"><a href="#arrivalPos"><span class="tocnumber">2.3.5</span> <span class="toctext">arrivalPos</span></a></li>
+<li class="toclevel-3"><a href="#arrivalSpeed"><span class="tocnumber">2.3.6</span> <span class="toctext">arrivalSpeed</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Route_and_vehicle_type_distributions"><span class="tocnumber">3</span> <span class="toctext">Route and vehicle type distributions</span></a></li>
+<li class="toclevel-1"><a href="#Stops"><span class="tocnumber">4</span> <span class="toctext">Stops</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Vehicle_Types" id="Vehicle_Types"></a><h1> <span class="mw-headline">Vehicle Types</span></h1>
+<p>At first a vehicle type will be defined:
+</p>
+<pre class="xml">
+&lt;routes&gt;
+    &lt;vType id=&quot;type1&quot; accel=&quot;0.8&quot; decel=&quot;4.5&quot; sigma=&quot;0.5&quot; length=&quot;5&quot; maxSpeed=&quot;70&quot;/&gt;
+&lt;/routes&gt;
+</pre>
+<p>Having this defined, one can build vehicles of type "type1". The values used above are the ones most of the examples use. They resemble a standard vehicle as used within the Stefan Krauß' thesis.
+</p><p>This definition is the initial one which includes both, the definition of the vehicle's "purely physical" parameters, such as its length, its color, or its max. velocity, and also the used car-following model's parameters. Please note that even though the car-following parameters are describing values such as max. acceleration, or max. deceleration, they mostly do not correspond to what one would assume. The maximum acceleration for example is not the car's maximum acceleration possibility but rather the maximum acceleration a driver choses - even if you have a Jaguar, you probably are not trying to go to 100km/h in 5s when driving through a city.
+</p><p>For allowing to use different car-following models than the one developed by Krauß, the vehicle type definition was extended. The initial one still can be used, but an extension allows to additionally choose a different model and give its parameter. Here is how the new description looks like (for the same vehicle type as above):
+</p>
+<pre class="xml">
+&lt;routes&gt;
+    &lt;vType id=&quot;type1&quot; length=&quot;5&quot; maxSpeed=&quot;70&quot;&gt;
+        &lt;carFollowing-Krauss accel=&quot;0.8&quot; decel=&quot;4.5&quot; sigma=&quot;0.5&quot;/&gt;
+    &lt;/vType&gt;
+&lt;/routes&gt;
+</pre>
+<p>You may note that the car-following model's parameter are now listed in a child-element of the vehicle type definition. Please note that the values of the <span class="inlxml">carFollowing</span>-element are overwriting values given in the <span class="inlxml">vType</span>-element.
+</p><p>These values have the following meanings:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>id</b>
+</td><td> id (string)
+</td><td> The name of the vehicle type
+</td></tr>
+<tr>
+<td class="inlxml"> accel
+</td><td> float
+</td><td> The acceleration ability of vehicles of this type (in m/s^2)
+</td></tr>
+<tr>
+<td class="inlxml"> decel
+</td><td> float
+</td><td> The deceleration ability of vehicles of this type (in m/s^2)
+</td></tr>
+<tr>
+<td class="inlxml"> sigma
+</td><td> float
+</td><td> The driver imperfection (between 0 and 1)
+</td></tr>
+<tr>
+<td class="inlxml"> tau
+</td><td> float
+</td><td> The drivers reaction time in seconds, non-negative; <i>default: 1</i>
+</td></tr>
+<tr>
+<td class="inlxml"> length
+</td><td> float
+</td><td> The vehicle's <b>netto</b>-length (length) (in m); <i>default: 5m</i>
+</td></tr>
+<tr>
+<td class="inlxml"> minGap
+<pre>float
+</pre>
+</td><td> Empty space after leader [m]; <i>default: 2.5m</i>
+</td></tr>
+<tr>
+<td class="inlxml"> maxSpeed
+</td><td> float
+</td><td> The vehicle's maximum velocity (in m/s); <i>default: 70.0m/s</i>
+</td></tr>
+<tr>
+<td class="inlxml"> color
+</td><td> RGB-color
+</td><td> This vehicle type's color; <i>default: 1,1,0</i> (yellow)
+</td></tr>
+<tr>
+<td class="inlxml"> vClass
+</td><td> class (enum)
+</td><td> An abstract vehicle class (see below); <i>default: "unknown"</i>
+</td></tr>
+<tr>
+<td class="inlxml"> emissionClass
+</td><td> emission class (enum)
+</td><td> An abstract emission class (see below); <i>default: "P_7_7"</i>
+</td></tr>
+<tr>
+<td class="inlxml"> guiShape
+</td><td> shape (enum)
+</td><td> How this vehicle is rendered; <i>default: "unknown"</i>
+</td></tr>
+<tr>
+<td class="inlxml"> guiWidth
+</td><td> float
+</td><td> The vehicle's width [m]; <i>default: 2m</i>
+</td></tr></table>
+<p><br />
+Besides values which describe the vehicle's car-following properties, one can find definitions of the assigned vehicles' shapes, emissions, and assignment to abstract vehicle classes. These concepts will be described in the following. Also, you may find further descriptions of implemented car-following models in the subsection <a href="#Car-Following_Models" title="">#Car-Following Models</a>.
+</p><p><br />
+</p>
+<a name="Vehicle_Length" id="Vehicle_Length"></a><h2> <span class="mw-headline">Vehicle Length</span></h2>
+<p>Due to the work on <a href="#Car-Following_Models" title="">car following models</a>, we decided to use two values for vehicle length. The <span class="inlxml">length</span>-attribute describes the length of the vehicle itself. Additionally, the <span class="inlxml">minGap</span>-attribute describes the offset to the leading vehicle when standing in a jam.
+</p><p>This is illustrated in the following image:
+</p><p><a href="images/Length_vs_minGap.svg" class="image" title="Length vs minGap.svg"><img alt="" src="images/Length_vs_minGap.svg" width="300" height="166" border="0" /></a>
+</p><p>Within the simulation, each vehicle needs - when ignoring the safe gap - <span class="inlxml">length</span>+<span class="inlxml">minGap</span>. But only <span class="inlxml">length</span> of the road should be marked as being occupied.
+</p>
+<a name="Abstract_Vehicle_Class" id="Abstract_Vehicle_Class"></a><h2> <span class="mw-headline">Abstract Vehicle Class</span></h2>
+<p>A SUMO vehicle may be assigned to an "abstract vehicle class", defined by using the attribute <span class="inlxml">vClass</span>. These classes are used in lane definitions and allow/disallow the usage of lanes for certain vehicle types. One may think of having a road with three lanes, where the rightmost may only be used by "taxis" or "busses". The following vehicle classes exist:
+</p>
+<ul><li> "private"
+</li><li> "public_transport"
+</li><li> "public_emergency"
+</li><li> "public_authority"
+</li><li> "public_army"
+</li><li> "vip"
+</li><li> "ignoring"
+</li><li> "passenger"
+</li><li> "hov"
+</li><li> "taxi"
+</li><li> "bus"
+</li><li> "delivery"
+</li><li> "transport"
+</li><li> "lightrail"
+</li><li> "cityrail"
+</li><li> "rail_slow"
+</li><li> "rail_fast"
+</li><li> "motorcycle"
+</li><li> "bicycle"
+</li><li> "pedestrian"
+</li></ul>
+<p>These values are a "best guess" of somehow meaningful values, surely worth to be discussed. Though, in parts, they represent classes found in imported formats. They are "abstract" in the means that they are just names only, one could build a .5m long bus. They are only used for determining the usability of lanes.
+</p>
+<a name="Vehicle_Emission_Classes" id="Vehicle_Emission_Classes"></a><h2> <span class="mw-headline">Vehicle Emission Classes</span></h2>
+<p>The emission class represents a certain HBEFA-based emission class. It is defined using the <span class="inlxml">emissionClass</span> attribute.
+</p>
+<a name="Visualization" id="Visualization"></a><h2> <span class="mw-headline">Visualization</span></h2>
+<p>For a nicer visualization of the traffic, the appearence of a vehicle type's vehicles may be changed by assigning them a certain shape using the <span class="inlxml">guiShape</span> attribute. The following shapes are known:
+</p>
+<ul><li> "pedestrian"
+</li><li> "bicycle"
+</li><li> "motorcycle"
+</li><li> "passenger"
+</li><li> "passenger/sedan"
+</li><li> "passenger/hatchback"
+</li><li> "passenger/wagon"
+</li><li> "passenger/van"
+</li><li> "delivery"
+</li><li> "transport"
+</li><li> "transport/semitrailer"
+</li><li> "transport/trailer"
+</li><li> "bus"
+</li><li> "bus/city"
+</li><li> "bus/flexible"
+</li><li> "bus/overland"
+</li><li> "rail"
+</li><li> "rail/light"
+</li><li> "rail/city"
+</li><li> "rail/slow"
+</li><li> "rail/fast"
+</li><li> "rail/cargo"
+</li><li> "evehicle"
+</li></ul>
+<div style="background: #ffcc44; padding: .5em; border: 1px dashed #ff8800; margin-right:10px; margin-left:10px;"><b>Caution:</b><br />Not all of these named shapes are implemented.</div>
+<p>In addition, one can determine the width of the vehicle using the attribute <span class="inlxml">guiWidth</span>.
+</p><p>When using shapes, one should consider that different vehicle classes (passenger vehicles or buses) have different lengths. Passenger vehicles with more than 10m length look quite odd, buses with 2m length, too.
+</p>
+<a name="Car-Following_Models" id="Car-Following_Models"></a><h2> <span class="mw-headline">Car-Following Models</span></h2>
+<p>The car-following models currently implemented in SUMO are given in the following table. 
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Element
+</th><th style="background:#ddddff;"> Short Name
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> carFollowing-Krauss
+</td><td> SUMOKrauß
+</td><td> The Krauß-model with some modifications which is the default model used in SUMO
+</td></tr>
+<tr>
+<td class="inlxml"> carFollowing-KraussOrig1
+</td><td> SKOrig
+</td><td> The original Krauß-model
+</td></tr>
+<tr>
+<td class="inlxml"> carFollowing-PWagner2009
+</td><td> PW2009
+</td><td> A model by Peter Wagner, using Todosiev's action points
+</td></tr>
+<tr>
+<td class="inlxml"> carFollowing-BKerner
+</td><td> Kerner
+</td><td> A model by Boris Kerner <div style="background: #ffcc44; padding: .5em; border: 1px dashed #ff8800; margin-right:10px; margin-left:10px;"><b>Caution:</b><br />currently under work</div>
+</td></tr>
+<tr>
+<td class="inlxml"> carFollowing-IDM
+</td><td> IDM
+</td><td> The Intelligent Driver Model by Martin Treiber <div style="background: #ffcc44; padding: .5em; border: 1px dashed #ff8800; margin-right:10px; margin-left:10px;"><b>Caution:</b><br /> Problems with lane changing occur</div>
+</td></tr>
+</table>
+<p>Mostly, each model uses its own set of parameters. The following table lists which parameter are used by which model(s). Please note that car-following itself and the car-following models are not discussed, here. Their development and evaluation is one of our work's topics, so they should be described on a different page more verbose.
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute
+</th><th style="background:#ddddff;"> Description
+</th><th style="background:#ddddff;"> Models
+</th></tr>
+<tr>
+<td class="inlxml"> accel
+</td><td> The acceleration ability of vehicles of this type (in m/s^2)
+</td><td> SUMOKrauß, SKOrig, PW2009, Kerner, IDM
+</td></tr>
+<tr>
+<td class="inlxml"> decel
+</td><td> The deceleration ability of vehicles of this type (in m/s^2)
+</td><td> SUMOKrauß, SKOrig, PW2009, Kerner, IDM
+</td></tr>
+<tr>
+<td class="inlxml"> sigma
+</td><td> The driver imperfection (between 0 and 1)
+</td><td> SUMOKrauß, SKOrig
+</td></tr>
+<tr>
+<td class="inlxml"> tau
+</td><td> The driver's reaction time in s
+</td><td> SUMOKrauß, SKOrig, PW2009, Kerner
+</td></tr>
+<tr>
+<td class="inlxml"> timeHeadWay
+</td><td>
+</td><td> IDM
+</td></tr>
+<tr>
+<td class="inlxml"> minGap
+</td><td>
+</td><td> SUMOKrauß, SKOrig, PW2009, Kerner, IDM
+</td></tr>
+<tr>
+<td class="inlxml"> k
+</td><td>
+</td><td> Kerner
+</td></tr>
+<tr>
+<td class="inlxml"> phi
+</td><td>
+</td><td> Kerner
+</td></tr>
+</table>
+<a name="Vehicles_and_Routes" id="Vehicles_and_Routes"></a><h1> <span class="mw-headline">Vehicles and Routes</span></h1>
+<p>As next, we will define a vehicle with a route owned by him only:
+</p>
+<pre class="xml">
+&lt;routes&gt;
+   &lt;vType id=&quot;type1&quot; accel=&quot;0.8&quot; decel=&quot;4.5&quot; sigma=&quot;0.5&quot; length=&quot;5&quot; maxSpeed=&quot;70&quot;/&gt;
+
+   &lt;vehicle id=&quot;0&quot; type=&quot;type1&quot; depart=&quot;0&quot; color=&quot;1,0,0&quot;&gt;
+      &lt;route edges=&quot;beg middle end rend&quot;/&gt;
+   &lt;/vehicle&gt;
+
+&lt;/routes&gt;
+</pre>
+<p>By giving such a route definition to <a href="SUMO.html" title="SUMO">SUMO</a> (or <a href="SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a>), <a href="SUMO.html" title="SUMO">SUMO</a> will build a red (color=1,0,0) vehicle of type "type1" named "0" which starts at time 0. The vehicle will drive along the streets "beg", "middle", "end", and as soon as it has approached the edge "rend" it will be removed from the simulation. 
+</p><p>This vehicle has an own, internal route which is not shared with other vehicles. It is also possible to define two vehicles using the same route. In this case the route must be "externalized" - defined before being referenced by the vehicles. Also, the route must be named by giving it an id. The vehicles using the route refer it using the "route"-attribute. The complete change looks like this:
+</p>
+<pre class="xml">
+&lt;routes&gt;
+   &lt;vType id=&quot;type1&quot; accel=&quot;0.8&quot; decel=&quot;4.5&quot; sigma=&quot;0.5&quot; length=&quot;5&quot; maxSpeed=&quot;70&quot;/&gt;
+
+   &lt;route id=&quot;route0&quot; color=&quot;1,1,0&quot; edges=&quot;beg middle end rend&quot;/&gt;
+
+   &lt;vehicle id=&quot;0&quot; type=&quot;type1&quot; route=&quot;route0&quot; depart=&quot;0&quot; color=&quot;1,0,0&quot;/&gt;
+   &lt;vehicle id=&quot;1&quot; type=&quot;type1&quot; route=&quot;route0&quot; depart=&quot;0&quot; color=&quot;0,1,0&quot;/&gt;
+
+&lt;/routes&gt;
+</pre>
+<p>A vehicle may be defined using the following attributes:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>id</b>
+</td><td> id (string)
+</td><td> The name of the vehicle
+</td></tr>
+<tr>
+<td class="inlxml"> <b>type</b>
+</td><td> float
+</td><td> The id of the vehicle type to use for this vehicle
+</td></tr>
+<tr>
+<td class="inlxml"> route
+</td><td> id
+</td><td> The id of the route the vehicle shall drive along
+</td></tr>
+<tr>
+<td class="inlxml"> color
+</td><td> color
+</td><td> This vehicle's color
+</td></tr>
+<tr>
+<td class="inlxml"> depart
+</td><td> float (s)
+</td><td> The time step at which the vehicle shall enter the network
+</td></tr>
+<tr>
+<td class="inlxml"> departLane
+</td><td> int/string (&ge;0, "random", "free", "allowed", "best")
+</td><td> The lane on which the vehicle shall be inserted.
+</td></tr>
+<tr>
+<td class="inlxml"> departPos
+</td><td> float(m)/string ("random", "free", "random_free", "base", "pwagSimple", "pwagGeneric")
+</td><td> The position at which the vehicle shall enter the net; "free" means the point closest to the start of the departlane where it is possible to insert the vehicle. "random_free" tries forcefully to find a free random position and if that fails, places the vehicle at the next "free" position. "base" sets the vehicle's depart position to the vehicle's length + eps (eps=.1m), this means the vehicle is completely at the begin of the depart lane.
+</td></tr>
+<tr>
+<td class="inlxml"> departSpeed
+</td><td> float(m/s)/string (&ge;0, "random", "max")
+</td><td> The speed with which the vehicle shall enter the network.
+</td></tr>
+<tr>
+<td class="inlxml"> arrivalLane
+</td><td> int/string (&ge;0,"current")
+</td><td> The lane at which the vehicle shall leave the network
+</td></tr>
+<tr>
+<td class="inlxml"> arrivalPos
+</td><td> float(m)/string (&ge;0<sup>(1)</sup>, "random", "max")
+</td><td> The position at which the vehicle shall leave the network
+</td></tr>
+<tr>
+<td class="inlxml"> arrivalSpeed
+</td><td> float(m/s)/string (&ge;0,"current")
+</td><td> The speed with which the vehicle shall leave the network
+</td></tr></table>
+<a name="Repeated_vehicles" id="Repeated_vehicles"></a><h2> <span class="mw-headline"> Repeated vehicles </span></h2>
+<p>It is possible to define repeated vehicle emissions ("flow"s), which have the same 
+parameters as the vehicle except for the departure time. The id of the created vehicles is "flowId.runningNumber"
+and they are distributed equally in the given interval.
+The following additional parameters are known:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> begin
+</td><td> float(s)
+</td><td> first vehicle departure time
+</td></tr>
+<tr>
+<td class="inlxml"> end
+</td><td> float(s)
+</td><td> end of departure interval
+</td></tr>
+<tr>
+<td class="inlxml"> vehsPerHour
+</td><td> float(#/h)
+</td><td> number of vehicles per hour (not together with period)
+</td></tr>
+<tr>
+<td class="inlxml"> period
+</td><td> float(s)
+</td><td> repetition period (not together with vehsPerHour)
+</td></tr>
+<tr>
+<td class="inlxml"> number
+</td><td> int(#)
+</td><td> total number of vehicles
+</td></tr></table>
+<a name="Routes" id="Routes"></a><h2> <span class="mw-headline"> Routes </span></h2>
+<p>One may notice, that the route itself also got a color definition, so the attributes of a route are:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>id</b>
+</td><td> id (string)
+</td><td> The name of the route
+</td></tr>
+<tr>
+<td class="inlxml"> <b>edges</b>
+</td><td> id list
+</td><td> The edges the vehicle shall drive along, given as their ids, separated using spaces
+</td></tr>
+<tr>
+<td class="inlxml"> color
+</td><td> color
+</td><td> This route's color
+</td></tr></table>
+<p>There are a few important things to consider when building your own routes:
+</p>
+<ul><li> Routes have to be connected. At the moment the simulation does not raise an error if the next edge of the current route is not a successor of the current edge. The car will simply stop at the end of the current edge and will possibly be "teleported" to the next edge after a waiting time. This is very likely to change in future versions.
+</li><li> Routes have to contain at least one edge.
+</li><li> The starting edge has to be at least as long as the car starting on it. At the moment cars can only start at a position which makes them fit on the road completely.
+</li><li> The route file has to be sorted by starting times. In fact this is only relevant, when you define a lot of routes or have large gaps between departure times. The simulation parameter --route-steps, which defaults to 200, defines the size of the time interval with which the simulation loads its routes. That means by default at startup only route with departure time &lt;200 are loaded, if all the vehicles have departed, the routes up to departure time 400 are loaded etc. pp. This works only if the route file is sorted. This behaviour may be disabled by specifying --route-steps 0.
+</li></ul>
+<p>The first three conditions can be checked using &lt;SUMO_DIST&gt;/tools/routecheck.py.
+</p>
+<div style="background: #ffcc44; padding: .5em; border: 1px dashed #ff8800; margin-right:10px; margin-left:10px;"><b>Caution:</b><br />sumo may enter an infinite loop when given an unsorted route file with person definitions.</div>
+<a name="A_Vehicle.27s_depart_and_arrival_parameter" id="A_Vehicle.27s_depart_and_arrival_parameter"></a><h2> <span class="mw-headline">A Vehicle's depart and arrival parameter</span></h2>
+<p>Using the <span class="inlxml">depart...</span> and <span class="inlxml">arrival...</span>-attributes, it is possible to control how a vehicle is inserted into the network and how it leaves it.
+</p>
+<a name="departLane" id="departLane"></a><h3> <span class="mw-headline">departLane</span></h3>
+<p>Determines on which lane the vehicle is tried to be inserted;
+</p>
+<ul><li> <span class="inlxml">&ge;0</span>: the index of the lane, starting with rightmost=0
+</li><li> "<span class="inlxml">random</span>": a random lane is chosen; please note that a vehicle insertion is not retried if it could not be inserted
+</li><li> "<span class="inlxml">free</span>": the most free (least occupied) lane is chosen
+</li><li> "<span class="inlxml">allowed</span>": the "free" lane (see above) of those lane of the depart edge which allow vehicles of the class the vehicle belongs to
+</li><li> "<span class="inlxml">best</span>": the "free" lane of those who allow the vehicle the longest ride without the need to lane change
+</li></ul>
+<p>BTW, I like "best" at most - dkrajzew
+</p>
+<a name="departPos" id="departPos"></a><h3> <span class="mw-headline">departPos</span></h3>
+<p>Determines the position on the chosen departure lane at which the vehicle is tried to be inserted;
+</p>
+<ul><li> <span class="inlxml">&ge;0</span>: the position on the lane, starting at the lane's begin; must be smaller than the starting lane's length
+</li><li> "<span class="inlxml">random</span>": a random position is chosen; it is not retried to insert the vehicle if the first try fails
+</li><li> "<span class="inlxml">free</span>": a free position (if existing) is used
+</li><li> "<span class="inlxml">random_free</span>": at first, the "random" position is tried, then the "free", if the first one failed
+</li><li> "<span class="inlxml">base</span>": the vehicle is tried to be inserted at the position which lets its back be at the beginning of the lane (vehicle's front position=vehicle length)
+</li><li> "<span class="inlxml">pwagSimple</span>": If no interacting leader exists, the vehicle is inserted with departspeed="max" at the end of its departlane. Otherwise, the vehicle's speed and the distance to its leader are used to determine the position at which the vehicle can be inserted with maximum speed. This method tries to achieve a high flow by utilizing the room between vehicles better, avoiding scattering through time-discretisation. <div style="background: #ffcc44; padding: .5em; border: 1px dashed #ff8800; margin-right:10px; margin-left:10px;"><b>Caution:</b><br />so far, it is a proof-of-concept, it may not work for all scenarios</div> <div style="background: #ffcc44; padding: .5em; border: 1px dashed #ff8800; margin-right:10px; margin-left:10px;"><b>Caution:</b><br />This method does not regard vehicles approaching from the back, it is meant to be used for inserting vehicles at the beginning of a network edge only</div>
+</li><li> "<span class="inlxml">pwagGeneric</span>": as "<span class="inlxml">pwagSimple</span>", but the position is determined iteratively. <div style="background: #ffcc44; padding: .5em; border: 1px dashed #ff8800; margin-right:10px; margin-left:10px;"><b>Caution:</b><br />so far, it is rather a proof-of-concept, it may not work for all scenarios</div> <div style="background: #ffcc44; padding: .5em; border: 1px dashed #ff8800; margin-right:10px; margin-left:10px;"><b>Caution:</b><br />This method does not regard vehicles approaching from the back, it is meant to be used for inserting vehicles at the beginning of a network edge only</div>
+</li></ul>
+<a name="departSpeed" id="departSpeed"></a><h3> <span class="mw-headline">departSpeed</span></h3>
+<p>Determines the speed of the vehicle at insertion;
+</p>
+<ul><li> <span class="inlxml">&ge;0</span>: The vehicle is tried to be inserted using the given speed
+</li><li> "<span class="inlxml">random</span>": A random speed between 0 and MIN(vehicle's maximum velocity, lane's maximum velocity) is used
+</li><li> "<span class="inlxml">max</span>": The maximum velocity allowed for the vehicle on the chosen departure lane is used
+</li></ul>
+<a name="arrivalLane" id="arrivalLane"></a><h3> <span class="mw-headline">arrivalLane</span></h3>
+<p>Not yet evaluated or incompletely implemented.
+</p>
+<a name="arrivalPos" id="arrivalPos"></a><h3> <span class="mw-headline">arrivalPos</span></h3>
+<p>Not yet evaluated or incompletely implemented.
+</p>
+<a name="arrivalSpeed" id="arrivalSpeed"></a><h3> <span class="mw-headline">arrivalSpeed</span></h3>
+<p>Not yet evaluated or incompletely implemented.
+</p>
+<a name="Route_and_vehicle_type_distributions" id="Route_and_vehicle_type_distributions"></a><h1> <span class="mw-headline">Route and vehicle type distributions</span></h1>
+<p>Instead of defining routes and vTypes explicitly for a vehicle <a href="SUMO.html" title="SUMO">SUMO</a> can choose them at runtime from a given distribution. In order to use this feature just define distributions as following:
+</p>
+<pre class="xml">
+&lt;routes&gt;
+    &lt;vTypeDistribution id=&quot;typedist1&quot;&gt;
+        &lt;vType id=&quot;type1&quot; accel=&quot;0.8&quot; length=&quot;5&quot; maxSpeed=&quot;70&quot; probability=&quot;0.9&quot;/&gt;
+        &lt;vType id=&quot;type2&quot; accel=&quot;1.8&quot; length=&quot;15&quot; maxSpeed=&quot;50&quot; probability=&quot;0.1&quot;/&gt;
+    &lt;/vTypeDistribution&gt;
+&lt;/routes&gt;
+</pre>
+<pre class="xml">
+&lt;routes&gt;
+    &lt;routeDistribution id=&quot;routedist1&quot;&gt;
+        &lt;route id=&quot;route0&quot; color=&quot;1,1,0&quot; edges=&quot;beg middle end rend&quot; probability=&quot;0.9&quot;/&gt;
+        &lt;route id=&quot;route1&quot; color=&quot;1,2,0&quot; edges=&quot;beg middle end&quot; probability=&quot;0.1&quot;/&gt;
+    &lt;/routeDistribution&gt;
+&lt;/routes&gt;
+</pre>
+<p>A distribution has only an id as (mandatory) attribute and needs a probability attribute for each of its child elements. The sum of the probability values needs not to be 1, they are scaled accordingly. At the moment the id for the childs is mandatory, this is likely to change in future versions.
+</p><p>A distribution can be used just as using individual types and routes:
+</p>
+<pre class="xml">
+&lt;routes&gt;
+   &lt;vehicle id=&quot;0&quot; type=&quot;typedist1&quot; route=&quot;routedist1&quot; depart=&quot;0&quot; color=&quot;1,0,0&quot;/&gt;
+&lt;/routes&gt;
+</pre>
+<a name="Stops" id="Stops"></a><h1> <span class="mw-headline">Stops</span></h1>
+<p>Vehicles may be forced to stop for a defined time span or wait for persons by using the stop element either as part of a route or a vehicle definition as following:
+</p>
+<pre class="xml">
+&lt;routes&gt;
+    &lt;route id=&quot;route0&quot; edges=&quot;beg middle end rend&quot;&gt;
+        &lt;stop lane=&quot;middle_0&quot; endPos=&quot;50&quot; duration=&quot;20&quot;/&gt;
+    &lt;/route&gt;
+    &lt;vehicle id=&quot;v0&quot; route=&quot;route0&quot; depart=&quot;0&quot;&gt;
+        &lt;stop lane=&quot;end_0&quot; endPos=&quot;10&quot; until=&quot;50&quot;/&gt;
+    &lt;/vehicle&gt;
+&lt;/routes&gt;
+</pre>
+<p>The resulting vehicle will stop twice, once at lane middle_0 because of the stop defined in its route and the second time because of the stop
+defined in the vehicle itself. The first stop will last 20 seconds the second one until simulation second 50. For a detailed list of attributes to stops see <a href="Specification.html#Stops" title="Specification">Specification#Stops</a>. For a description on how to use them to simulate public transport see <a href="Simulation/Public_Transport.html" title="Simulation/Public Transport">Simulation/Public Transport</a>.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 151/1000000
+Post-expand include size: 2390/2097152 bytes
+Template argument size: 990/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:226-0!1!0!!en!2!edit=0 and timestamp 20120717201136 -->
+</div><hr/><div id="lastmod">This page was last modified on 6 July 2012, at 08:22.</div>

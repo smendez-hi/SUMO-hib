@@ -1,0 +1,158 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Edge Value Retrieval</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Command_0xaa:_Get_Edge_Variable" id="Command_0xaa:_Get_Edge_Variable"></a><h2> <span class="mw-headline"> Command 0xaa: Get Edge Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Edge ID
+</th></tr></table>
+<p>Asks for the value of a certain variable of the named edge.
+</p><p>The following variable values can be retrieved, the type of the return value is also shown in the table.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Retrievable Edge Variables</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> id list (0x00)
+</td><td> stringList
+</td><td> Returns a list of ids of all edges within the scenario (the given Edge ID is ignored)
+</td></tr>
+<tr>
+<td> count (0x01)
+</td><td> int
+</td><td> Returns the number of edges within the scenario (the given Edge ID is ignored)
+</td></tr>
+<tr>
+<td> current travel time (0x5a)
+</td><td> double
+</td><td> Returns the current travel time (length/mean speed). <div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />This definition of travel time has to be reverified.</div>
+</td></tr>
+<tr>
+<td> CO2 emissions (id 0x60)
+</td><td> double
+</td><td> Sum of CO2 emissions on this edge in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>.
+</td></tr>
+<tr>
+<td> CO emissions (id 0x61)
+</td><td> double
+</td><td> Sum of CO emissions on this edge in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>.
+</td></tr>
+<tr>
+<td> HC emissions (id 0x62)
+</td><td> double
+</td><td> Sum of HC emissions on this edge in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>.
+</td></tr>
+<tr>
+<td> PMx emissions (id 0x63)
+</td><td> double
+</td><td> Sum of PMx emissions on this edge in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>.
+</td></tr>
+<tr>
+<td> NOx emissions (id 0x64)
+</td><td> double
+</td><td> Sum of NOx emissions on this edge in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>.
+</td></tr>
+<tr>
+<td> fuel consumption (id 0x65)
+</td><td> double
+</td><td> Sum of fuel consumption on this edge in ml during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>.
+</td></tr>
+<tr>
+<td> noise emission (id 0x66)
+</td><td> double
+</td><td> Sum of noise generated on this edge in dBA, computed <a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=SUMO_HarmoinoiseBasedNoiseEmission&amp;action=edit&amp;redlink=1" class="new" title="SUMO HarmoinoiseBasedNoiseEmission (page does not exist)"> based on Harmonoise</a>.
+</td></tr>
+<tr>
+<td> last step vehicle number (0x10)
+</td><td> integer
+</td><td> The number of vehicles on this edge within the last time step.
+</td></tr>
+<tr>
+<td> last step mean speed (0x11)
+</td><td> double
+</td><td> Returns the mean speed of vehicles that were on the named induction loop within the last simulation step [m/s]
+</td></tr>
+<tr>
+<td> last step vehicle ids (0x12)
+</td><td> stringList
+</td><td> Returns the list of ids of vehicles that were on the named induction loop in the last simulation step
+</td></tr>
+<tr>
+<td> last step occupancy (0x13)
+</td><td> double
+</td><td> Returns the percentage of time the detector was occupied by a vehicle [%]
+</td></tr>
+<tr>
+<td> last step mean vehicle length (0x15)
+</td><td> double
+</td><td> The mean length of vehicles which were on the detector in the last step [m]
+</td></tr>
+</table>
+<p><br />
+</p>
+<a name="Response_0xba:_Edge_Variable" id="Response_0xba:_Edge_Variable"></a><h3> <span class="mw-headline"> Response 0xba: Edge Variable </span></h3>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td width="75" align="center"> &lt;return_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Edge ID
+</th><th style="border: 1pt solid;"> Return type of the variable
+</th><th style="border: 1pt solid;"> &lt;VARIABLE_VALUE&gt;
+</th></tr></table>
+<p>The respond to a <b>"Command Get Edge Variable"</b>.
+</p><p><br />
+</p>
+<a name="Extended_retrieval_messages" id="Extended_retrieval_messages"></a><h3> <span class="mw-headline"> Extended retrieval messages </span></h3>
+<p>Some further messages require additional parameters.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Extended Variables Retrieval</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> Request ValueType
+</th><th> Response ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> edge travel time information (0x58)
+</td><td> time (int)
+</td><td> double
+</td><td> Returns the edge travel time for the given time as stored in the global container. If such a value does not exist, -1 is returned.
+</td></tr>
+<tr>
+<td> edge effort information (0x59)
+</td><td> time (int)
+</td><td> double
+</td><td> Returns the edge effort for the given time as stored in the global container. If such a value does not exist, -1 is returned.
+</td></tr>
+</table>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 9/1000000
+Post-expand include size: 188/2097152 bytes
+Template argument size: 52/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:299-0!1!0!!en!2!edit=0 and timestamp 20120718063403 -->
+</div><hr/><div id="lastmod">This page was last modified on 6 January 2012, at 08:09.</div>

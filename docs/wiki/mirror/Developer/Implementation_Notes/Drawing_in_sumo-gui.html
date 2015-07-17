@@ -1,0 +1,30 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Developer/Implementation Notes/Drawing in sumo-gui</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Basic" id="Basic"></a><h1> <span class="mw-headline"> Basic </span></h1>
+<p>Each network object has a type defined in GUIGlObjectTypes.h (i.e. GLO_EDGE, GLO_JUNCTION, GL_VEHICLE, ...). Objects are maintained in three places:
+</p>
+<ul><li> SUMORTree: a structure for finding objects based on their location (used for efficient drawing)
+</li><li> GUIGlObjectStorage: a structure for retrieving objects based on their numerical id and for locking objects to prevent concurrent access
+</li><li> type specific containers (GUIEdges for example are maintained in MSEdge::dictionary)
+</li></ul>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />This also applies to NETEDIT</div>
+<a name="Layers" id="Layers"></a><h1> <span class="mw-headline"> Layers </span></h1>
+<p>As all objects are drawn in the order they are stored within the rtree, no z-ordering is done before. Due to this, the objects must be draw in "layers". This is realised by using glTranslated. Each object type is also an integer value (enum type) which is used as the layer in which to draw objects of this type. Since GLO_VEHICLE has the integer value of 256 it is drawn on top of GLO_LANE which has the lower value 2. Some objects consists of multiple layers themselves (i.e. Busstops). In this case increments of 0.1 are used which should not interfere with objects of different types.
+</p><p>As a general rule each drawing routine should use glPushMatrix at the beginning, set the layer with glTranslated(0,0,getType()) and use glPopMatrix when finished.
+Top level captions (junction names, edge names, ...) are drawn at the layer GLO_MAX
+</p><p>The layer information stored in <a href="../../Simulation/Shapes.html" title="Simulation/Shapes">Polygons and POIs</a> is used in the same way as the GUIGlObjectType (glTranslate(0,0,getLayer()). This makes it possible to place polygons anywhere in the drawing stack, allowing the visual emulation of tunnels and other road-obscuring features.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 8/1000000
+Post-expand include size: 164/2097152 bytes
+Template argument size: 28/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:68-0!1!0!!en!2!edit=0 and timestamp 20120718063201 -->
+</div><hr/><div id="lastmod">This page was last modified on 27 October 2011, at 10:14.</div>

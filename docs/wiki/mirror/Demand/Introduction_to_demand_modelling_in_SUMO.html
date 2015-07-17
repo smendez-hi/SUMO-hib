@@ -1,0 +1,57 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Demand/Introduction to demand modelling in SUMO</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>After having generated a network, one could take a look at it using <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a>, but no cars would be driving around. One still needs some kind of description about the vehicles. This is called the <i>traffic demand</i>.  From now on we will use the following nomenclature: A <b>trip</b> is a vehicle movement from one place to another defined by the starting edge (street), the destination edge, and the departure time. A <b>route</b> is an expanded trip, that means, that a route definition contains not only the first and the last edge, but all edges the vehicle will pass. <a href="../SUMO.html" title="SUMO">SUMO</a> and <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a> need routes as input for vehicle movements. There are several ways to generate routes for SUMO. The choice depends on your available input data:
+</p>
+<ul><li> Using trip definitions
+</li></ul>
+<dl><dd>As described above, each trip consists at least of the starting and the ending edge and the departure time. This is useful for when you want to create <i>demand</i> by hand or when writing your own scripts to import custom data. You will need to use <a href="../DUAROUTER.html" title="DUAROUTER">DUAROUTER</a> to turn your trips into routes. See <a href="../Demand/Shortest_or_Optimal_Path_Routing.html" title="Demand/Shortest or Optimal Path Routing">Demand/Shortest_or_Optimal_Path_Routing</a> and <a href="../Demand/Dynamic_User_Assignment.html" title="Demand/Dynamic User Assignment">Demand/Dynamic_User_Assignment</a>.
+</dd></dl>
+<ul><li> Using flow definitions
+</li></ul>
+<dl><dd>This is mostly the same approach as using trip definitions, but one may join vehicles having the same departure and arrival edge using this method
+</dd></dl>
+<ul><li> Using Randomization
+</li></ul>
+<dl><dd>This is a quick way to get some traffic if you do not have access to any measurements but the results are highly unrealistic. See <a href="../Tools/Trip.html#randomTrips.py" title="Tools/Trip">Tools/Trip#randomTrips.py</a>
+</dd></dl>
+<ul><li> Using OD-matrices
+</li></ul>
+<dl><dd>Origin-Destination-Matrices (or OD-matrices) are often available from traffic authorities. They have to be converted to trips using <a href="../OD2TRIPS.html" title="OD2TRIPS">OD2TRIPS</a>. See <a href="../Demand/Importing_O/D_Matrices.html" title="Demand/Importing O/D Matrices">Demand/Importing_O/D_Matrices</a>, <a href="../Demand/Shortest_or_Optimal_Path_Routing.html" title="Demand/Shortest or Optimal Path Routing">Demand/Shortest_or_Optimal_Path_Routing</a> and <a href="../Demand/Dynamic_User_Assignment.html" title="Demand/Dynamic User Assignment">Demand/Dynamic_User_Assignment</a>.
+</dd></dl>
+<ul><li> Using flow definitions and turning ratios
+</li></ul>
+<dl><dd>One may also leave out the destination edges for flows and use turning ratios at junctions instead. See <a href="../JTRROUTER.html" title="JTRROUTER">JTRROUTER</a>.
+</dd></dl>
+<ul><li> Using detector data (observation points)
+</li></ul>
+<dl><dd>Induction loops and similar devices are commonly used by authorities to measure traffic. Using <a href="../DFROUTER.html" title="DFROUTER">DFROUTER</a> you may uses this data to generate demand. See <a href="../Demand/Routes_from_Observation_Points.html" title="Demand/Routes from Observation Points">Demand/Routes_from_Observation_Points</a>.
+</dd></dl>
+<ul><li> By hand
+</li></ul>
+<dl><dd>You can of course generate route XML-files by hand. See <a href="../Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html" title="Definition of Vehicles, Vehicle Types, and Routes">Definition_of_Vehicles,_Vehicle_Types,_and_Routes</a>.
+</dd></dl>
+<ul><li> Using population statistics
+</li></ul>
+<dl><dd>The program <a href="../ACTIVITYGEN.html" title="ACTIVITYGEN">ACTIVITYGEN</a> can be used to turn population statistics into traffic demand. See <a href="../Demand/Activity-based_Demand_Generation.html" title="Demand/Activity-based Demand Generation">Demand/Activity-based Demand Generation</a>.
+</dd></dl>
+<ul><li> Using data from other sources
+</li></ul>
+<dl><dd>see <a href="../SUMO_User_Documentation.html#Demand_Modelling" title="SUMO User Documentation">SUMO_User_Documentation#Demand_Modelling</a>
+</dd></dl>
+<p><br />
+By now, the SUMO-package contains four applications for generating routes. <a href="../DUAROUTER.html" title="DUAROUTER">DUAROUTER</a> is responsible for importing routes or their definitions from other simulation packages and for computing routes using the shortest-path algorithm by Dijkstra. Additionally, in combination with the simulation, the <a href="../DUAROUTER.html" title="DUAROUTER">DUAROUTER</a> can compute the dynamic user assignment formulated by C. Gawron. <a href="../JTRROUTER.html" title="JTRROUTER">JTRROUTER</a> may be used if you want to model traffic statistically, using flows and turning percentages at junctions. <a href="../OD2TRIPS.html" title="OD2TRIPS">OD2TRIPS</a> helps you to convert OD-matrices (origin/destination-matrices) into trips. The <a href="../DFROUTER.html" title="DFROUTER">DFROUTER</a> computes routes from given observation point measures.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 1/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:225-0!1!0!!en!2!edit=0 and timestamp 20120717194534 -->
+</div><hr/><div id="lastmod">This page was last modified on 2 November 2011, at 13:55.</div>

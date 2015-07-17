@@ -1,0 +1,211 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Data/Scenarios/TAPASCologne</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#.22TAPAS_Cologne.22_Scenario"><span class="tocnumber">1</span> <span class="toctext">"TAPAS Cologne" Scenario</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Availability"><span class="tocnumber">1.1</span> <span class="toctext">Availability</span></a></li>
+<li class="toclevel-2"><a href="#About"><span class="tocnumber">1.2</span> <span class="toctext">About</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Brief_Description"><span class="tocnumber">1.2.1</span> <span class="toctext">Brief Description</span></a></li>
+<li class="toclevel-3"><a href="#Contents"><span class="tocnumber">1.2.2</span> <span class="toctext">Contents</span></a></li>
+<li class="toclevel-3"><a href="#Change_Log"><span class="tocnumber">1.2.3</span> <span class="toctext">Change Log</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="#Quality"><span class="tocnumber">1.3</span> <span class="toctext">Quality</span></a></li>
+<li class="toclevel-2"><a href="#Next_Steps"><span class="tocnumber">1.4</span> <span class="toctext">Next Steps</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name=".22TAPAS_Cologne.22_Scenario" id=".22TAPAS_Cologne.22_Scenario"></a><h1> <span class="mw-headline">"TAPAS Cologne" Scenario</span></h1>
+<a name="Availability" id="Availability"></a><h2> <span class="mw-headline">Availability</span></h2>
+<div class="floatleft"><a href="../../images/88x31.png" class="image" title="88x31.png"><img alt="" src="../../images//88x31.png" width="88" height="31" border="0" /></a></div> The data is available under the <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" class="external text" title="http://creativecommons.org/licenses/by-nc-sa/3.0/" rel="nofollow">Creative Commons</a> licence. You <b>must tell where the data is from</b>, it is <b>not allowed to use it for commercial</b> purposes, as soon as you use it <b>we want to be informed</b> about it (use the <a href="http://lists.sourceforge.net/lists/listinfo/sumo-user" class="external text" title="http://lists.sourceforge.net/lists/listinfo/sumo-user" rel="nofollow">sumo-user</a> mailing list).
+<p>Setting up such a large scenario is a lot of work and we can not do it by ourselves only. That's why we currently only offer a reduced data set, which contains routes between 6:00 and 8:00 am. If you are really interested in the complete data set, ask how to obtain it at the <a href="http://lists.sourceforge.net/lists/listinfo/sumo-user" class="external text" title="http://lists.sourceforge.net/lists/listinfo/sumo-user" rel="nofollow">sumo-user</a> mailing list.
+</p><p>The data can be <a href="http://prdownloads.sourceforge.net/sumo/TAPASCologne-0.0.3.zip?download" class="external text" title="http://prdownloads.sourceforge.net/sumo/TAPASCologne-0.0.3.zip?download" rel="nofollow">downloaded</a> (.zip, ~78MB).
+</p>
+<a name="About" id="About"></a><h2> <span class="mw-headline">About</span></h2>
+<a name="Brief_Description" id="Brief_Description"></a><h3> <span class="mw-headline">Brief Description</span></h3>
+<p>The "TAPAS Cologne" simulation scenario describes the traffic within the city of Cologne (Germany) for a whole day. The original demand data stems from TAPAS, a system which computes mobility wishes for an area population generated based on information about travelling habits of Germans and on information about the infrastructure of the area they live in. More information about the system can be found within this <a href="http://elib.dlr.de/45058/02/SRL_81_-_Beitrag_Varschen.pdf" class="external text" title="http://elib.dlr.de/45058/02/SRL_81_-_Beitrag_Varschen.pdf" rel="nofollow">publication on TAPAS</a>. The original data was using a closed-source road network and was mapped onto one stemming from the <a href="http://www.openstreetmap.de/" class="external text" title="http://www.openstreetmap.de/" rel="nofollow">OpenStreetMap project</a>.
+</p><p>As is, TAPASCologne is only hardly usable. Work must be put into improving the network quality, as well as into verification of the process how routes were mapped on the OSM network and on the routes themselves. We hope to gain participants responsible for the works that must be done. A list of possible <a href="#Next_Steps" title="">work packages on TAPASCologne</a> is available.
+</p>
+<a name="Contents" id="Contents"></a><h3> <span class="mw-headline">Contents</span></h3>
+<p>The TAPASCologne scenario package includes:
+</p>
+<ul><li> Road networks imported from OSM
+</li><li> POIs and Polygons imported from OSM
+</li><li> The mapped trips for time between 6:00 and 8:00 (am)
+</li><li> The SUMO-configuration file
+</li></ul>
+<p>As OSM data contains information about streets, railways, ways for pedestrians only, etc. Release 0.0.3 only includes the network for road vehicles (road).
+Other network selections can be created with the script build.py in the release.
+</p>
+<ul><li> "passenger_*" which contains only roads passenger vehicles are allowed to use
+</li><li> "roadvehicles_*" which contains roads for road vehicles (those used by pedestrians, trains, and bicycles were removed)
+</li><li> "all_*" which contains all roads
+</li></ul>
+<p>The idea behind this is to have a fast road network ("passenger_*") for DUA computation and for scenarios which only consider passenger traffic retrieved by TAPAS. Then, in a second step, which is not yet started, additional traffic such as public transport or delivery vehicles may be added and used in combination with "roadvehicles_*" networks. "all_*" networks are meant to be used by people who want it all...... 
+</p><p>Each of the road networks is again available in two versions - one with internal lanes (default since version 0.10.1) and one without. Again, choosing the proper network is a matter of personal interest.
+</p><p>The supplied routes are given for the "passenger_*"-network. Though not tested, yet, we assume that they can not be used directly with other networks from the package. Still, computing correct routes should be possible by starting <a href="../../DUAROUTER.html" title="DUAROUTER">DUAROUTER</a> with the appropriate network and <b>--repair</b> option.
+</p><p>The following images show the scenario area with polygons and points of interest. Because we assume that the networks differ in size, for each network type (passenger, roadvehicles, all), a shape file is included.
+</p>
+<table class="gallery" cellspacing="0" cellpadding="0">
+	<tr>
+		<td><div class="gallerybox" style="width: 235px;">
+			<div class="thumb" style="padding: 20px 0; width: 230px;"><div style="margin-left: auto; margin-right: auto; width: 200px;"><a href="../../images/Tapas_0_0_2_shapes1.gif" class="image" title="Tapas 0 0 2 shapes1.gif"><img alt="" src="../../images/Tapas_0_0_2_shapes1.gif" width="196" height="180" border="0" /></a></div></div>
+			<div class="gallerytext">
+			</div>
+		</div></td>
+		<td><div class="gallerybox" style="width: 235px;">
+			<div class="thumb" style="padding: 20px 0; width: 230px;"><div style="margin-left: auto; margin-right: auto; width: 200px;"><a href="../../images/Tapas_0_0_2_shapes2.gif" class="image" title="Tapas 0 0 2 shapes2.gif"><img alt="" src="../../images/Tapas_0_0_2_shapes2.gif" width="196" height="180" border="0" /></a></div></div>
+			<div class="gallerytext">
+			</div>
+		</div></td>
+		<td><div class="gallerybox" style="width: 235px;">
+			<div class="thumb" style="padding: 20px 0; width: 230px;"><div style="margin-left: auto; margin-right: auto; width: 200px;"><a href="../../images/Tapas_0_0_2_shapes3.gif" class="image" title="Tapas 0 0 2 shapes3.gif"><img alt="" src="../../images/Tapas_0_0_2_shapes3.gif" width="196" height="180" border="0" /></a></div></div>
+			<div class="gallerytext">
+			</div>
+		</div></td>
+	</tr>
+</table>
+<a name="Change_Log" id="Change_Log"></a><h3> <span class="mw-headline">Change Log</span></h3>
+<p><b>Version 0.0.1 to version 0.0.2</b>
+</p>
+<ul><li> Solved problems on importing OSM road networks, including <a href="http://apps.sourceforge.net/trac/sumo/ticket/17" class="external text" title="http://apps.sourceforge.net/trac/sumo/ticket/17" rel="nofollow">defect 17: OSM network importer creates large junctions</a>
+</li><li> Includes joined tls (solves few synchronization problems)
+</li><li> Patched import of shapes (POIs/Polygons) and included them
+</li><li> Remapped the routes
+</li></ul>
+<a name="Quality" id="Quality"></a><h2> <span class="mw-headline">Quality</span></h2>
+<p>In the current version, we even have not tested the data, completely. The assumptions made on the quality are shown below. We decided not to use a numeric ranking, because we do not have real world numbers for most of the issues. The rank tries to distinguish between "good" (arrow upwards, green) and "bad" (arrow downwards, red) influences on the overall simulation quality.
+</p>
+<ul><li> <a href="../../images/Level16px_00.gif" class="image" title="Image:level16px_00.gif"><img alt="Image:level16px_00.gif" src="../../images//Level16px_00.gif" width="16" height="16" border="0" /></a> Network Topology and Edge Parameter (from OSM)
+<ul><li> <a href="../../images/Level16px_%2B3.gif" class="image" title="Image:level16px_+3.gif"><img alt="Image:level16px_+3.gif" src="../../images//Level16px_%2B3.gif" width="16" height="16" border="0" /></a> Completeness
+<ul><li> Seems to be quite complete (including even minor roads) when compared to other (commercial or administral) road networks; still, there is no information about "black spots"; 
+</li><li> <b>todo:</b> build density plot comparing commercial and this network (legal?)
+</li></ul>
+</li><li> <a href="../../images/Level16px_-3.gif" class="image" title="Image:level16px_-3.gif"><img alt="Image:level16px_-3.gif" src="../../images//Level16px_-3.gif" width="16" height="16" border="0" /></a> Lane Number Information
+<ul><li> The information about lane numbers is stored via types, mainly. For several roads, an explicite lane number is given 
+</li><li> <b>todo:</b> evaluate how much information is given explicitely
+</li><li> <b>todo:</b> compare to images, write down lane number per street
+</li></ul>
+</li><li> <a href="../../images/Level16px_-2.gif" class="image" title="Image:level16px_-2.gif"><img alt="Image:level16px_-2.gif" src="../../images//Level16px_-2.gif" width="16" height="16" border="0" /></a> Maximum Speed Information
+<ul><li> Again, mostly available via types, as for lane numbers; is assumed to be mismatching on some places
+</li><li> Where can one get better information from?
+</li></ul>
+</li></ul>
+</li><li> <a href="../../images/Level16px_-2.gif" class="image" title="Image:level16px_-2.gif"><img alt="Image:level16px_-2.gif" src="../../images//Level16px_-2.gif" width="16" height="16" border="0" /></a> Traffic Management Artifacts
+<ul><li> <a href="../../images/Level16px_-2.gif" class="image" title="Image:level16px_-2.gif"><img alt="Image:level16px_-2.gif" src="../../images//Level16px_-2.gif" width="16" height="16" border="0" /></a> Traffic Light Positions
+<ul><li> Given for some junctions (nodes); Still, there seem to be no information whether a node not marked as controlled is really uncontrolled
+</li><li> <b>todo:</b> Try to find further controlled junctions or improve guessing
+</li></ul>
+</li><li> <a href="../../images/Level16px_-3.gif" class="image" title="Image:level16px_-3.gif"><img alt="Image:level16px_-3.gif" src="../../images//Level16px_-3.gif" width="16" height="16" border="0" /></a> Traffic Light Programs
+<ul><li> Ungiven
+</li><li> <b>todo:</b> Ask about the default cycle time (if there is one) in Cologne; apply at least this one to the generated tls logics
+</li></ul>
+</li><li> <a href="../../images/Level16px_-1.gif" class="image" title="Image:level16px_-1.gif"><img alt="Image:level16px_-1.gif" src="../../images//Level16px_-1.gif" width="16" height="16" border="0" /></a> Other Traffic Management Artifacts
+<ul><li> completely ungiven 
+</li></ul>
+</li><li> <a href="../../images/Level16px_-1.gif" class="image" title="Image:level16px_-1.gif"><img alt="Image:level16px_-1.gif" src="../../images//Level16px_-1.gif" width="16" height="16" border="0" /></a> Closures, Roads At Work
+<ul><li> completely ungiven 
+</li></ul>
+</li></ul>
+</li><li> <a href="../../images/Level16px_-2.gif" class="image" title="Image:level16px_-2.gif"><img alt="Image:level16px_-2.gif" src="../../images//Level16px_-2.gif" width="16" height="16" border="0" /></a> Public Transport
+<ul><li> completely ungiven 
+</li></ul>
+</li><li> <a href="../../images/Level16px_-1.gif" class="image" title="Image:level16px_-1.gif"><img alt="Image:level16px_-1.gif" src="../../images//Level16px_-1.gif" width="16" height="16" border="0" /></a> Demand Data
+<ul><li> <a href="../../images/Level16px_%2B5.gif" class="image" title="Image:level16px_+5.gif"><img alt="Image:level16px_+5.gif" src="../../images//Level16px_%2B5.gif" width="16" height="16" border="0" /></a> Activity-Based single Person Trips 
+<ul><li> <a href="../../images/Level16px_%2B5.gif" class="image" title="Image:level16px_+5.gif"><img alt="Image:level16px_+5.gif" src="../../images//Level16px_%2B5.gif" width="16" height="16" border="0" /></a> No Time Aggregation
+</li><li> <a href="../../images/Level16px_%2B5.gif" class="image" title="Image:level16px_+5.gif"><img alt="Image:level16px_+5.gif" src="../../images//Level16px_%2B5.gif" width="16" height="16" border="0" /></a> No Start/End Position Aggregation
+</li></ul>
+</li><li> <a href="../../images/Level16px_-2.gif" class="image" title="Image:level16px_-2.gif"><img alt="Image:level16px_-2.gif" src="../../images//Level16px_-2.gif" width="16" height="16" border="0" /></a> unverified
+</li><li> <a href="../../images/Level16px_-1.gif" class="image" title="Image:level16px_-1.gif"><img alt="Image:level16px_-1.gif" src="../../images//Level16px_-1.gif" width="16" height="16" border="0" /></a> starts partially at highways
+</li><li> <a href="../../images/Level16px_-2.gif" class="image" title="Image:level16px_-2.gif"><img alt="Image:level16px_-2.gif" src="../../images//Level16px_-2.gif" width="16" height="16" border="0" /></a> ad-hoc, errorneous mapping to OSM
+</li><li> <a href="../../images/Level16px_-2.gif" class="image" title="Image:level16px_-2.gif"><img alt="Image:level16px_-2.gif" src="../../images//Level16px_-2.gif" width="16" height="16" border="0" /></a> shortest path routing, no <a href="../../DUAROUTER.html" title="DUAROUTER">DUE</a> as of release 0.0.3
+</li></ul>
+</li></ul>
+<p>The below images show the structure of demand data over 24 hour period. This shows normal behavior of mobility. Peak hours like ~8-9am , ~4-6pm during which the number of trips are usually high. More information of the city of cologne can be found in the link <a href="http://www.stadt-koeln.de/mediaasset/content/pdf15/stadtkoeln_zahlenspiegel_e_bfrei.pdf" class="external autonumber" title="http://www.stadt-koeln.de/mediaasset/content/pdf15/stadtkoeln_zahlenspiegel_e_bfrei.pdf" rel="nofollow">[1]</a>. The total number of trips (made by cars) over 24h is very close to the number of registered cars*3 (3 trips per registered car). There are around ~420415*3 (~1.2 million) trips which matchs the number in the plots.
+</p>
+<table class="gallery" cellspacing="0" cellpadding="0">
+	<tr>
+		<td><div class="gallerybox" style="width: 235px;">
+			<div class="thumb" style="padding: 40px 0; width: 230px;"><div style="margin-left: auto; margin-right: auto; width: 200px;"><a href="../../images/Average_24h.jpg" class="image" title="Average 24h.jpg"><img alt="" src="../../images/Average_24h.jpg" width="200" height="140" border="0" /></a></div></div>
+			<div class="gallerytext">
+			</div>
+		</div></td>
+		<td><div class="gallerybox" style="width: 235px;">
+			<div class="thumb" style="padding: 40px 0; width: 230px;"><div style="margin-left: auto; margin-right: auto; width: 200px;"><a href="../../images/Per_second_dep.jpg" class="image" title="Per second dep.jpg"><img alt="" src="../../images/Per_second_dep.jpg" width="200" height="140" border="0" /></a></div></div>
+			<div class="gallerytext">
+			</div>
+		</div></td>
+	</tr>
+</table>
+<p><b>Summary:</b> The TAPAS Cologne scenario is assumed to be one of the largest - if not THE largest - freely available traffic simulation data set. Regarding the scenario size, both the road network and the traffic demand are given in a good quality. Nonetheless, many important information is missing or wrong and much further effort is needed to make the scenario realistic and complete.
+</p>
+<a name="Next_Steps" id="Next_Steps"></a><h2> <span class="mw-headline">Next Steps</span></h2>
+<table cellspacing="0" border="1">
+
+<tr>
+<th style="background:#ffdead;"> Task
+</th><th style="background:#ffdead;"> Description
+</th><th style="background:#ffdead;"> Priority
+</th><th style="background:#ffdead;"> Assigned To
+</th></tr>
+<tr>
+<td> Synchronize Traffic Lights
+</td><td>
+</td><td> very high
+</td><td> -
+</td></tr>
+<tr>
+<td> Check Right-of-way Rules
+</td><td>
+</td><td> very high
+</td><td> -
+</td></tr>
+<tr>
+<td> Check Lane Numbers, esp. within Junctions
+</td><td>
+</td><td> high
+</td><td> -
+</td></tr>
+<tr>
+<td> Check whether all traffic lights are given
+</td><td>
+</td><td> high
+</td><td> -
+</td></tr>
+<tr>
+<td> Compute Assignment
+</td><td>
+</td><td> high
+</td><td> -
+</td></tr>
+<tr>
+<td> Add Public Transport
+</td><td>
+</td><td> low
+</td><td> -
+</td></tr>
+<tr>
+<td> Help on Visualisation of POIs/Polygons
+</td><td>
+</td><td> low
+</td><td> -
+</td></tr>
+</table>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 15/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:74-0!1!0!!en!2!edit=0 and timestamp 20120718063140 -->
+</div><hr/><div id="lastmod">This page was last modified on 30 November 2011, at 17:00.</div>

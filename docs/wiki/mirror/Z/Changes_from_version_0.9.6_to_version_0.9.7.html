@@ -1,0 +1,59 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Z/Changes from version 0.9.6 to version 0.9.7</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Changes_from_version_0.9.6_to_version_0.9.7" id="Changes_from_version_0.9.6_to_version_0.9.7"></a><h1> <span class="mw-headline">Changes from version 0.9.6 to version 0.9.7</span></h1>
+<ul><li> 23.05.07: GUISIM now contains storages for recent configs AND networks, usage of "RecentFiles" reworked
+</li><li> 23.05.07: DOCS: generated pdfs are copied to &lt;SUMO_DIST&gt;/docs
+</li><li> 24.05.07: DOCS: removed references to man-pages in docs section
+</li><li> 24.05.07: DOCS: links to FAQ and Publications point to the wiki now
+</li><li> 24.05.07: DUAROUTER/SIM: removed the snipplet embedding prototype (was not yet used)
+</li><li> 24.05.07: TOOLS: added script to apply Astyle on the complete code
+</li><li> 24.05.07: TOOLS: flowrouter.py and flowFromRoutes.py can deal with non-integer flows
+</li><li> 24.05.07: TOOLS: flowrouter.py has an option to ignore detector types
+</li><li> 24.05.07: NETGEN: replaced an occurence of rand() with randSUMO() and reworked the randomness code a little
+</li><li> 30.05.07: DFROUTER: moved to the new exception-handling concept (see <a href="../Developer/Implementation_Notes/Error_Handling.html" title="Developer/Implementation Notes/Error Handling">Developer/Implementation Notes/Error Handling</a>)
+</li><li> 30.05.07: DFROUTER: removed bug "[ 1724214 ] no user information about missing file description header"
+</li><li> 31.05.07: declaring ";" list divider as deprecated
+</li><li> 06.06.07: large code recheck: moved warning pragmas to windows-config; patched inclusion of the correct configuration file
+</li><li> 07.06.07: started to rework exception handling (no more XMLBuildingExceptions, mostly ProcessErrors)
+</li><li> 12.06.07: changed API for xml-handlers (now only supplying the numerical element ids); made handler functions not pure virtual
+</li><li> 12.06.07: made PROJ and GDAL optional
+</li><li> 20.06.07: new XML header in most output files
+</li><li> 22.06.07: Version info added automatically
+</li><li> 27./29.06.07: reworked computation of lane-to-lane directions and main direction (see also OpenProblems)
+</li><li> 02.07.07: Added tests for error handling while loading broken networks (SUMO, JTRROUTER, DUAROUTER, DFROUTER)
+</li><li> somewhere between: reworked application subsystem (removing OptionsSubSys)
+</li><li> renaming variables to the myVar scheme
+</li><li> 16.07.07: removed -l to be used as a shortcut for --lane-weights because -l is already used as a shortcut for --log-file (DUAROUTER, JTRROUTER)
+</li><li> 16.07.07: removed the omit-unbuild-edges - option; there should be no other functionality than for --dismiss-loading-errors (NETCONVERT, NETGEN)
+</li><li> 17.07.07: refactored VISUM-net importer; now using 2 classes instead of 18 (NETCONVERT)
+</li><li> 17.07.07: debugged GUISIM's options handling
+</li><li> 17.07.07: removed support for ARTEMIS (never used since 2003)
+</li><li> OutputDevice supports TCP sockets
+</li><li> skipping MSVC6 / 7 support
+</li><li> DFRouter beautification
+</li><li> JTRRouter uses vehicle classes
+</li><li> possibility to switch traffic lights off
+</li><li> preparing subsecond simulation
+</li><li> Cell/Fastlane support removed
+</li><li> unsupported applications removed
+</li><li> starting detector refactorization
+</li><li> emitting at the end of the step
+</li><li> ITM-RemoteServer renamed to TraCI
+</li><li> Visual Studio 64bit build (without Proj, GDAL and Fox)
+</li><li> Route handling changed (multiref deprecated)
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 2/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:27-0!1!0!!en!2!edit=0 and timestamp 20120718063447 -->
+</div><hr/><div id="lastmod">This page was last modified on 23 September 2011, at 07:41.</div>

@@ -1,0 +1,45 @@
+/*
+ * MyHandler2.h
+ *
+ *  Created on: Abril 9, 2012
+ *      Author: doancea
+ */
+
+#ifndef MYHANDLER2_H_
+#define MYHANDLER2_H_
+
+#ifdef _MSC_VER
+#include <windows_config.h>
+#else
+#include <config.h>
+#endif
+
+#include <xercesc/sax2/DefaultHandler.hpp>
+#include <xercesc/sax2/Attributes.hpp>
+#include <vector>
+#include "VehicleToTrack.h"
+
+using namespace xercesc;
+
+class MyHandler2: public DefaultHandler {
+
+public:
+	MyHandler2();
+
+	void startElement(const XMLCh* const uri, const XMLCh* const localname,
+			const XMLCh* const qname, const Attributes& attrs);
+	void fatalError(const SAXParseException&);
+
+	std::vector<VehicleToTrack> vehicles;
+
+	void showVehiclesToTrack(std::vector<VehicleToTrack>& vehicles);
+
+private:
+	void processAttribute(VehicleToTrack& vehicle, const Attributes& attr);
+  
+  //void processAttribute(VehicleToTrack *vehicle, const Attributes& attr);
+
+	bool exists(std::vector<VehicleToTrack>& vec, const std::string& vehicle);
+};
+
+#endif /* MYHANDLER2_H_ */

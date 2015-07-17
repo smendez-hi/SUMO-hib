@@ -1,0 +1,73 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Tutorials/ScenarioGuide</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Build_the_road_network"><span class="tocnumber">2</span> <span class="toctext">Build the road network</span></a>
+<ul>
+<li class="toclevel-2"><a href="#If_you_already_have_some_network_data"><span class="tocnumber">2.1</span> <span class="toctext">If you already have some network data</span></a></li>
+<li class="toclevel-2"><a href="#If_you_do_not_yet_have_any_network_data"><span class="tocnumber">2.2</span> <span class="toctext">If you do not yet have any network data</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Generate_the_traffic"><span class="tocnumber">3</span> <span class="toctext">Generate the traffic</span></a></li>
+<li class="toclevel-1"><a href="#Improve_your_Scenario"><span class="tocnumber">4</span> <span class="toctext">Improve your Scenario</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Miscellaneous_Problems"><span class="tocnumber">4.1</span> <span class="toctext">Miscellaneous Problems</span></a></li>
+<li class="toclevel-2"><a href="#Traffic_Light_Programs"><span class="tocnumber">4.2</span> <span class="toctext">Traffic Light Programs</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Manage_Scenarios"><span class="tocnumber">5</span> <span class="toctext">Manage Scenarios</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction" id="Introduction"></a><h1> <span class="mw-headline"> Introduction </span></h1>
+<p>This Tutorial is meant to serve as a high-level guide for building a <a href="../SUMO.html" title="SUMO">SUMO</a> scenario. It provides an outline of the typical steps when building a scenario and lists the recommended  wiki pages for each step.
+</p>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />This tutorial assumes familiarity with <a href="../Tutorials/Hello_Sumo.html" title="Tutorials/Hello Sumo">Tutorials/Hello Sumo</a> and <a href="../Tutorials/Quick_Start.html" title="Tutorials/Quick Start">Tutorials/Quick Start</a></div>
+<a name="Build_the_road_network" id="Build_the_road_network"></a><h1> <span class="mw-headline"> Build the road network </span></h1>
+<p>Every simulation requires a road network. The application <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> is used to create a network which can be used by the simulation <a href="../SUMO.html" title="SUMO">SUMO</a>.
+</p>
+<a name="If_you_already_have_some_network_data" id="If_you_already_have_some_network_data"></a><h2> <span class="mw-headline"> If you already have some network data </span></h2>
+<p>Check whether a direct import is possible: <a href="../Networks/Import.html" title="Networks/Import">Networks/Import</a>.
+Otherwise you will need to convert the data to a simple XML-format which can be read by <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>. Read this page:
+<a href="../Networks/Import.html" title="Networks/Import">Networks/Import</a>.
+</p>
+<a name="If_you_do_not_yet_have_any_network_data" id="If_you_do_not_yet_have_any_network_data"></a><h2> <span class="mw-headline"> If you do not yet have any network data </span></h2>
+<p>Use publicly available network data from <a href="http://www.openstreetmap.org/" class="external text" title="http://www.openstreetmap.org/" rel="nofollow">OpenStreetMap</a> as described here: <a href="../Networks/Import/OpenStreetMapDownload.html" title="Networks/Import/OpenStreetMapDownload">Networks/Import/OpenStreetMapDownload</a>.
+Then import the network as described here: <a href="../Networks/Import/OpenStreetMap.html" title="Networks/Import/OpenStreetMap">Networks/Import/OpenStreetMap</a>.
+</p>
+<a name="Generate_the_traffic" id="Generate_the_traffic"></a><h1> <span class="mw-headline"> Generate the traffic </span></h1>
+<p>First you should understand the basics of vehicle modelling: <a href="../Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html" title="Definition of Vehicles, Vehicle Types, and Routes">Definition_of_Vehicles,_Vehicle_Types,_and_Routes</a>.
+You have various ways to insert vehicles into the map. Your choice basically depends on what kind of information about traffic you have: <a href="../Demand/Introduction_to_demand_modelling_in_SUMO.html" title="Demand/Introduction to demand modelling in SUMO">Demand/Introduction_to_demand_modelling_in_SUMO</a>.
+</p>
+<a name="Improve_your_Scenario" id="Improve_your_Scenario"></a><h1> <span class="mw-headline"> Improve your Scenario </span></h1>
+<p>Most methods for network import leave some aspect of network quality deficient. Most often this manifests as unexpected/unrealistic traffic jams and teleporting vehicle errors. 
+</p>
+<a name="Miscellaneous_Problems" id="Miscellaneous_Problems"></a><h2> <span class="mw-headline"> Miscellaneous Problems</span></h2>
+<p>You will have to patch your network data to add missing roads, prohibit some turns, correct the number of lanes and add/remove some traffic lights. 
+The recommended way to perform the necessary changes is this:
+</p>
+<ol><li> Encode the changes in <i>plain-xml</i> files as described in <a href="../Networks/Building_Networks_from_own_XML-descriptions.html" title="Networks/Building Networks from own XML-descriptions">Networks/Building_Networks_from_own_XML-descriptions</a>. Most XML-attributes are optional so you only need to set the values you would like to change.
+</li><li> patch your network using <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> by loading the net.xml along with the plain-xml files. You can even use this during the initial import (i.e. load an OSM-file along with your plain-xml files)
+</li></ol>
+<a name="Traffic_Light_Programs" id="Traffic_Light_Programs"></a><h2> <span class="mw-headline"> Traffic Light Programs</span></h2>
+<p>In almost all cases the traffic light programs will have been guessed by <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> and turn out different from the real traffic lights. A simple way to improve traffic lights programs is making them start their program cycle at a different time. Experiment with the option <span style="color: #111144; font-weight: bold; white-space: pre;">--tls.half-offset</span> and all the other <span style="color: #111144; font-weight: bold; white-space: pre;">--tls.*</span> options of <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>. 
+</p><p>A more powerful way to improve your traffic lights is to <a href="../Networks/Building_Networks_from_own_XML-descriptions.html#Traffic_Light_Program_Definition" title="Networks/Building Networks from own XML-descriptions">give the program explicitly with a <i>tls.xml</i> file</a>.
+</p><p>At this time <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> only supports the creation of static traffic light programs. For dynamic traffic lights see <a href="../Tutorials/TraCI4Traffic_Lights.html" title="Tutorials/TraCI4Traffic Lights">Tutorials/TraCI4Traffic_Lights</a>.
+</p>
+<a name="Manage_Scenarios" id="Manage_Scenarios"></a><h1> <span class="mw-headline"> Manage Scenarios </span></h1>
+<p>If you have two networks <i>A.net.xml</i> and <i>B.net.xml</i> you may wish to find out how they differ. This can be accomplished using the tool <i><b>&lt;SUMO_HOME&gt;</b></i> <i>/tools/net/netdiff.py</i>. Running this tool will give you a set of plain-XML difference files. They only contain the differences grouped by <i>deleted</i>,<i>created</i> and <i>changed</i> elements. It is even possible to load these files along with <i>A.net.xml</i> to recreate <i>B.net.xml</i>.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 27/1000000
+Post-expand include size: 422/2097152 bytes
+Template argument size: 117/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:448-0!1!0!!en!2!edit=0 and timestamp 20120717121938 -->
+</div><hr/><div id="lastmod">This page was last modified on 2 November 2011, at 14:36.</div>

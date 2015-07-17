@@ -1,0 +1,158 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Tools/Assign</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Assignment_Tools"><span class="tocnumber">1</span> <span class="toctext">Assignment Tools</span></a>
+<ul>
+<li class="toclevel-2"><a href="#dua-iterate.py"><span class="tocnumber">1.1</span> <span class="toctext">dua-iterate.py</span></a></li>
+<li class="toclevel-2"><a href="#one-shot.py"><span class="tocnumber">1.2</span> <span class="toctext">one-shot.py</span></a></li>
+<li class="toclevel-2"><a href="#Assignment.py"><span class="tocnumber">1.3</span> <span class="toctext">Assignment.py</span></a></li>
+<li class="toclevel-2"><a href="#networkStatistics.py"><span class="tocnumber">1.4</span> <span class="toctext">networkStatistics.py</span></a></li>
+<li class="toclevel-2"><a href="#matrixDailyToHourly.py"><span class="tocnumber">1.5</span> <span class="toctext">matrixDailyToHourly.py</span></a></li>
+<li class="toclevel-2"><a href="#costFunctionChecker.py"><span class="tocnumber">1.6</span> <span class="toctext">costFunctionChecker.py</span></a></li>
+<li class="toclevel-2"><a href="#addTaz.py"><span class="tocnumber">1.7</span> <span class="toctext">addTaz.py</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Assignment_Tools" id="Assignment_Tools"></a><h1> <span class="mw-headline">Assignment Tools</span></h1>
+<a name="dua-iterate.py" id="dua-iterate.py"></a><h2> <span class="mw-headline"> dua-iterate.py </span></h2>
+<p>"dua-iterate.py" helps you to perform the computation of a dynamic user assignment (DUA). It computes a given number of DUA-steps. At least two files have to be given as input the script: a SUMO-network and a set of trip definitions. A stochastic user-equilibrium (UE)traffic state is not guaranteed after the assignment. The more the number of the DUA-steps is defined, the closer a SUE traffic state might be achieved.
+</p><p>Within each iteration step, the script generates a configuration file for the <a href="../DUAROUTER.html" title="DUAROUTER">DUAROUTER</a>, the corn of SUMO, and starts it with this configuration file. Then, a configuration file for <a href="../SUMO.html" title="SUMO">SUMO</a> is built and <a href="../SUMO.html" title="SUMO">SUMO</a> is started. Both configuration files are competely defined within the script itself. As default, for each time step, SUMO will generate three dump files with edge-dumps aggregated over 150, 300, and 900s, a summary information as well as a trip information output. The names of these outputs are numbered over the iteration steps. If you want to change the outputs, you also have to take a look into the script, but you should not disable the edge-based dump for aggregation over 900s, because this is read by the <a href="../DUAROUTER.html" title="DUAROUTER">DUAROUTER</a> in the next iteration steps in order to compute the DUA.
+</p><p>For further options to the script look either at the source code or start it with the "--help" option.
+</p>
+<pre>dua-iterate.py -n &lt;PATH_TO_SUMO_NET&gt; -t &lt;PATH_TO_TRIPS&gt;
+</pre>
+<p>Furthermore a calibrator option is avalible in the script to call the Cadyts calibration tool, developed by Gunnar Flötteröd
+at EPFL, Switzerland. With this option, route choices will be adjusted according to given link counts. The validation work of the calibration between SUMO and Cadyts is wrok in progress.
+</p>
+<a name="one-shot.py" id="one-shot.py"></a><h2> <span class="mw-headline"> one-shot.py </span></h2>
+<p>The one-shot.py provides a variant of the dynamic user assignment. The assignment method is the same one which SUMO and the dua-iterate.py use. Given trips will be assigned to respective fastest routes according to their deaprture times and a given travel-time updating interval. Different travel-time updating intervals can be defined by users, such as 900, i.e. link travel times will be updated every 900 sec. If the travel-time updating interval is set to -1, link travel times will not updated and link trave times at free-flow speeds are used for all trips.
+</p><p>A stochastic user-equilibrium traffic state will not achieved with the use of this script.
+</p><p><br />
+An examplary execution command is shown below.
+</p>
+<pre> one-shot.py -f &lt;travel-time updating interval&gt; -n &lt;network file&gt; -t &lt;trip file&gt;
+ 
+ where -f travel-time updating interval (sec); -1 means no travel-time updating (default: -1,1800,300,15)
+       -n network file name and the respective path
+       -t trip file name and the respective path
+</pre>
+<p>Additional setting, such as outputs of summary and trip-information as well as begin time, could be made by adding respective options which can be found in the script.
+</p>
+<a name="Assignment.py" id="Assignment.py"></a><h2> <span class="mw-headline"> Assignment.py </span></h2>
+<p>In comparison to the dua-iterate.py and the one-shot.py the Assignment.py is applied to execute a macroscopic traffic assignment. Three types of  macroscopic traffic assignments are available here: an incremental assignment, a stochastic user equilibrium assignment (SUE) based on the c-logit model by Cacessta (1996) and a logit- based SUE model based on the utility function by Lohse. The c-logit model is set as default. In addition, a k-shortest-paths algorithm has also been implemented in these two SUE models with a default value of 8. 
+</p><p><br />
+Furthermore the applied route searching algorithms are based on Dijkstra. Three variants are available:
+</p>
+<ul><li> <i>Dijkstra plain</i>: travel time penalties for turning movements are <b>not</b> considered.
+</li><li> <i>Dijkstra extend</i>: travel time penalties for turning movements are considered.
+</li><li> <i>Dijkstra boost</i>: it is used to speed up route searching and travel time penalties for turning movements are considered here.
+</li></ul>
+<p><br />
+In oder to use this script the other scripts are required, i.e. elements.py, network.py, dijkstra.py, inputs.py, outputs.py, assign.py as well as tables.py. These scripts should locate in the same directory with the Assignment.py. Each of these scripts is briefly described below.
+</p><p><b>elements.py</b>
+</p><p>This script is to define the classes and functions for
+</p>
+<ul><li> reading network geometric, 
+</li><li> calculating link characteristics, such as capacity, travel time and link cost function,
+</li><li> recording vehicular and path information, and 
+</li><li> conducting statistic tests.
+</li></ul>
+<p><b>network.py</b>
+</p><p>This script is to retrive the network data, the district data and the vehicle data, generated by SUMO, from the respective XML files. Besides, the class 'Net' is also definded here.
+</p><p><b>dijkstra.py</b>
+</p><p>The Dijkstra algorithm is used for searching the respective shortest paths and is based on the script from David Eppstein, UC Irvine. Moreover, this script is to find the shortest path from the given origin 'start' to the other nodes in the investigated network. The link information about the shortest paths and the corresponding travel times will be stored in the lists P and D respectively. Three variants are available: Dijkstra plain, Dijkstra extend as well as Dijkstra boost.
+</p><p><b>inputs.py</b>
+</p><p>This script is to retrieve the given incremntal assignment parameters, OD districts and the defined matrix from input files. Moreover, the link travel time for district connectors will be estimated.
+</p><p><b>outputs.py</b>
+</p><p>This script is for generating the outputs from the choosed traffic assignment.
+</p><p><b>assign.py</b>
+</p><p>This script is for executing traffic assignment according to the user-defined assignment model. The above-mentioned incremental  assignment model, the C-Logit assignment model and the logit assignment model based on the utiility function by Lohse are included in this script.
+</p><p><b>tables.py</b>
+</p><p>This file defines global tables used to:
+</p>
+<ul><li> define the parameters in link cost BPR-functions, proposed by the Bureau of Public Roads (BPR). Link travel times are then calculated based the defined functions.
+</li><li> define the capacity and the respective cost function for each link
+</li><li> conduct significance tests
+</li></ul>
+<p><br />
+The following exemplary command is to show how to exeute an assignment with the use of the Assignment.py:
+</p>
+<pre> Assignment.py -e &lt;assignment method&gt; -i 10 -d &lt;districts file&gt; -m &lt;matrix file&gt; -n &lt;network file&gt; -s &lt;traffic singal files&gt; -+ &lt;Dijkstra type&gt;
+  
+ where: -e: the assignemnt method: incremental, lohse, clogit (default: clogit)
+        -i: the number of maximal iterations for the SUE assignments; the number of iterations for an incremental assignment 
+            (default: 20)
+        -d: district file name and the respective path
+        -m: matrix file name and the respective path
+        -n: network file name and the respective path
+        -s: additional traffic signal timing files (optional)
+        -+: the used Dijkstra-method: plain, extend, boost (default: boost)
+  
+  
+ Changes of parameters setting regarding convergence criteria are possible with the use of respective options in the script.
+</pre>
+<p><br />
+In addition, the script <b>run.py</b> is to run assignment tests with different assignment methods.
+</p>
+<a name="networkStatistics.py" id="networkStatistics.py"></a><h2> <span class="mw-headline"> networkStatistics.py </span></h2>
+<p>This script is to calculate the global performance indices according to <b>SUMO-based</b> simulation results. The calculation functions are directly defined in this script. Basis statistics are delivered, such as:
+</p>
+<ul><li> average travel time     (s)
+</li><li> average travel length   (m)
+</li><li> average travel speed    (m/s)
+</li><li> average departure delay (s)
+</li><li> average waiting time    (s)
+</li></ul>
+<p><br />
+Besides, this script is also to execute a significance test for evaluating the results from different assignment methods.The t test and the Kruskal-Wallis test are available in this script. If not specified, the Kruskal-Wallis test will be applied with the assumption that data are not normally distributed.
+</p><p>In order to exeute this script, the other two scripts, i.e. statisticsElements.py and tables.py, are required. They all should be in the same directory. 
+</p><p>In the statisticsElements.py, classes regarding vehicles, their performance measures, t values, H values as well as functions for outputs are defined. The chi-square table and the t table are defined in the tables.py.
+</p><p>An exemplary command is shown below.
+</p>
+<pre> networkStatistics.py -t &lt;tripinfo files&gt; -o &lt;output file&gt; -e 
+ 
+ where -t: name of output files containing vehicle information, generated by SUMO
+       -0: define the output file name
+       -e: set true for applying the t test (default: false)
+       -k: set true for applying the Kruskal-Wallis test (default: false)
+</pre>
+<p><br />
+</p>
+<a name="matrixDailyToHourly.py" id="matrixDailyToHourly.py"></a><h2> <span class="mw-headline"> matrixDailyToHourly.py </span></h2>
+<p>This script is to generate hourly matrices from a VISUM daily matrix. The taffic demand of the traffic zones, which have the same connection links, will be integrated. The exemplary command is indicated below.
+</p>
+<pre> matrixDailyToHourly.py -m &lt;matrix file&gt; -z &lt;district file&gt; -t &lt;flow time-series file&gt; -o &lt;output directory&gt;
+ 
+ where -m: matrix file name
+       -z: district file name
+       -t: name of the file containing traffic flow time series (optional); If not specified, the defined daily matrix will be 
+           regularly divided into 24 hours.
+       -o: output directoy name and the respective path
+</pre>
+<a name="costFunctionChecker.py" id="costFunctionChecker.py"></a><h2> <span class="mw-headline"> costFunctionChecker.py </span></h2>
+<p>Run duarouter repeatedly and simulate weight changes via a cost function. (to be continued)
+</p><p>Still under construction!
+</p><p><br />
+</p>
+<a name="addTaz.py" id="addTaz.py"></a><h2> <span class="mw-headline"> addTaz.py </span></h2>
+<p>This script is to add the information of traffic analysis zones, i.e. origin and destination zone, in a given route file. Such information is required in a given route file when applying the calibrator option in the script dua-iterate.py. A trip file, containing traffic zones information, is required when executing this script.
+</p><p>With the use of the following command, required traffic zones information can be added in a given route file.
+</p>
+<pre> addTaz.py -r &lt;route file&gt; -t &lt;trip file&gt;
+</pre>
+<!-- 
+NewPP limit report
+Preprocessor node count: 9/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:249-0!1!0!!en!2!edit=0 and timestamp 20120718063344 -->
+</div><hr/><div id="lastmod">This page was last modified on 9 September 2011, at 07:18.</div>

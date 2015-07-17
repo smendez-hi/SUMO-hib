@@ -1,0 +1,95 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">NETEDIT</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#From_30.000_feet"><span class="tocnumber">1</span> <span class="toctext">From 30.000 feet</span></a></li>
+<li class="toclevel-1"><a href="#Usage_Description"><span class="tocnumber">2</span> <span class="toctext">Usage Description</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Input"><span class="tocnumber">2.1</span> <span class="toctext">Input</span></a></li>
+<li class="toclevel-2"><a href="#Output"><span class="tocnumber">2.2</span> <span class="toctext">Output</span></a></li>
+<li class="toclevel-2"><a href="#Edit_Modes"><span class="tocnumber">2.3</span> <span class="toctext">Edit Modes</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Inspect"><span class="tocnumber">2.3.1</span> <span class="toctext">Inspect</span></a></li>
+<li class="toclevel-3"><a href="#Create_Edges"><span class="tocnumber">2.3.2</span> <span class="toctext">Create Edges</span></a></li>
+<li class="toclevel-3"><a href="#Delete"><span class="tocnumber">2.3.3</span> <span class="toctext">Delete</span></a></li>
+<li class="toclevel-3"><a href="#Move"><span class="tocnumber">2.3.4</span> <span class="toctext">Move</span></a></li>
+<li class="toclevel-3"><a href="#Connect"><span class="tocnumber">2.3.5</span> <span class="toctext">Connect</span></a></li>
+<li class="toclevel-3"><a href="#Select"><span class="tocnumber">2.3.6</span> <span class="toctext">Select</span></a></li>
+<li class="toclevel-3"><a href="#Traffic_Lights"><span class="tocnumber">2.3.7</span> <span class="toctext">Traffic Lights</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="#Processing_Menu_Options"><span class="tocnumber">2.4</span> <span class="toctext">Processing Menu Options</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="From_30.000_feet" id="From_30.000_feet"></a><h1> <span class="mw-headline">From 30.000 feet</span></h1>
+<p><strong class="selflink">NETEDIT</strong> is a graphical network editor. Please note that <strong class="selflink">NETEDIT</strong> is currently not open, but made available for project partners only.
+</p>
+<dl><dd><b>Purpose:</b> create and modify SUMO networks
+</dd><dd><b>System:</b> portable (Linux/Windows is tested); opens a window
+</dd><dd><b>Input (optional):</b> road network definitions to import
+</dd><dd><b>Output:</b> A generated SUMO-road network; optionally also other outputs
+</dd><dd><b>Programming Language:</b> c++
+</dd></dl>
+<a name="Usage_Description" id="Usage_Description"></a><h1> <span class="mw-headline">Usage Description</span></h1>
+<p><strong class="selflink">NETEDIT</strong> is a visual network editor. It can be used to create networks from scratch and to modify all aspects of existing networks. With a powerfull selection and highlighting interface it can also be used to debug network attributes. <strong class="selflink">NETEDIT</strong> is built on top of <a href="NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>. As a general rule of thumb, anything  <a href="NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> can do, <strong class="selflink">NETEDIT</strong> can do as well.
+<strong class="selflink">NETEDIT</strong> has unlimited undo/redo capabilities and thus allows editing mistakes to be quickly corrected.
+Editing commands are generally issued with a left-click (according to the current <a href="NETEDIT.html#Edit_Modes" title="NETEDIT"> edit mode</a>. Right-clicks are used for zooming and panning as well as for context-menus.
+</p>
+<a name="Input" id="Input"></a><h2> <span class="mw-headline"> Input </span></h2>
+<p><strong class="selflink">NETEDIT</strong> is a GUI-Application and inputs are chosen via menus. The following input formats are supported:
+</p>
+<ul><li> SUMO-net files
+</li><li> OSM-files
+</li><li> <a href="NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>-configuration files
+</li></ul>
+<a name="Output" id="Output"></a><h2> <span class="mw-headline"> Output </span></h2>
+<ul><li> SUMO-net files
+</li><li> plain-xml files
+</li></ul>
+<a name="Edit_Modes" id="Edit_Modes"></a><h2> <span class="mw-headline"> Edit Modes </span></h2>
+<p><strong class="selflink">NETEDIT</strong> is controlled via various editing modes. This serves to reduce the number of clicks. For example, in <b>delete mode</b> a click on any object deletes it.
+</p>
+<a name="Inspect" id="Inspect"></a><h3> <span class="mw-headline"> Inspect </span></h3>
+<p>Inspect and modify attributes of edges, lanes and nodes. Modifications have to be confirmed by hitting &lt;Enter&gt;.
+</p>
+<a name="Create_Edges" id="Create_Edges"></a><h3> <span class="mw-headline"> Create Edges </span></h3>
+<p>Create edges (and implicitly nodes)
+</p>
+<a name="Delete" id="Delete"></a><h3> <span class="mw-headline"> Delete </span></h3>
+<p>Delete nodes (and all adjoining edges), single edges or geometry points.
+</p>
+<a name="Move" id="Move"></a><h3> <span class="mw-headline"> Move </span></h3>
+<p>Move nodes by dragging with the left mouse button. Dragging edges creates or moves geometry points. Dragging a node on top of another node joins them into a single node.
+</p>
+<a name="Connect" id="Connect"></a><h3> <span class="mw-headline"> Connect </span></h3>
+<p>Modify lane-to-lane connections. The first click selects the source lane and following clicks toggle the status of target lanes.
+</p>
+<a name="Select" id="Select"></a><h3> <span class="mw-headline"> Select </span></h3>
+<p>Select network objects according to various criteria. Selected objects can be moved or deleted together. It is also possible to set attributes for all selected nodes (or all edges) at the same time using <b>inspect mode</b>.
+</p>
+<a name="Traffic_Lights" id="Traffic_Lights"></a><h3> <span class="mw-headline"> Traffic Lights </span></h3>
+<p>Set nodes to be controlled or uncontrolled by a traffic light. Edit all aspects of static signal plans. Visualizes a signal phase by coloring the controlled lane-to-lane connections according to the signal state. You can edit the signal state for the current phase by right-clicking one any controlled lane and picking a new color.
+</p>
+<hr />
+<a name="Processing_Menu_Options" id="Processing_Menu_Options"></a><h2> <span class="mw-headline"> Processing Menu Options </span></h2>
+<ul><li> <b>Compute Junctions:</b> recomputes the geometry and logic of all junctions. This is triggered automatically when entering nodes which require this information (Connect, Traffic Lights).
+</li><li> <b>Join Selected Junctions:</b> joins the selected junctions into a single junction (See [<a href="https://sourceforge.net/apps/mediawiki/sumo/index.php?title=Networks/Building_Networks_from_own_XML-descriptions#Joining_Nodes|" class="external text" title="https://sourceforge.net/apps/mediawiki/sumo/index.php?title=Networks/Building_Networks_from_own_XML-descriptions#Joining_Nodes|" rel="nofollow">joining Nodes</a>]).
+</li><li> <b>Options:</b> inspect and set all options. These are the same options that <a href="NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> accepts on the commandline or in a configuration.
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 14/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:440-0!1!0!!en!2!edit=0 and timestamp 20120718002631 -->
+</div><hr/><div id="lastmod">This page was last modified on 2 May 2012, at 06:18.</div>

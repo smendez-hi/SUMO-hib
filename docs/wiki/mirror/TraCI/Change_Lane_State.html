@@ -1,0 +1,62 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Change Lane State</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Command_0xc3:_Change_Lanes_State" id="Command_0xc3:_Change_Lanes_State"></a><h1> <span class="mw-headline"> Command 0xc3: Change Lanes State </span></h1>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td align="center"> &lt;value_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Lane ID
+</th><th style="border: 1pt solid;"> Type of the value
+</th><th style="border: 1pt solid;"> New Value
+</th></tr></table>
+<p>Changes the state of a lane. Because it is possible to change different values of a lane, the given value may have different types. The following values can be changed, the type of the value to given is also shown in the table.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Changeable Traffic Lights Variables</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> allowed vehicle classes (0x34)
+</td><td> stringList
+</td><td> Sets the given classes as classes allowed on the lane.
+</td></tr>
+<tr>
+<td> disallowed vehicle classes (0x35)
+</td><td> stringList
+</td><td> Sets the given classes as classes not allowed on the lane.
+</td></tr>
+<tr>
+<td> length (0x44)
+</td><td> double
+</td><td> Sets the given value as the lane's new length [m].
+</td></tr>
+<tr>
+<td> vmax (0x41)
+</td><td> double
+</td><td> Sets the given value as the new maximum velocity allowed on the lane [m/s].
+</td></tr>
+</table>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 2/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:296-0!1!0!!en!2!edit=0 and timestamp 20120718014929 -->
+</div><hr/><div id="lastmod">This page was last modified on 13 July 2011, at 14:03.</div>

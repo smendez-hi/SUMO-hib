@@ -1,0 +1,110 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Z/Changes from version 0.9.7 to version 0.9.8</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Changes_from_version_0.9.7_to_version_0.9.8" id="Changes_from_version_0.9.7_to_version_0.9.8"></a><h1> <span class="mw-headline">Changes from version 0.9.7 to version 0.9.8</span></h1>
+<ul><li> Building
+<ul><li> MSVC8: extracted properties for build configurations into separate property files.
+</li><li> many coarse changes in directory/project due to resolving request 1641440
+</li><li> gui/dialogs, gui/drawerimpl, /utils/gui/events, /utils/gui/windows, /utils/gui/globjects, /utils/gui/tracker have now own projects
+</li><li> microsim/traffic_lights - project was named properly
+</li><li> netbuild/nodes, microsim/lanechanging, and all netimport classes but vissim import were moved one folder up
+</li><li> SUMOFrame was moved to microsim (renamed to MSFrame!)
+</li><li> utils/helpers and utils/router were moved to utils/common
+</li></ul>
+</li></ul>
+<ul><li> all
+<ul><li> added inline-documentation for utils/importio
+</li></ul>
+</li></ul>
+<ul><li> simulation
+<ul><li> debugged tls-coupled e2-output
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871037&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871037&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1886198 Segmentation Fault</a>; see comment; thanks to Helcio Bezerra de Mello for the bug report
+</li><li> further work on detectors
+<ul><li> values revalidated and described <font color="orange">output has changed</font>
+</li><li> marked "measures" and "style" as deprecated
+</li></ul>
+</li><li> while looking for next links to use, the vehicle is now aware of his best lanes
+</li><li> simplified computation of best lanes
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871859&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871859&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1871859 vehicles do not wait on lane end</a>; thanks to Jensen Chou for the bug report 
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871964&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1871964&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1871964 left-moving vehicles do not fill junction</a>  
+</li><li> patched error handling in emitters; tests added
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1873155&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1873155&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1873155 vehicles with depart lower than begin are emitted</a>; tests added
+</li><li> tests for rerouter added; partially debugged
+</li><li> added inline-documentation for microsim/output
+</li><li> debugging inner-junction simulation
+</li><li> refactoring detectors
+<ul><li> MSDetector2File into MSDetectorControl
+</li><li> complete e1-refactoring
+</li><li> complete e2-refactoring
+</li><li> complete e3-refactoring
+</li><li> MSMeanData_Net_Cont is now simply a std::vector&lt;MSMeanData_Net*&gt; 
+</li><li> improved documentation
+</li><li> spell checking
+</li></ul>
+</li></ul>
+</li><li> removed MSUnit - the usage was bogus, often same functions were defined twice. Rather confusing. Added utils/common/PhysicalTypeDefs.h instead, as a new begin.
+</li><li> Removed MSNet's deltaT - was falsly used and duplicate with utils/common/SUMOTime
+</li></ul>
+<ul><li> guisim
+<ul><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1830296&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1830296&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1830296 guiemitter destroys event que</a> by introducing a thread-aware event control version for guisim (GUIEventControl)
+</li><li> implementing <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1645216&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1645216&amp;group_id=45607&amp;atid=443424" rel="nofollow">feature request 1645216 Indicator / blinker depending on junction distance</a> 
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1862073&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1862073&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1862073 view is not refreshed when (de)selecting item</a>
+</li><li> added doxygen-documentation for utils/gui/div
+</li></ul>
+</li><li> work on problems with guisim (undeterministic termination)
+</li></ul>
+<ul><li> netconvert
+<ul><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1886198&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1886198&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1886198 User reports unknown error while importing shapefile</a>; see comment; thanks to Maxim Raya for the bug report
+</li></ul>
+</li></ul>
+<ul><li> DFROUTER
+<ul><li> trying to make it more usable for inner-city scenarios with many connections
+</li></ul>
+</li><li> spell checking
+<ul><li> renamed 'succeding' to 'succeeding'
+</li><li> guisim now shows internal lanes less wide
+</li><li> false left closure of leftmost lane shown in "real world" scheme debugged
+</li></ul>
+</li></ul>
+<ul><li> removed utils/importio/CSVHelpers (was used once and contained a two-lines-method (sic!))
+</li><li> working on doxygen documentation (and adding throw-declarations)
+<ul><li> utils/options
+</li><li> utils/iodevices
+</li><li> utils/importio
+</li></ul>
+</li><li> removing unneeded debug-helpers in microsim
+</li><li> debugged problems with repetition of vehicles that have a color within guisim (application terminated)
+</li><li> patched XMLSubSys documentation (was <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1828803&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1828803&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1828803</a>)
+</li></ul>
+<ul><li> fixed vehicle decelerations when being on a higher priorised road (bug <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1830266&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1830266&amp;group_id=45607&amp;atid=443421" rel="nofollow">1830266</a>)
+</li><li> fixed NETCONVERTER bugs occuring when connected nodes are too close together (bugs <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1639460&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1639460&amp;group_id=45607&amp;atid=443421" rel="nofollow">1639460</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1639436&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1639436&amp;group_id=45607&amp;atid=443421" rel="nofollow">1639436</a>)
+</li><li> moved color out of MSVehicle (affects loading classes)
+</li><li> router import classes now process input colors as strings
+</li><li> consolidated XML-definitions
+<ul><li> vehicle type is now called "type" in all cases
+</li><li> removed unneeded elements and attributes
+</li></ul>
+</li><li> (almost complete) rework of the microsimulation loop
+</li></ul>
+<dl><dd>What was done, basically is to change the way vehicles move over junctions and how other vehicles get informed about vehicles approaching on incoming lanes. Quite heavy changes, in fact, I hope of benefit. You may read some further information on this in the following tracker items: <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1840935&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1840935&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1840935: exchange of vehicles over lanes disallow fails with two vehs</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1840938&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1840938&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1840938: lane exchange mechanism ignores undefined lane order</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1840952&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1840952&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1840952: drop vehicle exchange in lane changer</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1840944&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1840944&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1840944: replace approaching information in lanes</a>
+</dd></dl>
+<ul><li> Further work on inner-junction traffic (still not 100% complete)
+<ul><li> bug <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1840950&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1840950&amp;group_id=45607&amp;atid=443421" rel="nofollow">1840950: take into account inner-junction state</a>
+</li></ul>
+</li><li> speeding up simulation by not touching empty lanes
+</li><li> C2C was made optional (using defines) in order to reduce memory footprint; was: <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1843267&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1843267&amp;group_id=45607&amp;atid=443421" rel="nofollow">feature 1843267: make extensions optional</a>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 3/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:26-0!1!0!!en!2!edit=0 and timestamp 20120718063448 -->
+</div><hr/><div id="lastmod">This page was last modified on 23 September 2011, at 07:41.</div>

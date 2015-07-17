@@ -1,0 +1,215 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Output/Lanearea Detectors (E2)</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Instantiating_within_the_Simulation" id="Instantiating_within_the_Simulation"></a><h2> <span class="mw-headline">Instantiating within the Simulation</span></h2>
+<p>A lane area detector is defined the following way within an additional file:
+</p>
+<div class="inlxml">&lt;laneAreaDetector id="&lt;ID&gt;" lane="&lt;LANE_ID&gt;" pos="&lt;POSITION_ON_LANE&gt;" length="&lt;DETECTOR_LENGTH&gt;" freq="&lt;AGGREGATION_TIME&gt;" file="&lt;OUTPUT_FILE&gt;" [cont="&lt;BOOL&gt;"] [timeThreshold="&lt;FLOAT&gt;"] [speedThreshold="&lt;FLOAT&gt;"] [jamThreshold="&lt;FLOAT&gt;"] [friendlyPos="x"]/&gt;</div>
+<p>Most of the attributes have the same meaning as for <a href="../../Simulation/Output/Induction_Loops_Detectors_(E1).html" title="Simulation/Output/Induction Loops Detectors (E1)">induction loops</a>. As an areal detector has a certain length, "<span class="inlxml">length</span>" must be supplied as a further parameter. It may be a negative number which lets the detector be extended upstream to the given beginning position. The optional parameter "<span class="inlxml">cont</span>" let's the detector continue over the current lane onto this lane's predecessors when the detector's length plus his position is larger than the place available on the lane.
+</p><p>The attributes:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>id</b>
+</td><td> id (string)
+</td><td> A string holding the id of the detector
+</td></tr>
+<tr>
+<td class="inlxml"> <b>lane</b>
+</td><td> referenced lane id
+</td><td> The id of the lane the detector shall be laid on. The lane must be a part of the network used.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>pos</b>
+</td><td> float
+</td><td> The position on the lane the detector shall be laid on in meters. See information about the same attribute within the detector loop description for further information.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>length</b>
+</td><td> float
+</td><td> The length of the detector in meters. If the detector grows over the lane's end (begin in fact), it is either cut off at the lane's length if the "cont"-attribute is false or not given or is continued on the predeceding lanes in the case the "cont"-attribute is set to true.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>freq</b>
+</td><td> int
+</td><td> The aggregation period the values the detector collects shall be summed up.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>file</b>
+</td><td> filename
+</td><td> The path to the output file. The path may be relative.
+</td></tr>
+<tr>
+<td class="inlxml"> cont
+</td><td> bool
+</td><td> Holds the information whether detectors longer than a lane shall be cut off or continued (set it to true for the second case); <i>default: false (detector lies on one lane only)</i>.
+</td></tr>
+<tr>
+<td class="inlxml"> timeThreshold
+</td><td> int
+</td><td> The time-based threshold that describes how much time has to pass until a vehicle is recognized as halting; <i>in s, default: 1s</i>.
+</td></tr>
+<tr>
+<td class="inlxml"> speedThreshold
+</td><td> float
+</td><td> The speed-based threshold that describes how slow a vehicle has to be to be recognized as halting; <i>in m/s, default: 5/3.6m/s</i>.
+</td></tr>
+<tr>
+<td class="inlxml"> jamThreshold
+</td><td> float
+</td><td> The minimum distance to the next standing vehicle in order to make this vehicle count as a participant to the jam; <i>in m, default: 10m</i>.
+</td></tr>
+<tr>
+<td class="inlxml"> friendlyPos
+</td><td> bool
+</td><td> If set, no error will be reported if the detector is placed behind the lane. Instead, the detector will be placed 0.1 meters from the lane's end or at position 0.1, if the position was negative and larger than the lane's length after multiplication with -1; <i>default: false</i>.
+</td></tr></table>
+<a name="Generated_Output" id="Generated_Output"></a><h2> <span class="mw-headline">Generated Output</span></h2>
+<p>A single data line within the output of a simulated lane area detector looks as following (the line is not broken within the output): <span class="inlxml">&lt;interval begin="&lt;BEGIN_TIME&gt;" end="&lt;END_TIME&gt;" id="&lt;DETECTOR_ID&gt;" nSamples="&lt;DATA_SAMPLES&gt;" meanSpeed="&lt;MEAN_SPEED&gt;" meanOccupancy="&lt;MEAN_OCCUPANCY&gt;" maxOccupancy="&lt;MAX_OCCUPANCY&gt;" meanMaxJamLengthInVehicles="&lt;VAL&gt;" meanMaxJamLengthInMeters="&lt;VAL&gt;" maxJamLengthInVehicles="&lt;VAL&gt;" maxJamLengthInMeters="&lt;VAL&gt;" jamLengthInVehiclesSum="&lt;VAL&gt;" jamLengthInMetersSum="&lt;VAL&gt;" meanHaltingDuration="&lt;VAL&gt;" maxHaltingDuration="&lt;VAL&gt;" haltingDurationSum="&lt;VAL&gt;" meanIntervalHaltingDuration="&lt;VAL&gt;" maxIntervalHaltingDuration="&lt;VAL&gt;" intervalHaltingDurationSum="&lt;VAL&gt;" startedHalts="&lt;VAL&gt;" meanVehicleNumber="&lt;VAL&gt;" maxVehicleNumber="&lt;VAL&gt;" /&gt;</span>
+</p><p>To explain this vast amount of measures, a short note about how a lane area detector works is needfull. A lane area detector takes note about each vehicle that enters the area. As long as the vehicle does not leave the area completely, its state is collected in each time step during the interval. Each vehicle state in this case is called a "data sample" and the output of a lane area detector is made up from all data samples of all vehicles within the are during the complete data collection ("freq") interval.
+</p><p>As a lane area detector covers a lane and vehicles are sorted on these, it is possible to recognize jams along the detector's area and measure them. Because more than one jam may take place at the area at one time, the values cover as well averaged measures of all jams ("jamLengthIn...Sum") as explicite measures of the longest (maximum) jam. For the longest jam, both averaged ("meanMaxJamLengthIn...") and maximum ("maxJamLengthIn...") values are written.
+[Note]	Note
+</p><p>The jam length in meters may be more than a sum of the vehicles lengths, because the place between vehicle is also taken into account.
+</p><p>Besides jam computation, the durations vehicles are halting are collected. They are both collected over the whole time span a vehicle is on the detector area ("...HaltingDuration" and "haltingDurationSum"), and explicite for each interval ("...IntervalHaltingDuration" and "intervalHaltingDurationSum").
+</p><p>The values are described in the following table.
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> begin
+</td><td> (simulation) seconds
+</td><td> The first time step the values were collected in
+</td></tr>
+<tr>
+<td class="inlxml"> end
+</td><td> (simulation) seconds
+</td><td> The last time step + DELTA_T the values were collected in (may be equal to begin)
+</td></tr>
+<tr>
+<td class="inlxml"> id
+</td><td> id
+</td><td> The id of the detector (needed if several detectors share an output file)
+</td></tr>
+<tr>
+<td class="inlxml"> nSamples
+</td><td> #
+</td><td> The number of data samples that could be collected. A "data sample" means the state of a vehicle that was on the detector area during one of the simulation steps of the interval described by this data line.
+</td></tr>
+<tr>
+<td class="inlxml"> meanSpeed
+</td><td> m/s
+</td><td> The mean velocity over all collected data samples.
+</td></tr>
+<tr>
+<td class="inlxml"> meanOccupancy
+</td><td>&nbsp;%
+</td><td> The percentage (0-100%) of the detector's place that was occupied by vehicles, summed up for each time step and averaged by the interval duration.
+</td></tr>
+<tr>
+<td class="inlxml"> maxOccupancy
+</td><td>&nbsp;%
+</td><td> The maximum percentage (0-100%) of the detector's place that was occupied by vehicles during the interval.
+</td></tr>
+<tr>
+<td class="inlxml"> meanMaxJamLengthInVehicles
+</td><td> #vehicles
+</td><td> The length of the longest jams recognized during each step, averaged over the interval duration. In vehicles that have contributed to these jams.
+</td></tr>
+<tr>
+<td class="inlxml"> meanMaxJamLengthInMeters
+</td><td> m
+</td><td> As prior, but in meters (see notes)
+</td></tr>
+<tr>
+<td class="inlxml"> maxJamLengthInVehicles
+</td><td> #vehicles
+</td><td> The length of the longest jam recognized during the interval duration. In vehicles that have contributed to this jams.
+</td></tr>
+<tr>
+<td class="inlxml"> maxJamLengthInMeters
+</td><td> m
+</td><td> As prior, but in meters (see notes)
+</td></tr>
+<tr>
+<td class="inlxml"> jamLengthInVehiclesSum
+</td><td> #vehicles
+</td><td> The sum of all lengths of all jams recognized during the interval. In vehicles that have contributed to these jams.
+</td></tr>
+<tr>
+<td class="inlxml"> jamLengthInMetersSum
+</td><td> m
+</td><td> As prior, but in meters (see notes)
+</td></tr>
+<tr>
+<td class="inlxml"> meanHaltingDuration
+</td><td> s
+</td><td> The mean halting duration of vehicles that entered the area and are still inside or have left the area within the reported interval.
+</td></tr>
+<tr>
+<td class="inlxml"> maxHaltingDuration
+</td><td> s
+</td><td> The maximum halting duration of vehicles that entered the area and are still inside or have left the area within the reported interval.
+</td></tr>
+<tr>
+<td class="inlxml"> haltingDurationSum
+</td><td> s
+</td><td> The sum of all halting durations of vehicles that entered the area and are still inside or have left the area within the reported interval.
+</td></tr>
+<tr>
+<td class="inlxml"> meanIntervalHaltingDuration
+</td><td> s
+</td><td> The mean halting duration of vehicles that entered the area and are still inside or have left the area within the reported interval, counted from the interval's begin.
+</td></tr>
+<tr>
+<td class="inlxml"> maxIntervalHaltingDuration
+</td><td> s
+</td><td> The maximum halting duration of vehicles that entered the area and are still inside or have left the area within the reported interval, counted from the interval's begin.
+</td></tr>
+<tr>
+<td class="inlxml"> intervalHaltingDurationSum
+</td><td> s
+</td><td> The sum of all halting durations of vehicles that entered the area and are still inside or have left the area within the reported interval, counted from the interval's begin.
+</td></tr>
+<tr>
+<td class="inlxml"> startedHalts
+</td><td> #
+</td><td> The number of started halts. Please note that during an interval a vehicle may stop halting and enter a new halting state.
+</td></tr>
+<tr>
+<td class="inlxml"> meanVehicleNumber
+</td><td> #
+</td><td> The mean number of vehicles that were on the detector (averaged over the interval duration).
+</td></tr>
+<tr>
+<td class="inlxml"> maxVehicleNumber
+</td><td> #
+</td><td> The maximum number of vehicles that were on the detector area during the interval.
+</td></tr></table>
+<a name="Further_notes" id="Further_notes"></a><h2> <span class="mw-headline">Further notes</span></h2>
+<ul><li> You can generate detector definitions automatically. See <a href="../../Tools/Output.html" title="Tools/Output">output tools</a> for more information.
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 8/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:254-0!1!0!!en!2!edit=0 and timestamp 20120718063323 -->
+</div><hr/><div id="lastmod">This page was last modified on 20 February 2012, at 09:24.</div>

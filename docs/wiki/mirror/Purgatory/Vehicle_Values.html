@@ -1,0 +1,30 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Purgatory/Vehicle Values</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Angle" id="Angle"></a><h2> <span class="mw-headline">Angle</span></h2>
+<p>A vehicle's direction of drive is computed using the positions of the vehicle's front and back:
+</p>
+<pre>p1 = vehicle's front position
+p2 = vehicle's back position
+if p1!=p2:
+    angle = atan2(p1.x()-p2.x(), p2.y()-p1.y())*180./PI;
+else:
+    angle = lane's angle at vehicle's front
+</pre>
+<p>The check for <code>p1!=p2</code> is necessary as the lane's used length may differ from the lane's geometrical length. Not regarding this caused vehicles to change the direction of drive to 0°, reported as <a href="http://sourceforge.net/apps/trac/sumo/ticket/430" class="external text" title="http://sourceforge.net/apps/trac/sumo/ticket/430" rel="nofollow">ticket#430</a>.
+</p><p>The following image shows how the resulting encoding. 
+</p><p><a href="../images/Vehicle_angle.png" class="image" title="Image:vehicle_angle.png"><img alt="Image:vehicle_angle.png" src="../images//Vehicle_angle.png" width="533" height="326" border="0" /></a>
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 2/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:360-0!1!0!!en!2!edit=0 and timestamp 20120718063307 -->
+</div><hr/><div id="lastmod">This page was last modified on 30 September 2011, at 09:25.</div>

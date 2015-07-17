@@ -1,0 +1,62 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Z/Changes from Version 0.11.1 to Version 0.12.0</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p><b>Release date: 27.05.2010</b>
+</p>
+<ul><li> Simulation
+<ul><li> solved <a href="http://sourceforge.net/apps/trac/sumo/ticket/173" class="external text" title="http://sourceforge.net/apps/trac/sumo/ticket/173" rel="nofollow">regarding red light late blocks vehicles</a>
+</li><li> corrected the documentation on using <a href="../Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html#Abstract_Vehicle_Class" title="Definition of Vehicles, Vehicle Types, and Routes">an abstract vehicle class</a>; the attribute which defines it is named <span class="inlxml">vclass</span> not <span class="inlxml">class</span>.
+</li><li> introducing flows as replacement for vehicles with repno and period
+</li><li> introducing stops in routes
+</li><li> corrected unmotivated deceleration in front of intersections reported by Björn Hendriks (thanks!)
+</li><li> added option <span style="color: #111144; font-weight: bold; white-space: pre;">--sloppy-emit</span> for not trying to emit on full edges (speeds up the simulation a lot)
+</li></ul>
+</li></ul>
+<ul><li> TraCI
+<ul><li> moved to representation of time in milliseconds
+</li><li> Induction Loop occupancy is now given in&nbsp;% as defined
+</li></ul>
+</li></ul>
+<ul><li> SUMO-GUI
+<ul><li> Improved layering (correct order of element drawing)
+</li><li> solved <a href="http://sourceforge.net/tracker/?func=detail&amp;aid=2872900&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/?func=detail&amp;aid=2872900&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2872900: same title/naming for different dialog boxes</a>
+</li><li> solved <a href="http://sourceforge.net/tracker/?func=detail&amp;aid=2872824&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/?func=detail&amp;aid=2872824&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2872824: fox related sumo crash</a>
+</li><li> Viewport settings can now be saved/loaded
+</li><li> Added new visualisation options
+<ul><li> lanes: by vclass
+</li><li> vehicles: HSV by depart position/arrival position/direction and distance
+</li></ul>
+</li></ul>
+</li></ul>
+<ul><li> ROUTER
+<ul><li> removed random routes generation; introduced a <a href="../Tools/Trip.html#randomTrips.py" title="Tools/Trip">script for generating random trips</a> instead
+</li></ul>
+</li></ul>
+<ul><li> NETCONVERT
+<ul><li> removed the <span style="color: #111144; font-weight: bold; white-space: pre;">--tls-poi-output</span>; instead, <a href="../Tools/Shapes.html" title="Tools/Shapes">poi_atTLS.py</a> can be used
+</li><li> OpenStreetMap import
+<ul><li> removal of edges and nodes which have the attribute <span class="inlxml">action='delete'</span>
+</li><li> recognition and removal of duplicate edges (all values but ids are same) added
+</li><li> opposite direction edge is built if oneway==-1
+</li></ul>
+</li><li> edge and node attributes can be overridden
+</li></ul>
+</li></ul>
+<ul><li> Tools
+<ul><li> <a href="../Networks/Import/OpenStreetMap.html" title="Networks/Import/OpenStreetMap">tools for easier open street map import</a> added
+</li></ul>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 14/1000000
+Post-expand include size: 177/2097152 bytes
+Template argument size: 29/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:404-0!1!0!!en!2!edit=0 and timestamp 20120718063431 -->
+</div><hr/><div id="lastmod">This page was last modified on 23 September 2011, at 07:36.</div>

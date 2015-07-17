@@ -1,0 +1,619 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Demand/Activity-based Demand Generation</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>ActivityGen generates demand from a description of the population in the net. To do so, it uses a simple activity-based traffic model. It supports the activities work, school, and free time and the conveyances walking, bike, car, and bus. Cars may have their start or stop location outside the map.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Typical_Command_Line"><span class="tocnumber">1</span> <span class="toctext">Typical Command Line</span></a></li>
+<li class="toclevel-1"><a href="#Example"><span class="tocnumber">2</span> <span class="toctext">Example</span></a></li>
+<li class="toclevel-1"><a href="#The_Statistics_File"><span class="tocnumber">3</span> <span class="toctext">The Statistics File</span></a>
+<ul>
+<li class="toclevel-2"><a href="#General_information"><span class="tocnumber">3.1</span> <span class="toctext">General information</span></a></li>
+<li class="toclevel-2"><a href="#Parameters"><span class="tocnumber">3.2</span> <span class="toctext">Parameters</span></a></li>
+<li class="toclevel-2"><a href="#Population.27s_Age_Brackets"><span class="tocnumber">3.3</span> <span class="toctext">Population's Age Brackets</span></a></li>
+<li class="toclevel-2"><a href="#Work_Hours"><span class="tocnumber">3.4</span> <span class="toctext">Work Hours</span></a></li>
+<li class="toclevel-2"><a href="#Population_and_Work_Position_Distribution"><span class="tocnumber">3.5</span> <span class="toctext">Population and Work Position Distribution</span></a></li>
+<li class="toclevel-2"><a href="#City_Gates"><span class="tocnumber">3.6</span> <span class="toctext">City Gates</span></a></li>
+<li class="toclevel-2"><a href="#Schools"><span class="tocnumber">3.7</span> <span class="toctext">Schools</span></a></li>
+<li class="toclevel-2"><a href="#Bus_Lines"><span class="tocnumber">3.8</span> <span class="toctext">Bus Lines</span></a></li>
+<li class="toclevel-2"><a href="#Final_Aspect"><span class="tocnumber">3.9</span> <span class="toctext">Final Aspect</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Activities"><span class="tocnumber">4</span> <span class="toctext">Activities</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Work_and_School_Activities"><span class="tocnumber">4.1</span> <span class="toctext">Work and School Activities</span></a></li>
+<li class="toclevel-2"><a href="#Free_Time_Activities"><span class="tocnumber">4.2</span> <span class="toctext">Free Time Activities</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Transportation_Means"><span class="tocnumber">5</span> <span class="toctext">Transportation Means</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Feet_or_Bike"><span class="tocnumber">5.1</span> <span class="toctext">Feet or Bike</span></a></li>
+<li class="toclevel-2"><a href="#Buses"><span class="tocnumber">5.2</span> <span class="toctext">Buses</span></a></li>
+<li class="toclevel-2"><a href="#Cars"><span class="tocnumber">5.3</span> <span class="toctext">Cars</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Typical_Command_Line" id="Typical_Command_Line"></a><h2> <span class="mw-headline"> Typical Command Line </span></h2>
+<pre>activitygen --net-file &lt;NET&gt; --stat-file &lt;STATISTICS&gt; --output-file &lt;ROUTES&gt; --random
+</pre>
+<p>&lt;NET&gt; is a map in form of a SUMO net file, &lt;STATISTICS&gt; contains the description of the population (described below), and &lt;ROUTES&gt; is the generated SUMO routes file (the demand).
+</p><p>You can give ActivityGen a first try with the following example.
+</p>
+<a name="Example" id="Example"></a><h2> <span class="mw-headline"> Example </span></h2>
+<div class="floatright"><a href="../images/Activitygen-example-net.png" class="image" title="Activitygen-example-net.png"><img alt="" src="../images/Activitygen-example-net.png" width="200" height="200" border="0" /></a></div>
+<p>While activitygen has been developed mainly to generate traffic demand for larger networks, this example features the small network shown in the image on the right. Download the files <a href="https://sourceforge.net/apps/trac/sumo/export/11010/trunk/sumo/tests/activitygen/demand_generation/activitygen-example/activitygen-example.net.xml" class="external text" title="https://sourceforge.net/apps/trac/sumo/export/11010/trunk/sumo/tests/activitygen/demand_generation/activitygen-example/activitygen-example.net.xml" rel="nofollow">activitygen-example.net.xml</a> and <a href="https://sourceforge.net/apps/trac/sumo/export/11010/trunk/sumo/tests/activitygen/demand_generation/activitygen-example/activitygen-example.stat.xml" class="external text" title="https://sourceforge.net/apps/trac/sumo/export/11010/trunk/sumo/tests/activitygen/demand_generation/activitygen-example/activitygen-example.stat.xml" rel="nofollow">activitygen-example.stat.xml</a> to follow this example.
+</p><p>To run this example, use the following commands:
+</p>
+<pre>activitygen --net-file activitygen-example.net.xml \
+            --stat-file activitygen-example.stat.xml \
+            --output-file activitygen-example.tmp.rou.xml \
+            --random
+
+duarouter --net-file activitygen-example.net.xml \
+          --route-files activitygen-example.tmp.rou.xml \
+          --output-file activitygen-example.rou.xml \
+          --remove-loops --ignore-errors --repair
+
+sumo --net-file activitygen-example.net.xml \
+     --route-files activitygen-example.rou.xml
+          
+</pre>
+<p>The first command generates the net file from the node and edge description. The second command generates the routes file (the demand) from a description of the population in the stat file. The generated routes are incomplete though. This will be changed in the coming weeks, but it allows you to choose the router you want for linking departure and destination edges. To use the SUMO's standard Dijkstra algorithm, you need to <i>repair</i> the route file executing the third command. Finally, you can run a traffic simulation with the SUMO main executable.
+</p>
+<a name="The_Statistics_File" id="The_Statistics_File"></a><h2> <span class="mw-headline"> The Statistics File </span></h2>
+<a name="General_information" id="General_information"></a><h3> <span class="mw-headline"> General information </span></h3>
+<p>First of all we need general information over the city.
+</p>
+<pre class="xml">
+&lt;city&gt;
+    &lt;general
+        inhabitants=&quot;1000&quot;
+        households=&quot;500&quot;
+        childrenAgeLimit=&quot;18&quot;
+        retirementAgeLimit=&quot;65&quot;
+        carRate=&quot;0.58&quot;
+        unemploymentRate=&quot;0.05&quot;
+        footDistanceLimit=&quot;350&quot;
+        incomingTraffic=&quot;200&quot;
+        outgoingTraffic=&quot;50&quot;
+    /&gt;
+&lt;/city&gt;
+</pre>
+<p>The meanings of all these attributes are described in the following table:
+</p>
+<table cellspacing="0" border="1" align="center">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>inhabitants</b>
+</td><td> Integer
+</td><td> Total number of inhabitants
+</td></tr>
+<tr>
+<td class="inlxml"> <b>households</b>
+</td><td> Integer
+</td><td> Total number of households (must be between 0.5 and 1 times the number of adults of the city)
+</td></tr>
+<tr>
+<td class="inlxml"> <b>childrenAgeLimit</b>
+</td><td> Integer
+</td><td> Age under which people are children. This is the first year of adulthood
+</td></tr>
+<tr>
+<td class="inlxml"> <b>retirementAgeLimit</b>
+</td><td> Integer
+</td><td> Age under which people can have children home and work
+</td></tr>
+<tr>
+<td class="inlxml"> <b>carRate</b>
+</td><td> Float[0;1]
+</td><td> Probability for an adult to own a car
+</td></tr>
+<tr>
+<td class="inlxml"> <b>unemploymentRate</b>
+</td><td> Float[0;1]
+</td><td> Probability for an adult in age of work to be unemployed
+</td></tr>
+<tr>
+<td class="inlxml"> <b>footDistanceLimit</b>
+</td><td> Float
+</td><td> Maximum distance one would go by foot instead of another transportation mean.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>incomingTraffic</b>
+</td><td> Integer
+</td><td> Number of people coming everyday into the city for they work
+</td></tr>
+<tr>
+<td class="inlxml"> <b>outgoingTraffic</b>
+</td><td> Integer[0,inhabitants]
+</td><td> Number of inhabitants working outside the city
+</td></tr></table>
+<a name="Parameters" id="Parameters"></a><h3> <span class="mw-headline"> Parameters </span></h3>
+<p>These entries are different from the general information element in what they describe. They depend much more of the special context or state of the city (events, behaviour of the population...). They can also be useful for optimization: the mean speed can be observed afterwards; all values can be changed in order to meet validation criteria on the traffic.
+</p>
+<pre class="xml">
+&lt;city&gt;
+    &lt;general ... /&gt;
+    &lt;parameters
+        carPreference=&quot;0.50&quot;
+        meanTimePerKmInCity=&quot;360&quot;
+        freeTimeActivityRate=&quot;0.15&quot;
+        uniformRandomTraffic=&quot;0.20&quot;
+        departureVariation=&quot;120&quot;
+    /&gt;
+&lt;/city&gt;
+</pre>
+<p>The meanings of all these attributes are described in the following table:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> carPreference
+</td><td> Float[0;1]
+</td><td> Probability that an adult prefers to take his car instead of a public transportation mean (when both available); <i>default: 0</i>.
+</td></tr>
+<tr>
+<td class="inlxml"> meanTimePerKmInCity
+</td><td> Integer(sec)
+</td><td> Estimation of the time needed to drive one kilometer (bird's eye) on the map; <i>default: 360s</i>.
+</td></tr>
+<tr>
+<td class="inlxml"> freeTimeActivityRate
+</td><td> Float[0;1]
+</td><td> Probability that a given household, a given day, has a free time activity using a car; <i>default: 0.15</i>.
+</td></tr>
+<tr>
+<td class="inlxml"> uniformRandomTraffic
+</td><td> Float[0;0.999]
+</td><td> Proportion of the random traffic demand in the whole traffic demand; <i>default: 0</i>.
+</td></tr>
+<tr>
+<td class="inlxml"> departureVariation
+</td><td> Float(sec)
+</td><td> Variance of the normal distribution introduced for slight variations in departure time (human natural variation in relation to schedules); <i>default: 0</i>.
+</td></tr></table>
+<a name="Population.27s_Age_Brackets" id="Population.27s_Age_Brackets"></a><h3> <span class="mw-headline"> Population's Age Brackets </span></h3>
+<p>In order to distribute the population among households and in the city coherently, we need a precise age distribution of this population.
+</p>
+<pre class="xml">
+&lt;city&gt;
+    &lt;general ... /&gt;
+    &lt;parameters ... /&gt;
+    
+    &lt;population&gt;
+        &lt;bracket beginAge=&quot;0&quot; endAge&quot;4&quot; peopleNbr=&quot;1745&quot; /&gt;
+         ...
+        &lt;bracket beginAge=&quot;66&quot; endAge&quot;90&quot; peopleNbr=&quot;978&quot; /&gt;
+    &lt;/population&gt;
+
+&lt;/city&gt;
+</pre>
+<p>Follows the description of all bracket attributes.
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>beginAge</b>
+</td><td> Integer
+</td><td> Beginning age of the interval (incl.). If this is not the first bracket, this age is greater or equal to the previous bracket's ending age
+</td></tr>
+<tr>
+<td class="inlxml"> <b>endAge</b>
+</td><td> Integer
+</td><td> End age of the interval (excl.). This age is greater to the current bracket's Beginning age
+</td></tr>
+<tr>
+<td class="inlxml"> <b>peopleNbr</b>
+</td><td> Integer
+</td><td> Number of people in the interval age of the bracket ([beginAge,endAge)). This is an relative value, it will be normalized with the number of inhabitants of the city
+</td></tr></table>
+<a name="Work_Hours" id="Work_Hours"></a><h3> <span class="mw-headline"> Work Hours </span></h3>
+<p>We need to specify the opening and closing hours of all city's work positions.
+</p>
+<pre class="xml">
+&lt;city&gt;
+    &lt;general ... /&gt;
+    &lt;parameters ... /&gt;
+    &lt;population&gt; &lt;bracket ... /&gt; ... &lt;/population&gt;
+
+    &lt;workHours&gt;
+        &lt;opening hour=&quot;30600&quot; proportion=&quot;0.30&quot; /&gt;
+         ...
+        &lt;closing hour=&quot;43200&quot; proportion=&quot;0.20&quot; /&gt;
+         ...
+    &lt;/workHours&gt;
+
+&lt;/city&gt;
+</pre>
+<p>Here are descriptions of all attributes of opening and closing elements:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>hour</b>
+</td><td> Integer(sec)
+</td><td> Possible beginning or ending time of work.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>proportion</b>
+</td><td> Float
+</td><td> Proportion of work positions having this time as a beginning (resp. end) hour. It's a relative value: the probability of occurrence is computed by normalizing all opening (resp. closing) proportion values by one.
+</td></tr></table>
+<a name="Population_and_Work_Position_Distribution" id="Population_and_Work_Position_Distribution"></a><h3> <span class="mw-headline"> Population and Work Position Distribution </span></h3>
+<p>Now, we have to specify the density of people and work in each street of the city. (by street I meant edges which are even more precise)
+</p>
+<pre class="xml">
+&lt;city&gt;
+    &lt;general ... /&gt;
+    &lt;parameters ... /&gt;
+    &lt;population&gt; &lt;bracket ... /&gt; ... &lt;/population&gt;
+    &lt;workHours&gt; &lt;opening ... /&gt; ... &lt;closing ... /&gt; ... &lt;/workHours&gt;
+
+    &lt;streets&gt;
+        &lt;street edge=&quot;abc123&quot; population=&quot;2.5&quot; workPosition=&quot;10.0&quot; /&gt;
+         ...
+    &lt;/streets&gt;
+
+&lt;/city&gt;
+</pre>
+<p>Here are the corresponding attribute descriptions:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>edge</b>
+</td><td> String
+</td><td> Edge's id
+</td></tr>
+<tr>
+<td class="inlxml"> <b>population</b>
+</td><td> Float
+</td><td> Number of people per meter street. Relative value (normalized with the total number of inhabitants)
+</td></tr>
+<tr>
+<td class="inlxml"> <b>workPosition</b>
+</td><td> Float
+</td><td> Number of work positions per meter street. Relative value (normalized with the total number of city's work demand)
+</td></tr></table>
+<a name="City_Gates" id="City_Gates"></a><h3> <span class="mw-headline"> City Gates </span></h3>
+<p>In order to generate incoming and outgoing traffic, we need to specify gates to the city. Every gate will generate the same number of incoming (resp. outgoing) cars (the total number divided by the number of gates).
+</p>
+<pre class="xml">
+&lt;city&gt;
+    &lt;general ... /&gt;
+    &lt;parameters ... /&gt;
+    &lt;population&gt; &lt;bracket ... /&gt; ... &lt;/population&gt;
+    &lt;workHours&gt; &lt;opening ... /&gt; ... &lt;closing ... /&gt; ... &lt;/workHours&gt;
+    &lt;streets&gt; &lt;street ... /&gt; ... &lt;/streets&gt;
+
+    &lt;cityGates&gt;
+        &lt;entrance edge=&quot;abc123&quot; pos=&quot;243.67&quot; incoming=&quot;1.5&quot; outgoing=&quot;2.2&quot;/&gt;
+        &lt;entrance edge=&quot;abc234&quot; pos=&quot;0.00&quot; incoming=&quot;1.0&quot; outgoing=&quot;0.5&quot;/&gt;
+         ...
+    &lt;/cityGates&gt;
+
+&lt;/city&gt;
+</pre>
+<p>The corresponding attribute descriptions:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>edge</b>
+</td><td> String
+</td><td> Edge's id
+</td></tr>
+<tr>
+<td class="inlxml"> <b>pos</b>
+</td><td> Float (m)
+</td><td> Exact position in the street (edge), in meters, from the beginning of the given edge (the maximum value is the length of the edge)
+</td></tr>
+<tr>
+<td class="inlxml"> <b>incoming</b>
+</td><td> Float
+</td><td> Proportion of the incoming vehicles, coming through this gate (relatively to the incoming values of the other gates)
+</td></tr>
+<tr>
+<td class="inlxml"> <b>outgoing</b>
+</td><td> Float
+</td><td> Proportion of the outgoing vehicles, leaving the city through this gate (relatively to the outgoing values of the other gates)
+</td></tr></table>
+<a name="Schools" id="Schools"></a><h3> <span class="mw-headline"> Schools </span></h3>
+<p>Children don't go to work but to school. The particularity of schools is that they are exactly positioned and receive many pupils every day.
+</p>
+<pre class="xml">
+&lt;city&gt;
+    &lt;general ... /&gt;
+    &lt;parameters ... /&gt;
+    &lt;population&gt; &lt;bracket ... /&gt; ... &lt;/population&gt;
+    &lt;workHours&gt; &lt;opening ... /&gt; ... &lt;closing ... /&gt; ... &lt;/workHours&gt;
+    &lt;streets&gt; &lt;street ... /&gt; ... &lt;/streets&gt;
+    &lt;cityGates&gt; &lt;entrance ... /&gt; ... &lt;/cityGates&gt;
+
+    &lt;schools&gt;
+        &lt;school edge=&quot;123abc&quot; pos=&quot;23.0&quot; beginAge=&quot;12&quot; endAge=&quot;18&quot; capacity=&quot;400&quot; opening=&quot;32400&quot; closing=&quot;64800&quot; /&gt;
+         ...
+    &lt;/schools&gt;
+
+&lt;/city&gt;
+</pre>
+<p>The corresponding attribute descriptions:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>edge</b>
+</td><td> String
+</td><td> Edge's id
+</td></tr>
+<tr>
+<td class="inlxml"> <b>pos</b>
+</td><td> Float (m)
+</td><td> Exact position in the street (edge), in meters, from the beginning of the given edge (the maximum value is the length of the edge)
+</td></tr>
+<tr>
+<td class="inlxml"> <b>beginAge</b>
+</td><td> Integer
+</td><td> Age of the youngest pupils of the school (lower bound, included in the bracket of acceptance)
+</td></tr>
+<tr>
+<td class="inlxml"> <b>endAge</b>
+</td><td> Integer
+</td><td> Age of children not accepted in the school any more (higher bound, excluded from the bracket of acceptance)
+</td></tr>
+<tr>
+<td class="inlxml"> <b>capacity</b>
+</td><td> Integer
+</td><td> Maximum number of pupils accepted
+</td></tr>
+<tr>
+<td class="inlxml"> <b>opening</b>
+</td><td> Integer (sec)
+</td><td> Time of class beginning (school time)
+</td></tr>
+<tr>
+<td class="inlxml"> <b>closing</b>
+</td><td> Integer (sec)
+</td><td> Time of class ending (home time)
+</td></tr></table>
+<p><br />
+</p>
+<a name="Bus_Lines" id="Bus_Lines"></a><h3> <span class="mw-headline"> Bus Lines </span></h3>
+<p>People have a public bus line system to their disposition. This public transportation system is described by stations, different bus lines having their corresponding station for both directions and schedules.
+</p>
+<pre class="xml">
+&lt;city&gt;
+    &lt;general ... /&gt;
+    &lt;parameters ... /&gt;
+    &lt;population&gt; &lt;bracket ... /&gt; ... &lt;/population&gt;
+    &lt;workHours&gt; &lt;opening ... /&gt; ... &lt;closing ... /&gt; ... &lt;/workHours&gt;
+    &lt;streets&gt; &lt;street ... /&gt; ... &lt;/streets&gt;
+    &lt;cityGates&gt; &lt;entrance ... /&gt; ... &lt;/cityGates&gt;
+    &lt;schools&gt; &lt;school ... /&gt; ... &lt;/schools&gt;
+
+    &lt;busStations&gt;
+        &lt;busStation id=&quot;1&quot; edge=&quot;abc123&quot; pos=&quot;456&quot; /&gt;
+        &lt;busStation id=&quot;2&quot; edge=&quot;123cba&quot; pos=&quot;324&quot; /&gt;
+         ...
+    &lt;/busStations&gt;
+
+    &lt;busLines&gt;
+        &lt;busLine id=&quot;601&quot; maxTripDuration=&quot;3000&quot;&gt;
+            &lt;stations&gt;
+                &lt;station refid=&quot;1&quot; /&gt;
+                 ...
+            &lt;/stations&gt;
+            &lt;revStations&gt;
+                &lt;station refid=&quot;2&quot; /&gt;
+                 ...
+            &lt;/revStations&gt;
+            &lt;frequencies&gt;
+                &lt;frequency begin=&quot;10000&quot; end=&quot;25000&quot; rate=&quot;1500&quot; /&gt;
+                 ...
+            &lt;/frequencies&gt;
+        &lt;/busLine&gt;
+    &lt;/busLines&gt;
+
+&lt;/city&gt;
+</pre>
+<p>The corresponding attribute descriptions of all elements:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>id</b>
+</td><td> String
+</td><td> Bus line's id
+</td></tr>
+<tr>
+<td class="inlxml"> <b>maxTripDuration</b>
+</td><td> Integer (sec)
+</td><td> Maximum time needed for a bus to do the end-to-end trip.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>refid</b>
+</td><td> Integer
+</td><td> Reference to the id of the chosen station (refers to a busStation object's id)
+</td></tr>
+<tr>
+<td class="inlxml"> <b>begin</b>
+</td><td> Integer (sec)
+</td><td> Time of the beginning of a new frequency
+</td></tr>
+<tr>
+<td class="inlxml"> <b>end</b>
+</td><td> Integer (sec)
+</td><td> End time of the frequency
+</td></tr>
+<tr>
+<td class="inlxml"> <b>rate</b>
+</td><td> Integer (sec)
+</td><td> Time between two buses, this is the inverse of the mathematical frequency. This bus rate is performed between the beginning and end values described above
+</td></tr></table>
+<a name="Final_Aspect" id="Final_Aspect"></a><h3> <span class="mw-headline"> Final Aspect </span></h3>
+<p>Here is a complete example of a stat file:
+</p>
+<pre class="xml">
+&lt;city&gt;
+    &lt;general inhabitants=&quot;45774&quot; households=&quot;28200&quot; childrenAgeLimit=&quot;18&quot; retirementAgeLimit=&quot;65&quot; carRate=&quot;0.58&quot;
+        unemploymentRate=&quot;0.05&quot; footDistanceLimit=&quot;500&quot; incomingTraffic=&quot;1500&quot; outgoingTraffic=&quot;3000&quot; /&gt;
+
+    &lt;parameters carPreference=&quot;0.50&quot; meanTimePerKmInCity=&quot;360&quot; freeTimeActivityRate=&quot;0.15&quot;
+        uniformRandomTraffic=&quot;0.20&quot; departureVariation=&quot;120&quot; /&gt;
+	
+    &lt;population&gt;
+        &lt;bracket beginAge=&quot;0&quot; endAge=&quot;30&quot; peopleNbr=&quot;1765&quot; /&gt;
+        &lt;bracket beginAge=&quot;30&quot; endAge=&quot;75&quot; peopleNbr=&quot;1290&quot; /&gt;
+    &lt;/population&gt;
+
+    &lt;workHours&gt;
+        &lt;opening hour=&quot;30600&quot; proportion=&quot;0.30&quot; /&gt;
+        &lt;opening hour=&quot;32400&quot; proportion=&quot;0.70&quot; /&gt;
+        &lt;closing hour=&quot;43200&quot; proportion=&quot;0.20&quot; /&gt;
+        &lt;closing hour=&quot;63000&quot; proportion=&quot;0.20&quot; /&gt;
+        &lt;closing hour=&quot;64800&quot; proportion=&quot;0.60&quot; /&gt;
+    &lt;/workHours&gt;
+
+    &lt;streets&gt;
+        &lt;street edge=&quot;-2779#2&quot; population=&quot;4.0&quot; workPosition=&quot;2.0&quot; /&gt;
+        &lt;street edge=&quot;-2776#0&quot; population=&quot;3.5&quot; workPosition=&quot;2.5&quot; /&gt;
+        &lt;street edge=&quot;-2950#15&quot; population=&quot;1.3&quot; workPosition=&quot;0&quot; /&gt;
+    &lt;/streets&gt;
+	
+    &lt;cityGates&gt;
+        &lt;entrance edge=&quot;-2950#15&quot; pos=&quot;0.0&quot; /&gt;
+    &lt;/cityGates&gt;
+
+    &lt;schools&gt;
+        &lt;school edge=&quot;-2779#2&quot; pos=&quot;23&quot; beginAge=&quot;12&quot; endAge=&quot;18&quot; capacity=&quot;400&quot; opening=&quot;32400&quot; closing=&quot;64800&quot; /&gt;
+        &lt;school edge=&quot;-2779#2&quot; pos=&quot;23&quot; beginAge=&quot;3&quot; endAge=&quot;12&quot; capacity=&quot;150&quot; opening=&quot;30600&quot; closing=&quot;64800&quot; /&gt;
+        &lt;school edge=&quot;-2776#0&quot; pos=&quot;765&quot; beginAge=&quot;0&quot; endAge=&quot;6&quot; capacity=&quot;245&quot; opening=&quot;32400&quot; closing=&quot;61200&quot; /&gt;
+    &lt;/schools&gt;
+	
+    &lt;busStations&gt;
+        &lt;busStation id=&quot;1&quot; edge=&quot;-2779#2&quot; pos=&quot;456&quot; /&gt;
+        &lt;busStation id=&quot;2&quot; edge=&quot;-2776#0&quot; pos=&quot;324&quot; /&gt;
+        &lt;busStation id=&quot;3&quot; edge=&quot;-2950#15&quot; pos=&quot;233&quot; /&gt;
+    &lt;/busStations&gt;
+
+    &lt;busLines&gt;
+        &lt;busLine id=&quot;601&quot; maxTripDuration=&quot;3000&quot;&gt;
+            &lt;stations&gt;
+                &lt;station refid=&quot;2&quot; /&gt;
+                &lt;station refid=&quot;1&quot; /&gt;
+            &lt;/stations&gt;
+            &lt;revStations&gt;
+                &lt;station refid=&quot;1&quot; /&gt;
+                &lt;station refid=&quot;2&quot; /&gt;
+            &lt;/revStations&gt;
+            &lt;frequencies&gt;
+                &lt;frequency begin=&quot;21600&quot; end=&quot;64800&quot; rate=&quot;1200&quot; /&gt;
+                &lt;frequency begin=&quot;64800&quot; end=&quot;84600&quot; rate=&quot;1800&quot; /&gt;
+            &lt;/frequencies&gt;
+        &lt;/busLine&gt;
+    &lt;/busLines&gt;
+&lt;/city&gt;
+</pre>
+<p><br />
+</p>
+<a name="Activities" id="Activities"></a><h2> <span class="mw-headline"> Activities </span></h2>
+<p>ActivityGen takes into account two groups of activities, which are considered as most traffic-relevant: <b>Work And School</b> and <b>Free Time</b>. The activities within each group follow the same statistical rules.
+</p>
+<a name="Work_and_School_Activities" id="Work_and_School_Activities"></a><h3> <span class="mw-headline"> Work and School Activities </span></h3>
+<p>This aggregate of activities contains the following activities:
+</p>
+<ol><li> Going to work for adults (not retired), and
+</li><li> Going to school for children.
+</li></ol>
+<p>That implies trips from home to work and the return trip for the drivers.
+</p>
+<a name="Free_Time_Activities" id="Free_Time_Activities"></a><h3> <span class="mw-headline"> Free Time Activities </span></h3>
+<p>This aggregate of activities contains the following activities:
+</p>
+<ol><li> Going out during the day (for retired or unemployed people)
+</li><li> Going out in the evening (for all people who finished their <i>work activity</i> not <i>too late</i>)
+</li><li> Going out late in the evening or in the night (for not retired adults having no children)
+</li></ol>
+<p>This <i>activity</i> is supposed to cover all car uses for:
+</p>
+<ul><li> Going out see friends
+</li><li> Doing sport
+</li><li> Visiting family
+</li><li> Party
+</li></ul>
+<a name="Transportation_Means" id="Transportation_Means"></a><h2> <span class="mw-headline"> Transportation Means </span></h2>
+<p>The population is distributed according to the statistics into households located in streets. People are likely to use different means of transportation in relation to their location, the availability of the different means and their destination. Three kind of Means are used in ActivityGen:<b>
+</p>
+<ul><li> Feet or bike
+</li><li> Buses
+</li><li> Cars
+</li></ul>
+<p></b>
+</p><p>All of them have their own possibilities and availability characteristics:
+</p>
+<a name="Feet_or_Bike" id="Feet_or_Bike"></a><h3> <span class="mw-headline"> Feet or Bike </span></h3>
+<p>Trips by foot are available only for very short distances. But in this case, the person is very likely to go by foot.
+The bike isn't really used (buses and cars are preferred), it is supposed to serve in cases where none of the three means (Feet, buses and cars) are not available
+</p>
+<a name="Buses" id="Buses"></a><h3> <span class="mw-headline"> Buses </span></h3>
+<p>Bus stations are located in the city corresponding to the real bus line network given in input (statistical data over the city). Someone enough close to a bus station and whose destination is enough close to another bus station is eligible for the public transportation means.
+</p>
+<a name="Cars" id="Cars"></a><h3> <span class="mw-headline"> Cars </span></h3>
+<p>Householders having one or more cars can drive (not children) or be accompanied (escorted) by another adult who needs a car too. Children can only be accompanied (to school for example).
+Some households have no car, in this case they have to live enough close to a bus station. In the case of having a destination far from any bus station, they can go by foot or ride a bike. But this case doesn't generated any motorized vehicle traffic.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 47/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:338-0!1!0!!en!2!edit=0 and timestamp 20120718063142 -->
+</div><hr/><div id="lastmod">This page was last modified on 20 February 2012, at 10:12.</div>

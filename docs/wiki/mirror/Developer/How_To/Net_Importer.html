@@ -1,0 +1,123 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Developer/How To/Net Importer</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>In the following, advices on implementing a new network importer are given-
+</p><p>Implementing an own network import module is very easy. The following steps are necessary:
+</p>
+<ul><li> write methods which read and parse the information from the original file
+</li><li> insert parsed values into the netbuilding containers
+</li><li> make the network importer know and use your code
+</li><li> submit your code
+</li></ul>
+<p>Yes, that's all. Still, the three steps are described more detailed in the following sections.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Building_a_Reader"><span class="tocnumber">1</span> <span class="toctext">Building a Reader</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Initial_Considerations"><span class="tocnumber">1.1</span> <span class="toctext">Initial Considerations</span></a></li>
+<li class="toclevel-2"><a href="#Calling_the_Reader"><span class="tocnumber">1.2</span> <span class="toctext">Calling the Reader</span></a></li>
+<li class="toclevel-2"><a href="#Import_Order"><span class="tocnumber">1.3</span> <span class="toctext">Import Order</span></a></li>
+<li class="toclevel-2"><a href="#Starting_to_Parse"><span class="tocnumber">1.4</span> <span class="toctext">Starting to Parse</span></a></li>
+<li class="toclevel-2"><a href="#Error_Handling"><span class="tocnumber">1.5</span> <span class="toctext">Error Handling</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Adding_read_Values_to_the_netbuilding_Containers"><span class="tocnumber">2</span> <span class="toctext">Adding read Values to the netbuilding Containers</span></a></li>
+<li class="toclevel-1"><a href="#Tests"><span class="tocnumber">3</span> <span class="toctext">Tests</span></a></li>
+<li class="toclevel-1"><a href="#Submitting_the_Code"><span class="tocnumber">4</span> <span class="toctext">Submitting the Code</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Building_a_Reader" id="Building_a_Reader"></a><h1> <span class="mw-headline">Building a Reader</span></h1>
+<a name="Initial_Considerations" id="Initial_Considerations"></a><h2> <span class="mw-headline">Initial Considerations</span></h2>
+<p>There are some conventions on network importers we try to follow. They are not mandatory, but they are assumed to assure the code's extendibility and to force a higher quality of the code.
+</p><p>When starting to write your own importer, you should consider to base it on an existing one. NIImporter_OpenStreetMap.*, NIXML...Handler.* are examples of reading network descriptions form XML files. NIImporter_VISUM.* and NIImporter_DlrNavteq.* read plain text files, formatted in different ways. All these modules are located in <i><b>&lt;SUMO_HOME&gt;</b></i>/src/netimport and of course, your import should be placed here, too.
+</p>
+<div style="background: #ccffcc; padding: .5em; margin: .5em; border: 1px dashed #88ff88;"><b>Convention:</b> network importer code is located in <i><b>&lt;SUMO_HOME&gt;</b></i>/src/netimport/</div>
+<div style="background: #ccffcc; padding: .5em; margin: .5em; border: 1px dashed #88ff88;"><b>Convention:</b> network importer should be named NIImporter_&lt;FORMAT_NAME&gt;</div>
+<a name="Calling_the_Reader" id="Calling_the_Reader"></a><h2> <span class="mw-headline">Calling the Reader</span></h2>
+<p>Before adding a call to the init-function of your network importer, you have to add according options; otherwise the first call will end with an error due to accessing an unknown option. The options have to be added to void NIFrame::fillOptions().
+</p><p>Then, you can make the importing facility know your parser by including the .h-file of your parser to NILoader.cpp and add a call to his loadNetwork-method within void NILoader::load(OptionsCont &amp;oc).
+</p>
+<a name="Import_Order" id="Import_Order"></a><h2> <span class="mw-headline">Import Order</span></h2>
+<p>In most cases, edges, nodes, traffic lights, connections between edges, and other road network attributes are given explicitly and separated. The information <b>must</b> be imported in the correct order. The following order is right:
+</p>
+<ul><li> nodes
+</li><li> edges (need references to origin and to destination nodes)
+</li><li> connections between edges (need usually references to edges)
+</li><li> traffic lights (need references to nodes)
+</li></ul>
+<p>Some more outrageous programmers may try to optimise the order a bit if the original data is aligned different. This may be possible in some cases.
+</p><p>In the case nodes, edges, and other information are parsed from several files, the import order must be considered. Of course, it is also possible to store data in temporary containers. Still, this should be avoided as it increases memory consumption, and yes, memory consumption is one of the major problems for the network building process. In the case temporary containers are used, they must of course be cleared before returning from importing.
+</p>
+<div style="background: #ccffcc; padding: .5em; margin: .5em; border: 1px dashed #88ff88;"><b>Convention:</b> try to avoid static containers</div>
+<div style="background: #ccffcc; padding: .5em; margin: .5em; border: 1px dashed #88ff88;"><b>Convention:</b> clean static containers if used</div>
+<a name="Starting_to_Parse" id="Starting_to_Parse"></a><h2> <span class="mw-headline">Starting to Parse</span></h2>
+<p>All importers have a static method named "loadNetwork" which starts the parsing. This method is responsible for starting the import if the according options are set and to assure the read values are stored for further processing within the according netbuilding containers. For this purpose, it is necessary to have the options and the netbuilding structure be given to the importer, making the call have the following fingerprint:
+</p>
+<pre>static void loadNetwork(const OptionsCont &amp;oc, NBNetBuilder &amp;nb);
+</pre>
+<p>At first, this method asks whether the option which makes <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> read a file of the according format is set and whether the set value is right. By now, this means only that a check whether the given file(s) really exist(s) is made, not whether it is well formatted or valid in any means. The method FileHelpers::exists(&lt;FILE&gt;) returns whether a given file is existing.
+</p>
+<div style="background: #ccffcc; padding: .5em; margin: .5em; border: 1px dashed #88ff88;"><b>Convention:</b> all importer have a static member which checks whether the according option is set with a valid value</div>
+<p>After the file has been checked for being existent, a parser is built and started.
+</p><p>You may have noticed, that some of the import parsers allow to give more than one file, divided by ','. This is of a great help sometimes, still it is not mandatory. It is up to you to decide whether your importer should be able to handle several files or not.
+</p>
+<a name="Error_Handling" id="Error_Handling"></a><h2> <span class="mw-headline">Error Handling</span></h2>
+<p>Different formats have different sources for being errornous. In some cases, heuristics may have to be applied during the parsing. In all cases something is strange - and it is not strange each time a network from the given format is imported - a warning should be generated. This is done by calling the macro
+</p>
+<pre>WRITE_WARNING(&lt;TEXT&gt;);
+</pre>
+<p>If the odd behaviour completely disallows further processing of the imported file, or in the case a read value is not in the right format (a string is read, though a floating point number was awaited, for example), a ProcessError should be thrown. The exception must have an information about the error, for example:
+</p>
+<pre>throw ProcessError("Number of lanes is &lt;0");
+</pre>
+<p>Yes, the decision whether a strange value is an error or a warning is sometimes difficult.
+</p>
+<div style="background: #ccffcc; padding: .5em; margin: .5em; border: 1px dashed #88ff88;"><b>Convention:</b> throw a ProcessError in the case of errors</div>
+<div style="background: #ccffcc; padding: .5em; margin: .5em; border: 1px dashed #88ff88;"><b>Convention:</b> warn on strange behaviour</div>
+<div style="background: #ccffcc; padding: .5em; margin: .5em; border: 1px dashed #88ff88;"><b>Convention:</b> both, a warning and an error exception must have an explanation about the reason supplied</div>
+<a name="Adding_read_Values_to_the_netbuilding_Containers" id="Adding_read_Values_to_the_netbuilding_Containers"></a><h1> <span class="mw-headline">Adding read Values to the netbuilding Containers</span></h1>
+<p>After the definition of a node, an edge, or anything else has been parsed, the according structure must be built and inserted into the according netbuilding container. 
+</p><p><br />
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Class
+</th><th style="background:#ddddff;"> Road element
+</th></tr>
+<tr>
+<td> NBNode
+</td><td> A node (intersection, junction)
+</td></tr>
+<tr>
+<td> NBEdge
+</td><td> An edge (road, street)
+</td></tr>
+</table>
+<p>The following table shows which definitions are stored into which containers:
+</p><p>In most cases, these methods return whether the addition was successful. If it was not, there probably is already an object with the same name. Normally, the imported networks we have dealt with so far did not contain duplicates - with the exception of edges which may bidirectional. In the case the object could not been added, you have to delete it explicitly. In the case your format is known to contain duplicates, you should ask whether a duplicate was already built and only if not, build the instance.
+</p>
+<div style="background: #ccffcc; padding: .5em; margin: .5em; border: 1px dashed #88ff88;"><b>Convention:</b> try to avoid building and deleting of duplicates</div>
+<a name="Tests" id="Tests"></a><h1> <span class="mw-headline">Tests</span></h1>
+<a name="Submitting_the_Code" id="Submitting_the_Code"></a><h1> <span class="mw-headline">Submitting the Code</span></h1>
+<p>In the case you do not have a write access to the SVN, we would be very happy if you could provide patches against a recent version to <a href="../../Contact.html" title="Contact">the sumo-devel mailing list</a>.
+</p><p><br />
+</p><p><br />
+</p>
+<p style="border:1px solid #909090; padding:1px 4px 3px 4px"><a href="../../images/CC-BY-SA-small.png" class="image" title="Creative Commons License"><img alt="Creative Commons License" src="../../images//CC-BY-SA-small.png" width="80" height="15" border="0" /></a>
+This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/" class="external text" title="http://creativecommons.org/licenses/by-sa/3.0/" rel="nofollow">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>. The authors are listed in the history.</p>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 61/1000000
+Post-expand include size: 1869/2097152 bytes
+Template argument size: 495/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:251-0!1!0!!en!2!edit=0 and timestamp 20120718063159 -->
+</div><hr/><div id="lastmod">This page was last modified on 6 March 2012, at 11:19.</div>

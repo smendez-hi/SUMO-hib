@@ -1,0 +1,373 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Protocol</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>This page details the <a href="../TraCI.html" title="TraCI">TraCI</a> protocol. Please see there for a general introduction.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Basic_Flow"><span class="tocnumber">1</span> <span class="toctext">Basic Flow</span></a></li>
+<li class="toclevel-1"><a href="#Messages"><span class="tocnumber">2</span> <span class="toctext">Messages</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Status_Response"><span class="tocnumber">2.1</span> <span class="toctext">Status Response</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Data_types"><span class="tocnumber">3</span> <span class="toctext">Data types</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Atomar_Types"><span class="tocnumber">3.1</span> <span class="toctext">Atomar Types</span></a></li>
+<li class="toclevel-2"><a href="#Composed_Types"><span class="tocnumber">3.2</span> <span class="toctext">Composed Types</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Position_Representations"><span class="tocnumber">3.2.1</span> <span class="toctext">Position Representations</span></a></li>
+<li class="toclevel-3"><a href="#Boundary_Box_.28ubyte_identifier:_0x05.29"><span class="tocnumber">3.2.2</span> <span class="toctext">Boundary Box (ubyte identifier: 0x05)</span></a></li>
+<li class="toclevel-3"><a href="#Polygon_.28ubyte_identifier:_0x06.29"><span class="tocnumber">3.2.3</span> <span class="toctext">Polygon (ubyte identifier: 0x06)</span></a></li>
+<li class="toclevel-3"><a href="#Traffic_Light_Phase_List_.28ubyte_identifier:_0x0D.29"><span class="tocnumber">3.2.4</span> <span class="toctext">Traffic Light Phase List (ubyte identifier: 0x0D)</span></a></li>
+<li class="toclevel-3"><a href="#Color_.28ubyte_identifier:_0x11.29"><span class="tocnumber">3.2.5</span> <span class="toctext">Color (ubyte identifier: 0x11)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Basic_Flow" id="Basic_Flow"></a><h2> <span class="mw-headline"> Basic Flow </span></h2>
+<p>After starting <a href="../SUMO.html" title="SUMO">SUMO</a>, a client connects to <a href="../SUMO.html" title="SUMO">SUMO</a> by setting up a TCP connection to the appointed <a href="../SUMO.html" title="SUMO">SUMO</a> port.
+</p><p><b>Figure:TraCI: establishing a connection to SUMO</b>
+</p><p><a href="../images/TraciConnect_sequence.png" class="image" title="Image:traciConnect_sequence.png"><img alt="Image:traciConnect_sequence.png" src="../images//TraciConnect_sequence.png" width="390" height="300" border="0" /></a>
+</p><p>The client application sends commands to <a href="../SUMO.html" title="SUMO">SUMO</a> to control the simulation run, to influence single vehicle's behavior or to ask for environmental details. <a href="../SUMO.html" title="SUMO">SUMO</a> answers with a <em>Status</em>-response to each command and additional results that depend on the given command.
+</p><p>The client has to trigger each simulation step in <a href="../SUMO.html" title="SUMO">SUMO</a> using the <a href="../TraCI/Control-related_commands.html#Command_0x02:_Simulation_Step" title="TraCI/Control-related commands">TraCI/Control-related commands#Command 0x02: Simulation Step</a> command. If any <a href="../TraCI/Value_Retrieval_Subscription.html" title="TraCI/Value Retrieval Subscription">subscriptions</a> have been done, the subscribed values are returned.
+</p><p>The client is responsible for shutting down the connection using the <a href="../TraCI/Control-related_commands.html#Command_0x7F:_Close" title="TraCI/Control-related commands">close</a> command. See <a href="../Simulation/Basic_Definition.html#Defining_the_Time_Period_to_Simulate" title="Simulation/Basic Definition">Simulation/Basic Definition#Defining the Time Period to Simulate</a> for further information on differences between running the simulation in TraCI-mode. The simulation will end, freeing all resources.
+</p><p><b>Figure:TraCI: closing a connection to SUMO</b>
+</p><p><a href="../images/TraciColose_sequence.png" class="image" title="Image:traciColose_sequence.png"><img alt="Image:traciColose_sequence.png" src="../images//TraciColose_sequence.png" width="360" height="270" border="0" /></a>
+</p>
+<a name="Messages" id="Messages"></a><h2> <span class="mw-headline"> Messages </span></h2>
+<p>A TCP message acts as container for a list of commands or results. Therefore, each TCP message consists of a small header that gives the overall message size and a set of commands that are put  behind it. The length and identifier of each command is placed in front of the command. A scheme of this container is depicted below:
+</p>
+<pre> 0                 7 8               15
++--------------------------------------+
+| Message Length including this header |
++--------------------------------------+
+|      (Message Length, continued)     |
++--------------------------------------+  \
+|     Length        |    Identifier    |  |
++--------------------------------------+   &gt; Command_0
+|           Command_0 content          |  |
++--------------------------------------+  /
+                   ...
++--------------------------------------+  \
+|     Length        |    Identifier    |  |
++--------------------------------------+   &gt; Command_n-1
+|          Command_n-1 content         |  |
++--------------------------------------+  /
+</pre>
+<p>In some cases the length of a single command may not suffice, since the maximum command length is limited to 255. In those cases an extended length can be used by setting the original ubyte length field to zero and adding an integer length field. This extended scheme for a command looks as follows:
+</p>
+<pre> 0                 7 8               15
++--------------------------------------+  \
+|   Length = 0      |                  |  |
++-------------------+                  |  |
+|        32 bit Integer Length         |  |
+|                   +------------------+   &gt; Command
+|                   |   Identifier     |  |
++--------------------------------------+  |
+|            Command content           |  |
++--------------------------------------+  /
+</pre>
+<p>To simplify the usage of TraCI, we provide a class for handling the socket connection and another for composing a message out of basic data types. The C++ implementation of these classes is available by using subversion and the repository path <code><a href="https://shawn.svn.sourceforge.net/svnroot/shawn/src/apps/tcpip" class="external free" title="https://shawn.svn.sourceforge.net/svnroot/shawn/src/apps/tcpip" rel="nofollow">https://shawn.svn.sourceforge.net/svnroot/shawn/src/apps/tcpip</a></code>. The Java implementation will be published soon.
+The class <code>tcpip::Socket</code> handles a TCP connection on server as well as on client side. The class <code>tcpip::Storage</code> is designed to hold a list of elementary data types. By using the method <code>tcpip::Socket::sendExact(tcpip::Storage)</code> and <code>tcpip::Socket::receiveExact(Storage)</code>, messages can be send and received as Storage objects.
+</p>
+<a name="Status_Response" id="Status_Response"></a><h3> <span class="mw-headline">Status Response</span></h3>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Result
+</th><th style="border: 1pt solid;"> Description
+</th></tr></table>
+<p>Each command is acknowledged by a status response, included are a <i>Result</i> and a <i>Description</i>. The identifier refers to the identifier of the respective command that is acknowledged. <br />
+<i>Result</i> can have the following values:
+</p>
+<ul><li> 0x00 in case of succes   
+</li><li> 0xFF if the requested command failed
+</li><li> 0x01 if the requested command is not implemented in the network simulator (in addition, a <i>Description</i> text must be added)
+</li></ul>
+<a name="Data_types" id="Data_types"></a><h2> <span class="mw-headline"> Data types </span></h2>
+<a name="Atomar_Types" id="Atomar_Types"></a><h3> <span class="mw-headline"> Atomar Types </span></h3>
+<p>The following table shows the supported elementary data types:
+</p>
+<table border="2" cellpadding="4" cellspacing="2" rules="all">
+
+<tr>
+<th>Data type </th><th>   Size   </th><th> Description                       </th><th> Identifier
+</th></tr>
+<tr>
+<td>ubyte     </td><td>   8 bit  </td><td> integer numbers (0 to 255)        </td><td> 0x07
+</td></tr>
+<tr>
+<td>byte      </td><td>   8 bit  </td><td> integer numbers (-128 to 127)     </td><td> 0x08
+</td></tr>
+<tr>
+<td> integer   </td><td>  32 bit  </td><td> integer numbers (-2<sup>31</sup> to 2<sup>31</sup>-1) </td><td> 0x09
+</td></tr>
+<tr>
+<td> float     </td><td>  32 bit  </td><td> IEEE754 floating point numbers (see note)    </td><td> 0x0A
+</td></tr>
+<tr>
+<td> double    </td><td>  64 bit  </td><td> IEEE754 floating point numbers    </td><td> 0x0B
+</td></tr>
+<tr>
+<td> string    </td><td> variable </td><td> 32 bit string length, followed by text coded as 8 bit ASCII         </td><td> 0x0C
+</td></tr>
+<tr>
+<td> stringList    </td><td> variable </td><td> 32 bit string count n, followed by n strings         </td><td> 0x0E
+</td></tr>
+<tr>
+<td> compound object</td><td> variable </td><td> Compound object, internal structure depends on concrete object         </td><td> 0x0F
+</td></tr></table>
+<a name="Composed_Types" id="Composed_Types"></a><h3> <span class="mw-headline"> Composed Types </span></h3>
+<p>In the following, composed data types are described.
+</p>
+<a name="Position_Representations" id="Position_Representations"></a><h4> <span class="mw-headline">Position Representations</span></h4>
+<p><b>2DPosition (<i>ubyte</i> identifier: 0x01)</b>
+</p><p>A cartesian 2D position within the simulation network, described by two double values (x and y coordinate).
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center" colspan="8">ubyte
+</td><td width="75" align="center"> double
+</td><td width="75" align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> X
+</th><th style="border: 1pt solid;"> Y
+</th></tr></table>
+<p><b>3DPosition (<i>ubyte</i> identifier: 0x03)</b>
+A cartesian 3D position within the simulation network, described by three double values (x, y and z coordinates).
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center" colspan="8">ubyte
+</td><td width="75" align="center"> double
+</td><td width="75" align="center"> double
+</td><td width="75" align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> X
+</th><th style="border: 1pt solid;"> Y
+</th><th style="border: 1pt solid;"> Z
+</th></tr></table>
+<p><br />
+<b>Road Map Position (<i>ubyte</i> identifier: 0x04)</b>
+Alternative position description that is also used by <a href="../SUMO.html" title="SUMO">SUMO</a> in most cases. <i>RoadId</i> identifies a road segment (edge), <i>Pos</i> describes the position of the node in longitudinal direction (ranging from 0 to the road's length). <i>LaneId</i> identifies the driving lane on the road segment. Lanes are numbered sequentially from right to left starting with 0.
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center" colspan="8">ubyte
+</td><td width="75" align="center"> string
+</td><td width="75" align="center"> double
+</td><td width="75" align="center"> ubyte
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> RoadId
+</th><th style="border: 1pt solid;"> Pos
+</th><th style="border: 1pt solid;"> LaneId
+</th></tr></table>
+<p><br />
+<b>Lat-Lon-Position (<i>ubyte</i> identifier: 0x00)</b>
+A position within the simulation network in geo-coordinates, described by two double values (latitude and longitude).
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center" colspan="8">ubyte
+</td><td width="75" align="center"> double
+</td><td width="75" align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> Latitude
+</th><th style="border: 1pt solid;"> Longitude
+</th></tr></table>
+<p><b>Lat-Lon-Alt-Position (<i>ubyte</i> identifier: 0x02)</b>
+A position within the simulation network in geo-coordinates with altitude, described by three double values (latitude, longitude, and altitude).
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center" colspan="8">ubyte
+</td><td width="75" align="center"> double
+</td><td width="75" align="center"> double
+</td><td width="75" align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> Latitude
+</th><th style="border: 1pt solid;"> Longitude
+</th><th style="border: 1pt solid;"> Altitude
+</th></tr></table>
+<p><br />
+</p>
+<a name="Boundary_Box_.28ubyte_identifier:_0x05.29" id="Boundary_Box_.28ubyte_identifier:_0x05.29"></a><h4> <span class="mw-headline">Boundary Box (<i>ubyte</i> identifier: 0x05)</span></h4>
+<p>A boundary box represented by its lower left and upper right corner.
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center" colspan="8">ubyte
+</td><td width="75" align="center"> double
+</td><td width="75" align="center"> double
+</td><td width="75" align="center"> double
+</td><td width="75" align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> LowerLeftX
+</th><th style="border: 1pt solid;"> LowerLeftY
+</th><th style="border: 1pt solid;"> UpperRightX
+</th><th style="border: 1pt solid;"> UpperRightY
+</th></tr></table>
+<p><br />
+</p>
+<a name="Polygon_.28ubyte_identifier:_0x06.29" id="Polygon_.28ubyte_identifier:_0x06.29"></a><h4> <span class="mw-headline">Polygon (<i>ubyte</i> identifier: 0x06)</span></h4>
+<p>A sequence of 2D points, representing a polygon shape. <i>Length</i> is the number of (x,y) points that make up the polygon.
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center" colspan="8">ubyte
+</td><td width="75" align="center"> ubyte
+</td><td width="75" align="center"> double
+</td><td width="75" align="center"> double
+</td><td width="25" align="center"> &nbsp;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> Length
+</th><th style="border: 1pt solid;"> X
+</th><th style="border: 1pt solid;"> Y
+</th><th style="border: 1pt solid;"> ...
+</th></tr></table>
+<p><br />
+</p>
+<a name="Traffic_Light_Phase_List_.28ubyte_identifier:_0x0D.29" id="Traffic_Light_Phase_List_.28ubyte_identifier:_0x0D.29"></a><h4> <span class="mw-headline">Traffic Light Phase List (<i>ubyte</i> identifier: 0x0D)</span></h4>
+<p>This type is used to report the different phases of a traffic light. A total of <i>Length</i> phases is reported together with the preceding and succeeding roads that are affected by the respective light phase.
+</p><p>The following identifiers for a phase exist:
+</p>
+<ul><li> 0x01: red 
+</li><li> 0x02: yellow
+</li><li> 0x03: green
+</li><li> 0x04: traffic light is off and blinking
+</li><li> 0x05: traffic light is off, not blinking
+</li></ul>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center" colspan="8">ubyte
+</td><td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td><td width="75" align="center"> string
+</td><td width="75" align="center"> ubyte
+</td><td width="25" align="center"> &nbsp;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> Length
+</th><th style="border: 1pt solid;"> PrecRoad
+</th><th style="border: 1pt solid;"> SuccRoad
+</th><th style="border: 1pt solid;"> Phase
+</th><th style="border: 1pt solid;"> ...
+</th></tr></table>
+<p><br />
+</p>
+<a name="Color_.28ubyte_identifier:_0x11.29" id="Color_.28ubyte_identifier:_0x11.29"></a><h4> <span class="mw-headline">Color (<i>ubyte</i> identifier: 0x11)</span></h4>
+<p>A R,G,B,A-quadruple of unsigned byte (0-255).
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center" colspan="8">ubyte
+</td><td width="75" align="center"> ubyte
+</td><td width="75" align="center"> ubyte
+</td><td width="75" align="center"> ubyte
+</td><td width="75" align="center"> ubyte
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 0
+</th><th style="border: 1pt solid;"> 1
+</th><th style="border: 1pt solid;"> R
+</th><th style="border: 1pt solid;"> G
+</th><th style="border: 1pt solid;"> B
+</th><th style="border: 1pt solid;"> A
+</th></tr></table>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 12/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:241-0!1!0!!en!2!edit=0 and timestamp 20120717171320 -->
+</div><hr/><div id="lastmod">This page was last modified on 29 May 2012, at 10:29.</div>

@@ -1,0 +1,460 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Developer/Network Building Process</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p><a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>, <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a>, and <a href="../NETEDIT.html" title="NETEDIT">NETEDIT</a> share the same process of building networks which is started as soon as data are read (in <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>) or after an internal description is generated (in <a href="../NETGENERATE.html" title="NETGENERATE">NETGENERATE</a>).
+</p><p>The process requires that at least nodes and edges are given, optionally also connections between edges and/or lanes and other optional information. Hints about how the network shall be built - whether turnarounds or highway on/off-ramps shall be added, traffic lights or roundabouts shall be guessed, etc. are retrieved from the options.
+</p><p>Below, you may find a list of all steps performed while building the network. Optional steps are in <i>italics</i>.
+</p>
+<ol><li> Modifying the sets of nodes and edges
+<ol><li> <i>Joining junction clusters</i>
+</li><li> Removing self-loops
+</li><li> <i>Removing isolated roads</i>
+</li><li> <i>Removing unwished edges</i>
+</li><li> Removing empty nodes <i>and geometry nodes</i>
+</li><li> Joining similar edges
+</li><li> <i>Splitting geometry edges</i>
+</li><li> <i>Guessing and setting on-/off-ramps</i>
+</li></ol>
+</li><li> <i>Moving network to origin</i>
+</li><li> TLS position computation
+<ol><li> <i>Assigning nodes to traffic lights</i>
+</li><li> <i>Joining traffic light nodes</i>
+</li></ol>
+</li><li> Computing connections between lanes
+<ol><li> Computing turning directions
+</li><li> Sorting nodes' edges
+</li><li> Computing Approached Edges
+</li><li> Computing Approaching Lanes
+</li><li> Dividing of Lanes on Approached Lanes
+</li><li> <i>Appending Turnarounds</i>
+</li><li> Rechecking of lane endings
+</li></ol>
+</li><li> Geometry computation
+<ol><li> Computing node shapes
+</li><li> Computing edge shapes
+</li></ol>
+</li><li> Computing right-of-way and traffic light programs
+<ol><li> Computing tls logics
+</li><li> Computing node logics
+</li><li> Computing traffic light logics
+</li></ol>
+</li><li> Finishing inner edges
+</li></ol>
+<p>These computation steps are perfomed within void
+NBNetBuilder::compute(OptionsCont &amp;oc). These steps are described more detailed in the following.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Steps"><span class="tocnumber">1</span> <span class="toctext">Steps</span></a>
+<ul>
+<li class="toclevel-2"><a href="#.231:_Modifying_the_sets_of_nodes_and_edges"><span class="tocnumber">1.1</span> <span class="toctext">#1: Modifying the sets of nodes and edges</span></a></li>
+<li class="toclevel-2"><a href="#.232:_Moving_network_to_origin"><span class="tocnumber">1.2</span> <span class="toctext">#2: Moving network to origin</span></a></li>
+<li class="toclevel-2"><a href="#.233:_TLS_position_computation"><span class="tocnumber">1.3</span> <span class="toctext">#3: TLS position computation</span></a></li>
+<li class="toclevel-2"><a href="#.234:_Connections_Computation"><span class="tocnumber">1.4</span> <span class="toctext">#4: Connections Computation</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Computing_turning_directions"><span class="tocnumber">1.4.1</span> <span class="toctext">Computing turning directions</span></a></li>
+<li class="toclevel-3"><a href="#Sorting_nodes.27_edges"><span class="tocnumber">1.4.2</span> <span class="toctext">Sorting nodes' edges</span></a></li>
+<li class="toclevel-3"><a href="#Computing_node_types"><span class="tocnumber">1.4.3</span> <span class="toctext">Computing node types</span></a></li>
+<li class="toclevel-3"><a href="#Computing_priorities"><span class="tocnumber">1.4.4</span> <span class="toctext">Computing priorities</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="#.235:_Geometry_computation"><span class="tocnumber">1.5</span> <span class="toctext">#5: Geometry computation</span></a></li>
+<li class="toclevel-2"><a href="#.236:_Computing_right-of-way_and_traffic_light_programs"><span class="tocnumber">1.6</span> <span class="toctext">#6: Computing right-of-way and traffic light programs</span></a></li>
+<li class="toclevel-2"><a href="#.237:_Finishing_inner_edges_.28optional.29"><span class="tocnumber">1.7</span> <span class="toctext">#7: Finishing inner edges (optional)</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#OLD"><span class="tocnumber">2</span> <span class="toctext">OLD</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Steps_.239-.2310:_Computing_certain_signalling.2Fright-of-ways"><span class="tocnumber">2.1</span> <span class="toctext">Steps #9-#10: Computing certain signalling/right-of-ways</span></a></li>
+<li class="toclevel-2"><a href="#Steps_.2311-.2317:_Computing_and_setting_lane-to-lane_connections"><span class="tocnumber">2.2</span> <span class="toctext">Steps #11-#17: Computing and setting lane-to-lane connections</span></a></li>
+<li class="toclevel-2"><a href="#Steps_.2318-.2319:_Computing_geometries"><span class="tocnumber">2.3</span> <span class="toctext">Steps #18-#19: Computing geometries</span></a></li>
+<li class="toclevel-2"><a href="#Steps_.2320-.2322:_Computing_right-of-way_rules"><span class="tocnumber">2.4</span> <span class="toctext">Steps #20-#22: Computing right-of-way rules</span></a></li>
+<li class="toclevel-2"><a href="#Steps_.2323:_Applying_additional_offset"><span class="tocnumber">2.5</span> <span class="toctext">Steps #23: Applying additional offset</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Table"><span class="tocnumber">3</span> <span class="toctext">Table</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Steps" id="Steps"></a><h1> <span class="mw-headline">Steps</span></h1>
+<dl><dd><i>pre-condition</i>: All input is read
+</dd><dd><i>pre-condition</i>: Nodes have: id, cartesian coordinates, type (optional, may change)
+</dd><dd><i>pre-condition</i>: Edges have: valid from/to-nodes, lane number, max. speed limits, allowed vehicle classes, geometry (may change), typeID, lane spread information, name (optional), priority information (optional)
+</dd></dl>
+<a name=".231:_Modifying_the_sets_of_nodes_and_edges" id=".231:_Modifying_the_sets_of_nodes_and_edges"></a><h2> <span class="mw-headline">#1: Modifying the sets of nodes and edges</span></h2>
+<dl><dd><b>Purpose</b>: Remove unwished edges/nodes from the internal representation; add geometry nodes if wished
+</dd><dd><i>post-condition</i>: all unwished elements (nodes, edges) are removed, geometry nodes are inserted/removed if wished, attributes as above
+</dd></dl>
+<p>The following sub-steps are done:
+</p>
+<ul><li> <b>joinJunctions</b> ('<code>Joining junction clusters</code>'): build node clusters
+</li></ul>
+<dl><dd><b>Purpose</b>: Join network graph nodes which form a single intersection.
+</dd><dd><i>post-condition</i>: junction joined, attributes as above
+</dd><dd><i>affects</i>: removes and adds nodes, removes edges, remapps connections (tbd)
+</dd><dd><i>state</i>: tbd
+</dd></dl>
+<ul><li> <b>removeSelfLoops</b> ('<code>Removing self-loops</code>'): remove all edges where the from-node is the same as the to-node
+</li></ul>
+<dl><dd> <i>post-condition</i>: Each edge is a uni-directional connection between two different nodes (ok)
+</dd><dd> <i>state</i>: green for me, though I am not sure why lists of edges are built which are then given to remapping methods; wouldn't it be enough to check within the remapping method whether a connection exists?
+</dd></dl>
+<ul><li> <b>joinSimilarEdges</b> ('<code>Joining similar edges</code>'): "join" edges which connect the same nodes
+</li></ul>
+<dl><dd> <i>post-condition</i>: No two edges with same geometry connecting same nodes exist
+</dd><dd> <i>state</i>: yellow, as there are two comments in the code, one about a bug, a second one about a missing check for vclasses; should be revisited (why it's here, what would happen if not)
+</dd><dd> <i>comment</i>:&nbsp;? Earlier, only one road could connect same intersections; not now. Why, explain, how does it work?
+</dd><dd> <i>comment</i>: This method uses two magic numbers to determine whether edges are "similar":
+</dd><dd> <code>SUMOReal distanceThreshold = 7;</code> // don't merge edges further apart
+</dd><dd> <code>SUMOReal lengthThreshold = 0.05;</code> // don't merge edges with higher relative length-difference
+</dd></dl>
+<p><br />
+</p>
+<ul><li> <b>removeIsolatedRoads</b> ('<code>Finding isolated roads</code>'): remove edges which are isolated (not part of the network)
+</li></ul>
+<dl><dd> <i>post-condition</i>:&nbsp;? not defined somewhere
+</dd><dd> <i>state</i>: yellow; the method is pretty large, and there is no removal of edges within the tls control; how does it work?
+</dd><dd> <i>comment</i>: Should be revisited
+</dd></dl>
+<ul><li> <b>removeUnwishedEdges</b> ('<code>Removing unwished edges</code>'): Removes edges not in myEdges2Keep
+</li></ul>
+<dl><dd> <i>post-condition</i>: not wanted edges are no longer in the internal containers (ok)
+</dd><dd> <i>state</i>: yellow; the complete keep/remove/keep-postload - stuff should be revisited
+</dd></dl>
+<ul><li> <b>removeUnwishedNodes</b> ('<code>Removing empty nodes and geometry nodes</code>' or '<code>Removing empty nodes</code>'): Removes useless nodes
+</li></ul>
+<dl><dd> <i>post-condition</i>: empty nodes, nodes with no incoming/outgoing edges, are removed (ok)
+</dd><dd> <i>post-condition</i>: nodes which only affect the geometry of an edge are removed if wished (ok)
+</dd><dd> <i>state</i>: yellow; should be done in two steps for a cleaner code; additionally, we had the bug that empty acosta nodes where still in the network; is this solved?
+</dd></dl>
+<ul><li> <b>splitGeometry</b> ('<code>Splitting geometry edges</code>'): Splits edges at geometry positions
+</li></ul>
+<dl><dd> <i>post-condition</i>: If wished, edges have a line-geometry only
+</dd><dd> <i>state</i>: yellow; the naming of built nodes is not proper
+</dd></dl>
+<ul><li> <b>Guessing on-/off-ramps</b> (<code>Guessing and setting on-/off-ramps</code>)
+</li></ul>
+<dl><dd><b>Purpose</b>: Add missing on-/off-ramps
+</dd><dd><i>state</i>: tbd
+</dd></dl>
+<p><br />
+As a result, the internal representation of the read/generated network contains the sets of nodes/edges the user wanted.
+</p>
+<a name=".232:_Moving_network_to_origin" id=".232:_Moving_network_to_origin"></a><h2> <span class="mw-headline">#2: Moving network to origin</span></h2>
+<dl><dd><b>Purpose</b>: Let network coordinates start at 0,0
+</dd><dd><i>state</i>: green
+</dd></dl>
+<a name=".233:_TLS_position_computation" id=".233:_TLS_position_computation"></a><h2> <span class="mw-headline">#3: TLS position computation</span></h2>
+<dl><dd><b>Purpose</b>: Let nodes know whether they are controlled by traffic lights
+</dd></dl>
+<ul><li> <b>guessTLs</b> ('<code>Assigning nodes to traffic lights</code>')
+</li></ul>
+<dl><dd> <i>post-condition</i>: empty nodes, nodes with no incoming/outgoing edges, are removed (ok)
+</dd><dd><i>state</i>: tbd
+</dd></dl>
+<ul><li> <b>joinTLS</b> ('<code>Joining traffic light nodes</code>')
+</li></ul>
+<dl><dd> <i>post-condition</i>: empty nodes, nodes with no incoming/outgoing edges, are removed (ok)
+</dd><dd><i>state</i>: tbd
+</dd></dl>
+<a name=".234:_Connections_Computation" id=".234:_Connections_Computation"></a><h2> <span class="mw-headline">#4: Connections Computation</span></h2>
+<dl><dd><b>Purpose</b>: Determine and/or assign connections over intersections between lanes
+</dd></dl>
+<a name="Computing_turning_directions" id="Computing_turning_directions"></a><h3> <span class="mw-headline">Computing turning directions</span></h3>
+<dl><dd> <b>code</b>: NBTurningDirectionsComputer::computeTurnDirections(...);
+</dd><dd> <b>post-condition</b>: The edge knows its turnaround direction, if existing.
+</dd><dd> <b>reason</b>: Turnarounds are treated differently in the following steps than other directions of driving.
+</dd><dd> <b>how</b>
+</dd></dl>
+<p>For each combination of an incoming and an outgoing edge, which may be connected, we compute the angle between them. If this angle is &gt;160°, we assume that this may be a turnaround. We add 360° to this angle if both edges connect same both nodes in different direction. We store the edge pairs with angle into a list sorted decreasing by the angle. After all combinations are computed, we go through the list and set those as turnarounds which we see at first, marking both the incoming and the outgoing edge as already seen what avoids to use them twice. We warn if an edge occures twice with an angle &gt;360° - multiple edges connecting two same nodes.
+</p>
+<dl><dd> <b>state</b>: yellow
+<dl><dd> the check for being connected should be omitted, here, see inline-documentation
+</dd><dd> as usual, you may find pathological intersections
+</dd></dl>
+</dd></dl>
+<a name="Sorting_nodes.27_edges" id="Sorting_nodes.27_edges"></a><h3> <span class="mw-headline">Sorting nodes' edges</span></h3>
+<dl><dd> <b>code</b>: NBNodesEdgesSorter::sortNodesEdges(...);
+</dd><dd> <b>post-condition</b>: each node's edges (incoming, outgoing, and all) are sorted clockwise, starting at 12 o'clock. Incoming edges with same angle as the according outgoing are before the outgoing one in the list of all edges.
+</dd><dd> <b>reason</b>: this order is assumed to be given in following computation steps
+</dd><dd> <b>how</b>
+</dd></dl>
+<p>We sort a node's edge vectors (incoming, outgoing, all), first. Then, we go through the vector of all edges and exchange an incoming and an outgoing edge if both have the same angle, and the incoming is after the outgoing (determined using "isTurningDirection").
+</p>
+<dl><dd> <b>state</b>: yellow
+<dl><dd> unvalidated for left-hand networks
+</dd><dd> the method uses the method "NBEdge::isTurningDirectionAt(...)" which is not a plain usage of the turnaround computation performed earlier
+</dd></dl>
+</dd></dl>
+<a name="Computing_node_types" id="Computing_node_types"></a><h3> <span class="mw-headline">Computing node types</span></h3>
+<dl><dd> <b>code</b>: NBNodeTypeComputer::computeNodeTypes(...);
+</dd><dd> <b>post-condition</b>: Each node has one of the following types: NODETYPE_PRIORITY_JUNCTION, NODETYPE_RIGHT_BEFORE_LEFT, NODETYPE_TRAFFIC_LIGHT, NODETYPE_NOJUNCTION(?).
+</dd><dd> <b>reason</b>: We need this to compute the right-of-way rules.
+</dd><dd> <b>how</b>
+</dd></dl>
+<p>We investigate each node by itself. We check some special cases, first:
+</p>
+<ul><li> if the type is already set (myType&nbsp;!= NODETYPE_UNKNOWN) -&gt; skip
+</li><li> if we have only one incoming edge -&gt; set to NODETYPE_PRIORITY_JUNCTION
+</li><li> if it is a <i>simple continuation</i> -&gt; set to NODETYPE_PRIORITY_JUNCTION
+</li></ul>
+<p>At first, we assume the intersection is a NODETYPE_RIGHT_BEFORE_LEFT intersection. We then go through all incoming edge combinations which are not opposite. As soon as we encounter one where the speed limit between both edges differs by more than 10km/h (approx.), we set the type to NODETYPE_PRIORITY_JUNCTION. This is also the case if one of the edges has a speed limit of more than 49km/h (we use this value to avoid floating point issues).
+</p>
+<dl><dd> <b>state</b>: yellow
+<dl><dd> investigate whether NODETYPE_NOJUNCTION can be set earlier (by the user)
+</dd><dd> the used method "getOppositeIncoming" should be revalidated
+</dd></dl>
+</dd></dl>
+<a name="Computing_priorities" id="Computing_priorities"></a><h3> <span class="mw-headline">Computing priorities</span></h3>
+<dl><dd> <b>code</b>: NBEdgePriorityComputer::computeEdgePriorities(...);
+</dd><dd> <b>post-condition</b>: Each edge has a priority at the node it starts and ends at. The priorities at the start and the end node may differ. An edge has either the priority 1 (higher prioritized) or 0 (lower prioritized or all equal).
+</dd><dd> <b>reason</b>: We need this to compute the right-of-way rules.
+</dd><dd> <b>how</b>
+</dd></dl>
+<p>All priorities are initialised to 0.
+</p>
+<dl><dd> <b>state</b>: orange
+</dd></dl>
+<a name=".235:_Geometry_computation" id=".235:_Geometry_computation"></a><h2> <span class="mw-headline">#5: Geometry computation</span></h2>
+<a name=".236:_Computing_right-of-way_and_traffic_light_programs" id=".236:_Computing_right-of-way_and_traffic_light_programs"></a><h2> <span class="mw-headline">#6: Computing right-of-way and traffic light programs</span></h2>
+<a name=".237:_Finishing_inner_edges_.28optional.29" id=".237:_Finishing_inner_edges_.28optional.29"></a><h2> <span class="mw-headline">#7: Finishing inner edges (optional) </span></h2>
+<a name="OLD" id="OLD"></a><h1> <span class="mw-headline">OLD</span></h1>
+<a name="Steps_.239-.2310:_Computing_certain_signalling.2Fright-of-ways" id="Steps_.239-.2310:_Computing_certain_signalling.2Fright-of-ways"></a><h2> <span class="mw-headline">Steps #9-#10: Computing certain signalling/right-of-ways</span></h2>
+<a name="Steps_.2311-.2317:_Computing_and_setting_lane-to-lane_connections" id="Steps_.2311-.2317:_Computing_and_setting_lane-to-lane_connections"></a><h2> <span class="mw-headline">Steps #11-#17: Computing and setting lane-to-lane connections</span></h2>
+<a name="Steps_.2318-.2319:_Computing_geometries" id="Steps_.2318-.2319:_Computing_geometries"></a><h2> <span class="mw-headline">Steps #18-#19: Computing geometries</span></h2>
+<p>I am currently concerned with the edge shapes, because even a eworld or a TrafficModeler export stops here in debug mode. It is in NBEdge::computeEdgeShape. (Actually, as far as I understand this method, it is about the lane shapes of this edge.) In this algorithm, the following three cases must be distinguished:
+</p>
+<table>
+<tr>
+<td> <a href="../images/LaneShapeIntersectsWithNodeShape.png" class="image" title="File:laneShapeIntersectsWithNodeShape.png"><img alt="File:laneShapeIntersectsWithNodeShape.png" src="../images//LaneShapeIntersectsWithNodeShape.png" width="307" height="182" border="0" /></a> </td><td> The edge shape intersects with the node shape. Then, the shape is trimmed to the intersection point. This looks quite reasonable.
+</td></tr>
+<tr>
+<td> <a href="../images/LaneShapeOutsideOfNodeShape.png" class="image" title="File:laneShapeOutsideOfNodeShape.png"><img alt="File:laneShapeOutsideOfNodeShape.png" src="../images//LaneShapeOutsideOfNodeShape.png" width="306" height="182" border="0" /></a> </td><td> The edge shape is outside the node shape. The the present algorithm extrapolates the last line of the edge shape and enlarges the edge to the new intersection point. This looks reasonable to me as well.
+</td></tr>
+<tr>
+<td> <a href="../images/LaneShapeInsideOfNodeShape.png" class="image" title="File:laneShapeInsideOfNodeShape.png"><img alt="File:laneShapeInsideOfNodeShape.png" src="../images//LaneShapeInsideOfNodeShape.png" width="297" height="180" border="0" /></a> </td><td> The edge shape is completely within the node shape. What should happen here? (The red dots show, what netconvert does at present.)
+</td></tr></table>
+<p>So I am wondering, what the right behaviour of netconvert would be in the third case.
+</p>
+<a name="Steps_.2320-.2322:_Computing_right-of-way_rules" id="Steps_.2320-.2322:_Computing_right-of-way_rules"></a><h2> <span class="mw-headline">Steps #20-#22: Computing right-of-way rules</span></h2>
+<a name="Steps_.2323:_Applying_additional_offset" id="Steps_.2323:_Applying_additional_offset"></a><h2> <span class="mw-headline">Steps #23: Applying additional offset</span></h2>
+<a name="Table" id="Table"></a><h1> <span class="mw-headline">Table</span></h1>
+<table border="1">
+<tr>
+<th colspan="2">Action
+</th><th colspan="3">affects
+</th></tr>
+<tr>
+<th colspan="2">
+</th><th>nodes
+</th><th>edges
+</th><th>connections
+</th></tr>
+<tr>
+<td colspan="2"><b>Adapting the input</b>
+</td><td>x
+</td><td>x
+</td><td>x
+</td></tr>
+<tr>
+<td>
+</td><td>'<code>Building node clusters</code>'
+</td><td>x
+</td><td>x
+</td><td>x
+</td></tr>
+<tr>
+<td>
+</td><td>'<code>Removing self-loops</code>'
+</td><td>x
+</td><td>
+</td><td>x
+</td></tr>
+<tr>
+<td>
+</td><td>'<code>Joining similar edges</code>'
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>'<code>Finding isolated roads</code>'
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>'<code>Removing unwished edges</code>'
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>'<code>Removing empty nodes and geometry nodes</code>' or '<code>Removing empty nodes</code>'
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>'<code>Splitting geometry edges</code>'
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>'<code>Guessing and setting on-/off-ramps</code>'
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td colspan="2"><b>Moving network to origin</b>
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td colspan="2"><b>TLS position computation</b>
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Assigning nodes to traffic lights
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Joining traffic light nodes
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td colspan="2"><b>Computing connections between lanes</b>
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Computing turning directions
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Sorting nodes' edges
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Computing Approached Edges
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Computing Approaching Lanes
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Dividing of Lanes on Approached Lanes
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Appending Turnarounds (optional)
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Rechecking of lane endings
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td colspan="2"><b>Geometry computation</b>
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Computing node shapes
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Computing edge shapes
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td colspan="2"><b>Computing right-of-way and traffic light programs</b>
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Computing tls logics
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Computing node logics
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td>
+</td><td>Computing traffic light logics
+</td><td>
+</td><td>
+</td><td>
+</td></tr>
+<tr>
+<td colspan="2"><b>Finishing inner edges (optional)</b>
+</td><td>
+</td><td>
+</td><td>
+</td></tr></table>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 20/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:417-0!1!0!!en!2!edit=0 and timestamp 20120718063207 -->
+</div><hr/><div id="lastmod">This page was last modified on 28 June 2012, at 07:59.</div>

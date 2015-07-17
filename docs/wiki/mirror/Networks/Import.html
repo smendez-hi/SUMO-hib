@@ -1,0 +1,34 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Networks/Import</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p><a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> allows to import road networks from different formats. By now, the following formats are supported:
+</p>
+<ul><li> OpenStreetMap databases, see <a href="../Networks/Import/OpenStreetMap.html" title="Networks/Import/OpenStreetMap">Networks/Import/OpenStreetMap</a>
+</li><li> PTV VISUM (a macroscopic traffic simulation package), see <a href="../Networks/Import/VISUM.html" title="Networks/Import/VISUM">Networks/Import/VISUM</a>
+</li><li> PTV VISSIM (a microscopic traffic simulation package), see <a href="../Networks/Import/Vissim.html" title="Networks/Import/Vissim">Networks/Import/Vissim</a>
+</li><li> openDRIVE networks, see <a href="../Networks/Import/openDRIVE.html" title="Networks/Import/openDRIVE">Networks/Import/openDRIVE</a>
+</li><li> MATsim networks, see <a href="../Networks/Import/MATsim.html" title="Networks/Import/MATsim">Networks/Import/MATsim</a>
+</li><li> SUMO networks, see <a href="../Networks/Import/SUMO_Road_Networks.html" title="Networks/Import/SUMO Road Networks">Networks/Import/SUMO Road Networks</a>
+</li><li> ArcView-data base files, see <a href="../Networks/Import/ArcView.html" title="Networks/Import/ArcView">Importing ArcView networks (shapefiles)</a>
+</li><li> Elmar Brockfelds unsplitted and splitted NavTeq-data, see <a href="../Networks/Import/DlrNavteq.html" title="Networks/Import/DlrNavteq">Networks/Import/DlrNavteq</a>
+</li><li> RoboCup Rescue League folders, see <a href="../Networks/Import/RoboCup.html" title="Networks/Import/RoboCup">Networks/Import/RoboCup</a>
+</li></ul>
+<p>In most of these cases, <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> needs only two parameter: the option named as the source application/format followed by the name of the file to convert and the name of the output file (using the <span style="color: #111144; font-weight: bold; white-space: pre;">--output-file</span> option). In the case, a VISUM network shall be imported, the following code will convert it into a SUMO-network:
+</p>
+<pre>netconvert --visum=MyVisumNet.inp --output-file=MySUMONet.net.xml
+</pre>
+<p>The import can be influenced using <a href="../Networks/Further_Options.html" title="Networks/Further Options">further NETCONVERT options</a>.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 6/1000000
+Post-expand include size: 87/2097152 bytes
+Template argument size: 13/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:208-0!1!0!!en!2!edit=0 and timestamp 20120718063234 -->
+</div><hr/><div id="lastmod">This page was last modified on 12 September 2011, at 07:17.</div>

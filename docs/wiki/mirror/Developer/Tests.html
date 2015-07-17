@@ -1,0 +1,112 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Developer/Tests</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Setup"><span class="tocnumber">2</span> <span class="toctext">Setup</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Windows_Setup"><span class="tocnumber">2.1</span> <span class="toctext">Windows Setup</span></a></li>
+<li class="toclevel-2"><a href="#Linux_setup"><span class="tocnumber">2.2</span> <span class="toctext">Linux setup</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Running_the_Tests"><span class="tocnumber">3</span> <span class="toctext">Running the Tests</span></a></li>
+<li class="toclevel-1"><a href="#Adding_an_Application_Test_Suite"><span class="tocnumber">4</span> <span class="toctext">Adding an Application Test Suite</span></a></li>
+<li class="toclevel-1"><a href="#Regular_tests"><span class="tocnumber">5</span> <span class="toctext">Regular tests</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction" id="Introduction"></a><h1> <span class="mw-headline">Introduction</span></h1>
+<p>We use <a href="http://texttest.org/" class="external text" title="http://texttest.org/" rel="nofollow">TextTest</a> to test whether the software still behaves as expected. What <a href="http://texttest.org/" class="external text" title="http://texttest.org/" rel="nofollow">TextTest</a> does is to compare an application's output, including the output to stdout, stderr, and into generated files with predefined outputs from files.
+</p><p>There are some advantages and disadvantages of this approach. On the one hand, you can guarantee that the application is doing what is wanted by comparing all outputs with files you think are right. But this is also the problem with this approach: you do not have the assurance that the files you are comparing the current outputs to ARE right - you have to check these by hand.
+</p><p><br />
+</p>
+<a name="Setup" id="Setup"></a><h1> <span class="mw-headline">Setup</span></h1>
+<a name="Windows_Setup" id="Windows_Setup"></a><h2> <span class="mw-headline">Windows Setup</span></h2>
+<p>We use <a href="http://texttest.org/" class="external text" title="http://texttest.org/" rel="nofollow">TextTest</a> as our testing environment which is
+python based and has a quite complex setup under Windows.
+Following the <a href="http://texttest.carmen.se/TextTest/docs/install.html" class="external text" title="http://texttest.carmen.se/TextTest/docs/install.html" rel="nofollow">installation instructions</a>
+You will need the following software (at least for a setup with GUI)
+</p>
+<ul><li><a href="http://www.python.org/download/" class="external text" title="http://www.python.org/download/" rel="nofollow">Python 2.7</a>
+</li><li><a href="http://gladewin32.sourceforge.net/" class="external text" title="http://gladewin32.sourceforge.net/" rel="nofollow">GTK for Windows</a>
+</li><li><a href="http://www.pcpm.ucl.ac.be/~gustin/win32_ports/" class="external text" title="http://www.pcpm.ucl.ac.be/~gustin/win32_ports/" rel="nofollow">PyGTK and PyCairo</a>
+</li><li><a href="http://texttest.carmen.se/TextTest/docs/tkdiffInstall.zip" class="external text" title="http://texttest.carmen.se/TextTest/docs/tkdiffInstall.zip" rel="nofollow">TKDiff</a> (you can choose another compatible diff tool if you like)
+</li></ul>
+<p>python and diff should also appear in your PATH.
+</p>
+<a name="Linux_setup" id="Linux_setup"></a><h2> <span class="mw-headline">Linux setup</span></h2>
+<p>This is much easier because at least with recent distributions there is probably everything included.
+With openSUSE 10.2 I needed to install python-gtk and python-cairo as well as tkdiff before installing
+TextTest. If you don't need the GUI you can probably even skip these.
+</p><p><br />
+</p>
+<a name="Running_the_Tests" id="Running_the_Tests"></a><h1> <span class="mw-headline">Running the Tests</span></h1>
+<p>Within the <i> </i><b>&lt;SUMO_HOME&gt;</b><i>/tests</i> - folder you can find batch-files which start <a href="http://texttest.org/" class="external text" title="http://texttest.org/" rel="nofollow">TextTest</a> with our test suites. "runAllTests.bat" starts TextTest for testing all apllications located in the folder, "runNetconvertTests.bat" will only show tests for NETCONVERT, "runDuarouterTests.bat" only those for DUAROUTER etc.
+</p><p><br />
+</p>
+<a name="Adding_an_Application_Test_Suite" id="Adding_an_Application_Test_Suite"></a><h1> <span class="mw-headline">Adding an Application Test Suite</span></h1>
+<p>To add a test suite for a new application, you have to perform the following steps. For the examples below we'll use "polyconvert" as the example application.
+</p>
+<ul><li> go to <i> {SUMO}/tests </i>
+</li><li> copy one of the <b>run...Tests.bat</b>-files and rename it properly (<b>runPolyconvertTests.bat</b> in our case); change the name of the application within it. In our case the resulting file will look as this:
+</li></ul>
+<pre>call testEnv.bat
+texttest.py -a polyconvert -gx
+</pre>
+<ul><li> add the application to the list of applications that are tested each night by
+<ul><li> adding it to <b>runTest.sh</b>; in our case, the following line was added:
+</li></ul>
+</li></ul>
+<pre>export POLYCONVERT_BINARY="$SUMO_BIN/polyconvert"
+</pre>
+<ul><li><ul><li> adding it to <b>testDaily.sh</b>; in our case, the following line was added:
+</li></ul>
+</li></ul>
+<pre>export POLYCONVERT_BINARY="$SUMO_BIN/polyconvert"
+</pre>
+<ul><li><ul><li> adding it to <b>testEnv.bat</b>; in our case, the following line was added:
+</li></ul>
+</li></ul>
+<pre>set POLYCONVERT_BINARY=%CD%\..\bin\polyconvert.exe
+</pre>
+<ul><li> build a test folder for the application, named as the application itself (without the ".exe" extension), in our case the folder is named <b>polyconvert</b>
+</li><li> go the folder
+</li><li> build a configuration file; its name is "config", the extension is the application's to test name, so in our case it's <b>config.polyconvert</b>. Please consult <a href="http://texttest.org/" class="external text" title="http://texttest.org/" rel="nofollow">TextTest</a> documentation about the content, nonetheless, here are some notes
+<ul><li> do not forget the import of the config file
+</li><li> name the binary correct
+</li><li> name the file name properly in output
+</li><li> In all files that are collated, <i>Version</i> shold be ignored - the tests should be working along all versions
+</li></ul>
+</li></ul>
+<dl><dd>The initial file looks as following:
+</dd></dl>
+<pre>import_config_file:../config_all
+binary:$POLYCONVERT_BINARY
+copy_test_path:input_net.net.xml
+[collate_file]
+config:config.cfg
+log:log.txt
+[run_dependent_text]
+output:polyconvert.exe{REPLACE sumo-polyconvert}
+net:Version
+</pre>
+<ul><li> build a top-level testsuite file; its name is "testsuite", the extension is the application's to test name, so in our case it's <b>testsuite.polyconvert</b>
+<ul><li> I suppose, it is a good idea to start with tests of meta-output; Simply copy them from another application and patch the file names...
+</li></ul>
+</li></ul>
+<a name="Regular_tests" id="Regular_tests"></a><h1> <span class="mw-headline">Regular tests</span></h1>
+<p>At the moment all our <a href="http://sumo.sourceforge.net/daily/" class="external text" title="http://sumo.sourceforge.net/daily/" rel="nofollow">tests run each night</a> on two linux machines of different age and on a windows server.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 10/1000000
+Post-expand include size: 21/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:30-0!1!0!!en!2!edit=0 and timestamp 20120718063209 -->
+</div><hr/><div id="lastmod">This page was last modified on 10 June 2012, at 12:37.</div>

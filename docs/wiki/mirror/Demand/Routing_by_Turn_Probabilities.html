@@ -1,0 +1,60 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Demand/Routing by Turn Probabilities</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>The <a href="../JTRROUTER.html" title="JTRROUTER">JTRROUTER</a> is a routing applications which uses flows and turning percentages at junctions as input. The following parameter must be supplied: the network to route the vehicles through, the description of the turning ratios for the junctions (defaults may be used for this, too), and the descriptions of the flows.
+</p><p>A call may look like this:
+</p>
+<pre>jtrrouter --flow-files=&lt;FLOW_DEFS&gt; --turn-ratio-files=&lt;TURN_DEFINITIONS&gt; --net-file=&lt;SUMO_NET&gt; \
+  --output-file=MySUMORoutes.rou.xml --begin &lt;UINT&gt; --end &lt;UINT&gt;
+</pre>
+<p>To describe the turn definitions, one has to build a further file. Within this file, for each interval and each edge the list of percentages to use a certain follower has to be given. An example:
+</p>
+<pre class="xml">
+&lt;turn-defs&gt;
+   &lt;interval begin=&quot;0&quot; end=&quot;3600&quot;&gt;
+      &lt;fromedge id=&quot;myEdge0&quot;&gt;
+         &lt;toedge id=&quot;myEdge1&quot; probability=&quot;0.2&quot;/&gt;
+         &lt;toedge id=&quot;myEdge2&quot; probability=&quot;0.7&quot;/&gt;
+         &lt;toedge id=&quot;myEdge3&quot; probability=&quot;0.1&quot;/&gt;
+      &lt;/fromedge&gt;
+
+      ... any other edges ...
+
+   &lt;/interval&gt;
+
+   ... some further intervals ...
+
+&lt;/turn-defs&gt;
+</pre>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />If you provide turn definitions that overlap (for example in multiple files), the latter turn definition will override the former.</div>
+<p>The snippet defines that vehicles coming at the end of edge "<span class="inlxml">myEdge0</span>" within the time interval between 0s and 3600s will choose the edge "<span class="inlxml">myEdge1</span>" with a probability of 20%, "<span class="inlxml">myEdge2</span>" with a probability of 70% and "<span class="inlxml">myEdge3</span>" with a probability of 10%. Another possibility to save time on preparing the description is to use default values. The parameter <span style="color: #111144; font-weight: bold; white-space: pre;">--turn-defaults (-T) &lt;TURN_DEFAULTS&gt;</span> can be used to describe the default ratios that will be used for all junctions for all time steps. &lt;TURN_DEFAULTS&gt; is a list of doubles, separated by a ','. To achieve the same behaviour as in the example above, use <span style="color: #111144; font-weight: bold; white-space: pre;">--turn-defaults 20,70,10</span>. The values will be applied to an edge's following edges beginning at the right edge (20%) and ending at the leftmost edge (10%). As the number of possible followers changes for different edges, the values are resampled for edges which number of following edges differs from the number of given turning probability defaults. Given <span style="color: #111144; font-weight: bold; white-space: pre;">--turn-defaults 20,70,10</span> a vehicle using an edge that has two followers would use the follower to the right with 55% probability, the one to the left with 45%.
+</p><p>The definitions of the flow is the same as for the <a href="../DUAROUTER.html" title="DUAROUTER">DUAROUTER</a> with just a single difference: as it is not known where the vehicle will leave the network as the route it uses is randomly computed, the destination parameter has no meaning for jtr-routing and so may be left off. A vehicle leaves the network as soon as it comes to a sink edge. As not all networks have sink edges defined, one can support a list of edges to be declared as sinks using <span style="color: #111144; font-weight: bold; white-space: pre;">--sinks &lt;EDGE_ID&gt;[,&lt;EDGE_ID&gt;]*</span>. You may also add your sink definitions to a turn-file (XML only):
+</p>
+<pre class="xml">
+&lt;turn-defs&gt;
+   ... some further turning definitions as above ...
+ 
+   &lt;sink&gt;&lt;EDGE_ID&gt;&lt;/sink&gt;
+   ... further sink definitions ...
+
+&lt;/turn-defs&gt;
+</pre>
+<p>As theoretically a route may get infinitely long when a vehicle is forced to take always the same direction, it is possible to limit the route's size using max-edges-factor. This factor, multiplied with the number of the used network's edges is the maximum number of edges a route may have. With the default of 2.0, a route may contain twice as many edges as the network has. Any route longer than this size will be marked as invalid. We assume that for each network this number has to be chosen again.
+</p>
+<a name="Further_notes" id="Further_notes"></a><h1> <span class="mw-headline">Further notes</span></h1>
+<ul><li> For automatic, yet artificial, turn definitions generation based on the network structure, see <a href="../Tools/Turn-defs.html" title="Tools/Turn-defs">turn-def tools</a>.
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 37/1000000
+Post-expand include size: 676/2097152 bytes
+Template argument size: 244/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:229-0!1!0!!en!2!edit=0 and timestamp 20120718063152 -->
+</div><hr/><div id="lastmod">This page was last modified on 27 October 2011, at 07:46.</div>

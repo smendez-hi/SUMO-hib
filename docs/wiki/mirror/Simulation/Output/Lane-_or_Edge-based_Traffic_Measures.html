@@ -1,0 +1,291 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Output/Lane- or Edge-based Traffic Measures</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>Values within this output describe the situation within the network in terms of traffic science by giving macroscopic values such as the mean vehicle speed, the mean density, etc. This output can be generated either for lanes, or for edges.
+</p><p>In the following, it is described how both outputs are generated and which values they contain. Then, the meanings of the values are given as well as a description of intervals. At last, some additional possibilities to constraint the outputs are given.
+</p>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />Please remark that these outputs are also called "aggregated lane/edge states", "meandata", or "edge/lane-dumps".</div>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Instantiating_within_the_Simulation"><span class="tocnumber">1</span> <span class="toctext">Instantiating within the Simulation</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Meandata_Definition"><span class="tocnumber">1.1</span> <span class="toctext">Meandata Definition</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Generated_Output"><span class="tocnumber">2</span> <span class="toctext">Generated Output</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Edge-Based_Network_States"><span class="tocnumber">2.1</span> <span class="toctext">Edge-Based Network States</span></a></li>
+<li class="toclevel-2"><a href="#Lane-Based_Network_States"><span class="tocnumber">2.2</span> <span class="toctext">Lane-Based Network States</span></a></li>
+<li class="toclevel-2"><a href="#Value_Descriptions"><span class="tocnumber">2.3</span> <span class="toctext">Value Descriptions</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#How_to_aggregate_.2F_derive_further_values"><span class="tocnumber">3</span> <span class="toctext">How to aggregate / derive further values</span></a></li>
+<li class="toclevel-1"><a href="#Notes"><span class="tocnumber">4</span> <span class="toctext">Notes</span></a></li>
+<li class="toclevel-1"><a href="#See_Also"><span class="tocnumber">5</span> <span class="toctext">See Also</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Instantiating_within_the_Simulation" id="Instantiating_within_the_Simulation"></a><h2> <span class="mw-headline">Instantiating within the Simulation</span></h2>
+<a name="Meandata_Definition" id="Meandata_Definition"></a><h3> <span class="mw-headline">Meandata Definition</span></h3>
+<p>An edge-based state dump is defined within an additional file as following: 
+</p>
+<div class="inlxml">&lt;edgeData id="&lt;DETECTOR_ID&gt;" file="&lt;OUTPUT_FILE&gt;"/&gt;</div>
+<p>For a lane based dump simply write:
+</p>
+<div class="inlxml">&lt;laneData id="&lt;DETECTOR_ID&gt;" file="&lt;OUTPUT_FILE&gt;"/&gt;</div>
+<p>For additional attributes see the table below.
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>id</b>
+</td><td> id (string)
+</td><td> The id of the detector
+</td></tr>
+<tr>
+<td class="inlxml"> <b>file</b>
+</td><td> filename
+</td><td> The path to the output file. The path may be relative.
+</td></tr>
+<tr>
+<td class="inlxml"> freq
+</td><td> int (time)
+</td><td> The aggregation period the values the detector collects shall be summed up. If not given the whole time interval from begin to end (see below) is aggregated.
+</td></tr>
+<tr>
+<td class="inlxml"> begin
+</td><td> int (time)
+</td><td> The time to start writing (intervals starting before this time are discarded). If not given, the simulation's begin is used.
+</td></tr>
+<tr>
+<td class="inlxml"> end
+</td><td> int (time)
+</td><td> The time to end writing (intervals starting at or after this time are discarded). If not given the simulation's end is used.
+</td></tr>
+<tr>
+<td class="inlxml"> excludeEmpty
+</td><td> string (true, false, defaults)
+</td><td> If set to true, edges/lanes which were not use by a vehicle during this period will not be written; <i>default: false</i>. If set to "defaults" default values for travel time and speed depending on edge length and maximum speed get printed.
+</td></tr>
+<tr>
+<td class="inlxml"> withInternal
+</td><td> bool
+</td><td> If set, junction internal edges/lanes will be written as well; <i>default: false</i>.
+</td></tr>
+<tr>
+<td class="inlxml"> maxTraveltime
+</td><td> float (time)
+</td><td> The maximum traveltime in seconds to write if only very small movements occur; <i>default 100000</i>.
+</td></tr>
+<tr>
+<td class="inlxml"> minSamples
+</td><td> float (time)
+</td><td> The minimum total number of seconds vehicles have to be on the edge / lane to consider it non-empty; <i>default: &gt;0</i>.
+</td></tr>
+<tr>
+<td class="inlxml"> speed_treshold
+</td><td> float (m/s)
+</td><td> The maximum speed to consider a vehicle halting; <i>default 0.1</i>.
+</td></tr>
+<tr>
+<td class="inlxml"> vtypes
+</td><td> string
+</td><td> space separated list of vehicle type ids to consider, "" means all; <i>default ""</i>.
+</td></tr></table>
+<a name="Generated_Output" id="Generated_Output"></a><h2> <span class="mw-headline">Generated Output</span></h2>
+<a name="Edge-Based_Network_States" id="Edge-Based_Network_States"></a><h3> <span class="mw-headline">Edge-Based Network States</span></h3>
+<p>For edge-based state dumps, the output file will look like the following:
+</p>
+<pre class="xml">
+&lt;netstats&gt;
+   &lt;interval begin=&quot;&lt;INTERVAL_BEGIN&gt;&quot; end=&quot;&lt;INTERVAL_END&gt;&quot; id=&quot;&lt;DETECTOR_ID&gt;&quot;&gt;
+      &lt;edge id=&quot;&lt;EDGE_ID&gt;&quot; sampledSeconds=&quot;&lt;COLLECTED_VEHICLE_SECONDS&gt;&quot; \
+            traveltime=&quot;&lt;MEAN_TRAVEL_TIME&gt;&quot; \
+            density=&quot;&lt;MEAN_DENSITY&gt;&quot; occupancy=&quot;&lt;MEAN_OCCUPANCY&gt;&quot; \
+            waitingTime=&quot;&lt;MEAN_WAITING_TIME&gt;&quot; speed=&quot;&lt;MEAN_SPEED&gt;&quot; \
+            departed=&quot;&lt;EMITTED_VEH_NUMBER&gt;&quot; arrived=&quot;&lt;ARRIVED_VEH_NUMBER&gt;&quot; \
+            entered=&quot;&lt;ENTERED_VEH_NUMBER&gt;&quot; left=&quot;&lt;LEFT_VEH_NUMBER&gt;&quot; \
+            laneChangedFrom=&quot;NUMBER_OF_LANE_LEAVERS&quot; laneChangedTO=&quot;NUMBER_OF_LANE_ENTERER&quot;/&gt;
+
+      ... more edges ...
+
+   &lt;/interval&gt;
+
+   ... further intervals ...
+
+&lt;/netstats&gt;
+</pre>
+<p>Please note, that in contrary to the example above, for each edge, all values are reported in one line.
+</p><p><br />
+</p>
+<a name="Lane-Based_Network_States" id="Lane-Based_Network_States"></a><h3> <span class="mw-headline">Lane-Based Network States</span></h3>
+<p>The generated output looks like the following:
+</p>
+<pre class="xml">
+&lt;netstats&gt;
+   &lt;interval begin=&quot;&lt;INTERVAL_BEGIN&gt;&quot; end=&quot;&lt;INTERVAL_END&gt;&quot; id=&quot;&lt;DETECTOR_ID&gt;&quot;&gt;
+      &lt;edge id=&quot;&lt;EDGE_ID&gt;&quot;&gt;
+         &lt;lane id=&quot;&lt;LANE_ID&gt;&quot; sampledSeconds=&quot;&lt;COLLECTED_VEHICLE_SECONDS&gt;&quot; \
+               traveltime=&quot;&lt;MEAN_TRAVEL_TIME&gt;&quot; \
+               density=&quot;&lt;MEAN_DENSITY&gt;&quot; occupancy=&quot;&lt;MEAN_OCCUPANCY&gt;&quot; \
+               waitingTime=&quot;&lt;MEAN_WAITING_TIME&gt;&quot; speed=&quot;&lt;MEAN_SPEED&gt;&quot; \
+               departed=&quot;&lt;EMITTED_VEH_NUMBER&gt;&quot; arrived=&quot;&lt;ARRIVED_VEH_NUMBER&gt;&quot; \
+               entered=&quot;&lt;ENTERED_VEH_NUMBER&gt;&quot; left=&quot;&lt;LEFT_VEH_NUMBER&gt;&quot; \
+               laneChangedFrom=&quot;NUMBER_OF_LANE_LEAVERS&quot; laneChangedTo=&quot;NUMBER_OF_LANE_ENTERER&quot;/&gt;
+
+         ... more lanes...
+
+      &lt;/edge&gt;
+
+      ... more edges ...
+
+   &lt;/interval&gt;
+
+   ... further intervals ...
+
+&lt;/netstats&gt;
+</pre>
+<p>Please note, that in contrary to the example above, for each lane, all values are reported in one line.
+</p><p><br />
+</p>
+<a name="Value_Descriptions" id="Value_Descriptions"></a><h3> <span class="mw-headline">Value Descriptions</span></h3>
+<p>Both the edge-dump and the lane-dump are computing the values the same way: every vehicle move - even those with v=0 - is recorded and saved during the interval. After the interval has passed, these values are written into the file after being normalized. In the case of the edge-dump the values are not only normalized by the number of the collected vehicle moves and the length of the lane, but also by the number of lanes of the edge.
+</p><p>The meanings of the written values are given in the following table.
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> begin
+</td><td> (simulation) seconds
+</td><td> The first time step the values were collected in
+</td></tr>
+<tr>
+<td class="inlxml"> end
+</td><td> (simulation) seconds
+</td><td> The last time step + DELTA_T in which the reported values were collected
+</td></tr>
+<tr>
+<td class="inlxml"> edge@id
+</td><td> (edge) id
+</td><td> The name of the reported edge
+</td></tr>
+<tr>
+<td class="inlxml"> lane@id
+</td><td> (lane) id
+</td><td> The name of the reported lane
+</td></tr>
+<tr>
+<td class="inlxml"> sampledSeconds
+</td><td> s
+</td><td> Number seconds vehicles were measured on the edge/lane (may be subseconds if a vehicle enters/leaves the edge/lane). Please note that this value is the sum of the measure times of all vehicles.
+</td></tr>
+<tr>
+<td class="inlxml"> traveltime
+</td><td> s
+</td><td> Time needed to pass the edge/lane, note that this is just an estimation based on the mean speed, not the exact time the vehicles needed.
+</td></tr>
+<tr>
+<td class="inlxml"> density
+</td><td> #veh/km
+</td><td> Vehicle density on the lane/edge
+</td></tr>
+<tr>
+<td class="inlxml"> occupancy
+</td><td>&nbsp;%
+</td><td> Occupancy of the edge/lane in&nbsp;%
+</td></tr>
+<tr>
+<td class="inlxml"> waitingTime
+</td><td> s
+</td><td> The total number of seconds vehicles were considered stopped
+</td></tr>
+<tr>
+<td class="inlxml"> speed
+</td><td> m/s
+</td><td> The mean speed on the edge/lane within the reported interval
+</td></tr>
+<tr>
+<td class="inlxml"> departed
+</td><td> #veh
+</td><td> The number of vehicles that have been emitted onto the edge/lane within the described interval
+</td></tr>
+<tr>
+<td class="inlxml"> arrived
+</td><td> #veh
+</td><td> The number of vehicles that have finished their route on the edge lane
+</td></tr>
+<tr>
+<td class="inlxml"> entered
+</td><td> #veh
+</td><td> The number of vehicles that have entered the edge/lane by moving from upstream
+</td></tr>
+<tr>
+<td class="inlxml"> left
+</td><td> #veh
+</td><td> The number of vehicles that have left the edge/lane by moving downstream
+</td></tr>
+<tr>
+<td class="inlxml"> laneChangedFrom
+</td><td> #veh
+</td><td> The number of vehicles that changed away from this lane
+</td></tr>
+<tr>
+<td class="inlxml"> laneChangedTo
+</td><td> #veh
+</td><td> The number of vehicles that changed to this lane
+</td></tr>
+<tr>
+<td class="inlxml"> vaporized
+</td><td> #veh
+</td><td> The number of vehicles vaporized on this edge <b>(only present if #veh &gt; 0)</b>
+</td></tr></table>
+<p>Please note that in the case of <i>edge</i> meandata both laneChanged entries are equal to the total number of lane changes on the edge. Furthermore each lane change is counted separately, that means if one vehicle changes from lane 1 to lane 3 it will generate two lane change counts.
+</p>
+<a name="How_to_aggregate_.2F_derive_further_values" id="How_to_aggregate_.2F_derive_further_values"></a><h2> <span class="mw-headline">How to aggregate / derive further values</span></h2>
+<p>In order to aggregate the output for the same edge / lane over larger time periods the values which count vehicles have to be simply summed, density and occupancy can be simply averaged (if the interval lengths are equal) and speed should be a weighted average with sampledSeconds as weight. To aggregate the traveltime further, calculate the mean speed first and then divide edge/lane length by the speed.
+</p><p>Spatial aggregation (over multiple edges or lanes) is not as easy, especially if they are consecutive, because each vehicle generates data on each lane it is on, even if it is on multiple lanes. In the case of many short and fast moving vehicles 
+the error is negligible but if you have long and slow vehicles you cannot aggregate as above.
+</p><p>The following measurements can be derived from the values given (period denotes the length of the aggregation interval):
+</p>
+<ul><li> Average number of vehicles on the edge (#) = sampledSeconds / period
+</li><li> Average traffic volume (#/h) = speed * density / 3.6
+</li><li> Traffic volume at the begin of the lane / edge (#/h) = 3600 * entered / period
+</li><li> Traffic volume at the end of the lane / edge (#/h) = 3600 * left / period
+</li><li> Total distance travelled (m) = speed * sampledSeconds
+</li></ul>
+<a name="Notes" id="Notes"></a><h2> <span class="mw-headline">Notes</span></h2>
+<ul><li> Per default, all edges are written, even those on which no vehicle drove. If the lane / edge collected no data the attributes  speed, traveltime, density, occupancy and waitingTime are not written. One can disable writing unused edges/lanes by setting the <span class="inlxml">excludeEmpty</span> attribute to true.
+</li><li> Even on lanes/edges which have sampledSeconds="0.00" since the real number of sampledSeconds may be 0.001 and was cut off in the output. To define a minimum number of samples before you consider your data valid, use <span class="inlxml">minSamples</span> in the meandata definition.
+</li><li> Even though no data was collected (sampledSeconds="0") departed and laneChangedTo may be different from 0 because internally lane changes and departures happen at the end of a time step.
+</li><li> The interval end is the interval begin + aggregation time, meaning that values were collected within these steps excluding the end time itself. If the simulation ends before the last interval is over, the interval will be pruned.
+</li><li> The output file will be generated, does not have to exist earlier and will be overwritten if existing without any warning. The folder the output file shall be generated in must exist.
+</li><li> If you need only information about the network states during certain time periods, you may constraint generation of the dumps by creating multiple dumps with the attributes <span class="inlxml">begin="&lt;TIME&gt;"</span> and <span class="inlxml">end="&lt;TIME&gt;"</span>. All of them may have identical ids and write to the same output file.
+</li></ul>
+<a name="See_Also" id="See_Also"></a><h2> <span class="mw-headline">See Also</span></h2>
+<ul><li> <a href="../../Simulation/Output/Lane-_or_Edge-based_Emissions_Measures.html" title="Simulation/Output/Lane- or Edge-based Emissions Measures">edge/lane-based vehicular pollutant emission output</a> and <a href="../../Simulation/Output/Lane-_or_Edge-based_Noise_Measures.html" title="Simulation/Output/Lane- or Edge-based Noise Measures">edge/lane-based vehicular noise emission output</a> which have similar formats
+</li><li> The <a href="../../Tools/Visualization.html#mpl_dump_onNet.py" title="Tools/Visualization">mpl_dump_onNet.py</a> script can display values of this output as a colored net (and further <a href="../../Tools/Visualization.html" title="Tools/Visualization">visualization tools</a> exist).
+</li><li> You can generate mean data definitions automatically. See <a href="../../Tools/Output.html" title="Tools/Output">output tools</a> for more information.
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 27/1000000
+Post-expand include size: 249/2097152 bytes
+Template argument size: 113/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:242-0!1!0!!en!2!edit=0 and timestamp 20120718063323 -->
+</div><hr/><div id="lastmod">This page was last modified on 1 June 2012, at 13:18.</div>

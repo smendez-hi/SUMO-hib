@@ -1,0 +1,44 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Developer/Unit Tests</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Introduction" id="Introduction"></a><h1> <span class="mw-headline">Introduction</span></h1>
+<p>The Unit Tests for SUMO are carried out with the help of the Framework <a href="http://code.google.com/p/googletest/" class="external text" title="http://code.google.com/p/googletest/" rel="nofollow">Google Test</a>. With <i>Google Test</i> new Unit Tests can be simple added or existing tests extended. All available tests are executed daily and it is checked whether these tests run through successfully. This installation guide is for the version 1.4.0 and 1.5.0 of <i>Google Test</i>.
+</p>
+<a name="Windows_Setup" id="Windows_Setup"></a><h1> <span class="mw-headline">Windows Setup</span></h1>
+<p>After downloading open the project file <i>gtest-md.sln</i> in the directory <i>msvc</i> from Google Test in Visual Studio and build it. This works at least up to gtest 1.5.0 but may not work with newer versions because Google Test is switching to cmake. In the next step create an Windows environment variable GTEST that points to the installation directory of Google Test.
+</p><p>Open the Visual Studio project file <i>unittest</i> from the SUMO directory <i>\unittest\build\msvc10</i>. You will need at least gtest 1.5.0 to work with Visual Studio 2010. You can extend available tests or write new tests. Should you start a new Unit tests project the following settings in Visual Studio have to be made:
+</p>
+<ul><li> "..\unittests.vsprops" must be added to Project -&gt; Properties -&gt; Configuration -&gt; General -&gt; Inherited Project Property Sheets.
+</li></ul>
+<ul><li> "$(GTEST LIB) $(GTEST DEBUG LIB)" must be added to Project -&gt; Properties -&gt; Configuration -&gt; Linker -&gt; Input -&gt; Additional Dependencies. 
+</li></ul>
+<ul><li> The required Visual studio projects from the directory <i>build</i> under SUMO must be added and a dependence to these projects must be defined.
+</li></ul>
+<ul><li> Finally the class with the Main method is added, for example unittest_main.cpp from the directory unittest/src.
+</li></ul>
+<a name="Linux_setup" id="Linux_setup"></a><h1> <span class="mw-headline">Linux setup</span></h1>
+<p>After downloading you have to executed the following commands in the Google Test directory:
+</p>
+<pre>./configure
+make
+sudo make install
+</pre>
+<p>Now all libraries are installed in the system directory /usr/local or /usr/bin. Before the Unit Tests can be executed, you must build SUMO with an additional input parameter:
+</p>
+<pre>./configure --with-gtest=DIR (DIR=installation directory of GoogleTest)
+</pre>
+<p>If new Unit Test files are added under <i>unittest/src</i>, the Makefiles must be updated in order to run all tests.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 4/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:329-0!1!0!!en!2!edit=0 and timestamp 20120718063210 -->
+</div><hr/><div id="lastmod">This page was last modified on 9 September 2011, at 07:01.</div>

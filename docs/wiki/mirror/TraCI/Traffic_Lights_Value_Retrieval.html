@@ -1,0 +1,206 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Traffic Lights Value Retrieval</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Command_0xa2:_Get_Traffic_Lights_Variable"><span class="tocnumber">1</span> <span class="toctext">Command 0xa2: Get Traffic Lights Variable</span></a></li>
+<li class="toclevel-1"><a href="#Response_0xb2:_Traffic_Lights_Variable"><span class="tocnumber">2</span> <span class="toctext">Response 0xb2: Traffic Lights Variable</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Structure_of_compound_object_traffic_light_program_.28both_0x25_and_0x2b.29"><span class="tocnumber">2.1</span> <span class="toctext">Structure of compound object traffic light program (both 0x25 and 0x2b)</span></a></li>
+<li class="toclevel-2"><a href="#Structure_of_compound_object_controlled_links"><span class="tocnumber">2.2</span> <span class="toctext">Structure of compound object controlled links</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Command_0xa2:_Get_Traffic_Lights_Variable" id="Command_0xa2:_Get_Traffic_Lights_Variable"></a><h2> <span class="mw-headline"> Command 0xa2: Get Traffic Lights Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Traffic Lights ID
+</th></tr></table>
+<p>Asks for the value of a certain variable of the named traffic light. The value returned is the state of the asked variable/value within the last simulation step. The following variable values can be retrieved, the type of the return value is also shown in the table.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Retrievable Traffic Lights Variables</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> id list (0x00)
+</td><td> stringList
+</td><td> Returns a list of ids of all traffic lights within the scenario (the given Traffic Lights ID is ignored)
+</td></tr>
+<tr>
+<td> count (0x01)
+</td><td> int
+</td><td> Returns the number of traffic lights within the scenario (the given Traffic Lights ID is ignored)
+</td></tr>
+<tr>
+<td> state (light/priority tuple) (0x20)
+</td><td> string
+</td><td> Returns the named tl's state as a tuple of light definitions from rRgGyYoO, for red, green, yellow, off, where lower case letters mean that the stream has to decelerate
+</td></tr>
+<tr>
+<td> default current phase duration (0x24)
+</td><td> int
+</td><td> Returns the default duration of the currently active phase [s]; note that this is not the remaining duration, but the complete; use "assumed time till next switch (0x2d)" for obtaining the remaining duration
+</td></tr>
+<tr>
+<td> controlled lanes (0x26)
+</td><td> stringList
+</td><td> Returns the list of lanes which are controlled by the named traffic light
+</td></tr>
+<tr>
+<td> controlled links (0x27)
+</td><td> compound object
+</td><td> Returns the links controlled by the traffic light, sorted by the signal index and described by giving the incoming, outgoing, and via lane
+</td></tr>
+<tr>
+<td> current phase (0x28)
+</td><td> int
+</td><td> Returns the index of the current phase in the current program
+</td></tr>
+<tr>
+<td> current program (0x29)
+</td><td> string
+</td><td> Returns the id of the current program
+</td></tr>
+<tr>
+<td> complete definition (light/priority tuple) (0x2b)
+</td><td> compound object
+</td><td> Returns the complete traffic light program, structure described under data types
+</td></tr>
+<tr>
+<td> assumed time of next switch (0x2d)
+</td><td> int
+</td><td> Returns the assumed time (in milliseconds) at which the tls changes the phase. Please note that the time to switch is not relative to current simulation step (the result returned by the query will be absolute time, counting from simulation start); to obtain relative time, one needs to subtract current simulation time from the result returned by this query. Please also note that the time may vary in the case of actuated/adaptive traffic lights
+</td></tr></table>
+<a name="Response_0xb2:_Traffic_Lights_Variable" id="Response_0xb2:_Traffic_Lights_Variable"></a><h2> <span class="mw-headline"> Response 0xb2: Traffic Lights Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td width="75" align="center"> &lt;return_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Traffic Light ID
+</th><th style="border: 1pt solid;"> Return type of the variable
+</th><th style="border: 1pt solid;"> &lt;RETURN_VALUE&gt;
+</th></tr></table>
+<p>The respond to a <b>"Command Get Traffic Lights Variable"</b>.
+</p>
+<a name="Structure_of_compound_object_traffic_light_program_.28both_0x25_and_0x2b.29" id="Structure_of_compound_object_traffic_light_program_.28both_0x25_and_0x2b.29"></a><h3> <span class="mw-headline"> Structure of compound object traffic light program (both 0x25 and 0x2b) </span></h3>
+<p>If you request a complete traffic light program, the compound object is structured as following. Attention, each part is fowarded by a byte which represents its data type, except "length".
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td><td width="75" align="center"> type + integer
+</td><td width="75" align="center"> logic
+</td><td width="150" align="center"> ...
+</td><td width="75" align="center"> logic
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Length
+</th><th style="border: 1pt solid;"> Number of logics
+</th><th style="border: 1pt solid;"> logic 1
+</th><th style="border: 1pt solid;"> ...
+</th><th style="border: 1pt solid;"> logic n
+</th></tr></table>
+<p>where <b>logic</b> is decribed by:
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> type + string
+</td><td width="75" align="center"> type + integer
+</td><td width="75" align="center"> type + compound
+</td><td width="75" align="center"> type + integer
+</td><td width="75" align="center"> type + integer
+</td><td width="75" align="center"> phase
+</td><td width="150" align="center"> ...
+</td><td width="75" align="center"> phase
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> SubID
+</th><th style="border: 1pt solid;"> Type
+</th><th style="border: 1pt solid;"> SubParameter
+</th><th style="border: 1pt solid;"> Current phase index
+</th><th style="border: 1pt solid;"> Number of phases
+</th><th style="border: 1pt solid;"> Phase 1
+</th><th style="border: 1pt solid;"> ...
+</th><th style="border: 1pt solid;"> Phase n
+</th></tr></table>
+<p>Type and SubParameter aren't currently implemented therefore they are 0.
+</p><p>where <b>phase</b> is described by:
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> type + integer
+</td><td width="85" align="center"> type + integer
+</td><td width="85" align="center"> type + integer
+</td><td width="150" align="center"> type + stringList
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Duration
+</th><th style="border: 1pt solid;"> Duration 1
+</th><th style="border: 1pt solid;"> Duration 2
+</th><th style="border: 1pt solid;"> Phase definition
+</th></tr></table>
+<p>Duration 1 and 2 are currently not implemented. The pahse definition differs for 0x25 and 0x2b. The first (0x25) contains the old, deprecated definition which uses three strings that describe the tl's state, the first green y/n, the second for brake y/n, the third for yellow y/n. The second (0x2b) contains a single string representing the lights. Note, that the first (0x25) is also reversed.
+</p><p><br />
+</p>
+<a name="Structure_of_compound_object_controlled_links" id="Structure_of_compound_object_controlled_links"></a><h3> <span class="mw-headline"> Structure of compound object controlled links </span></h3>
+<p>If you request the list of links, the compound object is structured as following. Attention, each part is fowarded by a byte which represents its data type, except "length".
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td><td width="75" align="center"> controlled links
+</td><td width="150" align="center"> ...
+</td><td width="75" align="center"> controlled links
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Length (number of signals)
+</th><th style="border: 1pt solid;"> links controlled by signal 0
+</th><th style="border: 1pt solid;"> ...
+</th><th style="border: 1pt solid;"> links controlled by signal n-1
+</th></tr></table>
+<p><b> Controlled links: </b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> int
+</td><td width="75" align="center"> stringlist
+</td><td width="150" align="center"> ...
+</td><td width="75" align="center"> stringlist
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> number of controlled links
+</th><th style="border: 1pt solid;"> link 0
+</th><th style="border: 1pt solid;"> ...
+</th><th style="border: 1pt solid;"> link n-1
+</th></tr></table>
+<p>Each link is described by a string list with three entries: the lane which is incoming into the junction, the lane which is outgoing from the junction, and the lane across the junction (junction-internal). Empty strings indicate missing lanes.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 5/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:262-0!1!0!!en!2!edit=0 and timestamp 20120718014958 -->
+</div><hr/><div id="lastmod">This page was last modified on 18 January 2012, at 07:40.</div>

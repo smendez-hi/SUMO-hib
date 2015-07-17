@@ -1,0 +1,86 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Output/FCDOutput</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>The FCD (floating car data) export contains information about each vehicle where it is located in the network and the actual velocity.
+</p>
+<a name="Instantiating_within_the_Simulation" id="Instantiating_within_the_Simulation"></a><h2> <span class="mw-headline">Instantiating within the Simulation</span></h2>
+<p>The simulation is forced to generate this output using the option <span style="color: #111144; font-weight: bold; white-space: pre;">--fcd-output <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>. <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a> is the name of the file the output will be written to. Any other file with this name will be overwritten, the destination folder must exist.
+</p>
+<a name="Generated_Output" id="Generated_Output"></a><h2> <span class="mw-headline">Generated Output</span></h2>
+<p>The generated XML file looks like this:
+</p>
+<pre class="xml">
+&lt;fcd-export&gt;
+  
+  &lt;timestep time=&quot;&lt;TIME_STEP&gt;&quot;&gt;
+     &lt;vehicle id=&quot;&lt;VEHICLE_ID&gt;&quot; x=&quot;&lt;VEHICLE_POS_X&gt;&quot; y=&quot;&lt;VEHICLE_POS_Y&gt;&quot; angle=&quot;&lt;VEHICLE_ANGLE&gt;&quot; type=&quot;&lt;VEHICLE_TYPE&gt;&quot; 
+     speed=&quot;&lt;VEHICLE_SPEED&gt;&quot;/&gt;
+     
+     ... more vehicles ...
+
+ &lt;/timestep&gt;
+
+ ... next timestep ...
+
+&lt;/fcd-export&gt;
+</pre>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> time_step
+</td><td> (simulation) seconds
+</td><td> The time step described by the values within this timestep-element
+</td></tr>
+<tr>
+<td class="inlxml"> id
+</td><td> id
+</td><td> The id of the vehicle
+</td></tr>
+<tr>
+<td class="inlxml"> type
+</td><td> id
+</td><td> The name of the vehicle type
+</td></tr>
+<tr>
+<td class="inlxml"> speed
+</td><td> km/h
+</td><td> The speed of the vehicle
+</td></tr>
+<tr>
+<td class="inlxml"> angle
+</td><td> degree
+</td><td> The angle of the vehicle
+</td></tr>
+<tr>
+<td class="inlxml"> pos_x
+</td><td> ---
+</td><td> The absolut X coordinate of the vehicle. The value depends on the given geographic projection
+</td></tr>
+<tr>
+<td class="inlxml"> pos_y
+</td><td> ---
+</td><td> The absolut Y coordinate of the vehicle. The value depends on the given geographic projection
+</td></tr></table>
+<p><br />
+</p>
+<a name="NOTES" id="NOTES"></a><h2> <span class="mw-headline">NOTES</span></h2>
+<p>In combination with the given geometry of the vehicles (shapes) you can build some nice animations, e.g <a href="http://worldwind.arc.nasa.gov/java/" class="external text" title="http://worldwind.arc.nasa.gov/java/" rel="nofollow">Nasa WorldWind</a> or <a href="http://earth.google.com" class="external text" title="http://earth.google.com" rel="nofollow">Google Earth</a>.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 15/1000000
+Post-expand include size: 243/2097152 bytes
+Template argument size: 65/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:499-0!1!0!!en!2!edit=0 and timestamp 20120717222444 -->
+</div><hr/><div id="lastmod">This page was last modified on 15 June 2012, at 09:22.</div>

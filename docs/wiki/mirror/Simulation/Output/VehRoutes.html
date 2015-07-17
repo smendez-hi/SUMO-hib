@@ -1,0 +1,83 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Output/VehRoutes</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>The vehicle routes output contains information about which route a vehicle took and if his route was replaced at any time by a new one, each of the previous routes together with the edge at the time their replacement took place is reported. Furthermore, the times the vehicle has entered and has left the network are stored herein.
+</p><p>In normal conditions, when all vehicles use predefined routes, the output does not contain any information that could not be retrieved from the routes and the tripinfo output. But as soon as you reroute your vehicles within the simulation, f.e. using rerouters, it will contain new information.
+</p>
+<a name="Instantiating_within_the_Simulation" id="Instantiating_within_the_Simulation"></a><h2> <span class="mw-headline">Instantiating within the Simulation</span></h2>
+<p>The simulation is forced to generate this output using the option <span style="color: #111144; font-weight: bold; white-space: pre;">--vehroute-output <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> or <span style="color: #111144; font-weight: bold; white-space: pre;">--vehroutes <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> .
+</p>
+<a name="Generated_Output" id="Generated_Output"></a><h2> <span class="mw-headline">Generated Output</span></h2>
+<p>The generated file look like this:
+</p>
+<pre class="xml">
+&lt;routes&gt;
+   &lt;vehicle id=&quot;&lt;VEHICLE_ID&gt;&quot; depart=&quot;&lt;INSERTION_TIME&gt;&quot; arrival=&quot;&lt;ARRIVAL_TIME&gt;&quot;&gt;
+      &lt;route replacedOnEdge=&quot;&lt;EDGE_ID&gt;&quot; replacedAtTime=&quot;&lt;TIME&gt;&quot; edges=&quot;&lt;PREVIOUS_ROUTE&gt;&quot;/&gt;
+
+      ... further replaced routes ...
+
+      &lt;route edges=&quot;&lt;LAST_ROUTE&gt;&quot;/&gt;
+   &lt;/vehicle&gt;
+
+   ... information about further vehicles ...
+
+&lt;/routes&gt;
+</pre>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> id
+</td><td> (vehicle) id
+</td><td> The id of the vehicle this entry describes
+</td></tr>
+<tr>
+<td class="inlxml"> depart
+</td><td> s
+</td><td> The time the vehicle was emitted into the network
+</td></tr>
+<tr>
+<td class="inlxml"> arrival
+</td><td> s
+</td><td> The time the vehicle was removed from the simulation (due to arriving at the route end)
+</td></tr>
+<tr>
+<td class="inlxml"> replacedOnEdge
+</td><td> (edge) id
+</td><td> The edge the vehicle was on when the described route was replaced
+</td></tr>
+<tr>
+<td class="inlxml"> replacedAtTime
+</td><td> s
+</td><td> The time step of this replacement
+</td></tr>
+<tr>
+<td class="inlxml"> &lt;PREVIOUS_ROUTE&gt;
+</td><td> [(edge) id]+
+</td><td> The replaced route
+</td></tr>
+<tr>
+<td class="inlxml"> &lt;LAST_ROUTE&gt;
+</td><td> [(edge) id]+
+</td><td> The final vehicle route
+</td></tr></table>
+<p>Both the previous and the final routes are complete, that means that they contain all the edges the vehicle was meant to pass as long as the route was not replaced, yet. The information replacedOnEdge and replacedAtTime are available only for routes which were replaced.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 19/1000000
+Post-expand include size: 386/2097152 bytes
+Template argument size: 134/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:247-0!1!0!!en!2!edit=0 and timestamp 20120718063332 -->
+</div><hr/><div id="lastmod">This page was last modified on 12 September 2011, at 11:25.</div>

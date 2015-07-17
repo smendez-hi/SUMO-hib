@@ -1,0 +1,356 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Developer/Implementation Notes/Sumo Modules</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Module_Purposes" id="Module_Purposes"></a><h2> <span class="mw-headline">Module Purposes</span></h2>
+<table>
+<tr>
+<td><b>module</b>
+</td><td><b>submodule</b>
+</td><td><b>submodule</b>
+</td><td><b>purpose</b>
+</td></tr>
+<tr>
+<td><i>foreign</i>
+</td><td>
+</td><td>
+</td><td><i>some imported modules (see <a href="../../Developer/Used_Libraries.html" title="Developer/Used Libraries">Developer/Used Libraries</a>)</i>
+</td></tr>
+<tr>
+<td>
+</td><td><i>mersenne</i>
+</td><td>
+</td><td>system-independant random number generator
+</td></tr>
+<tr>
+<td>
+</td><td><i>nvwa</i>
+</td><td>
+</td><td>memory checker
+</td></tr>
+<tr>
+<td>
+</td><td><i>polyfonts</i>
+</td><td>
+</td><td>draws text in openGL
+</td></tr>
+<tr>
+<td>
+</td><td><i>rtree</i>
+</td><td>
+</td><td>rtree implementation
+</td></tr>
+<tr>
+<td>
+</td><td><i>tcpip</i>
+</td><td>
+</td><td>portable socket implementation
+</td></tr>
+<tr>
+<td><i>gui</i>
+</td><td>
+</td><td>
+</td><td><a href="../../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a>-specific windows and threads
+</td></tr>
+<tr>
+<td><i>guinetload</i>
+</td><td>
+</td><td>
+</td><td>derived from netload, these classes build guisim-classes instead of microsim-classes
+</td></tr>
+<tr>
+<td><i>guisim</i>
+</td><td>
+</td><td>
+</td><td>classes derived from microsim, extended by visualization and interaction methods
+</td></tr>
+<tr>
+<td><i>icons</i>
+</td><td>
+</td><td>
+</td><td>application icons (MS Windows)
+</td></tr>
+<tr>
+<td><i>microsim</i>
+</td><td>
+</td><td>
+</td><td>implementation of the micro simulation
+</td></tr>
+<tr>
+<td>
+</td><td><i>actions</i>
+</td><td>
+</td><td>output coupled to tls <font color="red">(rework! move to output?)</font>
+</td></tr>
+<tr>
+<td>
+</td><td><i>devices</i>
+</td><td>
+</td><td>on-board devices (c2c, gsm)
+</td></tr>
+<tr>
+<td>
+</td><td><i>logging</i>
+</td><td>
+</td><td>value-passing classes <font color="red">(rework! move to utils?)</font>
+</td></tr>
+<tr>
+<td>
+</td><td><i>output</i>
+</td><td>
+</td><td>generation of microsim-output
+</td></tr>
+<tr>
+<td>
+</td><td><i>traffic_lights</i>
+</td><td>
+</td><td>different traffic light algorithms and program switching
+</td></tr>
+<tr>
+<td>
+</td><td><i>trigger</i>
+</td><td>
+</td><td>classes changing the state of microsim-structures <font color="red">(rework)</font>
+</td></tr>
+<tr>
+<td><i>netbuild</i>
+</td><td>
+</td><td>
+</td><td>building/preparation of SUMO-networks
+</td></tr>
+<tr>
+<td><i>netgen</i>
+</td><td>
+</td><td>
+</td><td>generate abstract networks
+</td></tr>
+<tr>
+<td><i>netload</i>
+</td><td>
+</td><td>
+</td><td>loads SUMO-networks for simulation, builds microsim classes
+</td></tr>
+<tr>
+<td><i>od2trips</i>
+</td><td>
+</td><td>
+</td><td>Import and conversion of O/D-matrices to trip definitions
+</td></tr>
+<tr>
+<td><i>polyconvert</i>
+</td><td>
+</td><td>
+</td><td>Import and conversion of named, colored, geometrical objects
+</td></tr>
+<tr>
+<td><i>router</i>
+</td><td>
+</td><td>
+</td><td>Base classes for routing applications
+</td></tr>
+<tr>
+<td><i>routing_df</i>
+</td><td>
+</td><td>
+</td><td>implementation of df-routing based on router-classes
+</td></tr>
+<tr>
+<td><i>routing_dua</i>
+</td><td>
+</td><td>
+</td><td>implementation of dua-routing based on router-classes
+</td></tr>
+<tr>
+<td><i>routing_jtr</i>
+</td><td>
+</td><td>
+</td><td>implementation of jtr-routing based on router-classes
+</td></tr>
+<tr>
+<td><i>utils</i>
+</td><td>
+</td><td>
+</td><td><i>sets of utility classes</i>
+</td></tr>
+<tr>
+<td>
+</td><td><i>common</i>
+</td><td>
+</td><td>some helpers with different purposes used by all applications
+</td></tr>
+<tr>
+<td>
+</td><td><i>distribution</i>
+</td><td>
+</td><td>different distribution representations
+</td></tr>
+<tr>
+<td>
+</td><td><i>foxtools</i>
+</td><td>
+</td><td>extensions of the plain fox-toolkit
+</td></tr>
+<tr>
+<td>
+</td><td><i>geom</i>
+</td><td>
+</td><td>geometrical primitives in 2D (line, point, polygon)
+</td></tr>
+<tr>
+<td>
+</td><td><i>gui</i>
+</td><td>
+</td><td><i>sets of classes used by the gui</i>
+</td></tr>
+<tr>
+<td>
+</td><td>
+</td><td><i>div</i>
+</td><td>Different helper classes
+</td></tr>
+<tr>
+<td>
+</td><td>
+</td><td><i>drawer</i>
+</td><td>Draw network structures, give them colors
+</td></tr>
+<tr>
+<td>
+</td><td>
+</td><td><i>events</i>
+</td><td>Events passed between gui-threads
+</td></tr>
+<tr>
+<td>
+</td><td>
+</td><td><i>globjects</i>
+</td><td>base class for objects that may be visualized and "touched" within the gui
+</td></tr>
+<tr>
+<td>
+</td><td>
+</td><td><i>images</i>
+</td><td>Icons and images used within the gui together with an allocating subsystem
+</td></tr>
+<tr>
+<td>
+</td><td>
+</td><td><i>tracker</i>
+</td><td>time-line visualization
+</td></tr>
+<tr>
+<td>
+</td><td>
+</td><td><i>windows</i>
+</td><td>Base for windows
+</td></tr>
+<tr>
+<td>
+</td><td><i>importio</i>
+</td><td>
+</td><td>helper for reading text files
+</td></tr>
+<tr>
+<td>
+</td><td><i>iodevices</i>
+</td><td>
+</td><td>output devices
+</td></tr>
+<tr>
+<td>
+</td><td><i>options</i>
+</td><td>
+</td><td>the options subsystem used by all applications
+</td></tr>
+<tr>
+<td>
+</td><td><i>shapes</i>
+</td><td>
+</td><td>named and colored geometry classes
+</td></tr>
+<tr>
+<td>
+</td><td><i>xml</i>
+</td><td>
+</td><td>xml-helper (basically a layer between the xerces-sax layer and sumo-applications)
+</td></tr>
+</table>
+<a name="Doxygen-Coverage" id="Doxygen-Coverage"></a><h2> <span class="mw-headline">Doxygen-Coverage</span></h2>
+<table>
+<tr>
+<td><b>module</b>
+</td><td><b>doxygen</b>
+</td><td><b>throw</b>
+</td><td><b>param</b>
+</td><td><b>remarks</b>
+</td></tr>
+<tr>
+<td><font color="orange"><i>microsim/output</i></font>
+</td><td>yes
+</td><td>yes
+</td><td>yes
+</td><td>e2ol is completely broken and undocumented
+</td></tr>
+<tr>
+<td><font color="green"><i>netgen</i></font>
+</td><td>yes
+</td><td>yes
+</td><td>yes
+</td><td>
+</td></tr>
+<tr>
+<td><font color="green"><i>od2trips</i></font>
+</td><td>yes
+</td><td>yes
+</td><td>yes
+</td><td>
+</td></tr>
+<tr>
+<td><font color="green"><i>utils/gui/div</i></font>
+</td><td>yes
+</td><td>yes
+</td><td>yes
+</td><td>
+</td></tr>
+<tr>
+<td><font color="green"><i>utils/importio</i></font>
+</td><td>yes
+</td><td>yes
+</td><td>yes
+</td><td>
+</td></tr>
+<tr>
+<td><font color="green"><i>utils/iodevices</i></font>
+</td><td>yes
+</td><td>yes
+</td><td>yes
+</td><td>
+</td></tr>
+<tr>
+<td><font color="orange"><i>utils/options</i></font>
+</td><td>yes
+</td><td>yes
+</td><td>no
+</td><td>
+</td></tr>
+<tr>
+<td><font color="orange"><i>utils/xml</i></font>
+</td><td>yes
+</td><td>yes
+</td><td>no
+</td><td>
+</td></tr>
+</table>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 14/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:45-0!1!0!!en!2!edit=0 and timestamp 20120718063203 -->
+</div><hr/><div id="lastmod">This page was last modified on 9 September 2011, at 07:54.</div>

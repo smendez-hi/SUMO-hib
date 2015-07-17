@@ -1,0 +1,277 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Output/Traffic Lights</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>SUMO offers some possibilities to save states of traffic lights during the simulation, a feature mainly used to evaluate adaptive traffic light algorithms. We will now describe these outputs.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#TLS_States"><span class="tocnumber">1</span> <span class="toctext">TLS States</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Instantiating_within_the_Simulation"><span class="tocnumber">1.1</span> <span class="toctext">Instantiating within the Simulation</span></a></li>
+<li class="toclevel-2"><a href="#Generated_Output"><span class="tocnumber">1.2</span> <span class="toctext">Generated Output</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#TLS_Switches"><span class="tocnumber">2</span> <span class="toctext">TLS Switches</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Instantiating_within_the_Simulation_2"><span class="tocnumber">2.1</span> <span class="toctext">Instantiating within the Simulation</span></a></li>
+<li class="toclevel-2"><a href="#Generated_Output_2"><span class="tocnumber">2.2</span> <span class="toctext">Generated Output</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#TLS_Switch_States"><span class="tocnumber">3</span> <span class="toctext">TLS Switch States</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Instantiating_within_the_Simulation_3"><span class="tocnumber">3.1</span> <span class="toctext">Instantiating within the Simulation</span></a></li>
+<li class="toclevel-2"><a href="#Generated_Output_3"><span class="tocnumber">3.2</span> <span class="toctext">Generated Output</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Coupled_E2-Output"><span class="tocnumber">4</span> <span class="toctext">Coupled E2-Output</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Instantiating_within_the_Simulation_4"><span class="tocnumber">4.1</span> <span class="toctext">Instantiating within the Simulation</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="TLS_States" id="TLS_States"></a><h2> <span class="mw-headline">TLS States</span></h2>
+<a name="Instantiating_within_the_Simulation" id="Instantiating_within_the_Simulation"></a><h3> <span class="mw-headline">Instantiating within the Simulation</span></h3>
+<p>To enable writing tls state information you have to add the following definition into one of your additional files: 
+</p>
+<div class="inlxml">&lt;timedEvent type="SaveTLSStates" source="<i>&lt;TLS_ID&gt;</i>" dest="<i>&lt;OUTPUT_FILE&gt;</i>"/&gt;</div>
+<p>The attributes have herein the following meanings:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>type</b>
+</td><td> enum (string)
+</td><td> type of the event trigger; always "SaveTLSStates" herein.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>source</b>
+</td><td> referenced tls id
+</td><td> The id of the traffic light which state shall be written.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>dest</b>
+</td><td> file name
+</td><td> The file to save the state into.
+</td></tr></table>
+<a name="Generated_Output" id="Generated_Output"></a><h3> <span class="mw-headline">Generated Output</span></h3>
+<p>The output looks like this:
+</p>
+<pre class="xml">
+&lt;tls-states&gt;
+   &lt;tlsState time=&quot;&lt;SIM_STEP&gt;&quot; id=&quot;&lt;TLS_ID&gt;&quot; programID=&quot;&lt;TLS_SUBID&gt;&quot; phase=&quot;&lt;PHASE_INDEX&gt;&quot; state=&quot;&lt;STATE&gt;/&gt;
+   ... further states ...
+&lt;/tls-states&gt;
+</pre>
+<p>The state is saved in each simulation second. The state itself is coded as a list of the characters 'G', 'Y', and 'R', standing for "green", "yellow", and "red", respectively, see <a href="../../Simulation/Traffic_Lights.html" title="Simulation/Traffic Lights">Simulation/Traffic Lights</a>. Each character describes a link controlled by the traffic light. Only the state of the current program is saved (see also "Adding new Programs"). The attributes have the following meaning:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> time
+</td><td> (simulation) seconds
+</td><td> The simulation time this entry was generated for
+</td></tr>
+<tr>
+<td class="inlxml"> id
+</td><td> id
+</td><td> The id of the tls that is responsible for the link.
+</td></tr>
+<tr>
+<td class="inlxml"> programID
+</td><td> id
+</td><td> The sub-id of the tls that is (currently) responsible for the link.
+</td></tr>
+<tr>
+<td class="inlxml"> phase
+</td><td> uint
+</td><td> The index of the reported phase within the program
+</td></tr>
+<tr>
+<td class="inlxml"> state
+</td><td> id
+</td><td> The current state
+</td></tr></table>
+<p><br />
+</p>
+<a name="TLS_Switches" id="TLS_Switches"></a><h2> <span class="mw-headline">TLS Switches</span></h2>
+<a name="Instantiating_within_the_Simulation_2" id="Instantiating_within_the_Simulation_2"></a><h3> <span class="mw-headline">Instantiating within the Simulation</span></h3>
+<p>This output contains information about the green light phases of links (lane-to-lane connections). Each green light phase is describes by its begin, end and duration. An entry is written into the file as soon a green phase of a link ends. To enable writing tls switch information you have to add the following definition into one of your additional files: 
+</p>
+<div class="inlxml">&lt;timedEvent type="SaveTLSSwitchTimes" source="<i>&lt;TLS_ID</i>&gt;" dest="<i>&lt;OUTPUT_FILE&gt;</i>"/&gt;</div> 
+<p>The attributes have herein the following meanings:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>type</b>
+</td><td> enum (string)
+</td><td> type of the event trigger; always "SaveTLSSwitches" herein.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>source</b>
+</td><td> referenced tls id
+</td><td> The id of the traffic light which state shall be written.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>dest</b>
+</td><td> file name
+</td><td> The file to save the state into.
+</td></tr></table>
+<a name="Generated_Output_2" id="Generated_Output_2"></a><h3> <span class="mw-headline">Generated Output</span></h3>
+<p>The output looks like this:
+</p>
+<pre class="xml">
+&lt;tls-switches&gt;
+   &lt;tlsSwitch tls=&quot;&lt;TLS_ID&gt;&quot; programID=&quot;&lt;TLS_SUB_ID&gt;&quot; \
+      fromLane=&quot;&lt;LINKS_SOURCE_LANE&gt;&quot; toLane=&quot;&lt;LINK_DESTINATION_LANE&gt;&quot; \
+      begin=&quot;&lt;BEGIN_OF_GREEN_PHASE&gt;&quot; end=&quot;&lt;END_OF_GREEN_PHASE&gt;&quot; \
+      duration=&quot;&lt;DURATION_OF_GREEN_PHASE&gt;&quot;/&gt;
+   ... further switch points ...
+&lt;/tls-switches&gt;
+</pre>
+<p>Each entry is written into a single line. The values have the following meanings:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> tls
+</td><td> id
+</td><td> The id of the tls that is responsible for the link.
+</td></tr>
+<tr>
+<td class="inlxml"> programID
+</td><td> id
+</td><td> The sub-id of the tls that is (currently) responsible for the link.
+</td></tr>
+<tr>
+<td class="inlxml"> fromLane
+</td><td> id
+</td><td> The id of the lane the link starts at.
+</td></tr>
+<tr>
+<td class="inlxml"> toLane
+</td><td> id
+</td><td> The id of the lane the link ends at.
+</td></tr>
+<tr>
+<td class="inlxml"> begin
+</td><td> (simulation) seconds
+</td><td> Begin of this link's last green phase.
+</td></tr>
+<tr>
+<td class="inlxml"> end
+</td><td> (simulation) seconds
+</td><td> End of this link's last green phase.
+</td></tr>
+<tr>
+<td class="inlxml"> duration
+</td><td> (simulation) seconds
+</td><td> Duration of this link's last green phase.
+</td></tr></table>
+<p><br />
+</p>
+<a name="TLS_Switch_States" id="TLS_Switch_States"></a><h2> <span class="mw-headline">TLS Switch States</span></h2>
+<a name="Instantiating_within_the_Simulation_3" id="Instantiating_within_the_Simulation_3"></a><h3> <span class="mw-headline">Instantiating within the Simulation</span></h3>
+<p>This output saves tls-states as the TLS States - output does but not every second but only at times the phases or the program (see also "Adding new Programs") change. The output is instantiated by adding the following definition into one of your additional files: 
+</p>
+<div class="inlxml">&lt;timedEvent type="SaveTLSSwitchStates" source="<i>&lt;TLS_ID&gt;</i>" dest="<i>&lt;OUTPUT_FILE&gt;</i>"/&gt;</div>
+<p>The attributes have herein the following meanings:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>type</b>
+</td><td> enum (string)
+</td><td> type of the event trigger; always "SaveTLSSwitchStates" herein.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>source</b>
+</td><td> referenced tls id
+</td><td> The id of the traffic light which state shall be written.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>dest</b>
+</td><td> file name
+</td><td> The file to save the state into.
+</td></tr></table>
+<a name="Generated_Output_3" id="Generated_Output_3"></a><h3> <span class="mw-headline">Generated Output</span></h3>
+<p>The output looks like this:
+</p>
+<pre class="xml">
+&lt;tls-switch-states&gt;
+   &lt;tlsstate time=&quot;&lt;SIM_STEP&gt;&quot; id=&quot;&lt;TLS_ID&gt;&quot; subid=&quot;&lt;TLS_SUBID&gt;&quot;&gt;&lt;STATE&gt;&lt;/tlsstate&gt;
+   ... further states ...
+&lt;/tls-switch-states&gt;
+</pre>
+<p>Each entry is written into a single line. The values have the following meanings:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> time
+</td><td> (simulation) seconds
+</td><td> The simulation time this entry was generated for
+</td></tr>
+<tr>
+<td class="inlxml"> id
+</td><td> id
+</td><td> The id of the tls that is responsible for the link.
+</td></tr>
+<tr>
+<td class="inlxml"> subid
+</td><td> id
+</td><td> The sub-id of the tls that is (currently) responsible for the link.
+</td></tr></table>
+<p><br />
+</p>
+<a name="Coupled_E2-Output" id="Coupled_E2-Output"></a><h2> <span class="mw-headline">Coupled E2-Output</span></h2>
+<a name="Instantiating_within_the_Simulation_4" id="Instantiating_within_the_Simulation_4"></a><h3> <span class="mw-headline">Instantiating within the Simulation</span></h3>
+<p>It is possible to add e2-detectors which are coupled to a traffic light. Then, the tls is used to determine the intervals (aggregation) time instead of giving a fixed aggregation time. In this case, output will be generated every time the traffic light switches. To use this feature, simply replace the freq-attribute within the description of an e2-detector by the id of the traffic light that should steer it (use the attribute "tl" to specify the id): 
+</p>
+<div class="inlxml">&lt;e2-detector id="<i>&lt;ID&gt;</i>" lane="<i>&lt;LANE_ID&gt;</i>" pos="<i>&lt;POSITION_ON_LANE&gt;</i>" length="<i>&lt;DETECTOR_LENGTH&gt;</i>" tl="<i>&lt;TL-ID&gt;</i>" file="<i>&lt;OUTPUT_FILE&gt;</i>" [time_treshold="<i>&lt;FLOAT&gt;</i>"]  [speed_treshold="<i>&lt;FLOAT&gt;</i>"] [jam_treshold="<i>&lt;FLOAT&gt;</i>"]/&gt;</div>
+<p>A further feature allows you to collect measures only for the time the light turns yellow for a certain link (connection between the incoming and the outgoing lane). This should allows measuring the maximum jam length in front of a red traffic light for this link. To enable this, one has to add the name of the following lane: <span class="inlxml">to="<i>&lt;LANE_ID&gt;</i>"</span> to the list of attributes. The incoming lane is already given by the "<span class="inlxml">lane</span>"-attribute.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 27/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:270-0!1!0!!en!2!edit=0 and timestamp 20120718063328 -->
+</div><hr/><div id="lastmod">This page was last modified on 20 February 2012, at 09:54.</div>

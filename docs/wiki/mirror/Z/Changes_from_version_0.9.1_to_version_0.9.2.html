@@ -1,0 +1,82 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Z/Changes from version 0.9.1 to version 0.9.2</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>User-relevant changes
+</p>
+<ul>
+    <li>GUI
+    <ul>
+
+		<li>version information in gui patched
+		<li>segfaults on loading broken configs patched
+		<li>catching opening a second file using recent files added
+		<li>subwindows are now deleted on (re)loading the simulation
+		<li>some improvements on visualisation (unfinished (GridBuilder))
+		<li>viewport changer debugged
+		<li>problems on loading geometry items patched
+		<li>list of selected items is now cleared on closing/reloading (was buggy before)
+		<li>table editing debugged
+		<li>rerouters are now correctly named
+	</ul>
+	<li>Simulation
+	<ul>
+		<li>debugging numeric issues in MSVehicle
+		<li>Emitters reworked
+	</ul>
+	<li>Netconversion
+	<ul>
+		<li>output during netbuilding patched
+		<li>network geometry reworked (unfinished)
+		<li>"speed-in-km" is now called "speed-in-kmh"
+		<li>"type-file" is now called "xml-type-files"
+		<li>removed two files definition for arcview
+		<li>allowed further information to be stored in arcview-files
+	</ul>
+	<li>Documentation
+	<ul>
+		<li>User docs, netconversion partly updated
+		<li>further work on tls-api-description
+	</ul>
+	<li>All
+	<ul>
+		<li>copyright information patched
+	</ul>
+</ul>
+<p>Developer-relevant changes
+</p>
+<ul>
+    <li>GUI
+    <ul>
+		<li>unused addTimeout/removeTimeout-APIs removed
+		<li>debugged building of the gui-application with MSVC7
+	</ul>
+    <li>Simulation
+    <ul>
+
+        <li>(MS|GUI)TriggeredEmitter is now (MS|GUI)Emitter
+        <li>TLS-API: MSEdgeContinuations added
+        <li>usage of internal lanes is now optional at building
+	</ul>
+	<li>All
+	<ul>
+		<li>got rid of the old MSVC memory leak checker
+		<li>several memory leaks removed
+		<li>made checking the geometry for correctness optional on building (CHECK_UNIQUE_POINTS_GEOMETRY)
+		<li>made memory checking optional on building (CHECK_MEMORY_LEAKS)
+		<li>foreign libraries will now be moved to src/foreign
+	</ul>
+</ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 1/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:60-0!1!0!!en!2!edit=0 and timestamp 20120718063444 -->
+</div><hr/><div id="lastmod">This page was last modified on 23 September 2011, at 07:43.</div>

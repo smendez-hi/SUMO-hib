@@ -1,0 +1,52 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Purgatory/Traffic Lights</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Traffic_Lights" id="Traffic_Lights"></a><h1> <span class="mw-headline"> Traffic Lights </span></h1>
+<a name="Command_0x41:_Get_Traffic_Light_Status" id="Command_0x41:_Get_Traffic_Light_Status"></a><h2> <span class="mw-headline"> Command 0x41: Get Traffic Light Status </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td><td width="75" align="center"> integer
+</td><td width="75" align="center"> integer
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> TrafficLightId
+</th><th style="border: 1pt solid;"> IntervalStart [ms]
+</th><th style="border: 1pt solid;"> IntervalEnd [ms]
+</th></tr></table>
+<p>The traffic lights of the junction specified by <i>TrafficLight-Id</i> are asked for their state transitions that will occur within a given time interval defined by <i>IntervalStart</i> and <i>IntervallEnd</i>. All traffic light switches within this interval are then reported as a series of <i>Traffic Light Switch</i> responses (s. below).
+</p>
+<a name="Response_0x91:_Traffic_Light_Switch" id="Response_0x91:_Traffic_Light_Switch"></a><h3> <span class="mw-headline"> Response 0x91: Traffic Light Switch </span></h3>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td><td width="75" align="center"> string
+</td><td width="75" align="center"> float
+</td><td width="75" align="center"> string
+</td><td width="75" align="center"> ubyte
+</td><td width="75" align="center"> integer
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> SwitchTime [ms]
+</th><th style="border: 1pt solid;"> PrecedingEdge
+</th><th style="border: 1pt solid;"> PositionOnPrecedingEdge
+</th><th style="border: 1pt solid;"> SucceedingEdge
+</th><th style="border: 1pt solid;"> NewPhase
+</th><th style="border: 1pt solid;"> YellowTime [ms]
+</th></tr></table>
+<p>This response is sent for each switch in a traffic lights phase that occurs within the time interval given by the command <i>Get Traffic Light Status</i>. The <i>NewPhase</i> that the traffic light will switch to is reported along with the time of the switch (<i>SwitchTime</i>) and the duration of the yellow phase that precedes the  phase switch (<i>YellowTime</i>). 
+<br />A switch is reported for each pair of <i>PrecedingEdge</i> and <i>SucceedingEdge</i> that is affected by it. Additionally, the traffic light's <i>PositionOnPrecedingEdge</i> is given.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 4/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:259-0!1!0!!en!2!edit=0 and timestamp 20120718063306 -->
+</div><hr/><div id="lastmod">This page was last modified on 12 September 2011, at 11:32.</div>

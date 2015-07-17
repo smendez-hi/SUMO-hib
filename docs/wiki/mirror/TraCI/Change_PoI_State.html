@@ -1,0 +1,152 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Change PoI State</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Command_0xc7:_Change_PoI_State" id="Command_0xc7:_Change_PoI_State"></a><h1> <span class="mw-headline"> Command 0xc7: Change PoI State </span></h1>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td align="center"> &lt;value_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> PoI ID
+</th><th style="border: 1pt solid;"> Type of the value
+</th><th style="border: 1pt solid;"> New Value
+</th></tr></table>
+<p>Changes the state of a point-of-interest. Because it is possible to change different values of a PoI, the number of parameter to supply and their types differ between commands. The following values can be changed, the parameter which must be given are also shown in the table.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Changeable PoI Variables</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> type (0x4f)
+</td><td> string
+</td><td> Sets the PoI's type to the given value
+</td></tr>
+<tr>
+<td> color (0x45)
+</td><td> color (ubyte,ubyte,ubyte,ubyte)
+</td><td> Sets the PoI's color to the given value (r,g,b,a) - please note that a(lpha) is currently not used
+</td></tr>
+<tr>
+<td> position (0x42)
+</td><td> Position2D (double, double)
+</td><td> Sets the PoI's position to the given value
+</td></tr>
+<tr>
+<td> ADD (0x80)
+</td><td> PoI-definition, see below
+</td><td> Adds the defined PoI
+</td></tr>
+<tr>
+<td> REMOVE (0x81)
+</td><td> int (layer), see below
+</td><td> Removes the defined PoI
+</td></tr>
+</table>
+<p><br />
+The message contents are as following:
+</p><p><b>type (0x4f)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> New Type Name
+</th></tr></table>
+<p><b>color (0x45)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> ubyte
+</td><td align="center"> ubyte
+</td><td align="center"> ubyte
+</td><td align="center"> ubyte
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>color</i>
+</th><th style="border: 1pt solid;"> red
+</th><th style="border: 1pt solid;"> green
+</th><th style="border: 1pt solid;"> blue
+</th><th style="border: 1pt solid;"> alpha
+</th></tr></table>
+<p><b>position (0x42)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> double
+</td><td align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>position2D</i>
+</th><th style="border: 1pt solid;"> x-coordinate
+</th><th style="border: 1pt solid;"> y-ccordinate
+</th></tr></table>
+<p><br />
+<b>ADD (0x80)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> int
+</td><td align="center"> ubyte
+</td><td align="center"> string
+</td><td align="center"> ubyte
+</td><td align="center"> color
+</td><td align="center"> ubyte
+</td><td align="center"> position
+</td><td align="center"> ubyte
+</td><td align="center"> int
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> item number = 4
+</th><th style="border: 1pt solid;"> value type <i>string</i>
+</th><th style="border: 1pt solid;"> type name
+</th><th style="border: 1pt solid;"> value type <i>color</i>
+</th><th style="border: 1pt solid;"> color
+</th><th style="border: 1pt solid;"> value type <i>position2D</i>
+</th><th style="border: 1pt solid;"> position
+</th><th style="border: 1pt solid;"> value type <i>int</i>
+</th><th style="border: 1pt solid;"> layer
+</th></tr></table>
+<p>If the PoI could not been added because another one with the same ID already exists within the layer, an error message is generated.
+</p><p><br />
+<b>REMOVE (0x81)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> int
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>int</i>
+</th><th style="border: 1pt solid;"> layer
+</th></tr></table>
+<p>If the named PoI can not be found in the given layer, all PoIs with the given ID are removed (from all layers). If no PoI with the given ID could be found, an error message is generated.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 2/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:294-0!1!0!!en!2!edit=0 and timestamp 20120718063359 -->
+</div><hr/><div id="lastmod">This page was last modified on 13 July 2011, at 14:04.</div>

@@ -1,0 +1,28 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Output/VTKOutput</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>This output option offers you the possibility to visualise/analyse your simulation data using the famous VTK file format. There are several Tools and Frameworks to get started with VTK e.g. <a href="http://paraview.org/" class="external text" title="http://paraview.org/" rel="nofollow">ParaView</a>.  
+</p><p>The generated output file is very basic, so each vehicle is presented by only one point. In the VTK file the vehicles were stored in 3-dimensional coordinate system, until now the Z-coordinate is always set to zero. 
+</p>
+<a name="Instantiating_within_the_Simulation" id="Instantiating_within_the_Simulation"></a><h2> <span class="mw-headline">Instantiating within the Simulation</span></h2>
+<p>The simulation is forced to generate this output using the option <span style="color: #111144; font-weight: bold; white-space: pre;">--vtk-output <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>. <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a> is the name of the folder where all the VTK files will be written to. It's very important that the destination folder exists. For every timestep a new VTK file will be written. The generated VTK files will be detected as a timeseries in ParaView and can be imported very easily.
+</p>
+<a name="Generated_Output" id="Generated_Output"></a><h2> <span class="mw-headline">Generated Output</span></h2>
+<p>The generated VTK files also contains the speed for each vehicle which can be rendered for every timestep.
+</p><p><a href="../../images/Vtk_example.png" class="image" title="File:Vtk_example.png"><img alt="File:Vtk_example.png" src="../../images//Vtk_example.png" width="695" height="298" border="0" /></a>
+</p><p><br />
+To get a more realistic output it's possible to load a 3D model of each vehicle instead of the basic point. In order to do that you have to define different models. Another interesting fact is that you have the opportunity to build videos or create streamlines of your simulation.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 11/1000000
+Post-expand include size: 243/2097152 bytes
+Template argument size: 65/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:498-0!1!0!!en!2!edit=0 and timestamp 20120718063331 -->
+</div><hr/><div id="lastmod">This page was last modified on 17 June 2012, at 15:53.</div>

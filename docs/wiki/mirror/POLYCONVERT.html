@@ -1,0 +1,327 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">POLYCONVERT</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#From_30.000_feet"><span class="tocnumber">1</span> <span class="toctext">From 30.000 feet</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Features"><span class="tocnumber">1.1</span> <span class="toctext">Features</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Usage_Description"><span class="tocnumber">2</span> <span class="toctext">Usage Description</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Options"><span class="tocnumber">2.1</span> <span class="toctext">Options</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Configuration"><span class="tocnumber">2.1.1</span> <span class="toctext">Configuration</span></a></li>
+<li class="toclevel-3"><a href="#Input"><span class="tocnumber">2.1.2</span> <span class="toctext">Input</span></a></li>
+<li class="toclevel-3"><a href="#Output"><span class="tocnumber">2.1.3</span> <span class="toctext">Output</span></a></li>
+<li class="toclevel-3"><a href="#Projection"><span class="tocnumber">2.1.4</span> <span class="toctext">Projection</span></a></li>
+<li class="toclevel-3"><a href="#Pruning"><span class="tocnumber">2.1.5</span> <span class="toctext">Pruning</span></a></li>
+<li class="toclevel-3"><a href="#Processing"><span class="tocnumber">2.1.6</span> <span class="toctext">Processing</span></a></li>
+<li class="toclevel-3"><a href="#Building_Defaults"><span class="tocnumber">2.1.7</span> <span class="toctext">Building Defaults</span></a></li>
+<li class="toclevel-3"><a href="#Report"><span class="tocnumber">2.1.8</span> <span class="toctext">Report</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#See_Also"><span class="tocnumber">3</span> <span class="toctext">See Also</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="From_30.000_feet" id="From_30.000_feet"></a><h1> <span class="mw-headline">From 30.000 feet</span></h1>
+<p><b>POLYCONVERT</b> imports geometrical shapes (polygons or points of interest) from different sources, converts them to a representation that may be visualized using <a href="SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a>.
+</p>
+<dl><dd><b>Purpose:</b> Polygon and POI import, conversion, and projection
+</dd><dd><b>System:</b> portable (Linux/Windows is tested); runs on command line
+</dd><dd><b>Input (mandatory):</b> polygons or pois
+</dd><dd><b>Output:</b> SUMO-shape file
+</dd><dd><b>Programming Language:</b> C++
+</dd></dl>
+<a name="Features" id="Features"></a><h2> <span class="mw-headline">Features</span></h2>
+<ul><li> Imports OSM, VISUM, Elmar, XML, ArcView shape files
+</li><li> per-type import settings
+</li><li> projections using a given proj.4-definition or via a matching network
+</li><li> Writes <a href="Simulation/Shapes.html" title="Simulation/Shapes">simulation shape files</a> usable within <a href="SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a> and <a href="SUMO.html" title="SUMO">SUMO</a>
+</li></ul>
+<a name="Usage_Description" id="Usage_Description"></a><h1> <span class="mw-headline">Usage Description</span></h1>
+<p><strong class="selflink">POLYCONVERT</strong> is able to import shapes from different file types. Normally, for importing data of a certain type, the type name is used as option name and the value indicates the position of the file. So
+</p>
+<pre>polyconvert --visum mynet.net -o converted.poi.xml
+</pre>
+<p>imports from a VISUM-net file.
+</p>
+<a name="Options" id="Options"></a><h2> <span class="mw-headline">Options</span></h2>
+<p>You may use a XML schema definition file for setting up a POLYCONVERT configuration: <a href="http://sumo.sf.net/doc/current/docs/xsd/polyconvertConfiguration.xsd" class="external text" title="http://sumo.sf.net/doc/current/docs/xsd/polyconvertConfiguration.xsd" rel="nofollow">polyconvertConfiguration.xsd</a>.
+</p>
+<a name="Configuration" id="Configuration"></a><h3> <span class="mw-headline">Configuration</span></h3>
+<p>All applications of the <b>SUMO</b>-suite handle configuration options the same way. These options are discussed at <a href="Basics/Using_the_Command_Line_Applications.html#Configuration_Files" title="Basics/Using the Command Line Applications">Basics/Using the Command Line Applications#Configuration Files</a>.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-c <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--configuration-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Loads the named config on startup
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-configuration <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves current configuration into FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-template <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves a configuration template (empty) into FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-schema <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves the configuration schema into FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-commented</span>
+</td><td valign="top"> Adds comments to saved template, configuration, or schema; <i>default: <b>false</b></i>
+</td></tr>
+</table>
+<a name="Input" id="Input"></a><h3> <span class="mw-headline">Input</span></h3>
+<p><strong class="selflink">POLYCONVERT</strong> is capable to apply different attributes to the imported shapes in dependence of their "type". Not all imported formats have a type information. When using shape files, for example, all instances of an artifact type are normally stored in a distinct shape file. 
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-n <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--net-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Loads SUMO-network FILE as reference to offset and projection
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--dlr-navteq-poly-files <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Reads polygons from FILE assuming they're coded in DLR-Navteq (Elmar)-format
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--dlr-navteq-poi-files <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Reads pois from FILE+ assuming they're coded in DLR-Navteq (Elmar)-format
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--visum-files <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Reads polygons from FILE assuming it's a Visum-net
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--xml-files <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Reads pois and shapes from FILE assuming they're coded in XML
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--osm-files <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Reads pois from FILE+ assuming they're coded in OSM
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--osm.keep-full-type</span>
+</td><td valign="top"> The type will be made of the key-value - pair; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--osm.use-name</span>
+</td><td valign="top"> The id will be set from the given 'name' attribute; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile-prefixes <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Reads shapes from shapefiles FILE+
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.guess-projection</span>
+</td><td valign="top"> Guesses the shapefile's projection
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--shapefile.id-column <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Defines in which column the id can be found
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--type-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Reads types from FILE
+</td></tr>
+</table>
+<a name="Output" id="Output"></a><h3> <span class="mw-headline">Output</span></h3>
+<p>All imported shapes that have not been discarded are written into a file which has to be defined using <span style="color: #111144; font-weight: bold; white-space: pre;">--output <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-o <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--output-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Write generated polygons/pois to FILE; <i>default: <b>polygons.xml</b></i>
+</td></tr>
+</table>
+<a name="Projection" id="Projection"></a><h3> <span class="mw-headline">Projection</span></h3>
+<p>One of the major uses of <strong class="selflink">POLYCONVERT</strong> is to apply a projection on the read shapes. Normally, one wants the shapes to be aligned in accordance to a previously imported road network. In this case, the network should be given using <span style="color: #111144; font-weight: bold; white-space: pre;">--net-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>. But it is also possible to use a different projection. In any case, if the read coordinates shall be changed, <span style="color: #111144; font-weight: bold; white-space: pre;">--use-projection</span> must be given.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--simple-projection</span>
+</td><td valign="top"> Uses a simple method for projection; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--proj.scale <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>
+</td><td valign="top"> Number of places to shift decimal point to right in geo-coordinates; <i>default: <b>0</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--proj.utm</span>
+</td><td valign="top"> Determine the UTM zone (for a universal transversal mercator projection based on the WGS84 ellipsoid); <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--proj.dhdn</span>
+</td><td valign="top"> Determine the DHDN zone (for a transversal mercator projection based on the bessel ellipsoid); <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--proj <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Uses STR as proj.4 definition for projection; <i>default: <b>!</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--proj.inverse</span>
+</td><td valign="top"> Inverses projection; <i>default: <b>false</b></i>
+</td></tr>
+</table>
+<a name="Pruning" id="Pruning"></a><h3> <span class="mw-headline">Pruning</span></h3>
+<p>Sometimes, shapes cover a much larger area than the network. In order to reduce the amount of data, one can force <strong class="selflink">POLYCONVERT</strong> to prune the imported data on the network's or a given boundary. Read shapes which are completely outside this boundary are discarded in these cases.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--prune.in-net</span>
+</td><td valign="top"> Enables pruning on net boundaries; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--prune.in-net.offsets <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Uses STR as offset definition added to the net boundaries; <i>default: <b>0,0,0,0</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--prune.boundary <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Uses STR as pruning boundary
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--prune.keep-list <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Items in STR will be kept though out of boundary
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--prune.explicit <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Items with names in STR will be removed
+</td></tr>
+</table>
+<a name="Processing" id="Processing"></a><h3> <span class="mw-headline">Processing</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--offset.x <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span>
+</td><td valign="top"> Adds FLOAT to net x-positions; <i>default: <b>0</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--offset.y <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span>
+</td><td valign="top"> Adds FLOAT to net y-positions; <i>default: <b>0</b></i>
+</td></tr>
+</table>
+<a name="Building_Defaults" id="Building_Defaults"></a><h3> <span class="mw-headline">Building Defaults</span></h3>
+<p>When importing shapes for which no type-dependent attributes have been given, the following default values are used which can be changed on the command line.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--color <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Sets STR as default color; <i>default: <b>0.2,0.5,1</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--prefix <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Sets STR as default prefix
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--type <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Sets STR as default type; <i>default: <b>"unknown"</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--layer <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>
+</td><td valign="top"> Sets INT as default layer; <i>default: <b>-1</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--discard</span>
+</td><td valign="top"> Sets default action to discard; <i>default: <b>false</b></i>
+</td></tr>
+</table>
+<a name="Report" id="Report"></a><h3> <span class="mw-headline">Report</span></h3>
+<p>All applications of the <b>SUMO</b>-suite handle most of the reporting options the same way. These options are discussed at <a href="Basics/Using_the_Command_Line_Applications.html#Reporting_Options" title="Basics/Using the Command Line Applications">Basics/Using the Command Line Applications#Reporting Options</a>.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-v</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--verbose</span>
+</td><td valign="top"> Switches to verbose output; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-p</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--print-options</span>
+</td><td valign="top"> Prints option values before processing; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-?</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--help</span>
+</td><td valign="top"> Prints this screen; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-V</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--version</span>
+</td><td valign="top"> Prints the current version; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-W</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--no-warnings</span>
+</td><td valign="top"> Disables output of warnings; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-l <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--log <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Writes all messages to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--message-log <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Writes all non-error messages to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--error-log <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Writes all warnings and errors to FILE
+</td></tr>
+</table>
+<a name="See_Also" id="See_Also"></a><h1> <span class="mw-headline">See Also</span></h1>
+<ul><li> <a href="Simulation/Shapes.html" title="Simulation/Shapes">Using additional polygons and POIs within the Simulation</a>
+</li><li> <a href="Basics/Using_the_Command_Line_Applications.html#Configuration_Files" title="Basics/Using the Command Line Applications">Using configuration files</a>
+</li></ul>
+<hr />
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 333/1000000
+Post-expand include size: 8499/2097152 bytes
+Template argument size: 2519/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:84-0!1!0!!en!2!edit=0 and timestamp 20120718040804 -->
+</div><hr/><div id="lastmod">This page was last modified on 2 March 2012, at 13:38.</div>

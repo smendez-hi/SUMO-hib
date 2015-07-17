@@ -1,0 +1,82 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Z/Changes from version 0.8.0.2 to version 0.8.2.1</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p><b>Please remind that several option names have changed!</b> The most important: "net-files" (router, simulation) is now "net-file"...<br />
+</p><p>Check user documentation and man-pages for this.<br />
+</p>
+<p>
+User-relevant changes:
+<ul>
+	<li>GUI
+	<ul>
+		<li>"Clear Message Window" menu added
+		<li>the icons now allow loading instantly after the previous loading has failed
+		<li>Renamed to "guisim"
+		<li>using gradients instead of pure interpolation
+		<li>windows-icons patched
+		<li>added ability to take snapshots
+		<li>using popups instead of comboboxes for finding structures and switching between coloring schemes in order to save place
+		<li>speeded up handling of errors
+		<li>Locators hidden behind a popup
+		<li>ToolTips do now not hide dialog windows
+		<li>Configuration errors are now reported to the window
+		<li>Added the possibility to display a vehicle's route
+		<li>added the possibility to save timelines
+	</ul>
+    <li>Simulation
+    <ul>
+		<li>building dump-files now reports about failures
+		<li>Patched some of the lane-changing bugs
+		<li>time-to-teleport -option added
+		<li>replace "treshhold" by "treshold"
+	</ul>
+	<li>Netconvert
+	<ul>
+		<li>Plain output of node and edges added (--plain-output)
+		<li>got rid of the arcview/shapelib-import chaos
+		<li>--explicite-junctions -&gt; --explicite-tls
+		<li>--explicite-no-junctions -&gt; --explicite-no-tls
+		<li>--keep-edges.input-file
+		<li>--keep-edges - option added
+		<li>--keep-edges.input-file
+		<li>Geometry computation bug patched
+    </ul>
+    <li>Router
+    <ul>
+		<li>Bug on processing all time steps patched
+		<li>Route output reformatted
+		<li>max-alternatives
+    </ul>
+    <li>Documentation
+    <ul>
+		<li>Man-pages added
+    </ul>
+</ul>
+<p>Developer-relevant changes:
+</p>
+<ul>
+	<li>GUI
+	<ul>
+		<li>Have reworked the class dependencies completely in order to make derivation more easy
+	</ul>
+	<li>Simulation
+	<ul>
+		<li>output moved to "output"
+		<li>outputs write to OutputDevices, not ostreams
+		<li>reworked lanechanging
+	</ul>
+</ul></p>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 1/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:55-0!1!0!!en!2!edit=0 and timestamp 20120718063439 -->
+</div><hr/><div id="lastmod">This page was last modified on 23 September 2011, at 07:47.</div>

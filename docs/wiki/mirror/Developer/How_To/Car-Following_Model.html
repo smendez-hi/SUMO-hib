@@ -1,0 +1,107 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Developer/How To/Car-Following Model</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>This short document describes how a new car-following model can be added to SUMO. We'll do this by implementing a test model named "smartSK". When implementing your own model, you should also grep (look for) occurences of the name we use, here.
+</p>
+<a name="The_car-following_model.27s_class" id="The_car-following_model.27s_class"></a><h2> <span class="mw-headline">The car-following model's class</span></h2>
+<p>The best thing is to start with an already existing model. Models are located in <i><b>&lt;SUMO_HOME&gt;</b></i>/src/microsim/cfmodels and new added models should reside here, too. Copy both MSCFModel_KraussOrig1.h and MSCFModel_KraussOrig1.cpp and rename them. The name should be "MSCFModel_&lt;YOUR_MODELS_NAME&gt;", in our case "MSCFModel_SmartSK"
+</p>
+<div style="background: #ccffcc; padding: .5em; margin: .5em; border: 1px dashed #88ff88;"><b>Convention:</b> Car-following model implementations are located in <i><b>&lt;SUMO_HOME&gt;</b></i>/src/microsim/cfmodels.</div>
+<div style="background: #ccffcc; padding: .5em; margin: .5em; border: 1px dashed #88ff88;"><b>Convention:</b> A car-following class' name should start with "MSCFModel_".</div>
+<p>Now, open both files and rename all occurences of MSCFModel_KraussOrig1 into your class' name.
+</p><p>Add the files to the makefile which is in this folder and to the MSVC10 project located in <i><b>&lt;SUMO_HOME&gt;</b></i>/build/msvc10/y_libmicrosim.
+</p>
+<a name="Loading_into_simulation" id="Loading_into_simulation"></a><h2> <span class="mw-headline">Loading into simulation</span></h2>
+<p>We now add the XML-elements which allow us to define and parse the model's parameter. Extend the list of known elements "SUMOXMLDefinitions::tags" located in <i><b>&lt;SUMO_HOME&gt;</b></i>/src/utils/xml/SUMOXMLDefinitions. In SUMOXMLDefinitions.h:
+</p>
+<pre>SUMO_TAG_CF_SMART_SK,
+</pre>
+<p>In SUMOXMLDefinitions.cpp:
+</p>
+<pre>{ "carFollowing-SmartSK",     SUMO_TAG_CF_SMART_SK },
+</pre>
+<p><br />
+Car-following models are instantiated in MSVehicleType::build(...) located in <i><b>&lt;SUMO_HOME&gt;</b></i>/src/microsim/MSVehicleType.cpp. You'll find a switch, here where you have to put the call to your model's constructor into.
+</p>
+<pre>case SUMO_TAG_CF_SMART_SK:
+  model = new MSCFModel_SmartSK(vtype,
+                                from.get(SUMO_ATTR_ACCEL, DEFAULT_VEH_ACCEL),
+                                from.get(SUMO_ATTR_DECEL, DEFAULT_VEH_DECEL),
+                                from.get(SUMO_ATTR_SIGMA, DEFAULT_VEH_SIGMA),
+                                from.get(SUMO_ATTR_TAU, DEFAULT_VEH_TAU),
+                                from.get(SUMO_ATTR_TMP1, DEFAULT_VEH_TMP1),
+                                from.get(SUMO_ATTR_TMP1, DEFAULT_VEH_TMP2),
+                                from.get(SUMO_ATTR_TMP1, DEFAULT_VEH_TMP3),
+                                from.get(SUMO_ATTR_TMP1, DEFAULT_VEH_TMP4),
+                                from.get(SUMO_ATTR_TMP1, DEFAULT_VEH_TMP5));
+</pre>
+<p><br />
+You may note that the constructor is read with values from "from". The first parameter, starting with SUMO_ATTR_ denotes the XML-attribute which names the parameter. These attributes, if new, have to be added to <i><b>&lt;SUMO_HOME&gt;</b></i>/src/utils/xml/SUMOXMLDefinitions. In SUMOXMLDefinitions.h:
+</p>
+<pre>SUMO_ATTR_TMP1,
+SUMO_ATTR_TMP2,
+SUMO_ATTR_TMP3,
+SUMO_ATTR_TMP4,
+SUMO_ATTR_TMP5,
+</pre>
+<p>In SUMOXMLDefinitions.cpp:
+</p>
+<pre>{ "tmp1",           SUMO_ATTR_TMP1 },
+{ "tmp2",           SUMO_ATTR_TMP2 },
+{ "tmp3",           SUMO_ATTR_TMP3 },
+{ "tmp4",           SUMO_ATTR_TMP4 },
+{ "tmp5",           SUMO_ATTR_TMP5 },
+</pre>
+<p>You also have to define which parameter must be read in <i><b>&lt;SUMO_HOME&gt;</b></i>/src/utils/xml/SUMOVehicleParserHelper, method getAllowedCFModelAttrs():
+</p>
+<pre>std::set&lt;SumoXMLAttr&gt; smartSKParams;
+smartSKParams.insert(SUMO_ATTR_ACCEL);
+smartSKParams.insert(SUMO_ATTR_DECEL);
+smartSKParams.insert(SUMO_ATTR_SIGMA);
+smartSKParams.insert(SUMO_ATTR_TAU);
+smartSKParams.insert(SUMO_ATTR_TMP1);
+smartSKParams.insert(SUMO_ATTR_TMP2);
+smartSKParams.insert(SUMO_ATTR_TMP3);
+smartSKParams.insert(SUMO_ATTR_TMP4);
+smartSKParams.insert(SUMO_ATTR_TMP5);
+allowedCFModelAttrs[SUMO_TAG_CF_SMART_SK] = smartSKParams;
+</pre>
+<p><br />
+</p><p>The second parameter, starting with DEFAULT_VEH_ is a constant default value. It has to be defined in <i><b>&lt;SUMO_HOME&gt;</b></i>/src/utils/common/SUMOVehicleClass, if new. In SUMOVehicleClass.h:
+</p>
+<pre>extern const SUMOReal DEFAULT_VEH_TMP1;
+extern const SUMOReal DEFAULT_VEH_TMP2;
+extern const SUMOReal DEFAULT_VEH_TMP3;
+extern const SUMOReal DEFAULT_VEH_TMP4;
+extern const SUMOReal DEFAULT_VEH_TMP5;
+</pre>
+<p>and in SUMOVehicleClass.cpp:
+</p>
+<pre>const SUMOReal DEFAULT_VEH_TMP1(1.);
+const SUMOReal DEFAULT_VEH_TMP2(1.);
+const SUMOReal DEFAULT_VEH_TMP3(1.);
+const SUMOReal DEFAULT_VEH_TMP4(1.);
+const SUMOReal DEFAULT_VEH_TMP5(1.);
+</pre>
+<p><br />
+Note, that we have to adapt the constructor to retrieve the additional parameter (tmp1-tmp5). We have also to adapt the copy constructor located in our class in MSCFModel_SmartSK::duplicate(...).
+</p><p><br />
+For further interaction, you also have to adapt the "id" of the model in the model's .h class:
+</p>
+<pre>virtual int getModelID() const {
+ return SUMO_TAG_CF_SMART_SK;
+}
+</pre>
+<!-- 
+NewPP limit report
+Preprocessor node count: 22/1000000
+Post-expand include size: 552/2097152 bytes
+Template argument size: 154/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:494-0!1!0!!en!2!edit=0 and timestamp 20120718063158 -->
+</div><hr/><div id="lastmod">This page was last modified on 6 June 2012, at 11:57.</div>

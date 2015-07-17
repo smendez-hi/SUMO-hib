@@ -1,0 +1,88 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Z/Changes from Version 0.10.3 to Version 0.11.0</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<ul><li> All
+<ul><li> moved to xerces 3.0
+</li><li> moved to FOX1.6
+</li><li> changes in network format (use <i><b>&lt;SUMO_HOME&gt;</b></i>/tools/net/0103to0110.py to convert from old to new representation)
+<ul><li> traffic light descriptions (18.05.2009)
+</li><li> descriptions of giving lanes free / prohibiting lanes for certain vehicle classes (10.06.2009)
+</li><li> moved character sections to attributes (22.-24.07.2009), see <a href="../Networks/SUMO_Road_Networks.html" title="Networks/SUMO Road Networks">SUMO Road Networks</a>
+</li></ul>
+</li><li> configuration xml format changed from <span class="inlxml">&lt;section&gt;&lt;key&gt;value&lt;/key&gt;&lt;/section&gt;</span> to <span class="inlxml">&lt;section key="value"/&gt;</span> (use <i><b>&lt;SUMO_HOME&gt;</b></i>/tools/10to11.py to convert from old to new representation)
+</li><li> The data-folder was removed; instead the examples got a part of the tests and are generated using these.
+</li></ul>
+</li></ul>
+<ul><li> Simulation
+<ul><li> Collisions
+<ul><li> Collisions are now checked per default (removed option <span style="color: #111144; font-weight: bold; white-space: pre;">--check-accidents</span>; added option <span style="color: #111144; font-weight: bold; white-space: pre;">--ignore-accidents</span> with "reverse meaning" instead)
+</li><li> Removed option <span style="color: #111144; font-weight: bold; white-space: pre;">--quit-on-accident</span>
+</li><li> Debugged buggy dealing with false vehicle leaving order (what should in fact not happen anyway)
+</li></ul>
+</li><li> Cleaning
+<ul><li> Removed unused/undescribed lane-change output (<span style="color: #111144; font-weight: bold; white-space: pre;">--lanechange-output</span>)
+</li><li> Removed unused/undescribed lane-change options <span style="color: #111144; font-weight: bold; white-space: pre;">--lanechange.min-sight</span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--lanechange.min-sight-edges</span>
+</li></ul>
+</li><li> Outputs
+<ul><li> patched problems with the intervals of detector outputs (including <a href="http://apps.sourceforge.net/trac/sumo/ticket/73" class="external text" title="http://apps.sourceforge.net/trac/sumo/ticket/73" rel="nofollow">defect 73: false end step information in detectors output</a>)
+</li></ul>
+</li><li> removed TrafficOnline classes; new approaches will be described/discussed at <a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=TrafficOnline&amp;action=edit&amp;redlink=1" class="new" title="TrafficOnline (page does not exist)">TrafficOnline</a>; was: <a href="http://apps.sourceforge.net/trac/sumo/ticket/57" class="external text" title="http://apps.sourceforge.net/trac/sumo/ticket/57" rel="nofollow">enhancement 57: remove TrafficOnline classes from simulation core</a>
+<ul><li> <a href="../Simulation/Output/Lane-_or_Edge-based_Traffic_Measures.html" title="Simulation/Output/Lane- or Edge-based Traffic Measures">edgelane traffic</a>, <a href="../Simulation/Output/Lane-_or_Edge-based_Emissions_Measures.html" title="Simulation/Output/Lane- or Edge-based Emissions Measures">edgelane hbefa</a>, and <a href="../Simulation/Output/Lane-_or_Edge-based_Noise_Measures.html" title="Simulation/Output/Lane- or Edge-based Noise Measures">edgelane harmonoise</a> are no longer writing empty intervals (13.05.2009)
+</li><li> corrected behaviour of using intervals in <a href="../Simulation/Output/Lane-_or_Edge-based_Traffic_Measures.html" title="Simulation/Output/Lane- or Edge-based Traffic Measures">edgelane traffic</a>, <a href="../Simulation/Output/Lane-_or_Edge-based_Emissions_Measures.html" title="Simulation/Output/Lane- or Edge-based Emissions Measures">edgelane hbefa</a>, and <a href="../Simulation/Output/Lane-_or_Edge-based_Noise_Measures.html" title="Simulation/Output/Lane- or Edge-based Noise Measures">edgelane harmonoise</a> (solved <a href="http://sourceforge.net/tracker/?func=detail&amp;aid=2168007&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/?func=detail&amp;aid=2168007&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2504162: multiple begins / ends should be defined in separate dumps</a> and <a href="http://sourceforge.net/tracker/?func=detail&amp;aid=2168007&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/?func=detail&amp;aid=2168007&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2504144: dump intervals are mandatory</a>)
+</li><li> <a href="../Simulation/Output/Lane-_or_Edge-based_Emissions_Measures.html" title="Simulation/Output/Lane- or Edge-based Emissions Measures">edgelane hbefa</a> now additionally writes per-vehicle values
+</li></ul>
+</li><li> fixed re-emission check for edges with multiple waiting vehicles
+</li></ul>
+</li></ul>
+<ul><li> GUISIM
+<ul><li> Added the possibility to load <a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=GUISIM_ViewSettings&amp;action=edit&amp;redlink=1" class="new" title="GUISIM ViewSettings (page does not exist)">view settings</a> and <a href="../SUMO-GUI.html#Using_Decals_within_SUMO-GUI" title="SUMO-GUI">decals</a> from a configuration file (implemented <a href="http://sourceforge.net/tracker/?func=detail&amp;aid=2168007&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/?func=detail&amp;aid=2168007&amp;group_id=45607&amp;atid=443424" rel="nofollow">request 2168007: add possibility to load view settings file with start of gui</a>). Added the possibility to generate snapshots on startup, defined in a configuration file. 
+</li><li> Removed the "additional weight" dialog - was not known to be used
+</li></ul>
+</li></ul>
+<ul><li> NETGEN
+<ul><li> random networks may now contain bidirectional edges; the probability to have an edge being bidirectional is controlled by the <span style="color: #111144; font-weight: bold; white-space: pre;">--rand-bidi-probability <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span> with default=1 (all edges are bidirectional)
+</li><li> The default junction type (option <span style="color: #111144; font-weight: bold; white-space: pre;">--default-junction-type</span>) may now be only one of "priority", "right_before_left", or "traffic_light". Building agentbased and actuated traffic lights from within NETGEN will no longer be supported.
+</li></ul>
+</li></ul>
+<ul><li> NETCONVERT
+<ul><li> Nodes which have same or almost same positions are no longer joined per default.
+</li><li> Type descriptions allow a certain edge type to be discarded from being imported using the <span class="inlxml">discard="x"</span> attribute.
+</li><li> NETCONVERT can guess roundabouts; force using <span style="color: #111144; font-weight: bold; white-space: pre;">--guess-roundabouts</span>
+</li><li> corrected usage of the <span class="inlxml">spread_type</span> attribute in edges; was: <a href="http://apps.sourceforge.net/trac/sumo/ticket/111" class="external text" title="http://apps.sourceforge.net/trac/sumo/ticket/111" rel="nofollow">defect 111 correct usage of the spread_type attribute</a>
+</li><li> patching problems with RoboCup Rescue League import
+</li></ul>
+</li></ul>
+<ul><li> OD2TRIPS
+<ul><li> The default departure/arrival behaviour can be controlled on the command line, now. The following options were introduced for this purpose: <span style="color: #111144; font-weight: bold; white-space: pre;">--departlane</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--departpos</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--departspeed</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--arrivallane</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--arrivalpos</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--arrivalspeed</span>. See also <a href="../Specification.html" title="Specification">Specification</a>
+</li><li> solved <a href="http://apps.sourceforge.net/trac/sumo/ticket/67" class="external text" title="http://apps.sourceforge.net/trac/sumo/ticket/67" rel="nofollow">defect 67: false interpretation of the second time field (OD2TRIPS)</a>
+</li></ul>
+</li></ul>
+<ul><li> DUAROUTER
+<ul><li> The default departure/arrival behaviour can be controlled on the command line, now. The following options were introduced for this purpose: <span style="color: #111144; font-weight: bold; white-space: pre;">--departlane</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--departpos</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--departspeed</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--arrivallane</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--arrivalpos</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--arrivalspeed</span>. See also <a href="../Specification.html" title="Specification">Specification</a>
+</li></ul>
+</li></ul>
+<ul><li> JTRROUTER
+<ul><li> The default departure/arrival behaviour can be controlled on the command line, now. The following options were introduced for this purpose: <span style="color: #111144; font-weight: bold; white-space: pre;">--departlane</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--departpos</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--departspeed</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--arrivallane</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--arrivalpos</span>, <span style="color: #111144; font-weight: bold; white-space: pre;">--arrivalspeed</span>. See also <a href="../Specification.html" title="Specification">Specification</a>
+</li></ul>
+</li></ul>
+<ul><li> TraCI
+<ul><li> changed name of "areal detectors" to "multi-entry/multi-exit detectors"
+</li><li> fixed crashes occuring when using the distance command (<a href="http://apps.sourceforge.net/trac/sumo/ticket/70" class="external text" title="http://apps.sourceforge.net/trac/sumo/ticket/70" rel="nofollow">defect 70: TraCI does not recognize edges with '['...</a>)
+</li><li> added <a href="../TraCI.html" title="TraCI">APIs for getting information about vehicles, vehicle types, lanes, routes, polygons, PoIs, and junctions</a>.
+</li><li> added the possibility to change the phase and retrieve the current phase and complete definition of a tls using the new phase definition
+</li></ul>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 145/1000000
+Post-expand include size: 2559/2097152 bytes
+Template argument size: 466/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:334-0!1!0!!en!2!edit=0 and timestamp 20120718063430 -->
+</div><hr/><div id="lastmod">This page was last modified on 23 September 2011, at 07:36.</div>

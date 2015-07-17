@@ -1,0 +1,96 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Z/Changes from version 0.8.0.1 to version 0.8.0.2</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>User-relevant changes:
+</p>
+<ul>
+
+	<li>GUI
+	<ul>
+		<li>Selections
+		<ul>
+			<li>Flag icons added to Popup-Menues
+			<li>Shift adds (de)selects the whole street, not only a lane
+			<li>Selection-Editor now saves to *.txt-files
+		</ul>
+        <li>Centering of objects has been revalidated
+        <li>Variable Speed Signs
+        <ul>
+        	<li>Visualisation of vss added
+        	<li>Added the possibility to interact with vss'
+        </ul>
+        <li>"Reload Simulation" option added
+        <li>Status-Bar message patched
+        <li>Rotation removed (was buggy)
+        <li>Error on closing the gui if parameter tracker are opened patched
+        <li>Value tracker may now be aggregated and are able to save the tracked values
+        <li>POlygon visualisation added
+        <li>Breakpoints added
+        <li>Setting and Saving of additional net weights added (preliminary, subject to improve)
+        <li>Coloring by type and by route added
+    </ul>
+    <li>Simulation
+    <ul>
+		<li>Reports why the simulation ended if in verbose mode
+		<li>emissions-output error due to a division by zero patched
+		<li>VSS may now control several lanes
+	</ul>
+	<li>general
+	<ul>
+		<li>Options
+		<ul>
+			<li>Errors on default value usage patched
+		</ul>
+	</ul>
+	<li>Documentation
+	<ul>
+		<li>trying to separate XML-code (green) from command line options (red)
+	</ul>
+	<li>Netconvert
+	<ul>
+		<li>--map-output &lt;FILE&gt; builds a mapping that shows which edges have been removed while joining
+		<li>guess-tls - options added
+		<li>extended the FastLane-import by the -l parameter for the number of lanes
+		<li>--explicite-junctions &lt;JUNCTION_NAME_LIST&gt; allows to say which junctions shall be explicitely tls-controlled
+		<li>--explicite-no-junctions &lt;JUNCTION_NAME_LIST&gt; allows to say which junctions shall be explicitely non-tls-controlled
+        <li>--edges-min-speed &lt;SPEED_MS&gt; allows to remove all edges from the input on which a lower speed than &lt;SPEED_MS&gt; is allowed
+        <li>--elmar allows to import NavTech-GDF-files parsed using Elmar Brockfelds parser
+        <li>--tiger allows to import tiger files (preliminary, does not look THAAAAT good for an unknown reason, yet)
+    </ul>
+    <li>Router
+    <ul>
+    	<li>Generation of random route after the first depart fixed
+    	<li>Warnings about missing weights are printed only once per edge
+    	<li>Supplementary Weights
+    </ul>
+    <li>Examples have now a new folder structure
+</ul>
+<p>Developer-relevant changes:
+</p>
+<ul>
+	<li>GUI
+	<ul>
+
+		<li>Selected structures are now in a separate class
+		<li>Additional structures are now displayed using the same "API"
+	</ul>
+	<li>Simulation
+	<ul>
+		<li>removed the MSNet::dictionary
+		<li>refactored the MSMeanData-output
+	</ul>
+</ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 1/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:54-0!1!0!!en!2!edit=0 and timestamp 20120718063438 -->
+</div><hr/><div id="lastmod">This page was last modified on 23 September 2011, at 07:48.</div>

@@ -1,0 +1,76 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/GUI Value Retrieval</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Command_0xac:_Get_GUI_Variable" id="Command_0xac:_Get_GUI_Variable"></a><h2> <span class="mw-headline"> Command 0xac: Get GUI Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> View ID
+</th></tr></table>
+<p>Asks for the value of a certain GUI variable. The view id is usually something like "View #0", where the last digit counts the open (sub-)windows in the simulation GUI.
+</p><p>The following variable values can be retrieved, the type of the return value is also shown in the table.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Retrievable GUI Variables</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> zoom (0xa0)
+</td><td> double
+</td><td> the current zoom level (in&nbsp;%)
+</td></tr>
+<tr>
+<td> offset (id 0xa1)
+</td><td> 2D-position
+</td><td> the center of the currently visible part of the net
+</td></tr>
+<tr>
+<td> schema (id 0xa2)
+</td><td> string
+</td><td> the visualization scheme used (e.g. "standard" or "real world")
+</td></tr>
+<tr>
+<td> boundary (id 0xa3)
+</td><td> 2D-polygon
+</td><td> the lower left and the upper right corner of the visible network
+</td></tr>
+</table>
+<p><br />
+</p>
+<a name="Response_0xbc:_GUI_Variable" id="Response_0xbc:_GUI_Variable"></a><h2> <span class="mw-headline"> Response 0xbc: GUI Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td width="75" align="center"> &lt;return_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> View ID
+</th><th style="border: 1pt solid;"> Return type of the variable
+</th><th style="border: 1pt solid;"> &lt;VARIABLE_VALUE&gt;
+</th></tr></table>
+<p>The respond to a <b>"Command Get GUI Variable"</b>.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 3/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:390-0!1!0!!en!2!edit=0 and timestamp 20120718063403 -->
+</div><hr/><div id="lastmod">This page was last modified on 13 July 2011, at 14:02.</div>

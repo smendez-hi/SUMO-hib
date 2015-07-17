@@ -1,0 +1,103 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Tutorials/Hello Sumo</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />This tutorial assumes very basic computer skill. If you run into any questions
+please read the page <a href="../Basics/Basic_Computer_Skills.html" title="Basics/Basic Computer Skills">Basics/Basic Computer Skills</a>.</div>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Hello_Sumo_-_Introduction"><span class="tocnumber">1</span> <span class="toctext">Hello Sumo - Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Nodes"><span class="tocnumber">2</span> <span class="toctext">Nodes</span></a></li>
+<li class="toclevel-1"><a href="#Edges"><span class="tocnumber">3</span> <span class="toctext">Edges</span></a></li>
+<li class="toclevel-1"><a href="#Routes"><span class="tocnumber">4</span> <span class="toctext">Routes</span></a></li>
+<li class="toclevel-1"><a href="#Configuration"><span class="tocnumber">5</span> <span class="toctext">Configuration</span></a></li>
+<li class="toclevel-1"><a href="#Further_Reading"><span class="tocnumber">6</span> <span class="toctext">Further Reading</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Hello_Sumo_-_Introduction" id="Hello_Sumo_-_Introduction"></a><h2> <span class="mw-headline">Hello Sumo - Introduction </span></h2>
+<p>This tutorial aims at first time Sumo users. We are building the simplest net possible and let a single car
+drive on it. All files mentioned here can also be found in the <i><b>&lt;SUMO_HOME&gt;</b></i>/docs/tutorial/hello directory. The most recent version can be found in the SVN at <a href="http://sourceforge.net/apps/trac/sumo/browser/trunk/sumo/tests/complex/tutorial/hello/data/" class="external text" title="http://sourceforge.net/apps/trac/sumo/browser/trunk/sumo/tests/complex/tutorial/hello/data/" rel="nofollow"><i><b>&lt;SUMO_HOME&gt;</b></i>/tests/complex/tutorial/hello/data/</a>.
+</p><p>In <a href="../SUMO.html" title="SUMO">SUMO</a> a street network consists of nodes (junctions) and edges (streets connecting the junctions). Thus, if we want to create a network with two streets, subsequent to  each other, we need three nodes and two edges. We will see in the section on <a href="#Routes" title="">#Routes</a>, why the simplest network cannot contain only one edge.
+</p>
+<a name="Nodes" id="Nodes"></a><h2> <span class="mw-headline">Nodes</span></h2>
+<p>All nodes have at location (x- and y-coordinate, describing distance to the origin in meters) and an id
+for future reference. Thus our simple node file looks as follows
+</p>
+<pre class="xml">
+&lt;nodes&gt;
+    &lt;node id=&quot;1&quot; x=&quot;-500.0&quot; y=&quot;0.0&quot; /&gt;
+    &lt;node id=&quot;2&quot; x=&quot;+500.0&quot; y=&quot;0.0&quot; /&gt;
+    &lt;node id=&quot;3&quot; x=&quot;+501.0&quot; y=&quot;0.0&quot; /&gt;
+&lt;/nodes&gt;
+</pre>
+<p>You can edit a file with a text editor of your choice and save this for instance as <tt>hello.nod.xml</tt> where <tt>.nod.xml</tt> is the default suffix for Sumo node files.
+</p>
+<a name="Edges" id="Edges"></a><h2> <span class="mw-headline">Edges</span></h2>
+<p>Now we are connecting the nodes with edges. This is as easy as it sounds, we have a source node id, a target node id, and an edge id for future reference. Edges are directed, thus every vehicle travelling this edge
+will start at the node given in <span class="inlxml">from</span> and end at the node given in <span class="inlxml">to</span>.
+</p>
+<pre class="xml">
+&lt;edges&gt;
+    &lt;edge from=&quot;1&quot; id=&quot;1to2&quot; to=&quot;2&quot; /&gt;
+    &lt;edge from=&quot;2&quot; id=&quot;out&quot; to=&quot;3&quot; /&gt;
+&lt;/edges&gt;
+</pre>
+<p>Save this data into a file called <tt>hello.edg.xml</tt>. Now that we have nodes and edges we can call the first sumo tool to create a network. Make sure <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> is somewhere in your <tt>PATH</tt> and call
+</p>
+<pre>netconvert --node-files=hello.nod.xml --edge-files=hello.edg.xml --output-file=hello.net.xml
+</pre>
+<p>This will generate our network called <tt>hello.net.xml</tt>.
+</p>
+<a name="Routes" id="Routes"></a><h2> <span class="mw-headline">Routes</span></h2>
+<p>Now we have a net, we still need a car. In <a href="../SUMO.html" title="SUMO">SUMO</a> the vehicles have types defining their basic properties such as length, acceleration and deceleration and maximum speed. Furthermore it needs a so called sigma parameter which introduces some random behavior and is due to the car following model used. Setting it to 0 gives a deterministic car.
+</p><p>Now we define a route for our car which simply consists of the two edges we defined. The reason why we need two edges is that in <a href="../SUMO.html" title="SUMO">SUMO</a> the car disappears as soon as it has reached the last edge of its route (the position of a car is defined by the position of its front).
+</p>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />Please note, that <a href="../SUMO.html" title="SUMO">SUMO</a> now allows routes with only one edge, see "<a href="../Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html" title="Definition of Vehicles, Vehicle Types, and Routes">Definition of Vehicles, Vehicle Types, and Routes</a>" for further information.</div>
+<p>Last but not least we define our single car mainly referring to the entries before and giving it a departure time as in the following <tt>hello.rou.xml</tt> file.
+</p>
+<pre class="xml">
+&lt;routes&gt;
+    &lt;vType accel=&quot;1.0&quot; decel=&quot;5.0&quot; id=&quot;Car&quot; length=&quot;2.0&quot; maxSpeed=&quot;100.0&quot; sigma=&quot;0.0&quot; /&gt;
+    &lt;route id=&quot;route0&quot; edges=&quot;1to2 out&quot;/&gt;
+    &lt;vehicle depart=&quot;1&quot; id=&quot;veh0&quot; route=&quot;route0&quot; type=&quot;Car&quot; /&gt;
+&lt;/routes&gt;
+</pre>
+<a name="Configuration" id="Configuration"></a><h2> <span class="mw-headline">Configuration</span></h2>
+<p>Now we glue everything together into a configuration file
+</p>
+<pre class="xml">
+&lt;configuration&gt;
+    &lt;input&gt;
+        &lt;net-file value=&quot;hello.net.xml&quot;/&gt;
+        &lt;route-files value=&quot;hello.rou.xml&quot;/&gt;
+    &lt;/input&gt;
+    &lt;time&gt;
+        &lt;begin value=&quot;0&quot;/&gt;
+        &lt;end value=&quot;10000&quot;/&gt;
+    &lt;/time&gt;
+&lt;/configuration&gt;
+</pre>
+<p>Saving this to <tt>hello.sumo.cfg</tt> we can start the simulation by either
+</p>
+<pre>sumo -c hello.sumo.cfg
+</pre>
+<p>or with GUI by
+</p>
+<pre>sumo-gui -c hello.sumo.cfg
+</pre>
+<a name="Further_Reading" id="Further_Reading"></a><h2> <span class="mw-headline">Further Reading</span></h2>
+<p>More information on defining networks using XML can be found here: <a href="../Networks/Building_Networks_from_own_XML-descriptions.html" title="Networks/Building Networks from own XML-descriptions">Networks/Building Networks from own XML-descriptions</a>. <a href="../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> also allows to import networks from other applications, further information is available here: <a href="../Networks/Import.html" title="Networks/Import">Networks/Import</a>.
+</p><p>More information on defining vehicles can be found here: <a href="../Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html" title="Definition of Vehicles, Vehicle Types, and Routes">Definition of Vehicles, Vehicle Types, and Routes</a>.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 34/1000000
+Post-expand include size: 596/2097152 bytes
+Template argument size: 282/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:96-0!1!0!!en!2!edit=0 and timestamp 20120717121720 -->
+</div><hr/><div id="lastmod">This page was last modified on 4 November 2011, at 12:19.</div>

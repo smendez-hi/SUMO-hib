@@ -1,0 +1,71 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Route Value Retrieval</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Command_0xa6:_Get_Route_Variable" id="Command_0xa6:_Get_Route_Variable"></a><h2> <span class="mw-headline"> Command 0xa6: Get Route Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Route ID
+</th></tr></table>
+<p>Asks for the value of a certain variable of the named route.
+</p><p>The following variable values can be retrieved, the type of the return value is also shown in the table.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Retrievable Route Variables</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> id list (0x00)
+</td><td> stringList
+</td><td> Returns a list of ids of all currently loaded routes (the given route ID is ignored)
+</td></tr>
+<tr>
+<td> count (0x01)
+</td><td> int
+</td><td> Returns the number of currently loaded routes (the given route ID is ignored)
+</td></tr>
+<tr>
+<td> edges (0x54)
+</td><td> stringList
+</td><td> Returns the ids of the edges this route covers
+</td></tr>
+</table>
+<p><br />
+</p>
+<a name="Response_0xb6:_Route_Variable" id="Response_0xb6:_Route_Variable"></a><h3> <span class="mw-headline"> Response 0xb6: Route Variable </span></h3>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td width="75" align="center"> &lt;return_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Induction Loop ID
+</th><th style="border: 1pt solid;"> Return type of the variable
+</th><th style="border: 1pt solid;"> &lt;VARIABLE_VALUE&gt;
+</th></tr></table>
+<p>The respond to a <b>"Command Get Route Variable"</b>.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 3/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:267-0!1!0!!en!2!edit=0 and timestamp 20120718063411 -->
+</div><hr/><div id="lastmod">This page was last modified on 13 July 2011, at 14:01.</div>

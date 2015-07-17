@@ -1,0 +1,23 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Tools/Import/VISUM</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Importing_.22Zaehlstellen.22" id="Importing_.22Zaehlstellen.22"></a><h3> <span class="mw-headline">Importing "Zaehlstellen"</span></h3>
+<p><a href="http://www.ptvag.com/traffic/software/visum/" class="external text" title="http://www.ptvag.com/traffic/software/visum/" rel="nofollow">VISUM</a> can store count positions, and optionally, their values. As count positions may be extended by user attributes, we have set up a small script which extracts both, the positions, and the user attributes, and fixes the positions on the given network. The tool is named "<i>visum_parseZaehlstelle.py</i>" and can be found in <i> </i><b>&lt;SUMO_HOME&gt;</b><i>\tools\import\visum</i>. The call is: 
+</p>
+<pre>visum_parseZaehlstelle.py <i>&lt;SUMO-net&gt;</i> <i>&lt;VISUM-net&gt;</i> <i>&lt;output&gt;</i>
+</pre>
+<p>This means that you have to give both, the converted, and the original net to this tool. <i>&lt;output&gt;</i> is the name of the output file to generate. The tool converts the "ZAEHLSTELLE" elements into a list of pois, located at the first (rightmost) lanes of the network; these can be used as <a href="../../Simulation/Shapes.html" title="Simulation/Shapes">additional Polygons and POIs within the Simulation</a>.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 4/1000000
+Post-expand include size: 21/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:418-0!1!0!!en!2!edit=0 and timestamp 20120718063346 -->
+</div><hr/><div id="lastmod">This page was last modified on 27 October 2011, at 10:15.</div>

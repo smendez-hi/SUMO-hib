@@ -1,0 +1,49 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Purgatory/TopicVehicleRerouting</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Vehicle_Rerouting"><span class="tocnumber">1</span> <span class="toctext">Vehicle Rerouting</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Basic_Description"><span class="tocnumber">1.1</span> <span class="toctext">Basic Description</span></a></li>
+<li class="toclevel-2"><a href="#Things_to_keep_in_Mind"><span class="tocnumber">1.2</span> <span class="toctext">Things to keep in Mind</span></a></li>
+<li class="toclevel-2"><a href="#Evaluation_Advices"><span class="tocnumber">1.3</span> <span class="toctext">Evaluation Advices</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Vehicle_Rerouting" id="Vehicle_Rerouting"></a><h1> <span class="mw-headline">Vehicle Rerouting</span></h1>
+<p>Within the next subchapter, we want to try to give some advices on how investigations on vehicle rerouting should be prepared and evaluated. Though most of these are based on prior work, any further ideas or processes and other information is appreciated.
+</p>
+<a name="Basic_Description" id="Basic_Description"></a><h2> <span class="mw-headline">Basic Description</span></h2>
+<p>The research descibed in here deals with methods for computing vehicle routes, mainly in the case of unforeseenable events. Normally, we assume traffic is in an "equlibrium state" - a route change does not yield in a better performance of the road network. Nonetheless, the traffic may change due to:
+</p>
+<ul><li> accidents and resulting jams
+</li><li> additional event traffic
+</li><li> street closures
+</li><li> changing destinations (new shopping center)
+</li></ul>
+<p>In such cases, certain edges of the road network will be either completely unsuable or the time needed to pass them raises, either directly, or because of the additional demand of vehicles that want to pass them.
+</p>
+<a name="Things_to_keep_in_Mind" id="Things_to_keep_in_Mind"></a><h2> <span class="mw-headline">Things to keep in Mind</span></h2>
+<ul><li> <b>The simulated traffic should be in equilibrium mode before the incident is introduced</b>
+</li></ul>
+<dl><dd><i>Explanation</i>: Using fastest routes in an empty network, like obtained when using a simple Dijkstra (done when converting trips to routes via <a href="../DUAROUTER.html" title="DUAROUTER">DUAROUTER</a>) is not realistic. In this case, all vehicles would use the fastest edges <i>in an empty network</i>, which would yield in jam situation on these edges. I such cases, it is easy to find a new best route during simulation - but the initial situation would be not realistic. Having a proper traffic assignment is needed for realistic evaluations.
+</dd></dl>
+<p><br />
+</p>
+<a name="Evaluation_Advices" id="Evaluation_Advices"></a><h2> <span class="mw-headline">Evaluation Advices</span></h2>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 5/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:149-0!1!0!!en!2!edit=0 and timestamp 20120718063304 -->
+</div><hr/><div id="lastmod">This page was last modified on 30 September 2011, at 14:54.</div>

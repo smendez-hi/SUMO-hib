@@ -1,0 +1,86 @@
+<?php
+session_start();
+?>
+
+<!DOCTYPE HTML PUBLIC "-//W3C/DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>Ecogem Traffic Simulator Platform</title>
+<link rel="stylesheet" type="text/css" href="style/style.css" />
+</head>
+<body>
+
+<div style="margin-top: 130px;">
+
+<center><!-- Logo -->
+<table id="login" class="login" cellpadding='2'
+	cellspacing='0' border='0'>
+	<!-- Zona general campos de sesion -->
+	<tr>
+		<td bgcolor="#E6E6E6">
+		<table cellpadding='20' cellspacing='0' border='0'
+			width='100%'>
+
+			<tr>
+				<td align=center style=""><img src="images/logo.png"></img></td>
+			</tr>
+			<tr>
+				<td><br>
+				<form action="submitLogin.php" method="POST"><input type="hidden"
+					name="action" value="login"> <input type="hidden" name="hide"
+					value=""> <!-- Campos registro -->
+				<center>
+				<table border='0'>
+					<tr>
+						<td>&nbsp;&nbsp;USERNAME</td>
+					</tr>
+					<tr>
+						<td class="loginbox"><input class="loginbox" type="text"
+							name="usr"></td>
+					</tr>
+					<tr>
+						<td>&nbsp;&nbsp;PASSWORD</td>
+					</tr>
+					<tr>
+						<td class="loginbox"><input class="loginbox" type="password"
+							name="pass"></td>
+					</tr>
+					<tr>
+						<td class="loginbox">&nbsp;<input type="checkbox" name="remember"
+							value="remember" /> REMEMBER ME<br />
+						</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>
+						<center><input type="submit" value="LOGIN" class="spButton"
+							style="width: 180px; height: 40px;"></center>
+						</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><a class="link" href="">FORGOT YOUR PASSWORD OR USERNAME?</a></td>
+					</tr>
+				</table>
+				</center>
+				</form>
+
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+</center>
+
+</div>
+
+
+
+</body>
+</html>
+

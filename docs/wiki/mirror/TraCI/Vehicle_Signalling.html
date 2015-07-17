@@ -1,0 +1,86 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Vehicle Signalling</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>A vehicle's signals are encoded in an integer, each by one bit, encoding whether the according signal/... is on or off. Please note that this information are rather meant for used by an external application. Only "VEH_SIGNAL_BRAKELIGHT" has a meaning for the simulation, but will be overwritten by the simulation in each time step. Also, "VEH_SIGNAL_BLINKER_RIGHT" and "VEH_SIGNAL_BLINKER_LEFT" are reset by the simulation, so setting them will be not visible in the gui.
+</p><p>The following table shows the defined signals.
+</p>
+<table>
+<tr>
+<td> Name
+</td><td> Bit
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_BLINKER_RIGHT
+</td><td> 0
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_BLINKER_LEFT
+</td><td> 1
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_BLINKER_EMERGENCY
+</td><td> 2
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_BRAKELIGHT
+</td><td> 3
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_FRONTLIGHT
+</td><td> 4
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_FOGLIGHT
+</td><td> 5
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_HIGHBEAM
+</td><td> 6
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_BACKDRIVE
+</td><td> 7
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_WIPER
+</td><td> 8
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_DOOR_OPEN_LEFT
+</td><td> 9
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_DOOR_OPEN_RIGHT
+</td><td> 10
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_EMERGENCY_BLUE
+</td><td> 11
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_EMERGENCY_RED
+</td><td> 12
+</td></tr>
+<tr>
+<td> VEH_SIGNAL_EMERGENCY_YELLOW
+</td><td> 13
+</td></tr></table>
+<p><b>See also</b>:
+</p>
+<ul><li> <a href="../TraCI/Vehicle_Value_Retrieval.html" title="TraCI/Vehicle Value Retrieval">Vehicle Value Retrieval</a>
+</li><li> <a href="../TraCI/Change_Vehicle_State.html" title="TraCI/Change Vehicle State">Change Vehicle State</a>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 1/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:336-0!1!0!!en!2!edit=0 and timestamp 20120718063415 -->
+</div><hr/><div id="lastmod">This page was last modified on 7 October 2010, at 10:11.</div>

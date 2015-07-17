@@ -1,0 +1,32 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Variable Speed Signs</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>One of the trigger objects that may be specified within an <a href="../Other/Glossary.html#A" title="Other/Glossary"><b>additional-file</b></a> allows the simulation of variable speed signs. The syntax for such an object is: <span class="inlxml">&lt;variableSpeedSign id="&lt;VSS_ID&gt;" lanes="&lt;LANE_ID&gt;[ &lt;LANE_ID&gt;]*" file="&lt;DEF_FILE&gt;"/&gt;</span>.
+</p><p>A file name must be supplied, called &lt;DEF_FILE&gt; within the schema above. This file must contain the information about when a certain speed shall be set onto the lane. This file has the following format:
+</p>
+<pre class="xml">
+&lt;vss&gt;
+   &lt;step time=&quot;&lt;TIME&gt;&quot; speed=&quot;&lt;SPEED&gt;&quot;/&gt;
+   &lt;step time=&quot;&lt;TIME&gt;&quot; speed=&quot;&lt;SPEED&gt;&quot;/&gt;
+
+   ... further entries ...
+
+   &lt;step time=&quot;&lt;TIME&gt;&quot; speed=&quot;&lt;SPEED&gt;&quot;/&gt;
+&lt;/vss&gt;
+</pre>
+<p>Each step is a combination of the time the next new speed shall be set and the speed to set itself.
+</p><p>A small example for usage of vss' may be found in the SUMO directory under "examples/sumo/variable_speed_signs".
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 5/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:233-0!1!0!!en!2!edit=0 and timestamp 20120718063337 -->
+</div><hr/><div id="lastmod">This page was last modified on 25 October 2011, at 15:04.</div>

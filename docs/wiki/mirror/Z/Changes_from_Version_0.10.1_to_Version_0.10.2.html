@@ -1,0 +1,67 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Z/Changes from Version 0.10.1 to Version 0.10.2</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<ul><li> All
+<ul><li> If configuration is written using <b>--write-config</b>, the application stops after this step
+</li><li> The devices now also allow "<b>NUL</b>" or "<b>/dev/NULL</b>" as output file name. In this case, the output is redirected to <b>NUL</b> (MS Windows) or <b>/dev/null</b> (Linux)
+</li></ul>
+</li></ul>
+<ul><li> GUISIM
+<ul><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2519476&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2519476&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2519476: vss are not shown properly</a> 
+</li><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2510002&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2510002&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2510002: Crash on vss manipulator</a> 
+</li><li> debugged size info ("legend") drawing
+</li><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2519761&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2519761&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2519761: guisim crashes on "show all routes"</a> 
+</li><li> changed how decals are aligned (see <a href="../SUMO-GUI.html#Using_Decals_within_SUMO-GUI" title="SUMO-GUI">SUMO-GUI#Using_Decals_within_SUMO-GUI</a>)
+</li><li> Consolidated the startup-options <b>--suppress-end-info</b> and <b>--quit-on-end</b>: <b>--suppress-end-info</b> was removed, the application quits after performing the simulation when <b>--quit-on-end</b> is given. This is also done even if errors occured
+</li><li> added the possibility to copy the cursor position to clipboard
+</li><li> debugged false position information within the popup-menu of a lane
+</li><li> Tests based on SUMO tests are now also performed for GUISIM. Thanks to Michael Behrisch for this very nice work
+</li></ul>
+</li></ul>
+<ul><li> Simulation
+<ul><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2524031&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2524031&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2524031: sumo xml parser relies on sequence order instead IDs</a>; thanks to Andrey Gursky for supplying the example
+</li><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2519762&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2519762&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2519762: rerouter are not shown properly</a>
+</li><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2105526&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2105526&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2105526: Subsecond simulation does not compile</a>
+</li><li> changed default simulation end time to INT_MAX
+</li><li> simulation stops on running empty only if there is no end time specified
+</li><li> closed work on <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based">pollutant emission modelling based on HBEFA</a>
+</li></ul>
+</li></ul>
+<ul><li> Netconvert / Netgen
+<ul><li> trying to deal with problems on network building; networks are more correct for most cases, but may look weird sometimes
+</li><li> solved <a href="http://apps.sourceforge.net/trac/sumo/ticket/38" class="external text" title="http://apps.sourceforge.net/trac/sumo/ticket/38" rel="nofollow">defect 38: speed instead of length while importing XML</a>
+</li><li> changed the tls-guessing procedure (unverified, yet); tls which span over multiple junctions can now been "guessed" if both, nodes are marked as being controlled by traffic lights or not within the imported data; see also: <a href="http://apps.sourceforge.net/trac/sumo/ticket/42" class="external text" title="http://apps.sourceforge.net/trac/sumo/ticket/42" rel="nofollow">task 42: (TAPAS) add possibility to generate joined tls if tls are given</a>
+</li></ul>
+</li></ul>
+<ul><li> Polyconvert
+<ul><li> solved <a href="http://apps.sourceforge.net/trac/sumo/ticket/14" class="external text" title="http://apps.sourceforge.net/trac/sumo/ticket/14" rel="nofollow">defect 14: polyconvert does not report about double ids</a>
+</li><li> renamed option <b>--xml-points</b> to <b>--xml</b>
+</li><li> renamed option <b>--shape-files</b> to <b>--shape-file</b>
+</li></ul>
+</li></ul>
+<ul><li> Tools
+<ul><li> Rebuilt traceExporter; added tests
+</li></ul>
+</li></ul>
+<ul><li> Documentation
+<ul><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=19939836&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=19939836&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 1993983: Errors in User Documentation</a>
+</li></ul>
+</li></ul>
+<ul><li> TAPAS
+<ul><li> see <a href="../Data/Scenarios/TAPASCologne.html#Change_Log" title="Data/Scenarios/TAPASCologne">TAPASCologne Change Log</a>
+</li></ul>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 1/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:287-0!1!0!!en!2!edit=0 and timestamp 20120718063428 -->
+</div><hr/><div id="lastmod">This page was last modified on 27 October 2011, at 07:40.</div>

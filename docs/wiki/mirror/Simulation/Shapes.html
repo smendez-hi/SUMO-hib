@@ -1,0 +1,138 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Shapes</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Using_additional_Polygons_and_POIs_within_the_Simulation"><span class="tocnumber">1</span> <span class="toctext">Using additional Polygons and POIs within the Simulation</span></a></li>
+<li class="toclevel-1"><a href="#Definitions"><span class="tocnumber">2</span> <span class="toctext">Definitions</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Polygon_Definitions"><span class="tocnumber">2.1</span> <span class="toctext">Polygon Definitions</span></a></li>
+<li class="toclevel-2"><a href="#POI_.28Point_of_interest.29_Definitions"><span class="tocnumber">2.2</span> <span class="toctext">POI (Point of interest) Definitions</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#See_Also"><span class="tocnumber">3</span> <span class="toctext">See Also</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Using_additional_Polygons_and_POIs_within_the_Simulation" id="Using_additional_Polygons_and_POIs_within_the_Simulation"></a><h1> <span class="mw-headline">Using additional Polygons and POIs within the Simulation</span></h1>
+<div class="thumb tleft"><div class="thumbinner" style="width:182px;"><a href="../images/Tol1_with_polys.gif" class="image" title="Example of using polygons and POIs; from Traffic Online, area#1"><img alt="" src="../images/Tol1_with_polys.gif" width="180" height="100" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify"><a href="../images/Tol1_with_polys.gif" class="internal" title="Enlarge"><img src="../images//magnify-clip.png" width="15" height="11" alt="" /></a></div>Example of using polygons and POIs; from Traffic Online, area#1</div></div></div>
+<p>Since version 0.9.4, it is possible to include geometry files into the additional files section of a simulation configuration which contain definition of polygons or points of interest. These shapes are currently meant to improve a simulation's appearence and to allow an easier debugging. No special interaction with them is implemented, yet.
+</p><p>Both polygons and points of interest may be located within a "layer". Shapes with lowest layer values are below those with a higher layer number. The network itself is drawn as layer 0. An additional file may contain definitions for both points of interest and polygons.
+</p><p>Geometrical objects may either be defined "by hand" or imported using <a href="../POLYCONVERT.html" title="POLYCONVERT">POLYCONVERT</a>. A valid geometry-file can be given to <a href="../SUMO.html" title="SUMO">SUMO</a> as one of the additional files (option: <b>--additional-files <i>&lt;FILE&gt;</i></b>). For usage within <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a>, you have to add it to the list of additional files to load within the used <a href="../SUMO.html" title="SUMO">SUMO</a> <a href="../Basics/Using_the_Command_Line_Applications.html#Configuration_Files" title="Basics/Using the Command Line Applications">configuration file</a>.
+</p>
+<a name="Definitions" id="Definitions"></a><h1> <span class="mw-headline">Definitions</span></h1>
+<p>The geometrical objects (POIs, polygons) are stored one by one into an "additional file". Currently, the root element may arbitary.
+</p><p><br />
+</p>
+<a name="Polygon_Definitions" id="Polygon_Definitions"></a><h2> <span class="mw-headline">Polygon Definitions</span></h2>
+<p>A polygon is defined as following: <span class="inlxml">&lt;poly id="<i>&lt;POLYGON_ID&gt;</i>" type="<i>&lt;TYPENAME&gt;</i>" color="<i>&lt;RED&gt;</i>,<i>&lt;GREEN&gt;</i>,<i>&lt;BLUE&gt;</i>" fill="<i>&lt;FILL_OPTION&gt;</i>" layer="<i>&lt;LAYER_NO&gt;</i>" shape="<i>&lt;POINT&gt;</i> [<i>&lt;POINT&gt;</i>]+"/&gt;</span>
+</p><p>These attributes have the following meanings:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>id</b>
+</td><td> id (string)
+</td><td> The id (a unique name) of the polygon
+</td></tr>
+<tr>
+<td class="inlxml"> <b>color</b>
+</td><td> color
+</td><td> The color with which the polygon shall be displayed; <i>&lt;RED&gt;</i>, <i>&lt;GREEN&gt;</i>, and <i>&lt;BLUE&gt;</i> must be floating point numbers between 0 and 1. They are devided using a ',' (no space)
+</td></tr>
+<tr>
+<td class="inlxml"> <b>shape</b>
+</td><td> 2D position list
+</td><td> The shape of the polygon
+</td></tr>
+<tr>
+<td class="inlxml"> fill
+</td><td> bool
+</td><td> An information whether the polygon shall be filled; optional bool, <i>default: false</i>
+</td></tr>
+<tr>
+<td class="inlxml"> layer
+</td><td> int
+</td><td> The number of the layer in which the polygon lies; optional int, <i>default: -1</i>
+</td></tr>
+<tr>
+<td class="inlxml"> type
+</td><td> string
+</td><td> A typename for the polygon.
+</td></tr></table>
+<a name="POI_.28Point_of_interest.29_Definitions" id="POI_.28Point_of_interest.29_Definitions"></a><h2> <span class="mw-headline">POI (Point of interest) Definitions</span></h2>
+<p>A point-of-interest is defined as following: <span class="inlxml">&lt;poi id="<i>&lt;POLYGON_ID&gt;</i>" type="<i>&lt;TYPENAME&gt;</i>" color="<i>&lt;RED&gt;</i>,<i>&lt;GREEN&gt;</i>,<i>&lt;BLUE&gt;</i>" layer="<i>&lt;LAYER_NO&gt;</i>" [(x="<i>&lt;X_POS&gt;</i>" y="<i>&lt;Y_POS&gt;</i>") | (lane="<i>&lt;LANE_ID&gt;</i>" pos="<i>&lt;LANE_POS&gt;</i>")]/&gt;</span>
+</p><p>It means that the position a point-of-interest is located at may be given either using explicite x/y-coordinates or a lane name and a position on this lane. So, the attributes have the following meanings:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>id</b>
+</td><td> id (string)
+</td><td> The id (a unique name) of the polygon
+</td></tr>
+<tr>
+<td class="inlxml"> <b>color</b>
+</td><td> color
+</td><td> The color with which the poi shall be displayed; <i>&lt;RED&gt;</i>, <i>&lt;GREEN&gt;</i>, and <i>&lt;BLUE&gt;</i> must be floating point numbers between 0 and 1. They are devided using a ',' (no space); optional, <i>default "1,0,0"</i>
+</td></tr>
+<tr>
+<td class="inlxml"> x<sup>(*)</sup>
+</td><td> float
+</td><td> The position of the poi along the x-axis in meters; float
+</td></tr>
+<tr>
+<td class="inlxml"> y<sup>(*)</sup>
+</td><td> float
+</td><td> The position of the poi along the y-axis in meters; float
+</td></tr>
+<tr>
+<td class="inlxml"> lane<sup>(*)</sup>
+</td><td> id (string)
+</td><td> The name of the lane the poi is located at; string, the lane must be a part of the loaded network
+</td></tr>
+<tr>
+<td class="inlxml"> pos<sup>(*)</sup>
+</td><td> float
+</td><td> The position on the named lane at which the poi is located at
+</td></tr>
+<tr>
+<td class="inlxml"> fill
+</td><td> bool
+</td><td> An information whether the polygon shall be filled; optional bool, <i>default: false</i>
+</td></tr>
+<tr>
+<td class="inlxml"> type
+</td><td> string
+</td><td> A typename for the polygon.
+</td></tr></table>
+<p><sup>(*)</sup> Either <span class="inlxml">x</span>/<span class="inlxml">y</span> or <span class="inlxml">lane</span>/<span class="inlxml">pos</span> must be given
+</p>
+<a name="See_Also" id="See_Also"></a><h1> <span class="mw-headline">See Also</span></h1>
+<ul><li> See the description of <a href="../POLYCONVERT.html" title="POLYCONVERT">POLYCONVERT</a> in order to know how polygons/POIs can be imported from other sources
+</li><li> <a href="../Developer/Implementation_Notes/Drawing_in_sumo-gui.html" title="Developer/Implementation Notes/Drawing in sumo-gui">Developer/Implementation Notes/Drawing in sumo-gui</a> describes how <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a> renders loaded structures (for developers)
+</li><li> You can <a href="../TraCI/POI_Value_Retrieval.html" title="TraCI/POI Value Retrieval">read variables of loaded PoIs</a> and <a href="../TraCI/Polygon_Value_Retrieval.html" title="TraCI/Polygon Value Retrieval">read variables of loaded polygons</a> via <a href="../TraCI.html" title="TraCI">TraCI</a>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 12/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:93-0!1!0!!en!2!edit=0 and timestamp 20120718063335 -->
+</div><hr/><div id="lastmod">This page was last modified on 5 March 2012, at 15:06.</div>

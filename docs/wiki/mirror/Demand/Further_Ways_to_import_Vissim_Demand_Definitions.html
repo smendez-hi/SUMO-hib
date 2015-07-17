@@ -1,0 +1,34 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Demand/Further Ways to import Vissim Demand Definitions</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>Besides using <a href="../Demand/Importing_O/D_Matrices.html" title="Demand/Importing O/D Matrices">OD-matrices which can be imported</a> using <a href="../OD2TRIPS.html" title="OD2TRIPS">OD2TRIPS</a> as VISUM does, Vissim also allows to define vehicle flows as a combination of in-flows and route decisions. The following tool allows to import these. The file needs to be in German. For tips on conversion, see <a href="../Networks/Import/Vissim.html#Converting_VISSIM_networks_to_German" title="Networks/Import/Vissim">Networks/Import/Vissim#Converting VISSIM networks to German</a>
+</p>
+<a name="vissim_parseRoutes.py" id="vissim_parseRoutes.py"></a><h1> <span class="mw-headline">vissim_parseRoutes.py</span></h1>
+<p>Parses routes stored in the given Vissim file (first parameter) as (in-)flows and route decisions. The read information is saved twice; the read flows are saved as <i>&lt;OUTPUT_PREFIX&gt;.flows.xml</i>, and the read routes are saved as <i>&lt;OUTPUT_PREFIX&gt;.rou.xml</i>. 
+Edges of the route may be renamed by setting them within "edgemap" variable (within the script). To filter out (short) VISSIM connectors, which may not have been converted to edges in the network import but are included in the VISSIM route definitions, you may also (ab)use this facility to delete the edge from all relevant routes, e.g. edgemap["10000"] = ""
+</p>
+<pre>vissim_parseRoutes.py &lt;VISSIM_NETWORK&gt; &lt;OUTPUT_PREFIX&gt;
+</pre>
+<p>The script is located in <i><b>&lt;SUMO_HOME&gt;</b></i>/tools/import/vissim. It is written in Python.
+</p>
+<a name="vissim_parseBusStops.py" id="vissim_parseBusStops.py"></a><h1> <span class="mw-headline">vissim_parseBusStops.py</span></h1>
+<p>Parses bus stops and bus routes stored in the given Vissim file (first parameter). The read bus lines are saved as <i>&lt;OUTPUT_PREFIX&gt;_busses.rou.xml</i>. The read routes are saved as <i>&lt;OUTPUT_PREFIX&gt;_stops.add.xml</i>.
+(Starting?) edges of the route may be renamed by setting them within "edgemap" variable (see below).
+</p>
+<pre>vissim_parseRoutes.py &lt;VISSIM_NETWORK&gt; &lt;OUTPUT_PREFIX&gt;
+</pre>
+<p>The script is located in <i><b>&lt;SUMO_HOME&gt;</b></i>/tools/import/vissim. It is written in Python.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 6/1000000
+Post-expand include size: 42/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:325-0!1!0!!en!2!edit=0 and timestamp 20120718063146 -->
+</div><hr/><div id="lastmod">This page was last modified on 25 October 2011, at 12:39.</div>

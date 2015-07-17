@@ -1,0 +1,58 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Tools/Visualization</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>The tools are meant to be named as following: &lt;API&gt;_&lt;DATA&gt;_&lt;DESCRIPTION&gt;.py, where:
+</p>
+<ul><li> <i>&lt;API&gt;</i>: mpl for matplotlib
+</li><li> <i>&lt;DATA&gt;</i>: the SUMO-output that is processed (mainly)
+</li><li> <i>&lt;DESCRIPTION&gt;</i>: what the tool does
+</li></ul>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#mpl_dump_twoAgainst.py"><span class="tocnumber">1</span> <span class="toctext">mpl_dump_twoAgainst.py</span></a></li>
+<li class="toclevel-1"><a href="#mpl_tripinfos_twoAgainst.py"><span class="tocnumber">2</span> <span class="toctext">mpl_tripinfos_twoAgainst.py</span></a></li>
+<li class="toclevel-1"><a href="#mpl_dump_timeline.py"><span class="tocnumber">3</span> <span class="toctext">mpl_dump_timeline.py</span></a></li>
+<li class="toclevel-1"><a href="#mpl_dump_onNet.py"><span class="tocnumber">4</span> <span class="toctext">mpl_dump_onNet.py</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="mpl_dump_twoAgainst.py" id="mpl_dump_twoAgainst.py"></a><h1> <span class="mw-headline"> mpl_dump_twoAgainst.py </span></h1>
+<p>Reads two dump files (mandatory options <span style="color: #111144; font-weight: bold; white-space: pre;">--dump1 <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--dump2 <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>, or, for short <span style="color: #111144; font-weight: bold; white-space: pre;">-1 <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> and <span style="color: #111144; font-weight: bold; white-space: pre;">-2 <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>). Extracts the value described by <span style="color: #111144; font-weight: bold; white-space: pre;">--value</span> (default: <i>speed</i>). Plots the values of dump2 over the according (same interval time and edge) values from dump1. 
+</p><p>Either shows the plot (when <span style="color: #111144; font-weight: bold; white-space: pre;">--show</span> is set) or saves it into a file (when <span style="color: #111144; font-weight: bold; white-space: pre;">--output <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> is set).
+</p><p>You can additionally plot the normed sums of the value using (<span style="color: #111144; font-weight: bold; white-space: pre;">--join</span>). In the other case, you can try to use <span style="color: #111144; font-weight: bold; white-space: pre;">--time-coloring</span> to assign different colors to the read intervals. 
+</p><p>You can format the axes by using <span style="color: #111144; font-weight: bold; white-space: pre;">--xticks <i>&lt;XMIN,XMAX,XSTEP,FONTSIZE&gt;</i></span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--yticks <i>&lt;YMIN,YMAX,YSTEP,FONTSIZE&gt;</i></span> and set theit limits using <span style="color: #111144; font-weight: bold; white-space: pre;">--xlim <i>&lt;XMIN,XMAX&gt;</i></span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--ylim <i>&lt;YMIN,YMAX&gt;</i></span>. The output size of the image may be set using <span style="color: #111144; font-weight: bold; white-space: pre;">--size <i>&lt;WIDTH,HEIGHT&gt;</i></span>.
+</p>
+<a name="mpl_tripinfos_twoAgainst.py" id="mpl_tripinfos_twoAgainst.py"></a><h1> <span class="mw-headline"> mpl_tripinfos_twoAgainst.py </span></h1>
+<p>Reads two tripinfos files (mandatory options <span style="color: #111144; font-weight: bold; white-space: pre;">--tripinfos1 <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--tripinfos2 <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>, or, for short <span style="color: #111144; font-weight: bold; white-space: pre;">-1 <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> and <span style="color: #111144; font-weight: bold; white-space: pre;">-2 <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>). Extracts the value described by <span style="color: #111144; font-weight: bold; white-space: pre;">--value</span> (default: <i>duration</i>). Plots the values of tripinfos2 over the according (same vehicle) values from tripinfos1. 
+</p><p>Either shows the plot (when <span style="color: #111144; font-weight: bold; white-space: pre;">--show</span> is set) or saves it into a file (when <span style="color: #111144; font-weight: bold; white-space: pre;">--output <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> is set).
+</p><p>You can format the axes by using <span style="color: #111144; font-weight: bold; white-space: pre;">--xticks <i>&lt;XMIN,XMAX,XSTEP,FONTSIZE&gt;</i></span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--yticks <i>&lt;YMIN,YMAX,YSTEP,FONTSIZE&gt;</i></span> and set theit limits using <span style="color: #111144; font-weight: bold; white-space: pre;">--xlim <i>&lt;XMIN,XMAX&gt;</i></span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--ylim <i>&lt;YMIN,YMAX&gt;</i></span>. The output size of the image may be set using <span style="color: #111144; font-weight: bold; white-space: pre;">--size <i>&lt;WIDTH,HEIGHT&gt;</i></span>.
+</p>
+<a name="mpl_dump_timeline.py" id="mpl_dump_timeline.py"></a><h1> <span class="mw-headline"> mpl_dump_timeline.py </span></h1>
+<p>Reads a value (given as <span style="color: #111144; font-weight: bold; white-space: pre;">--value <i>&lt;VALUE&gt;</i></span>, default <i>speed</i>) for edges defined via <span style="color: #111144; font-weight: bold; white-space: pre;">--edges <i>&lt;EDGEID&gt;[,&lt;EDGEID&gt;]*</i></span> from the dumps defined via <span style="color: #111144; font-weight: bold; white-space: pre;">--dumps <i>&lt;DUMP&gt;[,&lt;DUMP&gt;]*</i></span>. Plots them as time lines, using the colors defined via <span style="color: #111144; font-weight: bold; white-space: pre;">--colors <i>&lt;MPL_COLOR&gt;[,&lt;MPLCOLOR&gt;]*</i></span>. Please note that the number of colors must be equal to number of edges * number of dumps.
+</p><p>Either shows the plot (when <span style="color: #111144; font-weight: bold; white-space: pre;">--show</span> is set) or saves it into a file (when <span style="color: #111144; font-weight: bold; white-space: pre;">--output <i>&lt;FILENAME&gt;</i></span> is set).
+</p><p>You can format the axes by using <span style="color: #111144; font-weight: bold; white-space: pre;">--xticks <i>&lt;XMIN,XMAX,XSTEP,FONTSIZE&gt;</i></span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--yticks <i>&lt;YMIN,YMAX,YSTEP,FONTSIZE&gt;</i></span> and set theit limits using <span style="color: #111144; font-weight: bold; white-space: pre;">--xlim <i>&lt;XMIN,XMAX&gt;</i></span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--ylim <i>&lt;YMIN,YMAX&gt;</i></span>. The output size of the image may be set using <span style="color: #111144; font-weight: bold; white-space: pre;">--size <i>&lt;WIDTH,HEIGHT&gt;</i></span>.
+</p>
+<a name="mpl_dump_onNet.py" id="mpl_dump_onNet.py"></a><h1> <span class="mw-headline"> mpl_dump_onNet.py </span></h1>
+<p>Reads a network (defined using <span style="color: #111144; font-weight: bold; white-space: pre;">--net-file <i>&lt;NET&gt;</i></span> or <span style="color: #111144; font-weight: bold; white-space: pre;">-n <i>&lt;NET&gt;</i></span>) and an edge-dump file (<span style="color: #111144; font-weight: bold; white-space: pre;">--dump <i>&lt;DUMPFILE&gt;</i></span> or <b>-d <i>&lt;DUMP_FILE&gt;</i>}}). Plots the network using the geometries read from <i>&lt;NET&gt;</i>. Both the width and the colors used for each edge are determined using <span style="color: #111144; font-weight: bold; white-space: pre;">--value <i>&lt;WIDTHVALUE&gt;</i>,<i>&lt;COLORVALUE&gt;</i></span> where both <i>&lt;WIDTHVALUE&gt;</i> and <i>&lt;COLORVALUE&gt;</i> are attributes within the dump-file that exist for each edge.</b>
+</p><p>You can change the used color map by setting <span style="color: #111144; font-weight: bold; white-space: pre;">--color-map <i>&lt;DEFINITION&gt;</i></span>. <i>&lt;DEFINITION&gt;</i> is made of a sorted list of values (between 0 and 1) and assigned colors. This means that the default <i>0:#ff0000,.5:#ffff00,1:#00ff00</i> let streets with low value for <i>&lt;COLORVALUE&gt;</i> appear red, for those in the middle yellow and for those with a high value green. For values between the given values, the color is determined using linear interpolation. Please note that only lowercase hexadecimal characters may be used.
+</p><p>Either shows the plot (when <span style="color: #111144; font-weight: bold; white-space: pre;">--show</span> is set) or saves it into a file (when <span style="color: #111144; font-weight: bold; white-space: pre;">--output <i>&lt;FILENAME&gt;</i></span> is set).
+</p><p><span style="color: #111144; font-weight: bold; white-space: pre;">--join</span> sums up the values found for each edge and divides the result by the number of these values. If join is not set and <span style="color: #111144; font-weight: bold; white-space: pre;">--output</span> is given, one should choose an output name which looks as following: <i>&lt;NAME&gt;'<b>%05d</b></i><b>.png. The <i>%05d</i> will be replaced by the current time step written.</b>
+</p><p>If you have generated a set of images by not "joining" (aggregating) the data, you can convert the obtained pictures into an animated gif using ImageMagick and the following command:
+</p>
+<pre>convert -delay 20 *.png -loop 0 animation.gif
+</pre>
+<p>(loop 0 means that the animation repeats from begin after the end)
+</p><p>You can format the axes by using <span style="color: #111144; font-weight: bold; white-space: pre;">--xticks <i>&lt;XMIN,XMAX,XSTEP,FONTSIZE&gt;</i></span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--yticks <i>&lt;YMIN,YMAX,YSTEP,FONTSIZE&gt;</i></span> and set theit limits using <span style="color: #111144; font-weight: bold; white-space: pre;">--xlim <i>&lt;XMIN,XMAX&gt;</i></span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--ylim <i>&lt;YMIN,YMAX&gt;</i></span>. The output size of the image may be set using <span style="color: #111144; font-weight: bold; white-space: pre;">--size <i>&lt;WIDTH,HEIGHT&gt;</i></span>.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 271/1000000
+Post-expand include size: 5832/2097152 bytes
+Template argument size: 1538/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:34-0!1!0!!en!2!edit=0 and timestamp 20120718063354 -->
+</div><hr/><div id="lastmod">This page was last modified on 12 September 2011, at 06:47.</div>

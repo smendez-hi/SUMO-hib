@@ -1,0 +1,53 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Tools/Shapes</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="pois2inductionLoops.py" id="pois2inductionLoops.py"></a><h1> <span class="mw-headline"> pois2inductionLoops.py </span></h1>
+<p>Converts a PoIs within a given PoI-file which are located on lanes into induction loop detectors. Each PoI is replicated to cover all lanes of the road. The detectors are named "&lt;POINAME&gt;__l&lt;LANE_INDEX&gt;".
+</p>
+<pre>pois2inductionLoops.py &lt;NET&gt; &lt;POIS&gt; &lt;OUTPUT&gt;
+</pre>
+<ul><li> &lt;NET&gt;: The net to use for retrieving lane numbers
+</li><li> &lt;POIS&gt;: The file containing the PoIs
+</li><li> &lt;OUTPUT&gt;: The file to write the detectors into
+</li></ul>
+<p>The tool uses the &lt;SUMO&gt;/tools/lib/sumopoi.py library.
+</p>
+<a name="poi_alongRoads.py" id="poi_alongRoads.py"></a><h1> <span class="mw-headline"> poi_alongRoads.py </span></h1>
+<p>Spatial distribute of POIs along given edges on a given network. 
+</p><p>So far POIs are situated in the middle on all edges without regard to the type of the edge (street, junction). Edges may be given in arbitrary order, connected edges are found automatically.  Therefore: crossing chains of connected edges are not allowed -&gt; this needs two different runs of this script. Output is written in file 'pois.add.xml'
+</p>
+<pre>poi_alongRoads.py &lt;NET&gt; &lt;EDGE_ID&gt;[,&lt;EDGE_ID&gt;]* &lt;DISTANCE&gt;
+</pre>
+<ul><li> &lt;NET&gt;: The net to use for retrieving the geometry
+</li><li> &lt;EDGE_ID&gt;[,&lt;EDGE_ID&gt;]*: The edges to go along
+</li><li> &lt;DISTANCE&gt;: Distance between PoIs
+</li></ul>
+<p>Edges are separated with comma and without spaces in between. The distance between POIs may be any positive real number
+PoIs are stored with type="default", color="1,0,0", and layer="0".
+</p><p>The tool uses the &lt;SUMO&gt;/tools/lib/sumonet.py library.
+</p>
+<a name="poi_atTLS.py" id="poi_atTLS.py"></a><h1> <span class="mw-headline"> poi_atTLS.py </span></h1>
+<p>Spatial distribute of POIs along given edges on a given network. 
+</p><p>Generates a PoI-file containing a PoI for each tls controlled intersection from the given net.
+</p>
+<pre>poi_atTLS.py &lt;NET&gt; [nojoin]
+</pre>
+<ul><li> &lt;NET&gt;: The net to read traffic light (tls) positions from
+</li><li> [nojoin]: If "nojoin" is given, PoIs will be built on all nodes covered by traffic lights, otherwise, if a traffic light spans over multiple intersections, only one PoI will be built for this traffic lights, at the center of all intersections controlled by this traffic light
+</li></ul>
+<p>PoIs are stored with type="default", color="1,0,0", and layer="0".
+</p><p>The tool uses the &lt;SUMO&gt;/tools/lib/sumonet.py library.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 4/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:323-0!1!0!!en!2!edit=0 and timestamp 20120718063350 -->
+</div><hr/><div id="lastmod">This page was last modified on 12 September 2011, at 06:43.</div>

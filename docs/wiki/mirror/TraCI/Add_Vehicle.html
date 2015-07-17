@@ -1,0 +1,59 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Add Vehicle</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Command_0x74:_Add_Vehicle" id="Command_0x74:_Add_Vehicle"></a><h2> <span class="mw-headline"> Command 0x74: Add Vehicle </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> string
+</td><td align="center"> string
+</td><td align="center"> string
+</td><td align="center"> string
+</td><td align="center"> double
+</td><td align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> vehicle ID
+</th><th style="border: 1pt solid;"> vehicle type ID
+</th><th style="border: 1pt solid;"> route ID
+</th><th style="border: 1pt solid;"> lane ID
+</th><th style="border: 1pt solid;"> insertion position
+</th><th style="border: 1pt solid;"> insertion speed
+</th></tr></table>
+<p>This command adds a new vehicle to the simulation.
+</p>
+<a name="Parameters" id="Parameters"></a><h3> <span class="mw-headline"> Parameters </span></h3>
+<ol><li> vehicle ID
+<ul><li> identifier to assign to the newly created vehicle (must be unique)
+</li></ul>
+</li><li> vehicle type ID
+<ul><li> identifier of pre-registered vehicle type to use
+</li></ul>
+</li><li> route ID
+<ul><li> identifier of pre-registered route the vehicle should follow
+</li></ul>
+</li><li> lane ID
+<ul><li> identifier of lane the vehicle should start on, or an empty string. If an empty string is passed, the first lane of the route's first edge is used. Note that the lane ID, if given, must be on the first edge of the vehicle's route.
+</li></ul>
+</li><li> insertion position
+<ul><li> offset in meters from the start of the lane where the vehicle should be added
+</li></ul>
+</li><li> insertion speed
+<ul><li> maximum initial velocity of the vehicle, or -1. If a negative insertion speed is passed, the vehicle will depart at maximum speed.
+</li></ul>
+</li></ol>
+<a name="Return_value" id="Return_value"></a><h3> <span class="mw-headline"> Return value </span></h3>
+<p>As usual, successful execution of this command is indicated with a RTYPE_OK response. If, for any reason, the vehicle could not be added (most commonly, because the lane is blocked), RTYPE_ERR is returned instead.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 4/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:330-0!1!0!!en!2!edit=0 and timestamp 20120718063356 -->
+</div><hr/><div id="lastmod">This page was last modified on 13 July 2011, at 14:05.</div>

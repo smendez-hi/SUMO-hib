@@ -1,0 +1,204 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Simulation Value Retrieval</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Command_0xab:_Get_Simulation_Variable"><span class="tocnumber">1</span> <span class="toctext">Command 0xab: Get Simulation Variable</span></a></li>
+<li class="toclevel-1"><a href="#Response_0xbb:_Simulation_Variable"><span class="tocnumber">2</span> <span class="toctext">Response 0xbb: Simulation Variable</span></a></li>
+<li class="toclevel-1"><a href="#Extended_retrieval_messages"><span class="tocnumber">3</span> <span class="toctext">Extended retrieval messages</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Command_0x82:_Position_Conversion"><span class="tocnumber">3.1</span> <span class="toctext">Command 0x82: Position Conversion</span></a></li>
+<li class="toclevel-2"><a href="#Command_0x83:_Distance_Request"><span class="tocnumber">3.2</span> <span class="toctext">Command 0x83: Distance Request</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Command_0xab:_Get_Simulation_Variable" id="Command_0xab:_Get_Simulation_Variable"></a><h2> <span class="mw-headline"> Command 0xab: Get Simulation Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Simulation ID (always unused)
+</th></tr></table>
+<p>Asks for the value of a certain simulation variable
+</p><p>The following variable values can be retrieved, the type of the return value is also shown in the table.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Retrievable Simulation Variables</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> current simulation time (0x70)
+</td><td> int
+</td><td> Returns the current simulation time (in ms)
+</td></tr>
+<tr>
+<td> number of loaded vehicles (id 0x71)
+</td><td> int
+</td><td> The number of vehicles which were loaded in this time step.
+</td></tr>
+<tr>
+<td> ids of loaded vehicles (id 0x72)
+</td><td> stringList
+</td><td> A list of ids of vehicles which were loaded in this time step.
+</td></tr>
+<tr>
+<td> number of departed vehicles (id 0x73)
+</td><td> int
+</td><td> The number of vehicles which departed (were inserted into the road network) in this time step.
+</td></tr>
+<tr>
+<td> ids of departed vehicles (id 0x74)
+</td><td> stringList
+</td><td> A list of ids of vehicles which departed (were inserted into the road network) in this time step.
+</td></tr>
+<tr>
+<td> number of vehicles that start to teleport (id 0x75)
+</td><td> int
+</td><td> The number of vehicles which started to teleport in this time step.
+</td></tr>
+<tr>
+<td> ids of vehicles that start to teleport (id 0x76)
+</td><td> stringList
+</td><td> A list of ids of vehicles which started to teleport in this time step.
+</td></tr>
+<tr>
+<td> number of vehicles that end being teleported (id 0x77)
+</td><td> int
+</td><td> The number of vehicles which ended to be teleported in this time step.
+</td></tr>
+<tr>
+<td> ids of vehicles that end being teleported (id 0x78)
+</td><td> stringList
+</td><td> A list of ids of vehicles which ended to be teleported in this time step.
+</td></tr>
+<tr>
+<td> number of arrived vehicles (id 0x79)
+</td><td> int
+</td><td> The number of vehicles which arrived (have reached their destination and are removed from the road network) in this time step.
+</td></tr>
+<tr>
+<td> ids of arrived vehicles (id 0x7a)
+</td><td> stringList
+</td><td> A list of ids of vehicles which arrived (have reached their destination and are removed from the road network) in this time step.
+</td></tr>
+<tr>
+<td> network boundaries (id 0x7c)
+</td><td> boundary box
+</td><td> The boundary box of the simulation network.
+</td></tr>
+<tr>
+<td> minimum number of vehicles that are still expected to leave the net (id 0x7d)
+</td><td> int
+</td><td> The number of vehicles which are in the net plus the ones still waiting to start. This number may be smaller than the actual number of vehicles still to come because of delayed route file parsing.
+</td></tr>
+</table>
+<a name="Response_0xbb:_Simulation_Variable" id="Response_0xbb:_Simulation_Variable"></a><h2> <span class="mw-headline"> Response 0xbb: Simulation Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td width="75" align="center"> &lt;return_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> &lt;invalid&gt;
+</th><th style="border: 1pt solid;"> Return type of the variable
+</th><th style="border: 1pt solid;"> &lt;VARIABLE_VALUE&gt;
+</th></tr></table>
+<p>The respond to a <b>"Command Get Simulation Variable"</b>.
+</p>
+<a name="Extended_retrieval_messages" id="Extended_retrieval_messages"></a><h2> <span class="mw-headline"> Extended retrieval messages </span></h2>
+<p>Some further messages require additional parameters.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Extended Variables Retrieval</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> Request ValueType
+</th><th> Response ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> position conversion (0x58)
+</td><td> compound, see below
+</td><td> Position, as wished
+</td><td> Reads a position information and returns it converted into the given representation.
+</td></tr>
+<tr>
+<td> distance request (0x59)
+</td><td> compound, see below
+</td><td> double
+</td><td> Returns two positions and an indicator whether the air or the driving distance shall be computed. Returns the according distance.
+</td></tr>
+</table>
+<a name="Command_0x82:_Position_Conversion" id="Command_0x82:_Position_Conversion"></a><h3> <span class="mw-headline"> Command 0x82: Position Conversion </span></h3>
+<p>The request needs the following parameter:
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> integer
+</td><td align="center"> <i>Position</i>
+</td><td align="center"> byte
+</td><td align="center"> ubyte
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> item number (always 2)
+</th><th style="border: 1pt solid;"> position to convert
+</th><th style="border: 1pt solid;"> value type <i>ubyte</i>
+</th><th style="border: 1pt solid;"> Type of the<br />Position to return
+</th></tr></table>
+<p>Use this command to convert between the different position types used by TraCI. The specified <i>Position</i> is converted into the requested format given through <i>PositionId</i>. The result is the closest position that was found to match the given one. The return values consists of the converted value only.
+</p><p>See <a href="../TraCI/Protocol.html#Position_Representations" title="TraCI/Protocol">TraCI/Protocol#Position Representations</a> for available position formats.
+</p>
+<a name="Command_0x83:_Distance_Request" id="Command_0x83:_Distance_Request"></a><h3> <span class="mw-headline"> Command 0x83: Distance Request </span></h3>
+<p>The request needs the following parameter:
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> integer
+</td><td align="center"> <i>Position</i>
+</td><td align="center"> <i>Position</i>
+</td><td align="center"> byte
+</td><td align="center"> ubyte
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> item number (always 3)
+</th><th style="border: 1pt solid;"> start position
+</th><th style="border: 1pt solid;"> end position
+</th><th style="border: 1pt solid;"> value type <i>ubyte</i>
+</th><th style="border: 1pt solid;"> Distance Type
+</th></tr></table>
+<p>where
+</p>
+<dl><dd>Distance Type==0: air distance
+</dd><dd>Distance Type==1: driving distance
+</dd></dl>
+<p>The resulting distance is returned.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 6/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:320-0!1!0!!en!2!edit=0 and timestamp 20120718063412 -->
+</div><hr/><div id="lastmod">This page was last modified on 30 May 2012, at 11:22.</div>

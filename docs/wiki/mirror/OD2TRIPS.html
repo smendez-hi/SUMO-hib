@@ -1,0 +1,261 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">OD2TRIPS</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#From_30.000_feet"><span class="tocnumber">1</span> <span class="toctext">From 30.000 feet</span></a></li>
+<li class="toclevel-1"><a href="#Usage_Description"><span class="tocnumber">2</span> <span class="toctext">Usage Description</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Options"><span class="tocnumber">2.1</span> <span class="toctext">Options</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Configuration"><span class="tocnumber">2.1.1</span> <span class="toctext">Configuration</span></a></li>
+<li class="toclevel-3"><a href="#Input"><span class="tocnumber">2.1.2</span> <span class="toctext">Input</span></a></li>
+<li class="toclevel-3"><a href="#Output"><span class="tocnumber">2.1.3</span> <span class="toctext">Output</span></a></li>
+<li class="toclevel-3"><a href="#Time"><span class="tocnumber">2.1.4</span> <span class="toctext">Time</span></a></li>
+<li class="toclevel-3"><a href="#Processing"><span class="tocnumber">2.1.5</span> <span class="toctext">Processing</span></a></li>
+<li class="toclevel-3"><a href="#Defaults"><span class="tocnumber">2.1.6</span> <span class="toctext">Defaults</span></a></li>
+<li class="toclevel-3"><a href="#Report"><span class="tocnumber">2.1.7</span> <span class="toctext">Report</span></a></li>
+<li class="toclevel-3"><a href="#Random_Number"><span class="tocnumber">2.1.8</span> <span class="toctext">Random Number</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="From_30.000_feet" id="From_30.000_feet"></a><h1> <span class="mw-headline"> From 30.000 feet </span></h1>
+<p><b>OD2TRIPS</b> imports O/D-matrices and splits them into single vehicle trips.
+</p>
+<dl><dd><b>Purpose:</b> Conversion of O/D-matrices to single vehicle trips
+</dd><dd><b>System:</b> portable (Linux/Windows is tested); runs on command line
+</dd><dd><b>Input (mandatory):</b>
+<dl><dd>A) O/D-Matrix
+</dd><dd>B) a set of districts
+</dd></dl>
+</dd><dd><b>Output:</b> A list of vehicle trip definitions
+</dd><dd><b>Programming Language:</b> c++
+</dd></dl>
+<a name="Usage_Description" id="Usage_Description"></a><h1> <span class="mw-headline">Usage Description</span></h1>
+<a name="Options" id="Options"></a><h2> <span class="mw-headline">Options</span></h2>
+<p>You may use a XML schema definition file for setting up a OD2TRIPS configuration: <a href="http://sumo.sf.net/doc/current/docs/xsd/od2tripsConfiguration.xsd" class="external autonumber" title="http://sumo.sf.net/doc/current/docs/xsd/od2tripsConfiguration.xsd" rel="nofollow">[1]</a>.
+</p>
+<a name="Configuration" id="Configuration"></a><h3> <span class="mw-headline">Configuration</span></h3>
+<p>All applications of the <b>SUMO</b>-suite handle configuration options the same way. These options are discussed at <a href="Basics/Using_the_Command_Line_Applications.html#Configuration_Files" title="Basics/Using the Command Line Applications">Basics/Using the Command Line Applications#Configuration Files</a>.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-c <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--configuration-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Loads the named config on startup
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-configuration <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves current configuration into FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-template <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves a configuration template (empty) into FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-schema <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves the configuration schema into FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-commented</span>
+</td><td valign="top"> Adds comments to saved template, configuration, or schema; <i>default: <b>false</b></i>
+</td></tr>
+</table>
+<a name="Input" id="Input"></a><h3> <span class="mw-headline">Input</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-n <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--net-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Loads network (districts) from FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-d <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--od-matrix-files <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Loads O/D-files from FILE(s)
+</td></tr>
+</table>
+<a name="Output" id="Output"></a><h3> <span class="mw-headline">Output</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-o <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--output-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Writes trip definitions into FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--ignore-vehicle-type</span>
+</td><td valign="top"> Does not save vtype information; <i>default: <b>false</b></i>
+</td></tr>
+</table>
+<a name="Time" id="Time"></a><h3> <span class="mw-headline">Time</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-b <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;TIME&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--begin <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;TIME&gt;</i></a></span>
+</td><td valign="top"> Defines the begin time; Previous trips will be discarded; <i>default: <b>0</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-e <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;TIME&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--end <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;TIME&gt;</i></a></span>
+</td><td valign="top"> Defines the end time; Later trips will be discarded; Defaults to the maximum time that SUMO can represent; <i>default: <b>2147483</b></i>
+</td></tr>
+</table>
+<a name="Processing" id="Processing"></a><h3> <span class="mw-headline">Processing</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-s <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--scale <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span>
+</td><td valign="top"> Scales the loaded flows by FLOAT; <i>default: <b>1</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--spread.uniform</span>
+</td><td valign="top"> Spreads trips uniformly over each time period; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--vtype <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Defines the name of the vehicle type to use
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--prefix <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Defines the prefix for vehicle names
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--timeline <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Uses STR as a timeline definition
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--timeline.day-in-hours</span>
+</td><td valign="top"> Uses STR as a 24h-timeline definition; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--dismiss-loading-errors</span>
+</td><td valign="top"> Continue on broken input; <i>default: <b>false</b></i>
+</td></tr>
+</table>
+<a name="Defaults" id="Defaults"></a><h3> <span class="mw-headline">Defaults</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--departlane <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Assigns a default depart lane; <i>default: <b>free</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--departpos <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Assigns a default depart position
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--departspeed <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Assigns a default depart speed; <i>default: <b>max</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--arrivallane <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Assigns a default arrival lane
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--arrivalpos <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Assigns a default arrival position
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--arrivalspeed <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span>
+</td><td valign="top"> Assigns a default arrival speed
+</td></tr>
+</table>
+<a name="Report" id="Report"></a><h3> <span class="mw-headline">Report</span></h3>
+<p>All applications of the <b>SUMO</b>-suite handle most of the reporting options the same way. These options are discussed at <a href="Basics/Using_the_Command_Line_Applications.html#Reporting_Options" title="Basics/Using the Command Line Applications">Basics/Using the Command Line Applications#Reporting Options</a>.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-v</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--verbose</span>
+</td><td valign="top"> Switches to verbose output; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-p</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--print-options</span>
+</td><td valign="top"> Prints option values before processing; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-?</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--help</span>
+</td><td valign="top"> Prints this screen; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-V</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--version</span>
+</td><td valign="top"> Prints the current version; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-W</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--no-warnings</span>
+</td><td valign="top"> Disables output of warnings; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-l <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--log <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Writes all messages to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--message-log <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Writes all non-error messages to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--error-log <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Writes all warnings and errors to FILE
+</td></tr>
+</table>
+<a name="Random_Number" id="Random_Number"></a><h3> <span class="mw-headline">Random Number</span></h3>
+<p>All applications of the <b>SUMO</b>-suite handle randomisation options the same way. These options are discussed at <a href="Basics/Using_the_Command_Line_Applications.html#Random_Number_Options" title="Basics/Using the Command Line Applications">Basics/Using the Command Line Applications#Random Number Options</a>.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--random</span>
+</td><td valign="top"> Initialises the random number generator with the current system time; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--seed <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>
+</td><td valign="top"> Initialises the random number generator with the given value; <i>default: <b>23423</b></i>
+</td></tr>
+</table>
+<hr />
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 283/1000000
+Post-expand include size: 7219/2097152 bytes
+Template argument size: 2110/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:80-0!1!0!!en!2!edit=0 and timestamp 20120718063244 -->
+</div><hr/><div id="lastmod">This page was last modified on 2 March 2012, at 13:38.</div>

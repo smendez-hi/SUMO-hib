@@ -1,0 +1,101 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Z/Changes from Version 0.9.10 to Version 0.10.0</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<ul><li> Build
+<ul><li> removed obsolete configuration option <b>--enable-speedcheck</b>
+</li></ul>
+</li></ul>
+<ul><li> All
+<ul><li> using a reduced, faster XML parser (not validating) 
+</li><li> default vehicle length is set to 7.5m (including gap)
+</li><li> route format changed ("edges" attribute)
+</li><li> (junction) internal lanes are the default now
+</li><li> copyright changed (removed obsolete ZAIK reference)
+</li></ul>
+</li></ul>
+<ul><li> GUISIM
+<ul><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2163422&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2163422&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2163422: Simulation does not start automatically</a>
+</li><li> refactored the visualization speed-up; instead of using a self-made hack that uses a grid, an rtree structure is now used. This should solve problems with disappearing edges and nodes and with a slow selection
+</li><li> Added the possibility to save and load decals (int an XML-file)
+</li><li> View settings are now saved loaded using XML
+</li><li> implemented <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1906106&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1906106&amp;group_id=45607&amp;atid=443424" rel="nofollow">feature 1906106: make lines of bus stops always visible</a>
+</li><li> implemented <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2103556&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2103556&amp;group_id=45607&amp;atid=443424" rel="nofollow">feature 2103556: Remove "Add Successors To Selected"</a>
+</li></ul>
+</li></ul>
+<ul><li> Simulation
+<ul><li> Refactored mean data; instead of having it as an additional item that has to be touched by vehicles, it is a MSMoveReminder
+</li><li> changed the definition of triggers; the old definition is still possible, but prints a warning.
+<ul><li> &lt;trigger objecttype="lane" attr="speed" objectid="&lt;LANE&gt;[;&lt;LANE&gt;]*" ...  --&gt;  &lt;variableSpeedSign lanes="&lt;LANE&gt;[;&lt;LANE&gt;]*" ...
+</li><li> &lt;trigger objecttype="rerouter" objectid="&lt;EDGE&gt;[;&lt;EDGE&gt;]*" ...  --&gt;  &lt;rerouter edges="&lt;EDGE&gt;[;&lt;EDGE&gt;]*" ...
+</li><li> &lt;trigger objecttype="emitter" objectid="&lt;LANE&gt;" ...  --&gt;  &lt;emitter lane="&lt;LANE&gt;" ...
+</li><li> &lt;trigger objecttype="bus_stop" objectid="&lt;LANE&gt;" ...  --&gt;  &lt;busStop lane="&lt;LANE&gt;" ...
+</li></ul>
+</li><li> new "route probe" output added
+</li><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2350888&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2350888&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2350888: vehicle on false lane with cyclic routes</a> (thanks to Daniel Janusz for supplying the example)
+</li><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2082959&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2082959&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2082959: bus stops that end at edge end confuse vehicles</a> (thanks to Gerrit Lammert for supplying the example)
+</li><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2468327&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2468327&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2468327: log files together with input errors let sumo crash</a>
+</li><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2227272&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2227272&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2227272: Random routes do not work with simple net</a>
+</li><li> distributions for routes and vehicle types
+</li><li> changed format of dump definitions from command line to xml configuration
+</li></ul>
+</li></ul>
+<ul><li> NETCONVERT
+<ul><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2137657&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2137657&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2137657: edges disappear in combination with --keep-edges</a>
+</li><li> changed APIs for setting lane-2-lane connections
+</li><li> work on Vissim-import
+</li><li> Now, the node positions are not added to an edge's geometry if one exists (if the edge has no explicite geometry, the node positions are still used). <b>--add-node-positions</b> was added, so that the old behaviour is still available
+</li><li> Changed features of <b>--plain-outoput</b>: plain-nodes now contain tls information, addtionally, plain-connections are written
+</li><li> changed computation whether a link is a left-mover
+</li><li> changed traffic lights computation
+</li><li> removed unneeded option <b>--all-logics</b>
+</li><li> removed "FileErrorReporter" usage
+</li><li> too complicated junctions (#links&gt;64) are catched and set to unregulated
+</li><li> corrected computation of right-of-way rules
+</li><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2392943&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2392943&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2392943: netconvert fails when removing edges and guessing ramps</a>
+</li><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2171355&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2171355&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2171355: turnarounds even with --no-turnarounds</a>
+</li><li> building turnarounds may be now skipped for tls-controlled edges (using <b>--no-tls-turnarounds</b>)
+</li></ul>
+</li></ul>
+<ul><li> NETGEN
+<ul><li> removed unneeded option <b>--all-logics</b>
+</li></ul>
+</li></ul>
+<ul><li> Router
+<ul><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2149069&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2149069&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2149069: DFROUTER does not work with internal lanes</a>
+</li></ul>
+</li></ul>
+<ul><li> DFROUTER
+<ul><li> removed support for elmar's detector descriptions
+</li><li> removed <b>--fast-flows</b> option
+</li><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2165708&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2165708&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2165708: False speed conversion in DFROUTER?</a>
+</li><li> named classes properly
+</li><li> applied changes to trigger definitions (see "Simulation")
+</li><li> solved <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2165666&amp;group_id=45607&amp;atid=443424" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2165666&amp;group_id=45607&amp;atid=443424" rel="nofollow">bug 2165666: DFROUTER does not regard <i>--all-end-follower"</i></a>
+</li></ul>
+</li></ul>
+<ul><li> POLYCONVERT
+<ul><li> refactoring
+</li><li> in-line documentation added
+</li><li> added OSM-import functionality
+</li><li> added shape-file - import functionality (imports points, line strings, polygons, and their multi-pendants)
+<ul><li> import is done via <b>--shape-files</b>
+</li><li> the id-field is given via <b>--shape-file.id-name <i>&lt;NAME&gt;</i></b>
+</li><li> optional projection guess is done via <b>--arcview.guess-projection</b>
+</li></ul>
+</li><li> renamed <b>--visum-file</b> to <b>--visum-files</b>; debugged
+</li></ul>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 1/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:285-0!1!0!!en!2!edit=0 and timestamp 20120718063437 -->
+</div><hr/><div id="lastmod">This page was last modified on 23 September 2011, at 07:36.</div>

@@ -1,0 +1,42 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Demand/Dynamic User Assignment</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>The tool <i> </i><b>&lt;SUMO_HOME&gt;</b><i>/tools/assign/duaIterate.py </i> can be used to compute the (approximate) dynamic user equilibrium.
+</p>
+<div style="background: #ffcc44; padding: .5em; border: 1px dashed #ff8800; margin-right:10px; margin-left:10px;"><b>Caution:</b><br />This script will require copious amounts of disk space</div>
+<pre>python duaIterate.py -n <i><b>&lt;network-file&gt;</b></i> -t <i><b>&lt;trip-file&gt;</b></i> -l <i><b>&lt;nr-of-iterations&gt;</b></i>
+</pre>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#General_behavior"><span class="tocnumber">1</span> <span class="toctext">General behavior</span></a></li>
+<li class="toclevel-1"><a href="#Logit"><span class="tocnumber">2</span> <span class="toctext">Logit</span></a></li>
+<li class="toclevel-1"><a href="#Gawron"><span class="tocnumber">3</span> <span class="toctext">Gawron</span></a></li>
+<li class="toclevel-1"><a href="#Parameters"><span class="tocnumber">4</span> <span class="toctext">Parameters</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="General_behavior" id="General_behavior"></a><h1> <span class="mw-headline"> General behavior </span></h1>
+<p>This script tries to calculate a user equilibrium, that is, it tries to find a route for each vehicle (each trip from the trip-file above) such that each vehicle cannot reduce its travel cost (usually the travel time) by using a different route. It does so iteratively (hence the name) by first routing the vehicles in a network with default edge costs (usually the travel time if driving with maximum speed) then simulating the calculated routes resulting in "real" edge costs which are fed back into the router for calculating new routes and so forth. The number of iterations is fixed by a parameter see above. In order to ensure convergence there are different methods employed to calculate the route choice probability from the route cost (so the vehicle does not always choose the "cheapest" route). In general, new routes will be added by the router to the route set of each vehicle in each iteration (at least if none of the present routes is the "cheapest") and may be chosen according to the route choice mechanisms described below.
+</p><p>The two methods which are implemented are called Gawron (reference needed!!!) and Logit (reference needed!!!) in the following. The input for each of the methods is a weight or cost function <span class="texhtml"><i>w</i></span> on the edges of the net, coming from the simulation or default costs (in the first step or for edges which have not been traveled yet), and a set of routes <span class="texhtml"><i>R</i></span> where each route <span class="texhtml"><i>r</i></span> has an old cost <span class="texhtml"><i>c</i><sub><i>r</i></sub></span> and an old probability <span class="texhtml"><i>p</i><sub><i>r</i></sub></span> (from the last iteration) and needs a new cost <span class="texhtml"><i>c</i><sub><i>r</i></sub>'</span> and a new probability <span class="texhtml"><i>p</i><sub><i>r</i></sub>'</span>.
+</p>
+<a name="Logit" id="Logit"></a><h1> <span class="mw-headline"> Logit </span></h1>
+<p>The Logit mechanism applies a fixed formula to each route to calculate the new probability. It ignores old costs and old probabilities and takes the route cost directly as the sum of the edge costs from the last simulation.
+</p><p><img class="tex" alt="c_r&#39; = \sum_{e\in r}w(e)" src="../images//7ae9545228e01ad528baabeac052ebf6.png" />
+</p><p>The probabilities are calculated from an exponential function with parameter <span class="texhtml">&theta;</span> scaled by the sum over all route values:
+</p><p><img class="tex" alt="p_r&#39; = \frac{\exp(\theta c_r&#39;)}{\sum_{s\in R}\exp(\theta c_s&#39;)}" src="../images//e608182f575297573133d9a7c92f4950.png" />
+</p>
+<a name="Gawron" id="Gawron"></a><h1> <span class="mw-headline"> Gawron </span></h1>
+<a name="Parameters" id="Parameters"></a><h1> <span class="mw-headline"> Parameters </span></h1>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 42/1000000
+Post-expand include size: 214/2097152 bytes
+Template argument size: 54/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:352-0!1!0!!en!2!edit=0 and timestamp 20120718063144 -->
+</div><hr/><div id="lastmod">This page was last modified on 24 February 2012, at 14:12.</div>

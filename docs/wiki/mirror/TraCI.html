@@ -1,0 +1,118 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction_to_TraCI"><span class="tocnumber">1</span> <span class="toctext">Introduction to TraCI</span></a></li>
+<li class="toclevel-1"><a href="#Using_TraCI"><span class="tocnumber">2</span> <span class="toctext">Using TraCI</span></a>
+<ul>
+<li class="toclevel-2"><a href="#SUMO_startup"><span class="tocnumber">2.1</span> <span class="toctext">SUMO startup</span></a></li>
+<li class="toclevel-2"><a href="#Protocol_specification"><span class="tocnumber">2.2</span> <span class="toctext">Protocol specification</span></a></li>
+<li class="toclevel-2"><a href="#TraCI_Commands"><span class="tocnumber">2.3</span> <span class="toctext">TraCI Commands</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Example_use"><span class="tocnumber">3</span> <span class="toctext">Example use</span></a></li>
+<li class="toclevel-1"><a href="#Resources"><span class="tocnumber">4</span> <span class="toctext">Resources</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Interfaces_by_Programming_Language"><span class="tocnumber">4.1</span> <span class="toctext">Interfaces by Programming Language</span></a></li>
+<li class="toclevel-2"><a href="#V2X_simulation"><span class="tocnumber">4.2</span> <span class="toctext">V2X simulation</span></a></li>
+<li class="toclevel-2"><a href="#Other_Resources"><span class="tocnumber">4.3</span> <span class="toctext">Other Resources</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#References"><span class="tocnumber">5</span> <span class="toctext">References</span></a></li>
+<li class="toclevel-1"><a href="#Troubleshooting"><span class="tocnumber">6</span> <span class="toctext">Troubleshooting</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Output_files_are_not_closed."><span class="tocnumber">6.1</span> <span class="toctext">Output files are not closed.</span></a></li>
+<li class="toclevel-2"><a href="#Obsolete_APIs"><span class="tocnumber">6.2</span> <span class="toctext">Obsolete APIs</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction_to_TraCI" id="Introduction_to_TraCI"></a><h2> <span class="mw-headline"> Introduction to TraCI </span></h2>
+<p>TraCI is the short term for "<b>Tra</b>ffic <b>C</b>ontrol <b>I</b>nterface". Giving the access to a running road traffic simulation, it allows to retrieve values of simulated objects and to manipulate their behaviour "on-line".
+</p>
+<a name="Using_TraCI" id="Using_TraCI"></a><h2> <span class="mw-headline"> Using TraCI </span></h2>
+<a name="SUMO_startup" id="SUMO_startup"></a><h3> <span class="mw-headline"> SUMO startup </span></h3>
+<p>TraCI uses a TCP based client/server architecture to provide access to <a href="SUMO.html" title="SUMO">SUMO</a>. Thereby, <a href="SUMO.html" title="SUMO">SUMO</a> acts as server that is started with additional command-line options: <span style="color: #111144; font-weight: bold; white-space: pre;">--remote-port <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span> where <span style="color: #111144; font-weight: bold; white-space: pre;"><a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span> is the port <a href="SUMO.html" title="SUMO">SUMO</a> will listen on for incoming connections.
+</p><p>When started with the <span style="color: #111144; font-weight: bold; white-space: pre;">--remote-port <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span> option, <a href="SUMO.html" title="SUMO">SUMO</a> only prepares the simulation and waits for an external application, that takes over the control. 
+Please note, that the <span style="color: #111144; font-weight: bold; white-space: pre;">--end <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;TIME&gt;</i></a></span> option is ignored when <a href="SUMO.html" title="SUMO">SUMO</a> runs as a TraCI server, <a href="SUMO.html" title="SUMO">SUMO</a> runs until the client demands a simulation end.
+</p>
+<a name="Protocol_specification" id="Protocol_specification"></a><h3> <span class="mw-headline"> Protocol specification </span></h3>
+<p>Please see the <a href="TraCI/Protocol.html" title="TraCI/Protocol">TraCI Protocol Specification</a> (including <a href="TraCI/Protocol.html#Basic_Flow" title="TraCI/Protocol">Basic Flow</a>, <a href="TraCI/Protocol.html#Messages" title="TraCI/Protocol">Messages</a>, <a href="TraCI/Protocol.html#Data_types" title="TraCI/Protocol">Data Types</a>).
+</p>
+<a name="TraCI_Commands" id="TraCI_Commands"></a><h3> <span class="mw-headline"> TraCI Commands </span></h3>
+<ul><li> <a href="TraCI/Control-related_commands.html" title="TraCI/Control-related commands">Control-related commands</a>: perform a simulation step, close the connection
+</li></ul>
+<p>For the following APIs, the ID is equal to the ID defined in <a href="SUMO.html" title="SUMO">SUMO</a>'s input files. Here, you find their <a href="TraCI/Plane_SUMO_ID_Commands_Structure.html" title="TraCI/Plane SUMO ID Commands Structure">general structure</a>.
+</p>
+<ul><li> Value Retrieval
+<ul><li> <a href="TraCI/Induction_Loop_Value_Retrieval.html" title="TraCI/Induction Loop Value Retrieval">Induction Loop Value Retrieval</a> retrieve information about induction loops
+</li><li> <a href="TraCI/Multi-Entry/Multi-Exit_Detectors_Value_Retrieval.html" title="TraCI/Multi-Entry/Multi-Exit Detectors Value Retrieval">Multi-Entry/Multi-Exit Detectors Value Retrieval</a> retrieve information about multi-entry/multi-exit detectors
+</li><li> <a href="TraCI/Traffic_Lights_Value_Retrieval.html" title="TraCI/Traffic Lights Value Retrieval">Traffic Lights Value Retrieval</a> retrieve information about traffic lights
+</li><li> <a href="TraCI/Lane_Value_Retrieval.html" title="TraCI/Lane Value Retrieval">Lane Value Retrieval</a> retrieve information about lanes
+</li><li> <a href="TraCI/Vehicle_Value_Retrieval.html" title="TraCI/Vehicle Value Retrieval">Vehicle Value Retrieval</a> retrieve information about vehicles
+</li><li> <a href="TraCI/VehicleType_Value_Retrieval.html" title="TraCI/VehicleType Value Retrieval">Vehicle Type Value Retrieval</a> retrieve information about vehicle types
+</li><li> <a href="TraCI/Route_Value_Retrieval.html" title="TraCI/Route Value Retrieval">Route Value Retrieval</a> retrieve information about routes
+</li><li> <a href="TraCI/POI_Value_Retrieval.html" title="TraCI/POI Value Retrieval">PoI Value Retrieval</a> retrieve information about points-of-interest
+</li><li> <a href="TraCI/Polygon_Value_Retrieval.html" title="TraCI/Polygon Value Retrieval">Polygon Value Retrieval</a> retrieve information about polygons
+</li><li> <a href="TraCI/Junction_Value_Retrieval.html" title="TraCI/Junction Value Retrieval">Junction Value Retrieval</a> retrieve information about junctions
+</li><li> <a href="TraCI/Edge_Value_Retrieval.html" title="TraCI/Edge Value Retrieval">Edge Value Retrieval</a> retrieve information about edges
+</li><li> <a href="TraCI/Simulation_Value_Retrieval.html" title="TraCI/Simulation Value Retrieval">Simulation Value Retrieval</a> retrieve information about the simulation
+</li><li> <a href="TraCI/GUI_Value_Retrieval.html" title="TraCI/GUI Value Retrieval">GUI Value Retrieval</a> retrieve information about the simulation visualization
+</li></ul>
+</li><li> State Changing
+<ul><li> <a href="TraCI/Change_Lane_State.html" title="TraCI/Change Lane State">Change Lane State</a> change a lane's state
+</li><li> <a href="TraCI/Change_Traffic_Lights_State.html" title="TraCI/Change Traffic Lights State">Change Traffic Lights State</a> change a traffic lights' state
+</li><li> <a href="TraCI/Change_Vehicle_State.html" title="TraCI/Change Vehicle State">Change Vehicle State</a> change a vehicle's state
+</li><li> <a href="TraCI/Change_PoI_State.html" title="TraCI/Change PoI State">Change PoI State</a> change a point-of-interest's state (or add/remove one)
+</li><li> <a href="TraCI/Change_Polygon_State.html" title="TraCI/Change Polygon State">Change Polygon State</a> change a polygon's state (or add/remove one)
+</li><li> <a href="TraCI/Change_Edge_State.html" title="TraCI/Change Edge State">Change Edge State</a> change an edge's state
+</li><li> <a href="TraCI/Change_GUI_State.html" title="TraCI/Change GUI State">Change GUI State</a> change the simulation visualization
+</li></ul>
+</li><li> <a href="TraCI/Value_Retrieval_Subscription.html" title="TraCI/Value Retrieval Subscription">TraCI/Value Retrieval Subscription</a>
+</li></ul>
+<p><a href="TraCI/Vehicle_Signalling.html" title="TraCI/Vehicle Signalling">TraCI/Vehicle Signalling</a> explains which signals, etc. are modeled and can be retrieved.
+</p>
+<a name="Example_use" id="Example_use"></a><h2> <span class="mw-headline"> Example use </span></h2>
+<ul><li> There is a <a href="Tutorials/TraCI4Traffic_Lights.html" title="Tutorials/TraCI4Traffic Lights">tutorial on using TraCI for adaptive traffic lights</a> (using Python).
+</li><li> The <a href="Tutorials/CityMobil.html" title="Tutorials/CityMobil">Tutorials/CityMobil</a> tutorial uses TraCI for assigning new routes to vehicles (using Python).
+</li></ul>
+<a name="Resources" id="Resources"></a><h2> <span class="mw-headline"> Resources </span></h2>
+<a name="Interfaces_by_Programming_Language" id="Interfaces_by_Programming_Language"></a><h3> <span class="mw-headline">Interfaces by Programming Language</span></h3>
+<ul><li> Python: <a href="TraCI/Interfacing_TraCI_from_Python.html" title="TraCI/Interfacing TraCI from Python">the package tools/traci</a> allows to interact with <a href="SUMO.html" title="SUMO">SUMO</a> using Python
+</li><li> Java: <a href="http://sourceforge.net/projects/traci4j/" class="external text" title="http://sourceforge.net/projects/traci4j/" rel="nofollow">TraCI4J</a> is a Java API implementation; <a href="http://sourceforge.net/apps/mediawiki/traci4j/index.php?title=Main_Page" class="external text" title="http://sourceforge.net/apps/mediawiki/traci4j/index.php?title=Main_Page" rel="nofollow">documentation</a> is under work
+</li></ul>
+<a name="V2X_simulation" id="V2X_simulation"></a><h3> <span class="mw-headline">V2X simulation</span></h3>
+<p>TraCI allows to use <a href="SUMO.html" title="SUMO">SUMO</a> in combination with communication network simulators vor simulating <a href="Topics/V2X.html" title="Topics/V2X">vehicular communication</a>. See <a href="Topics/V2X.html" title="Topics/V2X">Topics/V2X</a> for a list of available solutions.
+</p>
+<a name="Other_Resources" id="Other_Resources"></a><h3> <span class="mw-headline">Other Resources</span></h3>
+<ul><li> <a href="SUMO.html" title="SUMO">SUMO</a>'s TraCI Server is a part of the plain distribution. The source code is located in the folder <code>src/traci-server</code>.
+</li></ul>
+<p><br />
+</p>
+<a name="References" id="References"></a><h2> <span class="mw-headline"> References </span></h2>
+<ul><li> Axel Wegener, Michal Piorkowski, Maxim Raya, Horst Hellbrück, Stefan Fischer and Jean-Pierre Hubaux. TraCI: A Framework for Coupling Road Traffic and Network Simulators. Proceedings of the <a href="http://www.scs.org/confernc/springsim/springsim08/cfp/cns08.htm" class="external text" title="http://www.scs.org/confernc/springsim/springsim08/cfp/cns08.htm" rel="nofollow">11th Communications and Networking Simulation Symposium</a>, April 2008. <a href="http://portal.acm.org/citation.cfm?id=1400740" class="external text" title="http://portal.acm.org/citation.cfm?id=1400740" rel="nofollow">Available at ACM Digital Library</a>
+</li><li> Axel Wegener, Horst Hellbrück, Christian Wewetzer and Andreas Lübke: VANET Simulation Environment with Feedback Loop and its Application to Traffic Light Assistance. Proceedings of the <a href="http://autonet2008.research.telcordia.com/" class="external text" title="http://autonet2008.research.telcordia.com/" rel="nofollow">3rd IEEE Workshop on Automotive Networking and Applications</a>, New Orleans, LA, USA, 2008. Soon available at IEEEXplore
+</li></ul>
+<a name="Troubleshooting" id="Troubleshooting"></a><h2> <span class="mw-headline"> Troubleshooting </span></h2>
+<a name="Output_files_are_not_closed." id="Output_files_are_not_closed."></a><h3> <span class="mw-headline"> Output files are not closed. </span></h3>
+<dl><dd>This problem occures if the client tries to access the output while the simulation is still closing down. This can be solved by letting the client wait for the simulation to shut down. The bug report was <a href="http://sourceforge.net/apps/trac/sumo/ticket/524" class="external text" title="http://sourceforge.net/apps/trac/sumo/ticket/524" rel="nofollow">ticket524</a>
+</dd></dl>
+<a name="Obsolete_APIs" id="Obsolete_APIs"></a><h3> <span class="mw-headline"> Obsolete APIs </span></h3>
+<dl><dd>There used to be two "generations" of <strong class="selflink">TraCI</strong> commands. The first one mainly uses an internal mapping between the string-typed IDs used in <a href="SUMO.html" title="SUMO">SUMO</a> and an external representation of these which is int-based. The mapping was done internally (within <strong class="selflink">TraCI</strong>).
+</dd><dd>The second "generation", the current one uses string-IDs equal to those <a href="SUMO.html" title="SUMO">SUMO</a> reads. If you are bound to the first generation API (for instance if you want to use TraNS) you can only use <a href="SUMO.html" title="SUMO">SUMO</a> up to version 0.12.3. See <a href="FAQ.html" title="FAQ">FAQ</a> about obtaining an old version.
+</dd></dl>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 41/1000000
+Post-expand include size: 740/2097152 bytes
+Template argument size: 239/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:38-0!1!0!!en!2!edit=0 and timestamp 20120717171312 -->
+</div><hr/><div id="lastmod">This page was last modified on 30 May 2012, at 12:41.</div>

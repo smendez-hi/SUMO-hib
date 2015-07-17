@@ -1,0 +1,63 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Tools/Net</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#createRoundaboutConnections.py"><span class="tocnumber">1</span> <span class="toctext">createRoundaboutConnections.py</span></a></li>
+<li class="toclevel-1"><a href="#netcheck.py"><span class="tocnumber">2</span> <span class="toctext">netcheck.py</span></a></li>
+<li class="toclevel-1"><a href="#netextract.py"><span class="tocnumber">3</span> <span class="toctext">netextract.py</span></a></li>
+<li class="toclevel-1"><a href="#xmledges_applyOffset.py_and_xmlnodes_applyOffset.py"><span class="tocnumber">4</span> <span class="toctext">xmledges_applyOffset.py and xmlnodes_applyOffset.py</span></a></li>
+<li class="toclevel-1"><a href="#xmlconnections_mapEdges.py"><span class="tocnumber">5</span> <span class="toctext">xmlconnections_mapEdges.py</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="createRoundaboutConnections.py" id="createRoundaboutConnections.py"></a><h1> <span class="mw-headline"> createRoundaboutConnections.py </span></h1>
+<p>This script generates additional connections for roundabouts from a given network. 
+The following connections are added: 
+</p>
+<ul><li> vehicles can stay inside of the roundabout on every lane.
+</li><li> vehicles can leave a roundabout even if they are driving on an inner lane if there are enough outgoing lanes.
+</li></ul>
+<a name="netcheck.py" id="netcheck.py"></a><h1> <span class="mw-headline"> netcheck.py </span></h1>
+<p>This tool checks the network (first parameter) for weak connectivity (whether there is a route from every node to every other node, regardless of edge direction) and prints the connected components if not. If the second parameter is a route file, it additionally checks whether the routes cover the net completely (every edge of the net occurs in at least one route).
+</p>
+<a name="netextract.py" id="netextract.py"></a><h1> <span class="mw-headline"> netextract.py </span></h1>
+<p>This tool extracts nodes and edges from a given network for their reuse in NETCONVERT.
+</p>
+<a name="xmledges_applyOffset.py_and_xmlnodes_applyOffset.py" id="xmledges_applyOffset.py_and_xmlnodes_applyOffset.py"></a><h1> <span class="mw-headline"> xmledges_applyOffset.py and xmlnodes_applyOffset.py </span></h1>
+<p>Both tools apply the given offset to the geometrical information of edges or nodes given in the input file. The results are written into &lt;XMLEDGES&gt;.mod.xml or &lt;XMLNODES&gt;.mod.xml, respectively.
+</p>
+<pre>xmledges_applyOffset.py &lt;XMLEDGES&gt; &lt;X-OFFSET&gt; &lt;Y-OFFSET&gt;
+xmlnodes_applyOffset.py &lt;XMLNODES&gt; &lt;X-OFFSET&gt; &lt;Y-OFFSET&gt;
+</pre>
+<ul><li> &lt;XMLEDGES&gt;/&lt;XMLNODES&gt;: The edges/nodes file which content shall be shited
+</li><li> &lt;X-OFFSET&gt;: The x-offset to apply
+</li><li> &lt;Y-OFFSET&gt;: The x-offset to apply
+</li></ul>
+<a name="xmlconnections_mapEdges.py" id="xmlconnections_mapEdges.py"></a><h1> <span class="mw-headline"> xmlconnections_mapEdges.py </span></h1>
+<p>Reads edge id replacements from "edgemap.txt"; the format of this file is
+</p>
+<pre>&lt;OLD_EDGE_ID&gt;-&gt;&lt;NEW_EDGE_ID&gt;
+</pre>
+<p>Reads the given connections file &lt;CONNECTIONS&gt; and replaces old edge names by new.
+The result is written to &lt;CONNECTIONS&gt;.mod.xml
+</p>
+<pre>xmlconnections_mapEdges.py &lt;CONNECTIONS&gt;
+</pre>
+<ul><li> &lt;OLD_EDGE_ID&gt;: Id of an edge as used within &lt;CONNECTIONS&gt;
+</li><li> &lt;NEW_EDGE_ID&gt;: Id of the edge as to use instead
+</li><li> &lt;CONNECTIONS&gt;: The connections file to change
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 6/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:12-0!1!0!!en!2!edit=0 and timestamp 20120718063348 -->
+</div><hr/><div id="lastmod">This page was last modified on 25 October 2011, at 12:38.</div>

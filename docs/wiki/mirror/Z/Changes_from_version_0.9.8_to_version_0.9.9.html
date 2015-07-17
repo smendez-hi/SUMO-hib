@@ -1,0 +1,104 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Z/Changes from version 0.9.8 to version 0.9.9</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Changes_from_version_0.9.7_to_version_0.9.8" id="Changes_from_version_0.9.7_to_version_0.9.8"></a><h1> <span class="mw-headline">Changes from version 0.9.7 to version 0.9.8</span></h1>
+<ul><li> All
+<ul><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1976405&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1976405&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1976405 Saving invalid dump configuration</a>; Was a false encoding in Option_IntVector
+</li><li> builds under 64bit Linux (solved bugs <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1927822&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1927822&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1927822</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1928370&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1928370&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1928370</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930444&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1930444&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1930444</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931468&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1931468&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1931468</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1932961&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1932961&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1932961</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1933569&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1933569&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1933569</a>, <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1934635&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1934635&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1934635</a>; thanks to Ronald Nippold for being persistent in supplying the build logs
+</li><li> encapsulated xerces-attributes; makes value retrieval so much more comfortable; retrieve a attribute using attrs.getTYPENAME(id) instead of getTYPENAME(attrs, id)
+</li></ul>
+</li></ul>
+<ul><li> Simulation
+<ul><li> Hidden state loading/saving completely from the microsim
+</li><li> Vehicle may now end their route at a certain position of the route's last edge (see <a href="../Specification.html" title="Specification">Specification</a>)
+</li><li> The route may be now given as an attribute (<i>route</i>) within the vehicle definition (see <a href="../Specification.html" title="Specification">Specification</a>)
+</li><li> The vehicle now stores most of its definition parameters in <i>myParameter</i>, not as atomar values
+</li><li> Solved problems with multiple stop on same edge and with stops on lanes which can not be used for continuing the route; thanks to Friedemann Wesner and Gerrit Lammert for reporting them
+</li><li> Reworked mean data output. The vehicle movements are now weighted by the time the vehicle was on an edge/lane. Additional constraints for output (<b>--exclude-empty-edges</b>/<b>--exclude-empty-lanes</b>) allow to dump only information about edges/lanes which were occupied by vehicles.
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1964433&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1964433&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1964433 different simulation results for different starting times</a>; The issue was a false computation of WAUT switching and TLS offset times when choosing a different simulation begin time than 0
+</li><li> replaced MSVehicle::getInTransit and MSVehicle::running by MSVehicle::isOnRoad
+</li><li> removed MSEdge::isSource; was used only once and can be easily replaced by comparing the result of MSEdge::getPurpose()
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1932105&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1932105&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1932105 second stop on the same edge confuses vehicles</a>
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1941846&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1941846&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1941846 repeatable crash with sumo r5378</a>
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1912547&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1912547&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1912547 linux 64 bit compile error for sumo svn 5143</a>
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1913655&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1913655&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1913655 command line sumo throws unknown exception</a>
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1924989&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1924989&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1924989 sumo r5186 crashs by pure virtual function call</a>
+</li><li> begun work on <a href="../Specification.html" title="Specification">Specification</a>
+<ul><li> all vehicles are emitted at position=0, with speed=0
+</li></ul>
+</li><li> removed usage of NLLoadFilter
+</li><li> added an option to quit the simulation if a number of vehicles is exceeded (<b>--too-many-vehicles &lt;INT&gt;</b>)
+</li><li> fully integrated Tino Morenz's MSVTypeProbe; moved it from microsim/trigger to microsim/output; tests added; a vtypeprobe is now defined within additional files this way: &lt;vtypeprobe id="test1" type="" freq="10" file="vtypeprobe.xml"/&gt; ("test1" is the vehicle type to report, leave empty in order to get information about all vehicles)
+</li><li> replaced usage of "Command" by encapsulating methods in "WrappingCommand" wherever possible
+</li><li> "debugged" usage of actuated/agentbased tls; should be covered by tests, in fact
+</li><li> further work on devices-consolidation
+</li><li> implemented a one-shot / multi-shot routing device
+</li></ul>
+</li></ul>
+<ul><li> GUISIM
+<ul><li> Removed opening an additional command line window from the release version
+</li><li> Title is now set properly
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021454&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021454&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 2021454 Discarding View settings resets them</a>; The editor now uses the settings that were used when it was opened as the one to apply when "cancel" is pressed
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021464&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2021464&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 2021464 view settings are not saved</a>; The button is now removed, all the interaction will be done via the top buttons
+</li><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2015792&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=2015792&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 2015792 Save List of selected Items</a>; The proper extension (mostly ".txt") is now appended if no extension is given. Affects saving breakpoints, additional weights, tracked parameter, and selections.
+</li><li> <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1919509&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1919509&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1919509 guisim crashed</a> is invalid, the issue was a buggy opengl driver
+</li></ul>
+</li></ul>
+<ul><li> NETCONVERT
+<ul><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1993928&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1993928&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1993928 --keep-edges.input-file does not remove empty nodes</a>; as soon as one edge-removal(keeping) option occures, nodes are rechecked whether they contain any further edge. If not, the node is removed.
+</li><li> VISUM-import: debugged failures due to false district node position computation
+</li><li> Connection building: made storing outgoing edge connections sane; replaced three strange storages by one
+</li><li> Disabled the support for setting an "edge function" - because vehicles are emitted the same (parametrised) way on each edge, we do not need a distinction between source and normal edges; sink edges were never distinguished.
+</li><li> Refactored the way edge types are stored in NETCONVERT
+</li><li> removed "name" attribute from NBEdge; was not written anyway
+</li><li> work on SUMO-networks reimport <font color="red">(unfinished)</font>
+</li><li> documentation: debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1909685&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1909685&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1909685 option "omit-corrupt-edges" not recognized</a> (use <b>--dismiss-loading-errors</b> instead of <b>--omit-corrupt-edges</b>)
+</li><li> removed usage of NLLoadFilter
+</li><li> thanks to Christoph Sommer, the OSM importer now handles speed and lanes information; default OS values are now used, too
+</li></ul>
+</li></ul>
+<ul><li> DUAROUTER / JTRROUTER
+<ul><li> Removed option <b>--move-on-short</b>. It got obsolete as vehicles may start on edges which are shroter than they are, now.
+</li></ul>
+</li></ul>
+<ul><li> DUAROUTER
+<ul><li> debugged <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1981921&amp;group_id=45607&amp;atid=443421" class="external text" title="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1981921&amp;group_id=45607&amp;atid=443421" rel="nofollow">bug 1981921 duarouter truncates routes</a>; Now, <b>--remove-loops</b> only prunes the route if the vehicle would have to take a turnaround at the begin or end.
+</li><li> reworked handling of broken routes; longer routes are not replaced; incomplete routes may be corrected using the new <b>--repair</b> option
+</li></ul>
+</li></ul>
+<ul><li> JTRROUTER
+<ul><li> Removed possibility to specify turning percentages using CSV files
+</li></ul>
+</li></ul>
+<ul><li> DFROUTER
+<ul><li> Definition of emitters, vss, etc. are now written into the same folder as the declaration
+</li></ul>
+</li></ul>
+<ul><li> TraCI
+<ul><li> TraCI is now enabled as default
+</li></ul>
+</li></ul>
+<ul><li> od2trips
+<ul><li> due to being used for macroscopic demand definitions, OD2TRIPS now emits vehicles using departlane="best" and departspeed="max"
+</li><li> removed option to parse list of tables from a vissim file; they may be given at the command line (<b>--vissim</b> is no longer supported)
+</li><li> added the possibility to omit writing the vehicle type (<b>--no-vtype</b>)
+</li></ul>
+</li></ul>
+<ul><li> <a href="../Tools/Main.html" title="Tools/Main">Tools/Main</a>
+<ul><li> added some tools for output visualization (mpl_dump_twoAgainst.py, mpl_tripinfos_twoAgainst.py, mpl_dump_timeline.py) (see <a href="../Tools/Main.html#Vizualization_Tools" title="Tools/Main">Tools/Main#Vizualization_Tools</a>)
+</li></ul>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 3/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:25-0!1!0!!en!2!edit=0 and timestamp 20120718063449 -->
+</div><hr/><div id="lastmod">This page was last modified on 23 September 2011, at 07:40.</div>

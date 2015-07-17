@@ -1,0 +1,571 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Models/Emissions/HBEFA-based</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p><i>"The <a href="http://www.hbefa.net/" class="external text" title="http://www.hbefa.net/" rel="nofollow">Handbook Emission Factors for Road Transport (HBEFA)</a> provides emission factors for all current vehicle categories (PC, LDV, HDV and motor cycles), each divided into different categories, for a wide variety of traffic situations."</i> (from <a href="http://www.hbefa.net/" class="external free" title="http://www.hbefa.net/" rel="nofollow">http://www.hbefa.net/</a>, 30.01.2008).
+</p><p>Since version 0.10.2, SUMO is able to simulate vehicular pollutant emissions based on this database application. Though HBEFA contains information about other pollutants, we decided to implement only the following, major ones:
+</p>
+<ul><li> CO2
+</li><li> CO
+</li><li> HC
+</li><li> NOx
+</li><li> PMx
+</li><li> fuel consumption
+</li></ul>
+<a name="Differences_HBEFA.3C-.3EHBEFA-based_emission_computation_in_SUMO" id="Differences_HBEFA.3C-.3EHBEFA-based_emission_computation_in_SUMO"></a><h1> <span class="mw-headline">Differences HBEFA&lt;-&gt;HBEFA-based emission computation in SUMO</span></h1>
+<p>We have remodeled <a href="http://www.hbefa.net/" class="external text" title="http://www.hbefa.net/" rel="nofollow">HBEFA</a> data for the following reasons:
+1. To avoid having the need to deal with all of <a href="http://www.hbefa.net/" class="external text" title="http://www.hbefa.net/" rel="nofollow">HBEFA</a>'s emission classes
+2. To allow computation of vehicular emissions on a continuous range as the original <a href="http://www.hbefa.net/" class="external text" title="http://www.hbefa.net/" rel="nofollow">HBEFA</a> data cover certain speeds only
+</p>
+<a name="Vehicle_Emission_Classes" id="Vehicle_Emission_Classes"></a><h1> <span class="mw-headline">Vehicle Emission Classes</span></h1>
+<p>The original vehicle classes supplied by <a href="http://www.hbefa.net/" class="external text" title="http://www.hbefa.net/" rel="nofollow">HBEFA</a> have been clustered. In order to improve the quality, passengers and light delivery vehicles have been clustered independent to heavy duty vehicles. For the first set (passenger and light delivery vehicles), two different sets have been computed, one with 7 classes, one with 14 classes. For the heavy duty vehicles, three sets have been computed, with respectively 3, 6, and 12 classes. Choosing the proper set is not easy - on the one hand, more classes mean a better fit of each of these, on the other hand, the vehicle population mix is more complicated to be generated.
+</p><p>The following tables give the emissionClass strings to use in the definition of vehicle types.
+</p><p><b>Table 1.1 HBEFA heavy duty vehicle types and their clusters in dependence to the class number/cluster</b>
+</p>
+<table cellspacing="0" border="1">
+
+<tr>
+<th style="background:#ffdead;"> vehClass
+</th><th style="background:#ffdead;"> k = 3
+</th><th style="background:#ffdead;"> k = 6
+</th><th style="background:#ffdead;"> k = 12
+</th></tr>
+<tr>
+<td> SMW80er Jahre 12-14t
+</td><td> HDV_3_2
+</td><td> HDV_6_6
+</td><td> HDV_12_8
+</td></tr>
+<tr>
+<td> SMW80er Jahre 14-20t
+</td><td> HDV_3_2
+</td><td> HDV_6_6
+</td><td> HDV_12_8
+</td></tr>
+<tr>
+<td> SMW80er Jahre 20-26t
+</td><td> HDV_3_2
+</td><td> HDV_6_4
+</td><td> HDV_12_4
+</td></tr>
+<tr>
+<td> SMW80er Jahre 28-32t
+</td><td> HDV_3_2
+</td><td> HDV_6_4
+</td><td> HDV_12_4
+</td></tr>
+<tr>
+<td> SMW80er Jahre 28-34t
+</td><td> HDV_3_2
+</td><td> HDV_6_4
+</td><td> HDV_12_4
+</td></tr>
+<tr>
+<td> SMW80er Jahre 7.5-12t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_7
+</td></tr>
+<tr>
+<td> SMW80er Jahre bigger18t
+</td><td> HDV_3_3
+</td><td> HDV_6_5
+</td><td> HDV_12_9
+</td></tr>
+<tr>
+<td> SMW80er Jahre bigger32t
+</td><td> HDV_3_2
+</td><td> HDV_6_4
+</td><td> HDV_12_4
+</td></tr>
+<tr>
+<td> SMW80er Jahre bigger34-40t
+</td><td> HDV_3_2
+</td><td> HDV_6_4
+</td><td> HDV_12_4
+</td></tr>
+<tr>
+<td> SMW80er Jahre smaller18t
+</td><td> HDV_3_2
+</td><td> HDV_6_4
+</td><td> HDV_12_12
+</td></tr>
+<tr>
+<td> SMW80er Jahre smaller28t
+</td><td> HDV_3_2
+</td><td> HDV_6_6
+</td><td> HDV_12_8
+</td></tr>
+<tr>
+<td> SMW80er Jahre smaller7.5t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_7
+</td></tr>
+<tr>
+<td> SMWEuro1 12-14t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_3
+</td></tr>
+<tr>
+<td> SMWEuro1 14-20t
+</td><td> HDV_3_1
+</td><td> HDV_6_6
+</td><td> HDV_12_3
+</td></tr>
+<tr>
+<td> SMWEuro1 20-26t
+</td><td> HDV_3_2
+</td><td> HDV_6_6
+</td><td> HDV_12_3
+</td></tr>
+<tr>
+<td> SMWEuro1 28-32t
+</td><td> HDV_3_2
+</td><td> HDV_6_6
+</td><td> HDV_12_6
+</td></tr>
+<tr>
+<td> SMWEuro1 28-34t
+</td><td> HDV_3_2
+</td><td> HDV_6_6
+</td><td> HDV_12_6
+</td></tr>
+<tr>
+<td> SMWEuro1 7.5-12t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_2
+</td></tr>
+<tr>
+<td> SMWEuro1 bigger18t
+</td><td> HDV_3_3
+</td><td> HDV_6_3
+</td><td> HDV_12_11
+</td></tr>
+<tr>
+<td> SMWEuro1 bigger32t
+</td><td> HDV_3_2
+</td><td> HDV_6_6
+</td><td> HDV_12_6
+</td></tr>
+<tr>
+<td> SMWEuro1 bigger34-40t
+</td><td> HDV_3_2
+</td><td> HDV_6_6
+</td><td> HDV_12_6
+</td></tr>
+<tr>
+<td> SMWEuro1 smaller18t
+</td><td> HDV_3_1
+</td><td> HDV_6_6
+</td><td> HDV_12_3
+</td></tr>
+<tr>
+<td> SMWEuro1 smaller28t
+</td><td> HDV_3_1
+</td><td> HDV_6_6
+</td><td> HDV_12_3
+</td></tr>
+<tr>
+<td> SMWEuro1 smaller7.5t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_2
+</td></tr>
+<tr>
+<td> SMWEuro2 12-14t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_1
+</td></tr>
+<tr>
+<td> SMWEuro2 14-20t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_1
+</td></tr>
+<tr>
+<td> SMWEuro2 20-26t
+</td><td> HDV_3_3
+</td><td> HDV_6_2
+</td><td> HDV_12_5
+</td></tr>
+<tr>
+<td> SMWEuro2 28-32t
+</td><td> HDV_3_3
+</td><td> HDV_6_2
+</td><td> HDV_12_5
+</td></tr>
+<tr>
+<td> SMWEuro2 28-34t
+</td><td> HDV_3_3
+</td><td> HDV_6_2
+</td><td> HDV_12_5
+</td></tr>
+<tr>
+<td> SMWEuro2 7.5-12t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_2
+</td></tr>
+<tr>
+<td> SMWEuro2 bigger18t
+</td><td> HDV_3_3
+</td><td> HDV_6_3
+</td><td> HDV_12_11
+</td></tr>
+<tr>
+<td> SMWEuro2 bigger32t
+</td><td> HDV_3_3
+</td><td> HDV_6_2
+</td><td> HDV_12_5
+</td></tr>
+<tr>
+<td> SMWEuro2 bigger34-40t
+</td><td> HDV_3_3
+</td><td> HDV_6_2
+</td><td> HDV_12_5
+</td></tr>
+<tr>
+<td> SMWEuro2 smaller18t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_12
+</td></tr>
+<tr>
+<td> SMWEuro2 smaller28t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_1
+</td></tr>
+<tr>
+<td> SMWEuro2 smaller7.5t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_2
+</td></tr>
+<tr>
+<td> SMWEuro3 12-14t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_1
+</td></tr>
+<tr>
+<td> SMWEuro3 28-32t
+</td><td> HDV_3_3
+</td><td> HDV_6_2
+</td><td> HDV_12_10
+</td></tr>
+<tr>
+<td> SMWEuro3 28-34t
+</td><td> HDV_3_3
+</td><td> HDV_6_2
+</td><td> HDV_12_10
+</td></tr>
+<tr>
+<td> SMWEuro3 7.5-12t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_2
+</td></tr>
+<tr>
+<td> SMWEuro3 bigger18t
+</td><td> HDV_3_3
+</td><td> HDV_6_3
+</td><td> HDV_12_11
+</td></tr>
+<tr>
+<td> SMWEuro3 bigger32t
+</td><td> HDV_3_3
+</td><td> HDV_6_2
+</td><td> HDV_12_10
+</td></tr>
+<tr>
+<td> SMWEuro3 bigger34-40t
+</td><td> HDV_3_3
+</td><td> HDV_6_2
+</td><td> HDV_12_10
+</td></tr>
+<tr>
+<td> SMWEuro3 smaller18t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_12
+</td></tr>
+<tr>
+<td> SMWEuro3 smaller28t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_1
+</td></tr>
+<tr>
+<td> SMWEuro3 smaller7.5t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_2
+</td></tr>
+<tr>
+<td> SMWEuro4 28-34t
+</td><td> HDV_3_3
+</td><td> HDV_6_2
+</td><td> HDV_12_10
+</td></tr>
+<tr>
+<td> SMWEuro4 bigger34-40t
+</td><td> HDV_3_3
+</td><td> HDV_6_2
+</td><td> HDV_12_10
+</td></tr>
+<tr>
+<td> SMWEuro4 smaller18t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_12
+</td></tr>
+<tr>
+<td> SMWEuro5 28-34t
+</td><td> HDV_3_3
+</td><td> HDV_6_2
+</td><td> HDV_12_10
+</td></tr>
+<tr>
+<td> SMWEuro5 smaller18t
+</td><td> HDV_3_1
+</td><td> HDV_6_1
+</td><td> HDV_12_12
+</td></tr></table>
+<p><br />
+<b>Table 1.2 HBEFA passenger and light delivery vehicle types and their clusters in dependence to the class number/cluster</b>
+</p>
+<table cellspacing="0" border="1">
+
+<tr>
+<th style="background:#ffdead;"> vehClass
+</th><th style="background:#ffdead;"> k = 7
+</th><th style="background:#ffdead;"> k = 14
+</th></tr>
+<tr>
+<td> LNFBEuro2 M+N1-I
+</td><td> P_7_7
+</td><td> P_14_9
+</td></tr>
+<tr>
+<td> LNFBEuro2 N1-II
+</td><td> P_7_2
+</td><td> P_14_1
+</td></tr>
+<tr>
+<td> LNFBEuro3 M+N1-I
+</td><td> P_7_7
+</td><td> P_14_9
+</td></tr>
+<tr>
+<td> LNFBEuro4 M+N1-I
+</td><td> P_7_7
+</td><td> P_14_9
+</td></tr>
+<tr>
+<td> LNFBGKatsmaller91 M+N1-I
+</td><td> P_7_3
+</td><td> P_14_7
+</td></tr>
+<tr>
+<td> LNFBGKatsmaller91 N1-II
+</td><td> P_7_2
+</td><td> P_14_3
+</td></tr>
+<tr>
+<td> LNFBKonv M+N1-I
+</td><td> P_7_4
+</td><td> P_14_12
+</td></tr>
+<tr>
+<td> LNFBKonv N1-II
+</td><td> P_7_1
+</td><td> P_14_2
+</td></tr>
+<tr>
+<td> LNFDEuro1FAV1 M+N1-I
+</td><td> P_7_5
+</td><td> P_14_10
+</td></tr>
+<tr>
+<td> LNFDEuro1FAV1 N1-II
+</td><td> P_7_6
+</td><td> P_14_6
+</td></tr>
+<tr>
+<td> LNFDEuro2 M+N1-I
+</td><td> P_7_7
+</td><td> P_14_8
+</td></tr>
+<tr>
+<td> LNFDEuro2 N1-II
+</td><td> P_7_6
+</td><td> P_14_6
+</td></tr>
+<tr>
+<td> LNFDEuro3 M+N1-I
+</td><td> P_7_7
+</td><td> P_14_8
+</td></tr>
+<tr>
+<td> LNFDEuro3 N1-II
+</td><td> P_7_6
+</td><td> P_14_5
+</td></tr>
+<tr>
+<td> LNFDEuro4 M+N1-I
+</td><td> P_7_7
+</td><td> P_14_8
+</td></tr>
+<tr>
+<td> LNFDEuro4 N1-II
+</td><td> P_7_5
+</td><td> P_14_5
+</td></tr>
+<tr>
+<td> LNFDkonv M+N1-I
+</td><td> P_7_5
+</td><td> P_14_10
+</td></tr>
+<tr>
+<td> LNFDkonv N1-II
+</td><td> P_7_6
+</td><td> P_14_6
+</td></tr>
+<tr>
+<td> PKWBEuro1FAV1 1.4-2L
+</td><td> P_7_3
+</td><td> P_14_14
+</td></tr>
+<tr>
+<td> PKWBEuro1FAV1 bigger2L
+</td><td> P_7_3
+</td><td> P_14_14
+</td></tr>
+<tr>
+<td> PKWBEuro1FAV1 smaller1.4L
+</td><td> P_7_7
+</td><td> P_14_14
+</td></tr>
+<tr>
+<td> PKWBEuro2 1.4-2L
+</td><td> P_7_7
+</td><td> P_14_9
+</td></tr>
+<tr>
+<td> PKWBEuro2 bigger2L
+</td><td> P_7_7
+</td><td> P_14_13
+</td></tr>
+<tr>
+<td> PKWBEuro2 smaller1.4L
+</td><td> P_7_7
+</td><td> P_14_9
+</td></tr>
+<tr>
+<td> PKWBEuro3 1.4-2L
+</td><td> P_7_7
+</td><td> P_14_9
+</td></tr>
+<tr>
+<td> PKWBEuro3 bigger2L
+</td><td> P_7_7
+</td><td> P_14_13
+</td></tr>
+<tr>
+<td> PKWBEuro4 1.4-2L
+</td><td> P_7_7
+</td><td> P_14_9
+</td></tr>
+<tr>
+<td> PKWBEuro4 bigger2L
+</td><td> P_7_7
+</td><td> P_14_13
+</td></tr>
+<tr>
+<td> PKWBGKatsmaller91 1.4-2L
+</td><td> P_7_3
+</td><td> P_14_7
+</td></tr>
+<tr>
+<td> PKWBGKatsmaller91 bigger2L
+</td><td> P_7_3
+</td><td> P_14_7
+</td></tr>
+<tr>
+<td> PKWBGKatsmaller91 smaller1.4L
+</td><td> P_7_3
+</td><td> P_14_7
+</td></tr>
+<tr>
+<td> PKWBKonv 1.4-2L
+</td><td> P_7_3
+</td><td> P_14_11
+</td></tr>
+<tr>
+<td> PKWBKonv bigger2L
+</td><td> P_7_4
+</td><td> P_14_12
+</td></tr>
+<tr>
+<td> PKWBKonv smaller1.4L
+</td><td> P_7_3
+</td><td> P_14_11
+</td></tr>
+<tr>
+<td> PKWDEuro2 1.4-2L
+</td><td> P_7_7
+</td><td> P_14_8
+</td></tr>
+<tr>
+<td> PKWDEuro2 bigger2L
+</td><td> P_7_7
+</td><td> P_14_4
+</td></tr>
+<tr>
+<td> PKWDEuro3 1.4-2L
+</td><td> P_7_7
+</td><td> P_14_8
+</td></tr>
+<tr>
+<td> PKWDEuro3 bigger2L
+</td><td> P_7_7
+</td><td> P_14_4
+</td></tr>
+<tr>
+<td> PKWDEuro4 1.4-2L
+</td><td> P_7_7
+</td><td> P_14_8
+</td></tr>
+<tr>
+<td> PKWDEuro4 bigger2L
+</td><td> P_7_7
+</td><td> P_14_8
+</td></tr>
+<tr>
+<td> PKWDXXIIIFAV1 1.4-2L
+</td><td> P_7_5
+</td><td> P_14_10
+</td></tr>
+<tr>
+<td> PKWDXXIIIFAV1 bigger2L
+</td><td> P_7_5
+</td><td> P_14_10
+</td></tr></table>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 3/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:148-0!1!0!!en!2!edit=0 and timestamp 20120717235947 -->
+</div><hr/><div id="lastmod">This page was last modified on 6 December 2011, at 20:27.</div>

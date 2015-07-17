@@ -1,0 +1,102 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Z/Changes from version 0.9.5 to version 0.9.6</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Changes_from_version_0.9.5_to_version_0.9.6" id="Changes_from_version_0.9.5_to_version_0.9.6"></a><h1> <span class="mw-headline">Changes from version 0.9.5 to version 0.9.6</span></h1>
+<ul><li> POLYCONVERT: possibility to prune the plygons to import on a bounding box added
+</li><li> DUA: Simulation may now load only a part of defined vehicles
+</li><li> NETCONVERT: 
+<ul><li> debugged connections for on-ramps which already have the right number of lanes
+</li><li> debugged problems when using networks built without internal lanes in conjunction with (!!! use-internal in simulation)
+</li><li> lanes split definition added to lane definitions (!!! undescribed)
+</li><li> added error messages when false lanes are defined in connections
+</li></ul>
+</li><li> SIMULATION: 
+<ul><li> c2c wth rerouting
+</li></ul>
+</li><li> GUISIM: 
+<ul><li> debugged memory leak in polygon visualization
+</li><li> removed simple/full geometry options; everything is now drawn using full geometry
+</li><li> the names of nodes, additional structures, vehicles, edges, pois may now be shown
+</li></ul>
+</li><li> All: help/config subsystem changed
+</li><li> Netz hat sich geändert
+</li><li> added the possibility to load a network only
+</li><li> lane expansions
+</li><li> iodevices reworked partially
+</li><li> "Action" removed* was the same as Command
+</li><li> changed the Event-interface
+<ul><li> execute now gets the current simulation time
+</li><li> event handlers are non-static
+</li></ul>
+</li><li> .icc-files removed
+</li><li> class-documentation added/patched within DFROUTER
+</li><li> made access to positions in Position2DVector c++ compliant
+</li><li> xml-types are now read prior to other formats (other Xml-description afterwards)
+</li><li> double projection in XML-import debugged
+</li><li> vehicle actors added
+</li><li> shape layers added
+</li><li> extracted drawing of lane geometries
+</li><li> added projection information to the network
+</li><li> edge types may now store the edge function
+</li><li> removed the unneded slow lane changer
+</li><li> VISUM: lane connections for unsplitted lanes implemented, further refactoring
+</li><li> retrieval of microsim ids is now also done using getID() instead of id()
+</li><li> complete od2trips rework
+</li><li> all structures now return their id via getID()
+</li><li> rerouter: patched the distribution usage; added possibility o load predefined routes
+</li><li> unifying threads
+</li><li> beautifying: output consolidation
+</li><li> removal of loops added (undescribed!!!)
+</li><li> got rid of the static RONet instance
+</li><li> got rid of the cell-to-meter conversions
+</li><li> began with the extraction of the car-following-model from MSVehicle
+</li><li> began the work on a network editor
+</li><li> added consective process messages
+</li><li> debugged splitting of matrices
+</li><li> added the possibility to stretch/change the current phase and consecutive phases
+</li><li> made static comboboxes really static
+</li><li> VISUM: patching problems on loading split lanes and tls
+</li><li> added blinker visualisation and vehicle tracking (unfinished)
+</li><li> rertrieval-methods have the "get" prependix; EmitControl has no dictionary; MSVehicle is completely scheduled by MSVehicleControl; new lanechanging algorithm
+</li><li> tls switches added
+</li><li> made the assertion that two consecutive edge geomtry points must not be same less aggressive
+</li><li> made MSVehicleControl completely responsible for vehicle handling* MSVehicle has no longer a static dictionary
+</li><li> dump-begin/dump-end renamed to dump-begins/dump-ends
+</li><li> E3 detectors refactored partially
+</li><li> added the possibility to make a polygon being filled or not
+</li><li> cartesian and geocoordinates are shown; changed the APIs for this
+</li><li> error checks for dump-begins/dump-ends added
+</li><li> simulation-wide cartesian to geocoordinates conversion added
+</li><li> ROUTER: faster access to weight time lines added; 
+</li><li> removed build number information
+</li><li> API for drawing not filled circles
+</li><li> first try to make junctions tls-aware
+</li><li> changed the way geocoordinates are processed
+</li><li> changed vehicle class naming
+</li><li> patching junction-internal state simulation
+</li><li> added vehicle class support to microsim
+</li><li> added vehicle class support to microsim
+</li><li> removed deprecated c2c functions, added new made by Danilot Boyom
+</li><li> c2c visualisation added (unfinished)
+</li><li> added the possibility to copy an artefact's (gl-object's) name to clipboard (windows)
+</li><li> removed unneeded id member in MSMoveReminder
+</li><li> added an error handling for adding a tls definition for an unknown tls
+</li><li> added the option to not emit vehicles from flows using a fix frequency
+</li><li> tls tracker now support switches between logics
+</li><li> first steps towards car2car-based rerouting
+</li><li> variable vehicle type usage
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 2/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:28-0!1!0!!en!2!edit=0 and timestamp 20120718063447 -->
+</div><hr/><div id="lastmod">This page was last modified on 23 September 2011, at 07:41.</div>

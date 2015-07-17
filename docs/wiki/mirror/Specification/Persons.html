@@ -1,0 +1,159 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Specification/Persons</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>A person moves through the net by walking or using vehicles. It has at least one plan as child element. If it has multiple plans it chooses one at random where the probability may be given in the plan definition. If the person has exactly one plan the explicit "plan" may be omitted, e.g.
+</p>
+<pre>&lt;person id="x"&gt;
+    &lt;plan&gt;
+    ...
+    &lt;/plan&gt;
+&lt;/person&gt;
+</pre>
+<p>is equivalent to
+</p>
+<pre>&lt;person id="x"&gt;
+    ...
+&lt;/person&gt;
+</pre>
+<table border="1" cellpadding="5" cellspacing="0">
+<tr>
+<th>Attribute </th><th>Type      </th><th>Range        </th><th>Default</th><th>Remark
+</th></tr>
+<tr>
+<td>id        </td><td>string    </td><td>valid XML ids</td><td>-</td><td>
+</td></tr>
+<tr>
+<td>depart    </td><td>float(s)  </td><td>&ge;0        </td><td>-      </td><td>
+</td></tr>
+<tr>
+<td>departPos </td><td>float(m)/string  </td><td>&ge;0<sup>(1)</sup>,"random"</td><td>0</td><td>
+</td></tr>
+<tr>
+<td>arrivalPos</td><td>float(m)/string  </td><td>&ge;0<sup>(1)</sup>,"random","max"</td><td>"max"</td><td>
+</td></tr></table>
+<ul><li> (1): in fact, negative positions are currently allowed, too. In this case, this value is added to the lane's length. This means, the position is counted from the end of the lane. Values lying beyond the edge borders (positive and negative) are silently moved to the closest edge border.
+</li></ul>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Plans"><span class="tocnumber">1</span> <span class="toctext">Plans</span></a></li>
+<li class="toclevel-1"><a href="#Router_input"><span class="tocnumber">2</span> <span class="toctext">Router input</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Trips"><span class="tocnumber">2.1</span> <span class="toctext">Trips</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Simulation_input"><span class="tocnumber">3</span> <span class="toctext">Simulation input</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Rides"><span class="tocnumber">3.1</span> <span class="toctext">Rides</span></a></li>
+<li class="toclevel-2"><a href="#Walks"><span class="tocnumber">3.2</span> <span class="toctext">Walks</span></a></li>
+<li class="toclevel-2"><a href="#Stops"><span class="tocnumber">3.3</span> <span class="toctext">Stops</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Simulation_behavior"><span class="tocnumber">4</span> <span class="toctext">Simulation behavior</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Riding"><span class="tocnumber">4.1</span> <span class="toctext">Riding</span></a></li>
+<li class="toclevel-2"><a href="#Walking"><span class="tocnumber">4.2</span> <span class="toctext">Walking</span></a></li>
+<li class="toclevel-2"><a href="#Stopping"><span class="tocnumber">4.3</span> <span class="toctext">Stopping</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Plans" id="Plans"></a><h1> <span class="mw-headline">Plans</span></h1>
+<p>A plan is a sequence of trips and <a href="../Specification.html#Stops" title="Specification">stops</a> if it serves as a router input or of walks, rides and <a href="../Specification.html#Stops" title="Specification">stops</a> if it serves as simulation input.
+</p>
+<table border="1" cellpadding="5" cellspacing="0">
+<tr>
+<th>Attribute </th><th>Type      </th><th>Range        </th><th>Default</th><th>Remark
+</th></tr>
+<tr>
+<td>probability</td><td>float  </td><td>&ge;0          </td><td>1      </td><td>this is only evaluated if a person has multiple plans, the probability values of all plans do not have to add to 1, they are scaled accordingly before choosing
+</td></tr></table>
+<a name="Router_input" id="Router_input"></a><h1> <span class="mw-headline"> Router input </span></h1>
+<p>The router input is still not completely defined. There has to be a possibility to define for the trips which vehicles / public transport lines may be used at all and for which vehicles the route can be defined / changed by the person.
+</p>
+<a name="Trips" id="Trips"></a><h2> <span class="mw-headline">Trips</span></h2>
+<p>Trips define the start and end point of a movement with optional changes in mode.
+</p><p>In definition they are identical to <a href="../Specification.html#Vehicles" title="Specification">vehicles</a> except for the missing route information
+(no route attribute and no route child is allowed). Instead they have the following attributes
+</p>
+<table border="1" cellpadding="5" cellspacing="0">
+<tr>
+<th>Attribute </th><th>Type      </th><th>Range        </th><th>Default</th><th>Remark
+</th></tr>
+<tr>
+<td>from      </td><td>string    </td><td>valid edge ids</td><td>-</td><td>id of the start edge
+</td></tr>
+<tr>
+<td>to        </td><td>string    </td><td>valid edge ids</td><td>-</td><td>id of the destination edge
+</td></tr></table>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />It is an error for subsequent trips to be unconnected.</div>
+<a name="Simulation_input" id="Simulation_input"></a><h1> <span class="mw-headline"> Simulation input </span></h1>
+<a name="Rides" id="Rides"></a><h2> <span class="mw-headline">Rides</span></h2>
+<p>Rides define the start and end point of a movement with a single mode of transport (e.g. a car or a bus).
+They are child elements of plan definitions.
+</p>
+<table border="1" cellpadding="5" cellspacing="0">
+<tr>
+<th>Attribute </th><th>Type      </th><th>Range        </th><th>Default</th><th>Remark
+</th></tr>
+<tr>
+<td>from      </td><td>string    </td><td>valid edge ids</td><td>-</td><td>id of the start edge
+</td></tr>
+<tr>
+<td>to        </td><td>string    </td><td>valid edge ids</td><td>-</td><td>id of the destination edge
+</td></tr>
+<tr>
+<td>lines     </td><td>list      </td><td>valid flow or vehicle ids</td><td>-</td><td>list of vehicle alternatives to take for the ride
+</td></tr></table>
+<p>the route to take is defined by the vehicle.
+</p>
+<a name="Walks" id="Walks"></a><h2> <span class="mw-headline">Walks</span></h2>
+<p>Walks define a pedestrian movement. They are child elements of plan definitions.
+</p>
+<table border="1" cellpadding="5" cellspacing="0">
+<tr>
+<th>Attribute </th><th>Type      </th><th>Range        </th><th>Default</th><th>Remark
+</th></tr>
+<tr>
+<td>edges     </td><td>list      </td><td>valid edge ids</td><td>-</td><td>id of the edges to walk
+</td></tr>
+<tr>
+<td>duration  </td><td>float(s)  </td><td>&gt;0        </td><td>-</td><td>
+</td></tr>
+<tr>
+<td>speed     </td><td>float(m/s)</td><td>&gt;0        </td><td>-</td><td>
+</td></tr></table>
+<p>The "edges" are traveled in the listed order. They do not need to be joined in the net.
+If they are not, a shortest path calculation is done between two consecutive
+list members. If there is no path connecting the two edges the linear distance is taken <i>(this does not work yet. only listed edges contribute to travel time)</i>.
+At least one attribute of "speed" and "duration" has to be given. If both are given, the walk will
+last at least "duration" but it may take longer if the "speed" is low.
+</p>
+<a name="Stops" id="Stops"></a><h2> <span class="mw-headline">Stops</span></h2>
+<p>Stops define a delay until the next element of a plan is started. They can be used to model activities such as working or shopping. Stops for persons follow the specification at <a href="../Specification.html#Stops" title="Specification">Specification#Stops</a>. However, only the attributes <i>lane</i>, <i>duration</i> and <i>until</i> are evaluated. Using these attributes it is possible to model activities with a fixed duration as well as those with a fixed end time.
+</p>
+<a name="Simulation_behavior" id="Simulation_behavior"></a><h1> <span class="mw-headline">Simulation behavior</span></h1>
+<p>A person is starting her life at her depart time on the source (resp. first) edge of the first walk, ride or stop. She tries to start the next step of her plan.
+</p>
+<a name="Riding" id="Riding"></a><h2> <span class="mw-headline">Riding</span></h2>
+<p>The person checks whether a vehicle with a line from the given list is stopping at the given edge. If so, it enters the vehicle and starts the ride. It does not check whether the vehicle has the aspired destination on the current route. The first time the vehicle stops (on a well defined stop) at the destination edge, the ride is finished and the person proceeds with the next step in the plan.
+</p>
+<a name="Walking" id="Walking"></a><h2> <span class="mw-headline">Walking</span></h2>
+<p>The time to reach the last edge of the walk is calculated either from speed and length of the edges or directly from the duration given.
+The step is finished if the person reaches the last edge of the list.
+</p>
+<a name="Stopping" id="Stopping"></a><h2> <span class="mw-headline">Stopping</span></h2>
+<p>The person stops for the maximum of <i>currentTime+duration</i> and <i>until</i>.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 17/1000000
+Post-expand include size: 190/2097152 bytes
+Template argument size: 54/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:319-0!1!0!!en!2!edit=0 and timestamp 20120717234038 -->
+</div><hr/><div id="lastmod">This page was last modified on 26 September 2011, at 11:15.</div>

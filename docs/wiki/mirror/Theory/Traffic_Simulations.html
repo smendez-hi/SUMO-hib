@@ -1,0 +1,45 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Theory/Traffic Simulations</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Traffic_Simulation_Classes" id="Traffic_Simulation_Classes"></a><h2> <span class="mw-headline">Traffic Simulation Classes</span></h2>
+<p>In traffic research, four classes of traffic flow models are distinguished according to the
+level of detail of the simulation. In <i>macroscopic</i> models traffic flow is the basic entity.
+<i>Microscopic</i> models simulate the movement of every single vehicle on the street, mostly assuming
+that the behaviour of the vehicle depends on both, the vehicle's physical abilities to move
+and the driver's controlling behaviour (see <a href="../Publications.html#ChowdhurySantenSchadschneider2000" title="Publications">ChowdhurySantenSchadschneider2000</a>). Within
+SUMO, the microscopic model developed by Stefan Krauß is used (see <a href="../Publications.html#Krauss1998_1" title="Publications">Krauss1998_1</a>, <a href="../Publications.html#Krauss1998_2" title="Publications">Krauss1998_2</a>), extended by some further assumptions. <i>Mesoscopic</i> simulations are located at the boundary between microscopic and
+macroscopic simulations. Herein, vehicle movement is mostly simulated using queue approaches
+and single vehicles are moved between such queues. <i>Sub-microscopic</i> models regard single vehicles
+like microscopic, but extend them by dividing them into further substructures, which describe the
+engine's rotation speed in relation to the vehicle's speed or the driver's preferred gear switching actions, for instance. This allows more detailed computations compared to simple microscopic simulations.
+However, sub-microscopic models require longer computation times. This restrains the size of the
+networks to be simulated.
+</p><p><a href="../images/3sims.gif" class="image" title="Image:3sims.gif"><img alt="Image:3sims.gif" src="../images//3sims.gif" width="400" height="258" border="0" /></a> 
+</p><p><b>Figure: The different simulation granularities; from left to right: macroscopic, microscopic, sub-microscopic (within the circle: mesoscopic)</b>
+</p><p>Within a <i>space-continuous</i> simulation each vehicle has a certain position described by a floating-point
+number. In contrast, <i>space-discrete</i> simulations are cellular automata. They divide streets into cells and vehicles driving on the simulated streets "jump" from one cell to another.
+</p><p><a href="../images/Contdisc.gif" class="image" title="Image:contdisc.gif"><img alt="Image:contdisc.gif" src="../images//Contdisc.gif" width="250" height="100" border="0" /></a> 
+</p><p><b>Figure: The difference between a space-continuous (top) and a space-discrete (bottom) simulation</b>
+</p><p>Almost every simulation package uses its own model for vehicle movement. Almost all models are
+so-called <i>"car-following-models"</i>: the behaviour of the driver is herein meant to be dependent on his
+distance to the vehicle in front of him and of this leading vehicle's speed.
+</p>
+<a name="User_Assignment" id="User_Assignment"></a><h2> <span class="mw-headline">User Assignment</span></h2>
+<p>It seems obvious, that each driver is trying to use to shortest path through the network. But when all are
+trying to do this, some of the roads - mainly the arterial roads - would get congested reducing the benefit
+of using them. Solutions for this problem are known to traffic research as <i>user assignment</i>.
+For solving this, several approaches are available and SUMO uses the <i>dynamic user assignment</i> (DUA) approach developed by Christian Gawron (see <a href="../Publications.html#Gawron1998_1" title="Publications">Gawron1998_1</a>).
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 3/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:117-0!1!0!!en!2!edit=0 and timestamp 20120718063125 -->
+</div><hr/><div id="lastmod">This page was last modified on 23 November 2011, at 08:24.</div>

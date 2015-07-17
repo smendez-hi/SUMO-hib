@@ -1,0 +1,214 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Lane Value Retrieval</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Command_0xa3:_Get_Lane_Variable" id="Command_0xa3:_Get_Lane_Variable"></a><h2> <span class="mw-headline"> Command 0xa3: Get Lane Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Lane ID
+</th></tr></table>
+<p>Asks for the value of a certain variable of the named lane.
+</p><p>The following variable values can be retrieved, the type of the return value is also shown in the table.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Retrievable Lane Variables</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> id list (0x00)
+</td><td> stringList
+</td><td> Returns a list of ids of all lanes within the scenario (the given Lane ID is ignored)
+</td></tr>
+<tr>
+<td> count (0x01)
+</td><td> int
+</td><td> Returns the number of lanes within the scenario (the given Lane ID is ignored)
+</td></tr>
+<tr>
+<td> link number (0x30)
+</td><td> ubyte
+</td><td> Returns the number of links outgoing from this lane [#]
+</td></tr>
+<tr>
+<td> edge id (0x31)
+</td><td> string
+</td><td> Returns the id of the edge this lane belongs to
+</td></tr>
+<tr>
+<td> links (0x33)
+</td><td> compound
+</td><td> Returns descriptions of the links outgoing from this lane [m]
+</td></tr>
+<tr>
+<td> allowed vehicle classes (0x34)
+</td><td> stringList
+</td><td> Returns the mml-definitions of vehicle classes allowed on this lane
+</td></tr>
+<tr>
+<td> disallowed vehicle classes (0x35)
+</td><td> stringList
+</td><td> Returns the mml-definitions of vehicle classes not allowed on this lane
+</td></tr>
+<tr>
+<td> length (0x44)
+</td><td> double
+</td><td> Returns the length of the named lane [m]
+</td></tr>
+<tr>
+<td> vmax (0x41)
+</td><td> double
+</td><td> Returns the maximum speed allowed on this lane [m/s]
+</td></tr>
+<tr>
+<td> shape (0x4e)
+</td><td> shape
+</td><td> Returns this lane's shape
+</td></tr>
+<tr>
+<td> width (0x4d)
+</td><td> double
+</td><td> Returns the width of the named lane [m]
+</td></tr>
+<tr>
+<td> CO2 emissions (id 0x60)
+</td><td> double
+</td><td> Sum of CO2 emissions on this lane in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>.
+</td></tr>
+<tr>
+<td> CO emissions (id 0x61)
+</td><td> double
+</td><td> Sum of CO emissions on this lane in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>.
+</td></tr>
+<tr>
+<td> HC emissions (id 0x62)
+</td><td> double
+</td><td> Sum of HC emissions on this lane in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>.
+</td></tr>
+<tr>
+<td> PMx emissions (id 0x63)
+</td><td> double
+</td><td> Sum of PMx emissions on this lane in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>.
+</td></tr>
+<tr>
+<td> NOx emissions (id 0x64)
+</td><td> double
+</td><td> Sum of NOx emissions on this lane in mg during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>.
+</td></tr>
+<tr>
+<td> fuel consumption (id 0x65)
+</td><td> double
+</td><td> Sum of fuel consumption on this lane in ml during this time step, computed <a href="../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based"> based on HBEFA</a>.
+</td></tr>
+<tr>
+<td> noise emission (id 0x66)
+</td><td> double
+</td><td> Sum of noise generated on this lane in dBA, computed <a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=SUMO_HarmoinoiseBasedNoiseEmission&amp;action=edit&amp;redlink=1" class="new" title="SUMO HarmoinoiseBasedNoiseEmission (page does not exist)"> based on Harmonoise</a>.
+</td></tr>
+<tr>
+<td> last step vehicle number (0x10)
+</td><td> integer
+</td><td> The number of vehicles on this lane within the last time step.
+</td></tr>
+<tr>
+<td> last step mean speed (0x11)
+</td><td> double
+</td><td> Returns the mean speed of vehicles that were on the named induction loop within the last simulation step [m/s]
+</td></tr>
+<tr>
+<td> last step vehicle ids (0x12)
+</td><td> stringList
+</td><td> Returns the list of ids of vehicles that were on the named induction loop in the last simulation step
+</td></tr>
+<tr>
+<td> last step occupancy (0x13)
+</td><td> double
+</td><td> Returns the percentage of time the detector was occupied by a vehicle [%]
+</td></tr>
+<tr>
+<td> last step mean vehicle length (0x15)
+</td><td> double
+</td><td> The mean length of vehicles which were on the detector in the last step [m]
+</td></tr>
+</table>
+<p><br />
+</p>
+<a name="Response_0xb3:_Lane_Variable" id="Response_0xb3:_Lane_Variable"></a><h3> <span class="mw-headline"> Response 0xb3: Lane Variable </span></h3>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td width="75" align="center"> &lt;return_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Lane ID
+</th><th style="border: 1pt solid;"> Return type of the variable
+</th><th style="border: 1pt solid;"> &lt;VARIABLE_VALUE&gt;
+</th></tr></table>
+<p>The respond to a <b>"Command Get Lane Variable"</b>.
+</p>
+<a name="Structure_of_compound_object_links" id="Structure_of_compound_object_links"></a><h4> <span class="mw-headline"> Structure of compound object links </span></h4>
+<p>If you request the list of links, an compound object is returned, structured as following. Attention, each part is fowarded by a byte which represents its data type, except "length".
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> integer
+</td><td width="75" align="center"> type + integer
+</td><td width="75" align="center"> link
+</td><td width="150" align="center"> ...
+</td><td width="75" align="center"> link
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Length
+</th><th style="border: 1pt solid;"> Number of links
+</th><th style="border: 1pt solid;"> Link 1
+</th><th style="border: 1pt solid;"> ...
+</th><th style="border: 1pt solid;"> Link n
+</th></tr></table>
+<p>where <b>length</b> is the total number of following elements -- counting each element of <b>link</b> separatley -- and <b>link</b> is decribed by:
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> type + string
+</td><td width="75" align="center"> type + string
+</td><td width="75" align="center"> type + ubyte
+</td><td width="75" align="center"> type + ubyte
+</td><td width="75" align="center"> type + ubyte
+</td><td width="75" align="center"> type + string
+</td><td width="75" align="center"> type + string
+</td><td width="75" align="center"> type + double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> consecutive not internal lane
+</th><th style="border: 1pt solid;"> consecutive internal lane
+</th><th style="border: 1pt solid;"> has priority (=1) or not (=0)
+</th><th style="border: 1pt solid;"> is opened (=1) or not (=0)
+</th><th style="border: 1pt solid;"> has approaching foe (=1) or not (=0)
+</th><th style="border: 1pt solid;"> (current) state (not yet implemented, always="")
+</th><th style="border: 1pt solid;"> direction (not yet implemented, always="")
+</th><th style="border: 1pt solid;"> length [m] - only valid if not using internal lanes
+</th></tr></table>
+<div style="background: #ffcc44; padding: .5em; border: 1px dashed #ff8800; margin-right:10px; margin-left:10px;"><b>Caution:</b><br />Please note that the information "is opened" and "has approaching foe" currently refer to the current time step; this is rather inappropriate and will be probably changed in the next future.</div>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 9/1000000
+Post-expand include size: 329/2097152 bytes
+Template argument size: 190/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:274-0!1!0!!en!2!edit=0 and timestamp 20120718063407 -->
+</div><hr/><div id="lastmod">This page was last modified on 6 January 2012, at 08:08.</div>

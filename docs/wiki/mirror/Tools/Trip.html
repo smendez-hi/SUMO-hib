@@ -1,0 +1,40 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Tools/Trip</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="randomTrips.py" id="randomTrips.py"></a><h2> <span class="mw-headline"> randomTrips.py </span></h2>
+<p>"randomTrips.py" generates a set of random trips for a given network (option "-n"). It does so by choosing source and destination edge either uniformly at random or weighted by length (option "-l"), by number of lanes (option "-L") or both. The resulting trips are stored in an xml file (option "-o", default trips.trips.xml) suitable for the <a href="../DUAROUTER.html" title="DUAROUTER">DUAROUTER</a> which is called automatically if the "-r" option (with a filename for the resulting route file) is given. The trips are distributed evenly in an interval defined by begin (option "-b", default 0) and end time (option "-e", default 3600) in seconds.
+The number of trips is defined by the repetition rate (option "-p", default 1) in seconds. Every trip has an id consisting of a prefix (option "-t", default "t") and a running number. Example call:
+</p>
+<pre>randomTrips.py -n input_net.net.xml -e 50 -l
+</pre>
+<p>The script does not check whether the chosen destination may be reached from the source. This task is performed by the router.
+</p><p>The option <span style="color: #111144; font-weight: bold; white-space: pre;"> --min-distance <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span> ensures a minimum straight-line distance (in meter) between start and end edges of a trip. The script will keep sampling from the edge distribution until enough trips with sufficient distance are found.
+</p><p>The option <span style="color: #111144; font-weight: bold; white-space: pre;"> --fringe-factor <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span> increases the probability that trips will start/end at the fringe of the network. If the value <i>10</i> is given, edges that have no successor or no predecessor will be 10 times more likely to be chosen as start- or endpoint of a trip. This is usefull when modelling through-traffic which starts and ends at the outside of the simulated area.
+</p><p>For additional ways to influence edge probabilities call
+</p>
+<pre>randomTrips.py --help
+</pre>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br /> The fringe is detected by checking for edges which have no successor or predecessor. The network may have to be generated with option <span style="color: #111144; font-weight: bold; white-space: pre;"> --no-turnarounds</span> or patched manually to ensure that the fringe is properly detected.</div>
+<p><br />
+The script is located in: <i><b>&lt;SUMO_HOME&gt;</b></i>/tools/trip
+</p>
+<a name="route2trips.py" id="route2trips.py"></a><h2> <span class="mw-headline"> route2trips.py </span></h2>
+<p>This script generates a trip file from a route file by stripping all route information except for start and end edge. It has a single parameter which is the route file and prints the trip file to stdout. Example:
+</p>
+<pre>route2trips.py input_routes.rou.xml
+</pre>
+<p>The script is located in: <i><b>&lt;SUMO_HOME&gt;</b></i>/tools/trip
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 29/1000000
+Post-expand include size: 956/2097152 bytes
+Template argument size: 450/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:327-0!1!0!!en!2!edit=0 and timestamp 20120718063352 -->
+</div><hr/><div id="lastmod">This page was last modified on 29 June 2012, at 03:55.</div>

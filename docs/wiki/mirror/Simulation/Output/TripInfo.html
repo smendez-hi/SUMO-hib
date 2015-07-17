@@ -1,0 +1,180 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Output/TripInfo</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Instantiating_within_the_Simulation" id="Instantiating_within_the_Simulation"></a><h2> <span class="mw-headline">Instantiating within the Simulation</span></h2>
+<p>The simulation is forced to generate this output using the option <span style="color: #111144; font-weight: bold; white-space: pre;">--tripinfo-output <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> or  <span style="color: #111144; font-weight: bold; white-space: pre;">--tripinfo <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> on the command line/within a configuration. This output contains the information about each vehicle's departure time, the time the vehicle wanted to start at (which may be lower than the real departure time) and the time the vehicle has arrived. The information is generated for each vehicle as soon as the vehicle arrived at its destination and is removed from the network.
+</p>
+<a name="Generated_Output" id="Generated_Output"></a><h2> <span class="mw-headline">Generated Output</span></h2>
+<p>The format is as following:
+</p>
+<pre class="xml">
+&lt;tripinfos&gt;
+    &lt;tripinfo id=&quot;&lt;VEHICLE_ID&gt;&quot; \
+            depart=&quot;&lt;DEPARTURE_TIME&gt;&quot; departLane=&quot;&lt;DEPARTURE_LANE_ID&gt;&quot; \
+            departPos=&quot;&lt;DEPARTURE_POSITION&gt;&quot; departSpeed=&quot;&lt;DEPARTURE_SPEED&gt;&quot; \
+            departDelay=&quot;&lt;DEPARTURE_DELAY&gt;&quot; \
+            arrival=&quot;&lt;ARRIVAL_TIME&gt;&quot; arrivalLane=&quot;&lt;DEPARTURE_LANE_ID&gt;&quot; \
+            arrivalPos=&quot;&lt;ARRIVAL_POSITION&gt;&quot; arrivalSpeed=&quot;&lt;ARRIVAL_SPEED&gt;&quot; \
+            duration=&quot;&lt;TRAVEL_TIME&gt;&quot; routeLength=&quot;&lt;ROUTE_LENGTH&gt;&quot; \
+            waitSteps=&quot;&lt;STEPS_WITH_HALTS&gt;&quot; rerouteNo=&quot;&lt;REROUTE_NUMBER&gt;&quot; \
+            devices=&quot;&lt;DEVICE_LIST&gt;&quot; vtype=&quot;&lt;VEHICLE_TYPE_ID&gt;&quot;/&gt;
+
+   ... information about further vehicles ...
+
+&lt;/tripinfos&gt;
+</pre>
+<p>Please note that, in contrary to the example above, for each time step, all those values are reported in one line. An entry is written each time a vehicle has arrived at his destination. In prior to this, the written values would not be known.
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> id
+</td><td> (vehicle) id
+</td><td> The name of the vehicle that is described by this entry
+</td></tr>
+<tr>
+<td class="inlxml"> depart
+</td><td> (simulation) seconds
+</td><td> The real departure time (the time the vehicle was emitted into the network)
+</td></tr>
+<tr>
+<td class="inlxml"> departLane
+</td><td> (lane) id
+</td><td> The id of the lane the vehicle started its journey
+</td></tr>
+<tr>
+<td class="inlxml"> departPos
+</td><td> m
+</td><td> The position on the lane the vehicle started its journey
+</td></tr>
+<tr>
+<td class="inlxml"> departSpeed
+</td><td> m/s
+</td><td> The speed with which the vehicle started its journey
+</td></tr>
+<tr>
+<td class="inlxml"> departDelay
+</td><td> (simulation) seconds
+</td><td> The time the vehicle had to wait before it could start his journey
+</td></tr>
+<tr>
+<td class="inlxml"> arrival
+</td><td> (simulation) seconds
+</td><td> The time the vehicle reached his destination at
+</td></tr>
+<tr>
+<td class="inlxml"> arrivalLane
+</td><td> (lane) id
+</td><td> The id of the lane the vehicle was on when reaching his destination
+</td></tr>
+<tr>
+<td class="inlxml"> arrivalPos
+</td><td> m
+</td><td> The position on the lane the vehicle was when reaching the destination
+</td></tr>
+<tr>
+<td class="inlxml"> arrivalSpeed
+</td><td> m/s
+</td><td> The speed the vehicle had when reaching the destination
+</td></tr>
+<tr>
+<td class="inlxml"> duration
+</td><td> (simulation) seconds
+</td><td> The time the vehicle needed to accomplish the route
+</td></tr>
+<tr>
+<td class="inlxml"> routeLength
+</td><td> m
+</td><td> The length of the vehicle's route
+</td></tr>
+<tr>
+<td class="inlxml"> waitSteps
+</td><td> simulation steps
+</td><td> The number of steps in which the vehicle speed was below 0.1m/s
+</td></tr>
+<tr>
+<td class="inlxml"> rerouteNo
+</td><td> #
+</td><td> The number the vehicle has been rerouted
+</td></tr>
+<tr>
+<td class="inlxml"> devices
+</td><td> [ID]*
+</td><td> List of devices the vehicle had. Each device is separated from the others by a ';'.
+</td></tr>
+<tr>
+<td class="inlxml"> vtype
+</td><td> ID
+</td><td> The type of the vehicle
+</td></tr></table>
+<a name="Devices" id="Devices"></a><h3> <span class="mw-headline">Devices</span></h3>
+<p>Single devices may choose to add further output to the tripinfo file. This is currently the case for the <a href="../../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based">HBEFA</a> device which is instantiated using one of the options <span style="color: #111144; font-weight: bold; white-space: pre;">--device.hbefa.probability <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span> or <span style="color: #111144; font-weight: bold; white-space: pre;">--device.hbefa.explicit <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;ID&gt;[,&lt;ID&gt;]*</i></a></span>.
+This adds the following line:
+</p>
+<pre class="xml">
+&lt;tripinfos&gt;
+    &lt;tripinfo id=&quot;&lt;VEHICLE_ID&gt;&quot; ... vtype=&quot;&lt;VEHICLE_TYPE_ID&gt;&quot;&gt;
+        &lt;emissions CO_abs=&quot;...&quot; CO2_abs=&quot;...&quot; HC_abs=&quot;...&quot; PMx_abs=&quot;...&quot; NOx_abs=&quot;...&quot; fuel_abs=&quot;...&quot;/&gt;
+    &lt;/tripinfo&gt;
+   ... information about further vehicles ...
+
+&lt;/tripinfos&gt;
+</pre>
+<p>with units as following
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> CO_abs
+</td><td> mg
+</td><td> The complete amount of CO emitted by the vehicle during the trip
+</td></tr>
+<tr>
+<td class="inlxml"> CO2_abs
+</td><td> mg
+</td><td> The complete amount of CO<sub>2</sub> emitted by the vehicle during the trip
+</td></tr>
+<tr>
+<td class="inlxml"> HC_abs
+</td><td> mg
+</td><td> The complete amount of HC emitted by the vehicle during the trip
+</td></tr>
+<tr>
+<td class="inlxml"> PMx_abs
+</td><td> mg
+</td><td> The complete amount of PM<sub>x</sub> emitted by the vehicle during the trip
+</td></tr>
+<tr>
+<td class="inlxml"> NOx_abs
+</td><td> mg
+</td><td> The complete amount of NO<sub>x</sub> emitted by the vehicle during the trip
+</td></tr>
+<tr>
+<td class="inlxml"> fuel_abs
+</td><td> ml
+</td><td> The complete amount of fuel the vehicle used during the trip
+</td></tr></table>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 37/1000000
+Post-expand include size: 806/2097152 bytes
+Template argument size: 295/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:246-0!1!0!!en!2!edit=0 and timestamp 20120718063330 -->
+</div><hr/><div id="lastmod">This page was last modified on 25 November 2011, at 12:23.</div>

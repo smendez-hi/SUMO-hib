@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vehicles xmlns="http://www.example.org/NewXMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.example.org/NewXMLSchema VehiclesToTrack.xsd ">
+	<useCase case="Delivery van">
+		<vehiclesToTrack behaviour="Emergency" identifier=""
+			initialBattery="" overload="" vehicleType="Temsa">
+			<vehicleCharacteristics>
+				<electricVehicleCharacteristics>
+					<dynamics coef_drag="0.0" coef_rolling_resistance="0.0"
+						frontal_area="0.0" mass="1" />
+					<motor gear_ratio="0.0" gear_system_eff="0.0" motor_eff="0.0"
+						regen_ratio="0.0" />
+					<battery A_C_consumption="0.0" constant_loss="0.0"
+						cooper_loss_coef="0.0" heating_consumption="0.0" iron_loss_coef="0.0"
+						lights="0.0" max_power="0.0" nominal_capacity="0.0" number_cells="0.0"
+						peukert_coeff="0.0" radio_consumption="0.0" time_charge="0.0"
+						widescreen_cons="0.0" windage_loss_coef="0.0" />
+				</electricVehicleCharacteristics>
+			</vehicleCharacteristics>
+		</vehiclesToTrack>
+		<vehiclesToTrack behaviour="Normal" identifier="id0"
+			initialBattery="" overload="" vehicleType="Pininfarina">
+			<vehicleCharacteristics>
+				<nonElectricVehicleCharacteristics>
+					<dynamics coef_drag="1.0" mass="23"
+						coef_rolling_resistance="0.5" frontal_area="1.7" />
+				</nonElectricVehicleCharacteristics>
+			</vehicleCharacteristics>
+		</vehiclesToTrack>
+	</useCase>
+	<useCase case="Private car I">
+		<vehiclesToTrack behaviour="Aggressive" identifier="id02"
+			initialBattery="" overload="" vehicleType="Temsa">
+			<vehicleCharacteristics>
+				<electricVehicleCharacteristics>
+					<dynamics coef_drag="0.7" mass="2"
+						coef_rolling_resistance="0.4" frontal_area="1" />
+					<motor gear_ratio="0.0" gear_system_eff="0.0" motor_eff="0.0"
+						regen_ratio="0.0" />
+					<battery A_C_consumption="0.0" constant_loss="0.0"
+						cooper_loss_coef="0.0" heating_consumption="0.0" iron_loss_coef="0.0"
+						lights="0.9" max_power="0.1" nominal_capacity="0.0" peukert_coeff="0.0"
+						radio_consumption="0.0" time_charge="0.0" widescreen_cons="0.0"
+						windage_loss_coef="0.0" />
+				</electricVehicleCharacteristics>
+			</vehicleCharacteristics>
+		</vehiclesToTrack>
+	</useCase>
+</vehicles>

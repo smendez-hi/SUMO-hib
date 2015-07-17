@@ -1,0 +1,212 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">ACTIVITYGEN</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#From_30.000_feet"><span class="tocnumber">1</span> <span class="toctext">From 30.000 feet</span></a></li>
+<li class="toclevel-1"><a href="#Usage_Description"><span class="tocnumber">2</span> <span class="toctext">Usage Description</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Options"><span class="tocnumber">2.1</span> <span class="toctext">Options</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Configuration"><span class="tocnumber">2.1.1</span> <span class="toctext">Configuration</span></a></li>
+<li class="toclevel-3"><a href="#Input"><span class="tocnumber">2.1.2</span> <span class="toctext">Input</span></a></li>
+<li class="toclevel-3"><a href="#Output"><span class="tocnumber">2.1.3</span> <span class="toctext">Output</span></a></li>
+<li class="toclevel-3"><a href="#Processing"><span class="tocnumber">2.1.4</span> <span class="toctext">Processing</span></a></li>
+<li class="toclevel-3"><a href="#Time"><span class="tocnumber">2.1.5</span> <span class="toctext">Time</span></a></li>
+<li class="toclevel-3"><a href="#Report"><span class="tocnumber">2.1.6</span> <span class="toctext">Report</span></a></li>
+<li class="toclevel-3"><a href="#Random_Number"><span class="tocnumber">2.1.7</span> <span class="toctext">Random Number</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="From_30.000_feet" id="From_30.000_feet"></a><h1> <span class="mw-headline">From 30.000 feet</span></h1>
+<p><strong class="selflink">ACTIVITYGEN</strong> reads the definition of a population matching an also given network. It computes and mobility wishes for this population.
+</p>
+<dl><dd><b>Purpose:</b> Demand generation for a synthetic population
+</dd><dd><b>System:</b> portable (Linux/Windows is tested); runs on command line
+</dd><dd><b>Input (mandatory):</b>
+<dl><dd>A) a road network as generated via <a href="NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> or <a href="NETGENERATE.html" title="NETGENERATE">NETGENERATE</a>, see <a href="SUMO_User_Documentation.html#Network_Building" title="SUMO User Documentation">Building Networks</a>
+</dd><dd>B) a population definition
+</dd></dl>
+</dd><dd><b>Output:</b> <a href="Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html" title="Definition of Vehicles, Vehicle Types, and Routes">Definition of Vehicles, Vehicle Types, and Routes</a> usable by <a href="SUMO.html" title="SUMO">SUMO</a>
+</dd><dd><b>Programming Language:</b> C++
+</dd></dl>
+<a name="Usage_Description" id="Usage_Description"></a><h1> <span class="mw-headline">Usage Description</span></h1>
+<a name="Options" id="Options"></a><h2> <span class="mw-headline">Options</span></h2>
+<p>You may use a XML schema definition file for setting up a ACTIVITYGEN configuration: <a href="http://sumo.sf.net/doc/current/docs/xsd/activitygenConfiguration.xsd" class="external text" title="http://sumo.sf.net/doc/current/docs/xsd/activitygenConfiguration.xsd" rel="nofollow">activitygenConfiguration.xsd</a>.
+</p>
+<a name="Configuration" id="Configuration"></a><h3> <span class="mw-headline">Configuration</span></h3>
+<p>All applications of the <b>SUMO</b>-suite handle configuration options the same way. These options are discussed at <a href="Basics/Using_the_Command_Line_Applications.html#Configuration_Files" title="Basics/Using the Command Line Applications">Basics/Using the Command Line Applications#Configuration Files</a>.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-c <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--configuration-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Loads the named config on startup
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-configuration <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves current configuration into FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-template <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves a configuration template (empty) into FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-schema <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Saves the configuration schema into FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--save-commented</span>
+</td><td valign="top"> Adds comments to saved template, configuration, or schema; <i>default: <b>false</b></i>
+</td></tr>
+</table>
+<a name="Input" id="Input"></a><h3> <span class="mw-headline">Input</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-n <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--net-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Use FILE as SUMO-network to route on
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-s <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--stat-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Loads the SUMO-statistics FILE
+</td></tr>
+</table>
+<a name="Output" id="Output"></a><h3> <span class="mw-headline">Output</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-o <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--output-file <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Write generated routes to FILE
+</td></tr>
+</table>
+<a name="Processing" id="Processing"></a><h3> <span class="mw-headline">Processing</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--weights.interpolate</span>
+</td><td valign="top"> Interpolate edge weights at interval boundaries; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--weights.expand</span>
+</td><td valign="top"> Expand weights behind the simulation's end; <i>default: <b>false</b></i>
+</td></tr>
+</table>
+<a name="Time" id="Time"></a><h3> <span class="mw-headline">Time</span></h3>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-b <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--begin <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>
+</td><td valign="top"> Sets the time of beginning of the simulation during the first day (in seconds)
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-e <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--end <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>
+</td><td valign="top"> Sets the time of ending of the simulation during the last day (in seconds)
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--duration-d <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>
+</td><td valign="top"> Sets the duration of the simulation in days
+</td></tr>
+</table>
+<a name="Report" id="Report"></a><h3> <span class="mw-headline">Report</span></h3>
+<p>All applications of the <b>SUMO</b>-suite handle most of the reporting options the same way. These options are discussed at <a href="Basics/Using_the_Command_Line_Applications.html#Reporting_Options" title="Basics/Using the Command Line Applications">Basics/Using the Command Line Applications#Reporting Options</a>.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-v</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--verbose</span>
+</td><td valign="top"> Switches to verbose output; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-p</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--print-options</span>
+</td><td valign="top"> Prints option values before processing; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-?</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--help</span>
+</td><td valign="top"> Prints this screen; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-V</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--version</span>
+</td><td valign="top"> Prints the current version; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-W</span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--no-warnings</span>
+</td><td valign="top"> Disables output of warnings; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">-l <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span><br /><span style="color: #111144; font-weight: bold; white-space: pre;">--log <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Writes all messages to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--message-log <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Writes all non-error messages to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--error-log <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>
+</td><td valign="top"> Writes all warnings and errors to FILE
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--debug</span>
+</td><td valign="top"> Detailed messages about every single step; <i>default: <b>false</b></i>
+</td></tr>
+</table>
+<a name="Random_Number" id="Random_Number"></a><h3> <span class="mw-headline">Random Number</span></h3>
+<p>All applications of the <b>SUMO</b>-suite handle randomisation options the same way. These options are discussed at <a href="Basics/Using_the_Command_Line_Applications.html#Random_Number_Options" title="Basics/Using the Command Line Applications">Basics/Using the Command Line Applications#Random Number Options</a>.
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ddffdd;" valign="top" width="350"> Option
+</th><th style="background:#ddffdd;" valign="top"> Description
+</th></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--random</span>
+</td><td valign="top"> Initialises the random number generator with the current system time; <i>default: <b>false</b></i>
+</td></tr>
+<tr>
+<td valign="top"> <span style="color: #111144; font-weight: bold; white-space: pre;">--seed <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>
+</td><td valign="top"> Initialises the random number generator with the given value; <i>default: <b>23423</b></i>
+</td></tr>
+</table>
+<hr />
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 214/1000000
+Post-expand include size: 5162/2097152 bytes
+Template argument size: 1412/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:408-0!1!0!!en!2!edit=0 and timestamp 20120718030502 -->
+</div><hr/><div id="lastmod">This page was last modified on 28 June 2012, at 07:58.</div>

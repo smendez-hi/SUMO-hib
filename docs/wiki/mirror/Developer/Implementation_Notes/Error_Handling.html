@@ -1,0 +1,126 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Developer/Implementation Notes/Error Handling</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<center><font color="red"><b>Please note that this page describes what is currently in work.</b></font></center>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Failure_types_.28not_academic.29"><span class="tocnumber">1</span> <span class="toctext">Failure types (not academic)</span></a></li>
+<li class="toclevel-1"><a href="#Command_line_applications"><span class="tocnumber">2</span> <span class="toctext">Command line applications</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Philosophy_for_command_line_applications"><span class="tocnumber">2.1</span> <span class="toctext">Philosophy for command line applications</span></a></li>
+<li class="toclevel-2"><a href="#Implementation_in_command_line_applications"><span class="tocnumber">2.2</span> <span class="toctext">Implementation in command line applications</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Incorrect_startup_data"><span class="tocnumber">2.2.1</span> <span class="toctext">Incorrect startup data</span></a></li>
+<li class="toclevel-3"><a href="#Implementation_bugs"><span class="tocnumber">2.2.2</span> <span class="toctext">Implementation bugs</span></a></li>
+<li class="toclevel-3"><a href="#System_failures"><span class="tocnumber">2.2.3</span> <span class="toctext">System failures</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#GUI_applications"><span class="tocnumber">3</span> <span class="toctext">GUI applications</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Philosophy_for_gui_applications"><span class="tocnumber">3.1</span> <span class="toctext">Philosophy for gui applications</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Open_issues"><span class="tocnumber">4</span> <span class="toctext">Open issues</span></a>
+<ul>
+<li class="toclevel-2"><a href="#SUMO"><span class="tocnumber">4.1</span> <span class="toctext">SUMO</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Failure_types_.28not_academic.29" id="Failure_types_.28not_academic.29"></a><h2> <span class="mw-headline">Failure types (not academic)</span></h2>
+<p>One can distinguish the following types of problems:
+</p>
+<ul><li> Startup input data is not correct (a mandatory value is not set or is not numeric when it should be etc.)
+</li><li> Dynamic input data is not correct
+</li><li> Some things within our design or our implementation are not correct (we try to get an integer from a string option etc., NULL-pointer exceptions, trying to access deleted classes etc.)
+</li><li> System failures (out of memory etc.)
+</li></ul>
+<p>The distinction between <i>startup</i> input data and <i>dynamic</i> input data is not as easy as one might think.
+Basically <i>startup</i> refers to everything referenced directly on the command line or via a configuration file
+while dynamic refers to interactive input via different interfaces such as GUI or socket connections.
+The problem is that some data given at startup is processed with quite a delay by the simulation (notably routes)
+and probably cannot even be checked (e.g. for being well formed XML) at startup due to performance problems.
+This kind of data will be considered <i>dynamic</i>.
+</p><p>Thus the term <i>startup input data</i> refers to every data (file) which is processed before the application starts
+doing something useful (whatever that means).
+</p>
+<a name="Command_line_applications" id="Command_line_applications"></a><h2> <span class="mw-headline">Command line applications</span></h2>
+<a name="Philosophy_for_command_line_applications" id="Philosophy_for_command_line_applications"></a><h3> <span class="mw-headline">Philosophy for command line applications</span></h3>
+<p>We assume that all the input data should be valid. We will not try to solve any bugs made by the user. We just inform him what went wrong and let him patch the problem. For <i>startup data</i> this means we finish the application with an error message if erroneous data is encountered. As the input data may be broken on several places, the application should try to parse all data, first, reporting all encountered errors, and quit then. For <i>dynamic data</i> this means, if we have no possibility to give direct feedback (for instance on one way socket connections) we ignore the data (with something like a log message), otherwise we try to give feedback.
+</p><p><i>Programming bugs</i> should be catched in a way that allows to retrack them. The user shall not be confronted with any segfaults-popups or things like that. Rather, an error message about an improper behaviour shall be printed (currently: "Quitting (on unknown error).") and the application should quit correctly.
+</p><p><i>System errors</i> should be catched and printed to the user. The application should then quit correctly.
+</p>
+<a name="Implementation_in_command_line_applications" id="Implementation_in_command_line_applications"></a><h3> <span class="mw-headline">Implementation in command line applications</span></h3>
+<a name="Incorrect_startup_data" id="Incorrect_startup_data"></a><h4> <span class="mw-headline">Incorrect startup data</span></h4>
+<p>As said in <a href="#Philosophy_for_command_line_applications" title="">#Philosophy for command line applications</a> we just report the problem and quit then (with an information that we could not accomplish what was to do).
+</p><p>For this, the main function of each of our command line applications has a try/catch-block and all of the processing done by this application is done within this block. What is always catched is the <b>ProcessError</b> - exception, defined in src/utils/common/UtilExceptions. This class contains a message which is reported as soon as the try/catch-block located in the main function is reached. As in earlier versions of SUMO, a ProcessError could be called with no message (in this case the message is set to "Process Error"), we only print the message if the catched ProcessError has really one set.
+</p>
+<pre>int
+main(int argc, char **argv)
+{
+    // initialise return code
+    int ret = 0;
+    ... make uncritical initialisation ...
+    try {
+       ... do some critical stuff ...
+    } catch (ProcessError &amp;e) {
+        if(string(e.what())!=string("Process Error") &amp;&amp; string(e.what())!=string("")) {
+            MsgHandler::getErrorInstance()-&gt;inform(e.what());
+        }
+        MsgHandler::getErrorInstance()-&gt;inform("Quitting (on error).", false);
+        // set return code to "failure"
+        ret = 1;
+#ifndef _DEBUG
+    } catch (...) {
+        MsgHandler::getErrorInstance()-&gt;inform("Quitting (on unknown error).", false);
+        // set return code to "failure"
+        ret = 1;
+#endif
+    }
+    ... clean up ...
+    // return the return code
+    return ret;
+}
+</pre>
+<p>The second catch-block will be described later.
+</p><p>So basically the only thing we have to do is to generate a <b>ProcessError</b> as soon as something is not as we would have expect it and give it a proper message. Still, this is only half of the truth. Because we do not want the application to quit immediately when an error occurs, but print all errors and quit then, we have to insert a further error handling layer. In the current implementation, handler which parse the input data are reporting the errors to the error instance of the MsgHandler. As soon as reading a file ends, it is checked whether an error occured. In this case, a ProcessError is thrown. If the handler is not parsing the data himself, but using other structures, these structures may throw an <b>InvalidArgument</b> which then has to be catched and reported to the error instance of the MsgHandler.
+</p><p>Be aware that some things already allocated have to be deleted before throwing a ProcessError.
+</p>
+<a name="Implementation_bugs" id="Implementation_bugs"></a><h4> <span class="mw-headline">Implementation bugs</span></h4>
+<p>The second catch block within the above snipplet is currently meant to catch everything else. In fact, these may be both system failures and programming faults. So, we only catch this in the release-version so that an end-user will be informed about an error (though with no verbose error message). In the case we are debugging the code, the exception/fault is not catched - our debugger should stay at the position the exception was generated.
+</p>
+<a name="System_failures" id="System_failures"></a><h4> <span class="mw-headline">System failures</span></h4>
+<p>Are currently catched by the later catch-block. Probably, the easiest method to handle those would be to give a list of possible failures and try to handle them in catch-blocks as it is done with <b>ProcessErrors</b>.
+</p>
+<a name="GUI_applications" id="GUI_applications"></a><h2> <span class="mw-headline">GUI applications</span></h2>
+<a name="Philosophy_for_gui_applications" id="Philosophy_for_gui_applications"></a><h3> <span class="mw-headline">Philosophy for gui applications</span></h3>
+<p>Now hat is lethal for a command line application (false input parameter) is not for a gui application which shall report about the error but shall still allow the user to patch his inputs and to try to reload the settings.
+</p>
+<a name="Open_issues" id="Open_issues"></a><h2> <span class="mw-headline">Open issues</span></h2>
+<a name="SUMO" id="SUMO"></a><h3> <span class="mw-headline">SUMO</span></h3>
+<ul><li> Network errors
+<ul><li> There is no check for link consistency; to be exact, it is possible that some combinations of junction/incoming &lt;-&gt; cedge &lt;-&gt; succedge do not match but still are loaded with no errors
+</li><li> There is no check for unused values
+</li></ul>
+</li><li> WAUT errors
+<ul><li> How comes that a tls-switch - output is build though errors occured? (see tests/sumo/errors/wauts/cross3ltl_error_unknown_wautid)
+</li><li> The programs are checked in a lazy way, the error is reported too late (see tests/sumo/errors/wauts/cross3ltl_error_unknown_to_prog)
+</li><li> Undescribed behaviour for cross3ltl_error_missing_junctiondef, cross3ltl_error_missing_reftime
+</li></ul>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 13/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:43-0!1!0!!en!2!edit=0 and timestamp 20120718063202 -->
+</div><hr/><div id="lastmod">This page was last modified on 9 September 2011, at 07:54.</div>

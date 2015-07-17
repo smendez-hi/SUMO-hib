@@ -1,0 +1,135 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Output/VTypeProbe</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Instantiating_within_the_Simulation" id="Instantiating_within_the_Simulation"></a><h2> <span class="mw-headline">Instantiating within the Simulation</span></h2>
+<p>A vtypeprobe is defined the following way within an additional xml file: <span class="inlxml">&lt;vtypeprobe id="&lt;ID&gt;" [ type="&lt;VEHICLE_TYPE&gt;" ] freq="&lt;OUTPUT_FREQUENCY&gt;" file="&lt;OUTPUT_FILE&gt;"/&gt;</span>
+</p><p><span class="inlxml">type</span> names the vehicle type to observe. Only the values of vehicles of this type will be written into the output. If <span class="inlxml">type</span> is empty, the information about all vehicles are included. In contrary to the detectors described above, the values are not aggregated. This means that frequency does not describe an aggregation interval but the frequency with which the values shall be collected and written.
+</p><p>The following table shows the attributes:
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>id</b>
+</td><td> id (string)
+</td><td> A string holding the id of the detector
+</td></tr>
+<tr>
+<td class="inlxml"> <b>freq</b>
+</td><td> int (time in s)
+</td><td> The frequency with which information shall be written.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>file</b>
+</td><td> &lt;FILE&gt;
+</td><td> The path to the output file. The path may be relative.
+</td></tr>
+<tr>
+<td class="inlxml"> type
+</td><td> (vehicle type) id
+</td><td> The type the vehicles must be of in order to be reported.
+</td></tr></table>
+<p>Example:
+</p>
+<pre class="xml">
+&lt;additional&gt;
+    &lt;vTypeProbe id=&quot;probe1&quot; type=&quot;DEFAULT_VEHTYPE&quot; freq=&quot;10&quot; file=&quot;output.xml&quot;/&gt;
+&lt;/additional
+</pre>
+<p>This file is then loaded in <a href="../../SUMO.html" title="SUMO">SUMO</a> using the option <span style="color: #111144; font-weight: bold; white-space: pre;">--additional-files</span>
+</p>
+<a name="Generated_Output" id="Generated_Output"></a><h2> <span class="mw-headline">Generated Output</span></h2>
+<p>The output is devided into timestep-sections:
+</p>
+<pre class="xml">
+    &lt;timestep time=&quot;&lt;COLLECTION_TIME&gt;&quot; id=&quot;&lt;DETECTOR_ID&gt;&quot; vtype=&quot;&lt;OBSERVED_TYPE&gt;&quot;&gt;
+        &lt;vehicle id=&quot;&lt;VEHICLE_ID&gt;&quot; lane=&quot;&lt;LANE_ID&gt;&quot; pos=&quot;&lt;POSITION_ON_LANE&gt;&quot; \
+            x=&quot;&lt;X-COORDINATE&gt;&quot; y=&quot;&lt;Y-COORDINATE&gt;&quot; \
+            lat=&quot;&lt;LAT-COORDINATE&gt;&quot; lon=&quot;&lt;LON-COORDINATE&gt;&quot; \
+            speed=&quot;&lt;VEHICLE_SPEED&gt;&quot;/&gt;
+        ... further vehicles ...
+    &lt;/timestep&gt;
+    ... further time steps ...
+</pre>
+<p>The values are described in the following table.
+</p>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> timestep@time
+</td><td> (simulation) seconds
+</td><td> The time this information describes
+</td></tr>
+<tr>
+<td class="inlxml"> timestep@id
+</td><td> id
+</td><td> The id of the detector
+</td></tr>
+<tr>
+<td class="inlxml"> vtype
+</td><td> id
+</td><td> The id of the vehicle type observed by this detector
+</td></tr>
+<tr>
+<td class="inlxml"> vehicle@id
+</td><td> (vehicle) id
+</td><td> The id of the described vehicle
+</td></tr>
+<tr>
+<td class="inlxml"> lane
+</td><td> (lane) id
+</td><td> The id of the lane the vehicle was on.
+</td></tr>
+<tr>
+<td class="inlxml"> pos
+</td><td> m
+</td><td> The position of the vehicle on lane
+</td></tr>
+<tr>
+<td class="inlxml"> x
+</td><td> m
+</td><td> The x-position of the vehicle within the net
+</td></tr>
+<tr>
+<td class="inlxml"> y
+</td><td> m
+</td><td> The y-position of the vehicle within the net
+</td></tr>
+<tr>
+<td class="inlxml"> lat
+</td><td> degrees*100,000
+</td><td> The lat-position of the vehicle within the net
+</td></tr>
+<tr>
+<td class="inlxml"> lon
+</td><td> degrees*100,000
+</td><td> The lon-position of the vehicle within the net
+</td></tr>
+<tr>
+<td class="inlxml"> speed
+</td><td> m/s
+</td><td> The speed of the vehicle within the time step.
+</td></tr></table>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 17/1000000
+Post-expand include size: 92/2097152 bytes
+Template argument size: 18/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:245-0!1!0!!en!2!edit=0 and timestamp 20120718063332 -->
+</div><hr/><div id="lastmod">This page was last modified on 20 February 2012, at 09:27.</div>

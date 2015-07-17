@@ -1,0 +1,123 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">SUMO User Documentation</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>"<b>S</b>imulation of <b>U</b>rban <b>MO</b>bility" (SUMO) is an open source, highly portable, microscopic road traffic simulation package designed to handle large road networks. It is mainly developed by employees of the <a href="http://www.dlr.de/ts" class="external text" title="http://www.dlr.de/ts" rel="nofollow">Institute of Transportation Systems</a> at the <a href="http://www.dlr.de" class="external text" title="http://www.dlr.de" rel="nofollow">German Aerospace Center</a>. SUMO is licensed under the <a href="http://www.gnu.org/licenses/gpl.html" class="external text" title="http://www.gnu.org/licenses/gpl.html" rel="nofollow">GPL</a>.
+</p><p>Please use the <a href="Contact.html" title="Contact">mailing lists</a> for sharing your results or for asking questions. Answers to some common questions may also be found in the <a href="FAQ.html" title="FAQ">FAQ</a>.
+</p><p>If You use SUMO, please tell us about your <a href="Publications.html" title="Publications">Publications</a>. Cite SUMO in your publications as: Michael Behrisch, Laura Bieker, Jakob Erdmann and Daniel Krajzewicz. SUMO - Simulation of Urban MObility: An Overview In: SIMUL 2011, The Third International Conference on Advances in System Simulation, 2011. (see <a href="Publications.html#Behrisch_et_al2011" title="Publications">[Behrisch et al2011]</a>).
+</p><p>Any help is appreciated - corrections and contributions to the documentation, submission of code, or other results.
+</p><p><br />
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-1"><a href="#Basic_Usage"><span class="tocnumber">2</span> <span class="toctext">Basic Usage</span></a></li>
+<li class="toclevel-1"><a href="#Network_Building"><span class="tocnumber">3</span> <span class="toctext">Network Building</span></a></li>
+<li class="toclevel-1"><a href="#Demand_Modelling"><span class="tocnumber">4</span> <span class="toctext">Demand Modelling</span></a></li>
+<li class="toclevel-1"><a href="#Simulation"><span class="tocnumber">5</span> <span class="toctext">Simulation</span></a></li>
+<li class="toclevel-1"><a href="#Theory"><span class="tocnumber">6</span> <span class="toctext">Theory</span></a></li>
+<li class="toclevel-1"><a href="#Appendices"><span class="tocnumber">7</span> <span class="toctext">Appendices</span></a></li>
+<li class="toclevel-1"><a href="#Translations"><span class="tocnumber">8</span> <span class="toctext">Translations</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Introduction" id="Introduction"></a><h1> <span class="mw-headline"><strong class="selflink">Introduction</strong></span></h1>
+<ul><li> <a href="Sumo_at_a_Glance.html" title="Sumo at a Glance">The traffic simulation SUMO</a> (includes also <a href="Sumo_at_a_Glance.html#Features" title="Sumo at a Glance">"Features"</a>, <a href="Sumo_at_a_Glance.html#Included_Applications" title="Sumo at a Glance">"Included Applications"</a>, and <a href="Sumo_at_a_Glance.html#Usage_Examples" title="Sumo at a Glance">"Usage Examples"</a>)
+</li></ul>
+<a name="Basic_Usage" id="Basic_Usage"></a><h1> <span class="mw-headline">Basic Usage</span></h1>
+<ul><li> <a href="Basics/Notation.html" title="Basics/Notation">Notation in this Documentation</a>
+</li><li> <a href="Basics/Basic_Computer_Skills.html" title="Basics/Basic Computer Skills">Needed, basic Computer Skills</a>
+</li><li> <a href="Installing.html" title="Installing">Installing SUMO</a>
+</li><li> <a href="Basics/Using_the_Command_Line_Applications.html" title="Basics/Using the Command Line Applications">Using SUMO Command Line Applications</a>
+</li><li> <a href="Tutorials.html" title="Tutorials">Tutorials</a>
+</li></ul>
+<a name="Network_Building" id="Network_Building"></a><h1> <span class="mw-headline">Network Building</span></h1>
+<ul><li> Introduction to <a href="Networks/SUMO_Road_Networks.html" title="Networks/SUMO Road Networks">SUMO Road Networks</a>
+</li><li> <a href="Networks/Abstract_Network_Generation.html" title="Networks/Abstract Network Generation">Abstract networks generation</a>
+</li><li> Importing networks with NETCONVERT
+<ul><li> <a href="Networks/Building_Networks_from_own_XML-descriptions.html" title="Networks/Building Networks from own XML-descriptions">Defining own networks using XML</a>
+</li><li> <a href="Networks/Import.html" title="Networks/Import">Importing non-SUMO networks</a>
+<ul><li> <a href="Networks/Import/OpenStreetMap.html" title="Networks/Import/OpenStreetMap">... from OpenStreetMap</a>
+</li><li> <a href="Networks/Import/VISUM.html" title="Networks/Import/VISUM">... from VISUM</a>
+</li><li> <a href="Networks/Import/Vissim.html" title="Networks/Import/Vissim">... from Vissim</a>
+</li><li> <a href="Networks/Import/openDRIVE.html" title="Networks/Import/openDRIVE">... from openDRIVE</a>
+</li><li> <a href="Networks/Import/MATsim.html" title="Networks/Import/MATsim">... from MATsim</a>
+</li><li> <a href="Networks/Import/ArcView.html" title="Networks/Import/ArcView">... from ArcView (shapefiles)</a>
+</li><li> <a href="Networks/Import/DlrNavteq.html" title="Networks/Import/DlrNavteq">... from Elmar's GDF</a>
+</li><li> <a href="Networks/Import/RoboCup.html" title="Networks/Import/RoboCup">... from Robocup Simulation League</a>
+</li></ul>
+</li><li> <a href="Networks/Import/SUMO_Road_Networks.html" title="Networks/Import/SUMO Road Networks">Importing SUMO networks</a>
+</li><li> <a href="Networks/Further_Options.html" title="Networks/Further Options">Further NETCONVERT options</a>
+</li><li> <a href="Networks/Further_Outputs.html" title="Networks/Further Outputs">Additional output</a>
+</li></ul>
+</li></ul>
+<a name="Demand_Modelling" id="Demand_Modelling"></a><h1> <span class="mw-headline">Demand Modelling</span></h1>
+<ul><li> <a href="Demand/Introduction_to_demand_modelling_in_SUMO.html" title="Demand/Introduction to demand modelling in SUMO">Introduction to SUMO Demand Modelling</a>
+</li><li> <a href="Definition_of_Vehicles,_Vehicle_Types,_and_Routes.html" title="Definition of Vehicles, Vehicle Types, and Routes">Definition of Vehicles, Vehicle Types, and Routes</a>
+</li><li> <a href="Demand/Importing_O/D_Matrices.html" title="Demand/Importing O/D Matrices">Importing O/D Matrices</a>
+</li><li> <a href="Tools/Trip.html#randomTrips.py" title="Tools/Trip">Random Trips</a>
+</li><li> <a href="Demand/Shortest_or_Optimal_Path_Routing.html" title="Demand/Shortest or Optimal Path Routing">Shortest or Optimal Path Routing</a>
+</li><li> <a href="Demand/Routing_by_Turn_Probabilities.html" title="Demand/Routing by Turn Probabilities">Routing by Turn Probabilities</a>
+</li><li> <a href="Demand/Routes_from_Observation_Points.html" title="Demand/Routes from Observation Points">Routes from Observation Points</a>
+</li><li> <a href="Demand/Activity-based_Demand_Generation.html" title="Demand/Activity-based Demand Generation">Activity-based Demand Generation</a>
+</li><li> <a href="Demand/Dynamic_User_Assignment.html" title="Demand/Dynamic User Assignment">Computing Dynamic User Assignment</a>
+</li><li> Importing foreign demands
+<ul><li> <a href="Demand/Further_Ways_to_import_VISUM_Demand_Definitions.html" title="Demand/Further Ways to import VISUM Demand Definitions">Other VISUM Demand Importers</a>
+</li><li> <a href="Demand/Further_Ways_to_import_Vissim_Demand_Definitions.html" title="Demand/Further Ways to import Vissim Demand Definitions">Other Vissim Demand Importers</a>
+</li></ul>
+</li><li> <a href="Demand/Automatic_Routing.html" title="Demand/Automatic Routing">Routing in the Simulation</a>
+</li><li> <del><a href="Demand/Random_Routes.html" title="Demand/Random Routes">Random Routes</a></del>
+</li></ul>
+<a name="Simulation" id="Simulation"></a><h1> <span class="mw-headline">Simulation</span></h1>
+<ul><li> <a href="Simulation/Basic_Definition.html" title="Simulation/Basic Definition">Basic Definition</a>
+</li><li> Traffic Management and Other Structures
+<ul><li> <a href="Simulation/Traffic_Lights.html" title="Simulation/Traffic Lights">Traffic Lights</a>
+</li><li> <a href="Simulation/Public_Transport.html" title="Simulation/Public Transport">Public Transport</a>
+</li><li> <a href="Simulation/Variable_Speed_Signs.html" title="Simulation/Variable Speed Signs">Variable Speed Signs</a>
+</li><li> <a href="Simulation/Rerouter.html" title="Simulation/Rerouter">Rerouter / Alternative Route Signage</a>
+</li><li> <a href="Simulation/Vaporizer.html" title="Simulation/Vaporizer">Vaporizer</a>
+</li></ul>
+</li><li> <a href="Simulation/Output.html" title="Simulation/Output">Simulation output</a>
+</li><li> <a href="TraCI.html" title="TraCI">TraCI (On-line Interaction)</a>
+</li><li> <a href="Simulation/Shapes.html" title="Simulation/Shapes">Shapes Visualisation</a>
+</li><li> Common Problems
+<ul><li> <a href="Simulation/Why_Vehicles_are_teleporting.html" title="Simulation/Why Vehicles are teleporting">Why Vehicles are teleporting</a>
+</li></ul>
+</li></ul>
+<a name="Theory" id="Theory"></a><h1> <span class="mw-headline">Theory</span></h1>
+<ul><li> <a href="Theory/Traffic_Simulations.html" title="Theory/Traffic Simulations">Traffic simulations in general</a>
+</li></ul>
+<a name="Appendices" id="Appendices"></a><h1> <span class="mw-headline">Appendices</span></h1>
+<ul><li> <a href="Other/Glossary.html" title="Other/Glossary">Glossary</a>
+</li><li> <a href="FAQ.html" title="FAQ">FAQ</a>
+</li><li> <a href="Tools/Main.html" title="Tools/Main">Additional Tools</a>
+</li><li> <a href="Other/File_Extensions.html" title="Other/File Extensions">Known File Extensions</a>
+</li><li> Application Manuals
+<ul><li> <a href="SUMO.html" title="SUMO">SUMO</a>
+</li><li> <a href="SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a>
+</li><li> <a href="NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>
+</li><li> <a href="NETGENERATE.html" title="NETGENERATE">NETGENERATE</a>
+</li><li> <a href="OD2TRIPS.html" title="OD2TRIPS">OD2TRIPS</a>
+</li><li> <a href="DUAROUTER.html" title="DUAROUTER">DUAROUTER</a>
+</li><li> <a href="JTRROUTER.html" title="JTRROUTER">JTRROUTER</a>
+</li><li> <a href="DFROUTER.html" title="DFROUTER">DFROUTER</a>
+</li><li> <a href="POLYCONVERT.html" title="POLYCONVERT">POLYCONVERT</a>
+</li><li> <a href="ACTIVITYGEN.html" title="ACTIVITYGEN">ACTIVITYGEN</a>
+</li></ul>
+</li></ul>
+<a name="Translations" id="Translations"></a><h1> <span class="mw-headline">Translations</span></h1>
+<ul><li> <a href="http://linux-notes.blogfa.com/post-37.aspx" class="external text" title="http://linux-notes.blogfa.com/post-37.aspx" rel="nofollow">Persian SUMO tutorial</a> on version 0.9.8; thanks to Omid Mohajerani
+</li><li> <a href="http://linux-notes.blogfa.com/post-39.aspx" class="external text" title="http://linux-notes.blogfa.com/post-39.aspx" rel="nofollow">Persian tutorial on "Vehicular Adhoc Network Simulation With NS2, SUMO And MOVE"</a>;
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 9/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:116-0!1!0!!en!2!edit=0 and timestamp 20120717225533 -->
+</div><hr/><div id="lastmod">This page was last modified on 9 July 2012, at 10:53.</div>

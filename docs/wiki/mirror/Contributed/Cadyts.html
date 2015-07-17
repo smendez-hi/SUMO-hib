@@ -1,0 +1,70 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Contributed/Cadyts</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Introduction" id="Introduction"></a><h2> <span class="mw-headline">Introduction</span></h2>
+<p>Cadyts is a tool to overcome the gap between the real traffic flows, which you should have, in form of induction loop data and the simulated traffic flows produced by SUMO. It adapts the flows by using the script cadytsIterate.py. For further information please consult the <a href="http://transp-or.epfl.ch/cadyts/" class="external text" title="http://transp-or.epfl.ch/cadyts/" rel="nofollow">Cadyts home page</a>.
+</p>
+<a name="Usage" id="Usage"></a><h2> <span class="mw-headline">Usage</span></h2>
+<p>The Cadyts tool has to be started via cadytsIterate.py, which is a command line application. It has the following parameters:
+</p><p>-r     route alternatives file from sumo (comma separated list) (in Cadyts: -choicesetfile)
+</p><p>-d     adapt to the traffic flows on the edges defined in a given file (in Cadyts: -measfile)
+</p><p>-c     classpath for the calibrator, default= os.path.join(os.path.dirname(sys.argv[0]), "..",       "contributed","calibration","cadytsSumoController.jar")
+</p><p>-s     last step of the calibration, default=100
+</p><p>-S     scaled demand, optional, default=2 (in Cadyts: -demandscale); If -M is defined, this parameter will be used in the calibration.
+</p><p>-F     define the number of iterations for stablizing the results in the DTA-calibration, default= 85 (in Cadyts: - freezeit)
+</p><p>-V     define variance of the measured traffic flows for the DTA-calibration, default=1, (in Cadyts: varscale)
+</p><p>-P     number of preparatory iterations, default = 5 (in Cadyts: PREPITS)
+</p><p>-W     prefix of flow evaluation files; only for the calibration with use of detector data, optional (in Cadyts: -flowfile)
+</p><p>-Y     fit the traffic counts as accurate as possible, default = False, (in Cadyts: -bruteforce)
+</p><p>-Z     minimal traffic count standard deviation"), default = 25 (in Cadyts: -mincountstddev)
+</p><p>-O     override depart times according to updated link travel times, default= False (in Cadyts: -overridett)
+</p><p>-M     prefix of OD matrix files in VISUM format (in Cadyts: - fmaprefix)
+</p><p>-N     postfix attached to clone ids, default='-CLONE' (in Cadyts: -clonepostfix)
+</p><p>-E     No summary information is written by the simulation, default=False
+</p><p>-T     No tripinfos are written by the simulation, default=False
+</p><p><br />
+In additions, the simulation-related parameters in the duaIterate.py can also be defined and applied in cadytsIterate.py, such as a network file, the begin time and the end time of a simulation/routing, main weights aggregation period (default=900, in Cadyts: -binsize).
+</p><p>The script cadytsIterate.py expects at least three parameters: The &lt;NETFILE&gt; (-n), the &lt;ROUTEALTERATIVESFILE&gt; (-r), the &lt;REALFLOWSFILE&gt; (-d). 
+</p><p><br />
+Example for using the cadytsIterate.py:
+</p>
+<pre class="xml">
+cadytsIterate.py -n &lt;NETFILE&gt; -r &lt;ROUTEALTERATIVESFILE&gt; -d &lt;REALFLOWSFILE&gt;
+-a &lt;INT&gt; (sets main weights aggregation period) -c &lt;CADTYS-MODEL-PATH&gt; 
+-b &lt;INT&gt; (sets simulation begin) -e &lt;INT&gt; (sets simulation end)
+</pre>
+<p>The &lt;REALFLOWS&gt;-file has to be a XML-file in form of:
+</p>
+<pre class="xml">
+&lt;measurements&gt;
+    &lt;singlelink link=&quot;1to21&quot; start=&quot;25200&quot; end=&quot;32400&quot; value=&quot;750&quot; stddev=&quot;8&quot; type=&quot;COUNT_VEH&quot;/&gt;
+    &lt;singlelink link=&quot;1to22&quot; start=&quot;25200&quot; end=&quot;32400&quot; value=&quot;250&quot; stddev=&quot;8&quot; type=&quot;COUNT_VEH&quot;/&gt;
+&lt;/measurements&gt;
+</pre>
+<p>The &lt; ROUTEALTERATIVESFILE&gt; has to be a XML-file in form of:
+</p>
+<pre class="xml">
+&lt;route-alternatives&gt;
+    &lt;vehicle id=&quot;830&quot; depart=&quot;25208.00&quot; departlane=&quot;free&quot; departspeed=&quot;max&quot; fromtaz=&quot;1&quot; totaz=&quot;2&quot;&gt;
+        &lt;routeDistribution last=&quot;1&quot;&gt;
+            &lt;route cost=&quot;154.29&quot; probability=&quot;0.57623629&quot; edges=&quot;91to1 1to21 out&quot; exitTimes=&quot;25240.19 25337.05 25362.30&quot;/&gt;
+            &lt;route cost=&quot;153.69&quot; probability=&quot;0.42376371&quot; edges=&quot;91to1 1to22 out&quot; exitTimes=&quot;25240.19 25336.44 25361.69&quot;/&gt;
+        &lt;/routeDistribution&gt;
+    &lt;/vehicle&gt;
+&lt;/route-alternatives&gt;
+</pre>
+<p>An easy way to get a route-alternatives file is to use the duaIterate.py or the duarouter application.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 12/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:298-0!1!0!!en!2!edit=0 and timestamp 20120718063131 -->
+</div><hr/><div id="lastmod">This page was last modified on 6 May 2012, at 06:10.</div>

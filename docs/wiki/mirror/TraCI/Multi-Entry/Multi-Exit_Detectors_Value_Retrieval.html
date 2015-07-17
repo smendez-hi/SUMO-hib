@@ -1,0 +1,95 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Multi-Entry/Multi-Exit Detectors Value Retrieval</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Command_0xa1:_Get_MeMeDetector_Variable" id="Command_0xa1:_Get_MeMeDetector_Variable"></a><h2> <span class="mw-headline"> Command 0xa1: Get MeMeDetector Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Multi-Entry/Multi-Exit Detector ID
+</th></tr></table>
+<p>Asks for the value of a certain variable of the named <a href="../../Simulation/Output/Multi-Entry_Multi-Exit_Detectors_(E3).html" title="Simulation/Output/Multi-Entry Multi-Exit Detectors (E3)">multi-entry/multi-exit (e3) detector</a>. The value returned is the state of the asked variable/value within the last simulation step. 
+Please note that for asking values from your <a href="../../Simulation/Output/Multi-Entry_Multi-Exit_Detectors_(E3).html" title="Simulation/Output/Multi-Entry Multi-Exit Detectors (E3)">multi-entry/multi-exit detectors</a> with TraCI, you have to:
+</p>
+<ul><li> define them
+</li><li> set their frequency to 1s
+</li></ul>
+<p>The following variable values can be retrieved, the type of the return value is also shown in the table.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Retrievable Multi-Entry/Multi-Exit Detector Variables</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> id list (0x00)
+</td><td> stringList
+</td><td> Returns a list of ids of all multi-entry/multi-exit detectors within the scenario (the given DetectorID is ignored)
+</td></tr>
+<tr>
+<td> count (0x01)
+</td><td> int
+</td><td> Returns the number of multi-entry/multi-exit detectors within the scenario (the given DetectorID  is ignored)
+</td></tr>
+<tr>
+<td> last step vehicle number (0x10)
+</td><td> integer
+</td><td> Returns the number of vehicles that have been within the named multi-entry/multi-exit detector within the last simulation step [#];
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />This value corresponds to the <i>vehicleSumWithin</i> measure of <a href="../../Simulation/Output/Multi-Entry_Multi-Exit_Detectors_(E3).html" title="Simulation/Output/Multi-Entry Multi-Exit Detectors (E3)">multi-entry/multi-exit detectors</a>.</div>
+</td></tr>
+<tr>
+<td> last step mean speed (0x11)
+</td><td> double
+</td><td> Returns the mean speed of vehicles that have been within the named multi-entry/multi-exit detector within the last simulation step [m/s]
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />This value corresponds to the <i>meanSpeedWithin</i> measure of <a href="../../Simulation/Output/Multi-Entry_Multi-Exit_Detectors_(E3).html" title="Simulation/Output/Multi-Entry Multi-Exit Detectors (E3)">multi-entry/multi-exit detectors</a>.</div>
+</td></tr>
+<tr>
+<td> last step vehicle ids (0x12)
+</td><td> stringList
+</td><td> Returns the list of ids of vehicles that have been within the named multi-entry/multi-exit detector in the last simulation step
+</td></tr>
+<tr>
+<td> last step halting vehicles number (0x14)
+</td><td> int
+</td><td> Returns the number of vehicles which were halting during the last time step
+</td></tr>
+</table>
+<a name="Response_0xb1:_MeMeDetector_Variable" id="Response_0xb1:_MeMeDetector_Variable"></a><h2> <span class="mw-headline"> Response 0xb1: MeMeDetector Variable </span></h2>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td width="75" align="center"> &lt;return_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Multi-Entry/Multi-Exit Detector ID
+</th><th style="border: 1pt solid;"> Return type of the variable
+</th><th style="border: 1pt solid;"> &lt;VARIABLE_VALUE&gt;
+</th></tr></table>
+<p>The respond to a <b>"Command Get MeMeDetector Variable"</b>.
+</p>
+<a name="Notes" id="Notes"></a><h2> <span class="mw-headline"> Notes </span></h2>
+<ul><li> You can find <a href="../../Simulation/Output/Multi-Entry_Multi-Exit_Detectors_(E3).html" title="Simulation/Output/Multi-Entry Multi-Exit Detectors (E3)">some further description on multi-entry/multi-exit detectors</a>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 14/1000000
+Post-expand include size: 581/2097152 bytes
+Template argument size: 309/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:261-0!1!0!!en!2!edit=0 and timestamp 20120718063407 -->
+</div><hr/><div id="lastmod">This page was last modified on 28 October 2011, at 11:55.</div>

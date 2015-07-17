@@ -1,0 +1,184 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">ChangeLog</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#SVN"><span class="tocnumber">1</span> <span class="toctext">SVN</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Bugfixes"><span class="tocnumber">1.1</span> <span class="toctext">Bugfixes</span></a></li>
+<li class="toclevel-2"><a href="#Enhancements"><span class="tocnumber">1.2</span> <span class="toctext">Enhancements</span></a></li>
+<li class="toclevel-2"><a href="#Other"><span class="tocnumber">1.3</span> <span class="toctext">Other</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Version_0.15.0_.2814.03.2012.29"><span class="tocnumber">2</span> <span class="toctext">Version 0.15.0 (14.03.2012)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Bugfixes_2"><span class="tocnumber">2.1</span> <span class="toctext">Bugfixes</span></a></li>
+<li class="toclevel-2"><a href="#Enhancements_2"><span class="tocnumber">2.2</span> <span class="toctext">Enhancements</span></a></li>
+<li class="toclevel-2"><a href="#Other_2"><span class="tocnumber">2.3</span> <span class="toctext">Other</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Older_Versions"><span class="tocnumber">3</span> <span class="toctext">Older Versions</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="SVN" id="SVN"></a><h2> <span class="mw-headline">SVN</span></h2>
+<a name="Bugfixes" id="Bugfixes"></a><h3> <span class="mw-headline">Bugfixes</span></h3>
+<ul><li> Building
+<ul><li> Fixed building under gcc4.7; thanks to Karsten Roscher
+</li></ul>
+</li><li> NETCONVERT
+<ul><li> reading tls offset from VISUM files corrected
+</li><li> OSM-ids are now read as <i>long long</i>s (<i>long long int</i> under Linux)
+</li><li> added the option <span style="color: #111144; font-weight: bold; white-space: pre;">--tls.discard-loaded <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;BOOL&gt;</i></a></span> which avoids loading traffic lights from other formats than XML (in XML, one can simply replace the type "traffic_light" by "priority"); removed option <span style="color: #111144; font-weight: bold; white-space: pre;">--osm.discard-tls <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;BOOL&gt;</i></a></span> which did the same for OSM-networks only
+</li><li> SUMO-networks with tls offset now load correctly
+</li></ul>
+</li><li> NETGEN 
+<ul><li> Options <span style="color: #111144; font-weight: bold; white-space: pre;">--offset.x</span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--offset.y</span> are no longer ignored
+</li></ul>
+</li><li> Documentation
+<ul><li> Patched css issues in IE
+</li></ul>
+</li></ul>
+<a name="Enhancements" id="Enhancements"></a><h3> <span class="mw-headline">Enhancements</span></h3>
+<ul><li> Simulation
+<ul><li> added the option <span style="color: #111144; font-weight: bold; white-space: pre;">--routing-algorithm <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span> to configure simulation routing (devices,triggers,traci). Allowed values are <i>dijkstra</i>, (default) and <i>astar</i>
+</li><li> Rerouting via 'device.rerouting' is now much faster
+</li><li> variable speed signs now accept negative speed values. this causes them to reset the edge back to its default speed
+</li><li> if any vehicles are <a href="Simulation/Vaporizer.html" title="Simulation/Vaporizer">vaporized</a> during simulation the attribute <span class="inlxml">aporized="NUMBER_OF_VAPORIZED_VEHICLES&gt;</span> is added to the meanData output for the respective edge.
+</li><li> implemented speed factor and speed deviation for vehicles; allows to set up a vehicle population where each driver decides for her own how much she wants to follow the road's speed limit
+</li><li> added the option <span style="color: #111144; font-weight: bold; white-space: pre;">--maxDist.routesize <a href="Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span> to limit the size of routeDistributions (useful to conserve memory for long-running simulations)
+</li><li> added several new output types by Mario Krumnow: <a href="Simulation/Output/EmissionOutput.html" title="Simulation/Output/EmissionOutput">emission output</a>, <a href="Simulation/Output/FullOutput.html" title="Simulation/Output/FullOutput">full output</a>, <a href="Simulation/Output/VTKOutput.html" title="Simulation/Output/VTKOutput">vtk output</a>, <a href="Simulation/Output/FCDOutput.html" title="Simulation/Output/FCDOutput">fcd output</a>, and <a href="Simulation/Output/QueueOutput.html" title="Simulation/Output/QueueOutput">queue output</a>. Thanks!
+</li></ul>
+</li></ul>
+<ul><li> TraCI
+<ul><li> The deprecated "environment-related" commands were removed and the documentation was finally corrected; <a href="TraCI/Simulation_Value_Retrieval.html#Command_0x82:_Position_Conversion" title="TraCI/Simulation Value Retrieval">position conversion</a> and <a href="TraCI/Simulation_Value_Retrieval.html#Command_0x83:_Distance_Request" title="TraCI/Simulation Value Retrieval">distance computation</a> are still available via the <a href="TraCI/Simulation_Value_Retrieval.html" title="TraCI/Simulation Value Retrieval">Simulation Value Retrieval</a> API. Please note that the footprint has changed so that it matches the other API calls.
+</li><li> API version was increased to 4
+</li></ul>
+</li><li> GUISIM
+<ul><li> the gui can be started with multiple views by supplying a list of files to option <span style="color: #111144; font-weight: bold; white-space: pre;">--gui-settings-file</span>
+</li></ul>
+</li><li> TOOLS
+<ul><li> added options for generating random trips which help to increase the quality of generated trips. see <a href="Tools/Trip.html#randomTrips.py" title="Tools/Trip">Tools/Trip#randomTrips.py</a>
+</li></ul>
+</li></ul>
+<a name="Other" id="Other"></a><h3> <span class="mw-headline">Other</span></h3>
+<ul><li> Simulation
+</li></ul>
+<a name="Version_0.15.0_.2814.03.2012.29" id="Version_0.15.0_.2814.03.2012.29"></a><h2> <span class="mw-headline">Version 0.15.0 (14.03.2012)</span></h2>
+<a name="Bugfixes_2" id="Bugfixes_2"></a><h3> <span class="mw-headline">Bugfixes</span></h3>
+<ul><li> Simulation
+<ul><li> Real time factor in simulation summary is now correct (was off by factor 1000)
+</li><li> Option <span style="color: #111144; font-weight: bold; white-space: pre;">--route-steps</span> now reads the given number of seconds ahead (input argument was interpreted as milliseconds, inadvertently)
+</li><li> specifying invalid departPos no longer causes an infinite loop
+</li><li> The minimum gap is now outside of the vehicle. This means, a vehicle starts at its position, the minimum breaking distance is in front of the position. This effects the retrieval of a vehicle's position via TraCI, and also the measures collected by detectors - now, the collected vehicle lengths do not contain the minimum distance anymore. see <a href="http://sourceforge.net/apps/wordpress/sumo/2012/02/14/request-for-comments-pulling-mingap-out-of-the-vehicle/" class="external text" title="http://sourceforge.net/apps/wordpress/sumo/2012/02/14/request-for-comments-pulling-mingap-out-of-the-vehicle/" rel="nofollow">blog entry</a>
+</li><li> consolidating right-of-way rules (again). <b>Networks must be rebuild</b>
+</li><li> fixed crash when using TraCI to set new TLS-programs with less phases (ticket #652)
+</li></ul>
+</li><li> NETCONVERT
+<ul><li> looped ways are now correctly imported from OSM (before, these were pruned from the network)
+</li><li> fixed bug related to <span style="color: #111144; font-weight: bold; white-space: pre;">--proj.plain-geo</span> (would sometimes crash or produce invalid output)
+</li><li> fixed bug in geometry computation when dealing with 3D-coordinates
+</li><li> fixed bug when joining junctions (did not join as much as requested)
+</li><li> OSM import no longer discards edges with multiple types as long as at least one type is known (this caused missing bridges etc.)
+</li><li> debugged import of VISUM-turn descriptions ("ABBIEGER")
+</li><li> fixed calculation of intersecting lines
+</li></ul>
+</li><li> GUI
+<ul><li> corrected the link numbering
+</li><li> no longer crashes when reload is pressed during running simulation
+</li></ul>
+</li><li> DUAROUTER
+<ul><li> Option <span style="color: #111144; font-weight: bold; white-space: pre;">--max-alternatives</span> is no longer ignored
+</li><li> clogit probabilities are calculated correctly
+</li></ul>
+</li></ul>
+<a name="Enhancements_2" id="Enhancements_2"></a><h3> <span class="mw-headline">Enhancements</span></h3>
+<ul><li> Simulation
+<ul><li> Meandata output can now print default travel times / emissions on empty edges (excludeEmpty="defaults")
+</li></ul>
+</li><li> DUAROUTER
+<ul><li> added Option <span style="color: #111144; font-weight: bold; white-space: pre;">--routing-algorithm</span>. It supports the values <i>dijkstra</i> (default) and <i>astar</i> (new). The newly added <i>astar</i> algorithm uses the <i>euclidean distance heuristic</i>. It routes 30% faster on the road network of Cologne and 40% faster on the road network of Berlin.
+</li><li> In verbose mode, some performance measures of the routing algorithm are given
+</li><li> better defaults for emission based routing
+</li></ul>
+</li><li> GUISIM
+<ul><li> object choser can now filter by selection
+</li></ul>
+</li><li> NETCONVERT
+<ul><li> added Options <span style="color: #111144; font-weight: bold; white-space: pre;">--speed.offset</span> and <span style="color: #111144; font-weight: bold; white-space: pre;">--speed.factor</span>. These modify all edge speeds by first multiplying with factor and then adding offset. 
+</li><li> added output Option <span style="color: #111144; font-weight: bold; white-space: pre;">--junctions.join-output FILE</span>. This writes a protocol of joined junctions to FILE. Loading FILE as additional nod.xml reproduces these joins.
+</li></ul>
+</li><li> All
+<ul><li> Logging options are handled consistently
+</li><li> step logging enabled by default, can be disabled for all relevant applications (sumo, duarouter, jtrrouter, od2trips)
+</li></ul>
+</li></ul>
+<a name="Other_2" id="Other_2"></a><h3> <span class="mw-headline">Other</span></h3>
+<ul><li> Simulation
+<ul><li> traffic light offset is now interpreted as delay. An offset of x delays all phases by x seconds. The old behaviour was to let all phases start x seconds earlier.
+</li></ul>
+</li></ul>
+<p><br />
+</p>
+<a name="Older_Versions" id="Older_Versions"></a><h2> <span class="mw-headline">Older Versions</span></h2>
+<ul><li> <a href="Z/Changes_from_Version_0.13.1_to_Version_0.14.0.html" title="Z/Changes from Version 0.13.1 to Version 0.14.0">z/Changes from Version 0.13.1 to Version 0.14.0</a>
+</li><li> <a href="Z/Changes_from_Version_0.13.0_to_Version_0.13.1.html" title="Z/Changes from Version 0.13.0 to Version 0.13.1">z/Changes from Version 0.13.0 to Version 0.13.1</a>
+</li><li> <a href="Z/Changes_from_Version_0.12.3_to_Version_0.13.0.html" title="Z/Changes from Version 0.12.3 to Version 0.13.0">z/Changes from Version 0.12.3 to Version 0.13.0</a>
+</li></ul>
+<p><br />
+</p>
+<ul><li> <a href="Z/Changes_from_Version_0.12.2_to_Version_0.12.3.html" title="Z/Changes from Version 0.12.2 to Version 0.12.3">z/Changes from Version 0.12.2 to Version 0.12.3</a>
+</li><li> <a href="Z/Changes_from_Version_0.12.1_to_Version_0.12.2.html" title="Z/Changes from Version 0.12.1 to Version 0.12.2">z/Changes from Version 0.12.1 to Version 0.12.2</a>
+</li><li> <a href="Z/Changes_from_Version_0.12.0_to_Version_0.12.1.html" title="Z/Changes from Version 0.12.0 to Version 0.12.1">z/Changes from Version 0.12.0 to Version 0.12.1</a>
+</li><li> <a href="Z/Changes_from_Version_0.11.1_to_Version_0.12.0.html" title="Z/Changes from Version 0.11.1 to Version 0.12.0">z/Changes from Version 0.11.1 to Version 0.12.0</a>
+</li></ul>
+<p><br />
+</p>
+<ul><li> <a href="Z/Changes_from_Version_0.11.0_to_Version_0.11.1.html" title="Z/Changes from Version 0.11.0 to Version 0.11.1">z/Changes from Version 0.11.0 to Version 0.11.1</a>
+</li><li> <a href="Z/Changes_from_Version_0.10.3_to_Version_0.11.0.html" title="Z/Changes from Version 0.10.3 to Version 0.11.0">z/Changes from Version 0.10.3 to Version 0.11.0</a>
+</li></ul>
+<p><br />
+</p>
+<ul><li> <a href="Z/Changes_from_Version_0.10.2_to_Version_0.10.3.html" title="Z/Changes from Version 0.10.2 to Version 0.10.3">z/Changes from Version 0.10.2 to Version 0.10.3</a>
+</li><li> <a href="Z/Changes_from_Version_0.10.1_to_Version_0.10.2.html" title="Z/Changes from Version 0.10.1 to Version 0.10.2">z/Changes from Version 0.10.1 to Version 0.10.2</a>
+</li><li> <a href="Z/Changes_from_Version_0.10.0_to_Version_0.10.1.html" title="Z/Changes from Version 0.10.0 to Version 0.10.1">z/Changes from Version 0.10.0 to Version 0.10.1</a>
+</li><li> <a href="Z/Changes_from_Version_0.9.10_to_Version_0.10.0.html" title="Z/Changes from Version 0.9.10 to Version 0.10.0">z/Changes from Version 0.9.10 to Version 0.10.0</a>
+</li></ul>
+<p><br />
+</p>
+<ul><li> <a href="Z/Changes_from_version_0.9.9_to_version_0.9.10.html" title="Z/Changes from version 0.9.9 to version 0.9.10">z/Changes from version 0.9.9 to version 0.9.10</a>
+</li><li> <a href="Z/Changes_from_version_0.9.8_to_version_0.9.9.html" title="Z/Changes from version 0.9.8 to version 0.9.9">z/Changes from version 0.9.8 to version 0.9.9</a>
+</li><li> <a href="Z/Changes_from_version_0.9.7_to_version_0.9.8.html" title="Z/Changes from version 0.9.7 to version 0.9.8">z/Changes from version 0.9.7 to version 0.9.8</a>
+</li><li> <a href="Z/Changes_from_version_0.9.6_to_version_0.9.7.html" title="Z/Changes from version 0.9.6 to version 0.9.7">z/Changes from version 0.9.6 to version 0.9.7</a>
+</li><li> <a href="Z/Changes_from_version_0.9.5_to_version_0.9.6.html" title="Z/Changes from version 0.9.5 to version 0.9.6">z/Changes from version 0.9.5 to version 0.9.6</a>
+</li><li> <a href="Z/Changes_from_version_0.9.3_to_version_0.9.4.html" title="Z/Changes from version 0.9.3 to version 0.9.4">z/Changes from version 0.9.3 to version 0.9.4</a>
+</li><li> <a href="Z/Changes_from_version_0.9.2_to_version_0.9.3.html" title="Z/Changes from version 0.9.2 to version 0.9.3">z/Changes from version 0.9.2 to version 0.9.3</a>
+</li><li> <a href="Z/Changes_from_version_0.9.1_to_version_0.9.2.html" title="Z/Changes from version 0.9.1 to version 0.9.2">z/Changes from version 0.9.1 to version 0.9.2</a>
+</li><li> <a href="Z/Changes_from_version_0.9.0_to_version_0.9.1.html" title="Z/Changes from version 0.9.0 to version 0.9.1">z/Changes from version 0.9.0 to version 0.9.1</a>
+</li></ul>
+<p><br />
+</p>
+<ul><li> <a href="Z/Changes_from_version_0.8.x_to_version_0.9.0.html" title="Z/Changes from version 0.8.x to version 0.9.0">z/Changes from version 0.8.x to version 0.9.0</a>
+</li><li> <a href="Z/Changes_from_version_0.8.2.2_to_version_0.8.3.html" title="Z/Changes from version 0.8.2.2 to version 0.8.3">z/Changes from version 0.8.2.2 to version 0.8.3</a>
+</li><li> <a href="Z/Changes_from_version_0.8.2.1_to_version_0.8.2.2.html" title="Z/Changes from version 0.8.2.1 to version 0.8.2.2">z/Changes from version 0.8.2.1 to version 0.8.2.2</a>
+</li><li> <a href="Z/Changes_from_version_0.8.0.2_to_version_0.8.2.1.html" title="Z/Changes from version 0.8.0.2 to version 0.8.2.1">z/Changes from version 0.8.0.2 to version 0.8.2.1</a>
+</li><li> <a href="Z/Changes_from_version_0.8.0.1_to_version_0.8.0.2.html" title="Z/Changes from version 0.8.0.1 to version 0.8.0.2">z/Changes from version 0.8.0.1 to version 0.8.0.2</a>
+</li><li> <a href="Z/Changes_from_version_0.8.0_to_version_0.8.0.1.html" title="Z/Changes from version 0.8.0 to version 0.8.0.1">z/Changes from version 0.8.0 to version 0.8.0.1</a>
+</li></ul>
+<p><br />
+</p>
+<ul><li> <a href="Z/Changes_from_version_0.7.0_to_version_pre0.8.html" title="Z/Changes from version 0.7.0 to version pre0.8">z/Changes from version 0.7.0 to version pre0.8</a>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 88/1000000
+Post-expand include size: 1694/2097152 bytes
+Template argument size: 449/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:10-0!1!0!!en!2!edit=0 and timestamp 20120718055947 -->
+</div><hr/><div id="lastmod">This page was last modified on 9 July 2012, at 10:57.</div>

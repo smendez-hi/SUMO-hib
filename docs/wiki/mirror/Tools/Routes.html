@@ -1,0 +1,120 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Tools/Routes</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>The tools' names accord to their function.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#randomDepart.py"><span class="tocnumber">1</span> <span class="toctext">randomDepart.py</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Description"><span class="tocnumber">1.1</span> <span class="toctext">Description</span></a></li>
+<li class="toclevel-2"><a href="#Acknowledgements"><span class="tocnumber">1.2</span> <span class="toctext">Acknowledgements</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#routecheck.py"><span class="tocnumber">2</span> <span class="toctext">routecheck.py</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Known_caveats"><span class="tocnumber">2.1</span> <span class="toctext">Known caveats</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#routes_Join.py"><span class="tocnumber">3</span> <span class="toctext">routes_Join.py</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="randomDepart.py" id="randomDepart.py"></a><h1> <span class="mw-headline">randomDepart.py</span></h1>
+<p>By using this Script we can increase the troughput (in terms of input vehicle volume accomodated by SUMO network in fixed time interval). By using this Script you can calibrate different traffic parameter based on the real traffic pattern (exponential distribution is closed to real pattern).  
+</p><p>"randomDepart" is a python Script which takes the input as a route file and generates the modified route file with depart time based on exponential distribution. And each time it generates the new traffic pattern.
+</p><p>How to Use: Go to Command prompt (supportable for python2X)
+</p><p>For assistance:
+</p>
+<pre>./randomDepart.py -h
+</pre>
+<p>or
+</p>
+<pre>./randomDepart.py --help
+</pre>
+<p>For using:
+</p>
+<pre>./randomDepart.py -r &lt;route-xml-file&gt; [-d] [-o &lt;output-xml-file&gt;]
+</pre>
+<p>or
+</p>
+<pre>./randomDepart.py --route-file &lt;route-xml-file&gt; [--depart-lane] \
+  [--output-route-file &lt;output-xml-file&gt;]
+</pre>
+<p>value under [] is optional
+</p>
+<a name="Description" id="Description"></a><h2> <span class="mw-headline">Description</span></h2>
+<p>"randomDepart" is designed in such a way to reduce the overall complexity and increase the efficiency. Although it is having some constraint but still enough powerfull to serve transportation perspective.
+</p><p>It takes the input file in such a way where mandatory fields considered at the time of modification are:
+</p>
+<pre class="xml">
+&lt;routes&gt;
+   &lt;vehicle id=&quot;&quot; type=&quot;&quot; depart=&quot;&quot;&gt; &lt;route edges=&quot;&quot;/&gt; &lt;/vehicle&gt;
+   ...
+&lt;/routes&gt;
+</pre>
+<p>These are the parameter considered based on the necessity for calibration of traffic parameter. 
+</p><p>One optional parameter is DEPRTLANE which you can also override at the time of modification with option -d if this option is optional argument, if provided then DEPARTLANE=FREE for all lanes will be set otherwise FALSE.
+</p><p>The last parameter is output file [optional if not provided DEFAULT is "out.rou.xml", will be generated].
+so the output file may be in the form-
+</p>
+<pre class="xml">
+&lt;routes&gt;
+   &lt;vehicle id=&quot;&quot; type=&quot;&quot; depart=&quot;&quot; [departlane=&quot;&quot;]&gt; &lt;route edges=&quot;&quot;/&gt; &lt;/vehicle&gt;
+   ...
+&lt;/routes&gt;
+</pre>
+<p>Dump: you can also take the dump of modified depart time in excel file by just enabling the commented part in the python script. the all necessary things you need is xlwt package to write into excel file.
+</p>
+<a name="Acknowledgements" id="Acknowledgements"></a><h2> <span class="mw-headline">Acknowledgements</span></h2>
+<p>The script was written by Ashutosh Bajpai.
+</p>
+<a name="routecheck.py" id="routecheck.py"></a><h1> <span class="mw-headline">routecheck.py</span></h1>
+<p>Allows to verify whether routes within the given route-file(s) are valid for the given network. Call(s):
+</p>
+<pre>routecheck.py &lt;net&gt; &lt;vehicletypes&gt; [-f|--fix] &lt;routes&gt;+
+</pre>
+<pre>routecheck.py &lt;net&gt; &lt;vehicletypes+routes&gt;
+</pre>
+<p>If a route is broken (a diconnected), the tool writes something like the following to cout:
+<a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=Template:Warning&amp;action=edit&amp;redlink=1" class="new" title="Template:Warning (page does not exist)">Template:Warning</a>
+</p><p>If <b>--fix</b> (<b>-f</b>) is given, routes are tried to be repaired (assuming only one link is missing). The name of the output file(s) is generated by appending ".fixed". These file contain repaired routes (if it was possible), each appended link is written in comments after the vehicle.
+</p>
+<a name="Known_caveats" id="Known_caveats"></a><h2> <span class="mw-headline">Known caveats</span></h2>
+<ul><li> The tool does not deal with vehicle types; it only checks whether routes are connected
+</li><li> When working in <b>--fix</b>-mode a vehicle type file must be given
+</li><li> No tests for dealing with networks that have internal edges
+</li></ul>
+<p><br />
+</p>
+<a name="routes_Join.py" id="routes_Join.py"></a><h1> <span class="mw-headline">routes_Join.py</span></h1>
+<p>Joins routes belonging to two networks.
+A map file with the following syntax is read first:
+</p>
+<pre>&lt;EDGE_ID&gt;-&gt;&lt;EDGE_ID&gt;
+</pre>
+<p>It describes at which edges the networks overlapped and which edge  was kept in the resulting one.
+Vehicles from both given route files starting at the first of those edges will be at first not regarded, but their routes are kept in memory. All other vehicles are kept, but if they pass one of the mapped edges, the route is continued by choosing a random route from the list of previously discarded ones which start at the corresponding edge.
+</p>
+<pre>routes_Join.py &lt;prefix#1&gt; &lt;routes#1&gt; &lt;prefix#2&gt; &lt;routes#2&gt; &lt;mapfile&gt;
+</pre>
+<ul><li> &lt;prefix#1&gt;: The prefix to use for vehicles from the first routes file
+</li><li> &lt;routes#1&gt;: The first routes file
+</li><li> &lt;prefix#2&gt;: The prefix to use for vehicles from the second routes file
+</li><li> &lt;routes#2&gt;: The second routes file
+</li><li> &lt;mapfile&gt;: The edge mapping
+</li></ul>
+<p>Attention! The routes are not sorted in time!
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 14/1000000
+Post-expand include size: 21/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:13-0!1!0!!en!2!edit=0 and timestamp 20120718063349 -->
+</div><hr/><div id="lastmod">This page was last modified on 12 September 2011, at 06:43.</div>

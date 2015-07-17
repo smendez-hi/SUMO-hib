@@ -1,0 +1,94 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Plane SUMO ID Commands Structure</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#General_Structure_of_Plain_SUMO_ID_Commands"><span class="tocnumber">1</span> <span class="toctext">General Structure of Plain SUMO ID Commands</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Value_Retrieval_Commands"><span class="tocnumber">1.1</span> <span class="toctext">Value Retrieval Commands</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Command_to_SUMO"><span class="tocnumber">1.1.1</span> <span class="toctext">Command to SUMO</span></a></li>
+<li class="toclevel-3"><a href="#Answer_from_SUMO"><span class="tocnumber">1.1.2</span> <span class="toctext">Answer from SUMO</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="#State_Change_Commands"><span class="tocnumber">1.2</span> <span class="toctext">State Change Commands</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Command_to_SUMO_2"><span class="tocnumber">1.2.1</span> <span class="toctext">Command to SUMO</span></a></li>
+<li class="toclevel-3"><a href="#Answer_from_SUMO_2"><span class="tocnumber">1.2.2</span> <span class="toctext">Answer from SUMO</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="General_Structure_of_Plain_SUMO_ID_Commands" id="General_Structure_of_Plain_SUMO_ID_Commands"></a><h1> <span class="mw-headline"> General Structure of Plain SUMO ID Commands </span></h1>
+<p>All second generation API commands and its answers have the same structure which will be described here.
+</p>
+<a name="Value_Retrieval_Commands" id="Value_Retrieval_Commands"></a><h2> <span class="mw-headline"> Value Retrieval Commands </span></h2>
+<p>These commands ask SUMO about a special property value of a certain object.
+</p>
+<a name="Command_to_SUMO" id="Command_to_SUMO"></a><h3> <span class="mw-headline"> Command to SUMO </span></h3>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> variable
+</th><th style="border: 1pt solid;"> SUMO ID
+</th></tr></table>
+<p>The variable depends on the particular command and selects a special value. They are described in the documentation of the particular command. The SUMO ID is the ID of the object from which you want to know the value. Which type of object it belongs to depends on the particular command.
+</p><p><br />
+</p>
+<a name="Answer_from_SUMO" id="Answer_from_SUMO"></a><h3> <span class="mw-headline"> Answer from SUMO </span></h3>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td width="75" align="center"> ubyte
+</td><td width="75" align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td width="75" align="center"> &lt;return_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> variable
+</th><th style="border: 1pt solid;"> SUMO ID
+</th><th style="border: 1pt solid;"> return type of the variable
+</th><th style="border: 1pt solid;"> &lt;VARIABLE_VALUE&gt;
+</th></tr></table>
+<p>Variable and SUMO ID repeat the values from the command. The return type depends on the variable and can be either a general TraCI data type described <a href="../TraCI/Protocol.html#Data_types" title="TraCI/Protocol">here</a> or a special compound type for this variable which is documented with the particular command.
+</p><p><br />
+</p>
+<a name="State_Change_Commands" id="State_Change_Commands"></a><h2> <span class="mw-headline"> State Change Commands </span></h2>
+<p>These commands are the opposites of the value retrieval commands above. They set a certain value of a particular object.
+</p>
+<a name="Command_to_SUMO_2" id="Command_to_SUMO_2"></a><h3> <span class="mw-headline"> Command to SUMO </span></h3>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td align="center"> &lt;value_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> variable
+</th><th style="border: 1pt solid;"> SUMO ID
+</th><th style="border: 1pt solid;"> type of the value
+</th><th style="border: 1pt solid;"> new value
+</th></tr></table>
+<p>Additional to variable and SUMO ID like the value retrieval commands we have a value type and the value itself similar to the answer of the value retrieval commands. The allowed types depend on the variable which itself depends on the command. See documentation of the particular command for details.
+</p>
+<a name="Answer_from_SUMO_2" id="Answer_from_SUMO_2"></a><h3> <span class="mw-headline"> Answer from SUMO </span></h3>
+<p>The answer to a state change command always consists only of the status response described <a href="../TraCI/Protocol.html#Status_Response" title="TraCI/Protocol">here</a>. Nothing else will be returned.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 8/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:326-0!1!0!!en!2!edit=0 and timestamp 20120718063409 -->
+</div><hr/><div id="lastmod">This page was last modified on 19 February 2010, at 15:50.</div>

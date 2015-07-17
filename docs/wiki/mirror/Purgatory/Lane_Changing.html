@@ -1,0 +1,122 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Purgatory/Lane Changing</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Theory"><span class="tocnumber">1</span> <span class="toctext">Theory</span></a></li>
+<li class="toclevel-1"><a href="#Navigation_Level"><span class="tocnumber">2</span> <span class="toctext">Navigation Level</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Best_Lanes_Structure"><span class="tocnumber">2.1</span> <span class="toctext">Best Lanes Structure</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Introduction"><span class="tocnumber">2.1.1</span> <span class="toctext">Introduction</span></a></li>
+<li class="toclevel-3"><a href="#Computation"><span class="tocnumber">2.1.2</span> <span class="toctext">Computation</span></a>
+<ul>
+<li class="toclevel-4"><a href="#Speed-Up_Possibilities"><span class="tocnumber">2.1.2.1</span> <span class="toctext">Speed-Up Possibilities</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Tactical_Level"><span class="tocnumber">3</span> <span class="toctext">Tactical Level</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Special_Cases"><span class="tocnumber">3.1</span> <span class="toctext">Special Cases</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Leaving_place_in_case_of_counter-changes"><span class="tocnumber">3.1.1</span> <span class="toctext">Leaving place in case of counter-changes</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Control_Level"><span class="tocnumber">4</span> <span class="toctext">Control Level</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Theory" id="Theory"></a><h1> <span class="mw-headline">Theory</span></h1>
+<a name="Navigation_Level" id="Navigation_Level"></a><h1> <span class="mw-headline">Navigation Level</span></h1>
+<a name="Best_Lanes_Structure" id="Best_Lanes_Structure"></a><h2> <span class="mw-headline">Best Lanes Structure</span></h2>
+<a name="Introduction" id="Introduction"></a><h3> <span class="mw-headline">Introduction</span></h3>
+<p>The used networks consist of edges of different lengths and connections - possibilities to reach a consecutive edge - between them. When moving through the network, a vehicle (driver) has to know which lanes of an edge may be used in order to continue its ride. Otherwise - if standing on a lane from which the next edge within its route can not be reached - it will stay at the edge's end. As a conclusion, lane changing is highly dependent on the knowledge about which lanes may be used for continuing the ride. The following nomenclature will be used:
+</p>
+<ul><li> "<i>allowed lane</i>": a lane which allows to move to the next edge (without a lane change)
+</li><li> "<i>best lane</i>": the allowed lane which allows the longest continued travel on allowed lanes without a lane change
+</li></ul>
+<p>The information about which lanes are the best ones for continuing the ride is stored for each vehicle individually in <code>std::vector&lt;std::vector&lt;LaneQ&gt; &gt; MSVehicle::myBestLanes</code>. Each vehicle must store the information for itself as this information depends on the vehicle's route, and, as later seen, on the density in front of the vehicle. The storage saves the information about the "best" lanes along the edges of the route, starting at the edge the vehicle is currently on. For each edge, the information about each of the edge's lanes is stored, starting at the rightmost one. To be exact:
+</p>
+<ul><li> myBestLanes[0] describes the lanes of the current edge (the edge the vehicle is standing on)
+</li><li> myBestLanes[1] describes the lanes of the next edge in route
+</li></ul>
+<p>etc.
+</p>
+<ul><li> myBestLanes[0][0] describes the rightmost lane of the current edge
+</li><li> myBestLanes[1][1] describes the second lane of the next edge
+</li></ul>
+<p>The structure itself - LaneQ - is defined as following:
+</p>
+<pre>struct LaneQ {
+    /// @brief The described lane
+    MSLane *lane;
+    /// @brief The overall length which may be driven when using this lane without a lane change
+    SUMOReal length;
+    /// @brief The overall vehicle sum on consecutive lanes which can be passed without a lane change
+    SUMOReal occupation;
+    /// @brief As occupation, but without the first lane
+    SUMOReal nextOccupation;
+    /// @brief The (signed) number of lanes to be crossed to get to the lane which allows to continue the drive
+    int bestLaneOffset;
+    /// @brief Whether this lane allows to continue the drive
+    bool allowsContinuation;
+    /// @brief Consecutive lane that can be followed without a lane change (contribute to length and occupation)
+    std::vector&lt;MSLane*&gt; bestContinuations;
+};
+</pre>
+<a name="Computation" id="Computation"></a><h3> <span class="mw-headline">Computation</span></h3>
+<p>myBestlanes is re-computed under following circumstances:
+</p>
+<ul><li> The vehicle wants to enter the network - as it needs the information about next lanes for computing the allowed speed
+</li><li> The vehicle moves one edge further - as the whole structure shifts
+</li><li> The vehicle is leaving a stop; during the computation, the lane the vehicle wants to stop at is regarded and when leaving the stop, best lanes have to be recomputed as they point no longer to this stopping lane but to one that allows to continue the ride
+</li></ul>
+<p>Additionally, the dynamic information contained in LaneQ is updated in each time step:
+</p>
+<ul><li> nextOccupation
+</li></ul>
+<p>These steps are always performed before the lane change algorithm starts.
+</p>
+<a name="Speed-Up_Possibilities" id="Speed-Up_Possibilities"></a><h4> <span class="mw-headline">Speed-Up Possibilities</span></h4>
+<ul><li> Do not compute the whole structure, but only necessary edges by removing the first ones and appending the missing
+</li><li> Do not go through all nextLanes for finding a connection, but store (type-dependent) next lanes in a lane and go through them
+</li><li> Compute some more values in the first (forward) step and save them for late use in the backwards-step
+</li></ul>
+<p><br />
+</p>
+<a name="Tactical_Level" id="Tactical_Level"></a><h1> <span class="mw-headline">Tactical Level</span></h1>
+<a name="Special_Cases" id="Special_Cases"></a><h2> <span class="mw-headline">Special Cases</span></h2>
+<a name="Leaving_place_in_case_of_counter-changes" id="Leaving_place_in_case_of_counter-changes"></a><h3> <span class="mw-headline">Leaving place in case of counter-changes</span></h3>
+<p>It may happen that two vehicles, running on neighbor lanes, want both to change to the one the other is at. As long as they run besides each other with similar speed, this would not work. The result is a dead-lock at the lanes' ends - each of both vehicles can not drive further from his lane, and can not change to the allowed lane as it is occupied by the other vehicles.
+</p><p>One attempt to solve this problem is to:
+</p>
+<ul><li> If a vehicle wants to change a lane and is blocked by a leading vehicle which wants to change to his lane, it stores this leading vehicle's length, and the space left on the allowed lane in internal variables
+</li><li> If it comes to speed adaptation, the vehicle checks whether it wants to change and has a blocking leader and whether there is enough room for the blocked leader in front. If so, it computes the safe velocity to halt at the place which allows the leading vehicle to merge in. Now, this velocity is used if it is below the vehicle's wanted velocity - if it is approaching the end of the lane, needing a lane change.
+</li></ul>
+<p>The leading vehicle is performing normal operations, as it has not the leading length set.
+</p><p>Currently not implemented / open issues:
+</p>
+<ul><li> The distance to the lane's end is stored, not regarding the occupation in front of the vehicle. Maybe, this even is not incorrect - as the vehicles in front would simply continue they ride, making the place available for the vehicle to merge. 
+</li><li> There is a magic number (length) of 1m added to the space needed by the leading vehicle that shall merge in
+</li><li> What happens if the leader has a leading length set? Will it be resolved as at least one of the vehicles will become a new leader?
+</li></ul>
+<a name="Control_Level" id="Control_Level"></a><h1> <span class="mw-headline">Control Level</span></h1>
+<p>As vehicles are always running at the center of a lane and lane changes are done discrete, the control level is not considered.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 11/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:344-0!1!0!!en!2!edit=0 and timestamp 20120718063256 -->
+</div><hr/><div id="lastmod">This page was last modified on 12 September 2011, at 08:30.</div>

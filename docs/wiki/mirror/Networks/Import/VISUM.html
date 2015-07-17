@@ -1,0 +1,167 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Networks/Import/VISUM</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p><a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> can import native <a href="http://www.ptvag.com/traffic/software/visum/" class="external text" title="http://www.ptvag.com/traffic/software/visum/" rel="nofollow">VISUM</a>-network files. Their extension is ".net". If you do not have a file with this extension, but a ".ver"-file only, you have to generate the ".net"-file using <a href="http://www.ptvag.com/traffic/software/visum/" class="external text" title="http://www.ptvag.com/traffic/software/visum/" rel="nofollow">VISUM</a> by exporting it from the loaded version description (".ver"-file).
+</p><p>The option to load a <a href="http://www.ptvag.com/traffic/software/visum/" class="external text" title="http://www.ptvag.com/traffic/software/visum/" rel="nofollow">VISUM</a> ".net"-file into <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> in order to convert it into a SUMO-network is named <span style="color: #111144; font-weight: bold; white-space: pre;">--visum-file <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> or <span style="color: #111144; font-weight: bold; white-space: pre;">--visum <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span> for short. So, the following call to <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> imports the road network stored in "my_visum_net.net" and stores the SUMO-network generated from this data into "my_sumo_net.net.xml":
+</p>
+<pre>netconvert --visum my_visum_net.net -o my_sumo_net.net.xml
+</pre>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Import_Coverage"><span class="tocnumber">1</span> <span class="toctext">Import Coverage</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Lane_Number"><span class="tocnumber">1.1</span> <span class="toctext">Lane Number</span></a></li>
+<li class="toclevel-2"><a href="#Dealing_with_Connectors"><span class="tocnumber">1.2</span> <span class="toctext">Dealing with Connectors</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#See_also"><span class="tocnumber">2</span> <span class="toctext">See also</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Importing_other_data_from_VISUM"><span class="tocnumber">2.1</span> <span class="toctext">Importing other data from VISUM</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#References"><span class="tocnumber">3</span> <span class="toctext">References</span></a></li>
+<li class="toclevel-1"><a href="#Missing"><span class="tocnumber">4</span> <span class="toctext">Missing</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Import_Coverage" id="Import_Coverage"></a><h1> <span class="mw-headline">Import Coverage</span></h1>
+<p>The following table shows which information is parsed from a given VISUM network.
+</p><p><b>Information <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> reads from VISUM networks</b>
+</p>
+<table cellspacing="0" border="1" width="90%" align="center">
+
+<tr>
+<th style="background:#ffdead;"> Table name
+</th><th style="background:#ffdead;"> Imported attributes
+</th><th style="background:#ffdead;"> Description
+</th></tr>
+<tr>
+<td valign="top"> VSYS
+</td><td valign="top"> VSysCode (CODE)<br />VSysMode (TYP)
+</td><td valign="top"> Traffic modes
+</td></tr>
+<tr>
+<td valign="top"> STRECKENTYP
+</td><td valign="top"> Nr<br />v0-IV (V0IV)<br />Rang<br />Kap-IV (KAPIV)
+</td><td valign="top"> Edge types
+</td></tr>
+<tr>
+<td valign="top"> KNOTEN
+</td><td valign="top"> Nr<br />XKoord<br />YKoord
+</td><td valign="top"> Nodes
+</td></tr>
+<tr>
+<td valign="top"> BEZIRK
+</td><td valign="top"> Nr<br />NAME (unused later)<br />Proz_Q<br />Proz_Z<br />XKoord<br />YKoord
+</td><td valign="top"> Districts
+</td></tr>
+<tr>
+<td valign="top"> STRECKE (STRECKEN)
+</td><td valign="top"> Nr<br />VonKnot (VonKnotNr)<br />NachKnot (NachKnotNr)<br />Typ (TypNr)<br />Einbahn
+</td><td valign="top"> Edges
+</td></tr>
+<tr>
+<td valign="top"> ANBINDUNG
+</td><td valign="top"> BezNr<br />KnotNr<br />Proz<br />t0-IV<br />Typ<br />Richtung
+</td><td valign="top"> District connections
+</td></tr>
+<tr>
+<td valign="top"> ABBIEGEBEZIEHUNG (ABBIEGER)
+</td><td valign="top"> VonKnot (VonKnotNr)<br />UeberKnot (UeberKnotNr)<br />NachKnot (NachKnotNr)<br />VSysCode (VSYSSET)
+</td><td valign="top"> Edge Connections
+</td></tr>
+<tr>
+<td valign="top"> STRECKENPOLY
+</td><td valign="top"> VonKnot (VonKnotNr)<br />NachKnot (NachKnotNr)<br />INDEX<br />XKoord<br />YKoord
+</td><td valign="top"> Edge geometries
+</td></tr>
+<tr>
+<td valign="top"> FAHRSTREIFEN
+</td><td valign="top"> KNOTNR<br />STRNR<br />FSNR<br />RICHTTYP<br />LAENGE
+</td><td valign="top"> Lane descriptions
+</td></tr>
+<tr>
+<td valign="top"> LSA (SIGNALANLAGE)
+</td><td valign="top"> Nr<br />Umlaufzeit (UMLZEIT)<br />StdZwischenzeit (STDZWZEIT)<br />PhasenBasiert
+</td><td valign="top"> Traffic lights
+</td></tr>
+<tr>
+<td valign="top"> KNOTENZULSA (SIGNALANLAGEZUKNOTEN)
+</td><td valign="top"> KnotNr<br />LsaNr
+</td><td valign="top"> Nodes-&gt;TLS
+</td></tr>
+<tr>
+<td valign="top"> LSASIGNALGRUPPE (SIGNALGRUPPE)
+</td><td valign="top"> Nr<br />LsaNr<br />GzStart (GRUENANF)<br />GzEnd (GRUENENDE)<br />GELB
+</td><td valign="top"> Signal groups
+</td></tr>
+<tr>
+<td valign="top"> ABBZULSASIGNALGRUPPE (SIGNALGRUPPEZUABBIEGER)
+</td><td valign="top"> SGNR (SIGNALGRUPPENNR)<br />LsaNr<br />VonKnot / VONSTRNR<br />NachKnot / NACHSTRNR<br />UeberKnot (UeberKnotNr)<br />LsaNr
+</td><td valign="top"> Edge connections-&gt;TLS
+</td></tr>
+<tr>
+<td valign="top"> LSAPHASE (PHASE)
+</td><td valign="top"> Nr<br />LsaNr<br />GzStart (GRUENANF)<br />GzEnd (GRUENENDE)
+</td><td valign="top"> Signal phases
+</td></tr>
+<tr>
+<td valign="top"> LSASIGNALGRUPPEZULSAPHASE
+</td><td valign="top"> PsNr<br />LsaNr<br />SGNR
+</td><td valign="top"> Signal groups-&gt;phases
+</td></tr>
+<tr>
+<td valign="top"> FAHRSTREIFENABBIEGER
+</td><td valign="top"> KNOT (KNOTNR)<br />VONSTR (VONSTRNR)<br />NACHSTR (NACHSTRNR)<br />VONFSNR<br />NACHFSNR
+</td><td valign="top"> Lane-to-lane descriptions
+</td></tr></table>
+<p>Well, basically that's all for network import, isn't it? Well, actually not. In the following, the basic possibilities and further advices and tricks for working with these is described.
+</p>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />"Rang" from "Streckentypen" is used as edge priority information. As streets with a lower "Rang" are normally higher priorised, an edge type's priority is computed as 100-Rang</div>
+<a name="Lane_Number" id="Lane_Number"></a><h2> <span class="mw-headline">Lane Number</span></h2>
+<p><a href="http://www.ptvag.com/traffic/software/visum/" class="external text" title="http://www.ptvag.com/traffic/software/visum/" rel="nofollow">VISUM</a> does not work with the lane numbers of streets, instead, the streets' capacities are used. This means that under circumstances the informationabout the edges' lane numbers are missing. Still, one can try to obtain the lane number from the given edges' capacities. An approximation is:
+</p>
+<pre>LANE_NUMBER = MAXIMUM_FLOW / CAPACITY_NORM
+</pre>
+<p>The value of CAPACITY_NORM is controlled via the option <span style="color: #111144; font-weight: bold; white-space: pre;">--capacity-norm <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FLOAT&gt;</i></a></span> (default: 1800).
+</p><p>In the case the "<i>ANZFAHRSTREIFEN</i>" (lane numbers) field within the net's "<i>STRECKEN</i>" (edges)-table is empty, and also the types do not hold any information about the according edges' lane numbers, this conversion is done automatically. Still, we also had <a href="http://www.ptvag.com/traffic/software/visum/" class="external text" title="http://www.ptvag.com/traffic/software/visum/" rel="nofollow">VISUM</a> nets in our hands, where a capacity was given, but the lane number field was set to 1 for all edges. In this case, one has to force <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> to ignore the lane number attribute and use the capacity. This is done by using the option <b>--visum.recompute-laneno</b>.
+</p>
+<a name="Dealing_with_Connectors" id="Dealing_with_Connectors"></a><h2> <span class="mw-headline">Dealing with Connectors</span></h2>
+<p><a href="http://www.ptvag.com/traffic/software/visum/" class="external text" title="http://www.ptvag.com/traffic/software/visum/" rel="nofollow">VISUM</a> as a macroscopic tool, does not regard single vehicles. As one consequence, <a href="http://www.ptvag.com/traffic/software/visum/" class="external text" title="http://www.ptvag.com/traffic/software/visum/" rel="nofollow">VISUM</a> uses "connections" through which traffic is fed from the districts into the network.
+</p><p>The <a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=MacroDemandAndMicroSim&amp;action=edit&amp;redlink=1" class="new" title="MacroDemandAndMicroSim (page does not exist)">effects on using such connectors within a microscopic simulations should be described at a different page</a>. Here, we want to show the possibilities to change the connector attributes using <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>.
+</p>
+<a name="See_also" id="See_also"></a><h1> <span class="mw-headline">See also</span></h1>
+<p><a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> is able to guess some information which is sometimes missing in imported networks. Below, you may find links to further information of interest.
+</p>
+<ul><li> Most <a href="http://www.ptvag.com/traffic/software/visum/" class="external text" title="http://www.ptvag.com/traffic/software/visum/" rel="nofollow">VISUM</a> networks do not contain definitions of traffic lights positions; Still, <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> is able to <a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=NETCONVERT_GuessingTlsPositions&amp;action=edit&amp;redlink=1" class="new" title="NETCONVERT GuessingTlsPositions (page does not exist)">guess tls positions</a> and to <a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=TCONVERT_GuessingTlsPrograms&amp;action=edit&amp;redlink=1" class="new" title="TCONVERT GuessingTlsPrograms (page does not exist)">guess tls programs</a>.
+</li><li> Also, we have not seen a <a href="http://www.ptvag.com/traffic/software/visum/" class="external text" title="http://www.ptvag.com/traffic/software/visum/" rel="nofollow">VISUM</a> network where on- and off-ramps where available for highways. <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a> is able to <a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=NETCONVERT_GuessingRamps&amp;action=edit&amp;redlink=1" class="new" title="NETCONVERT GuessingRamps (page does not exist)">guess on- and off-ramps</a>.
+</li><li> In addition to the network, further descriptions of <a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=NETCONVERT_SettingConnections&amp;action=edit&amp;redlink=1" class="new" title="NETCONVERT SettingConnections (page does not exist)">lane-to-lane or edge-to-edge connections</a> may be read.
+</li></ul>
+<p>Other possibilities of <a href="../../NETCONVERT.html" title="NETCONVERT">NETCONVERT</a>, such as projection of geo-coordinates, should not apply when working with <a href="http://www.ptvag.com/traffic/software/visum/" class="external text" title="http://www.ptvag.com/traffic/software/visum/" rel="nofollow">VISUM</a> networks.
+</p>
+<a name="Importing_other_data_from_VISUM" id="Importing_other_data_from_VISUM"></a><h2> <span class="mw-headline">Importing other data from VISUM</span></h2>
+<p><a href="http://www.ptvag.com/traffic/software/visum/" class="external text" title="http://www.ptvag.com/traffic/software/visum/" rel="nofollow">VISUM</a> uses O/D-matrices as a demand descriptions. There is some further information on <a href="../../Demand/Importing_O/D_Matrices.html" title="Demand/Importing O/D Matrices">Demand/Importing O/D Matrices</a>.
+</p>
+<a name="References" id="References"></a><h1> <span class="mw-headline">References</span></h1>
+<ul><li> <a href="http://www.ptvag.com/software/transportation-planning-traffic-engineering/software-system-solutions/visum/visum/" class="external text" title="http://www.ptvag.com/software/transportation-planning-traffic-engineering/software-system-solutions/visum/visum/" rel="nofollow">PTV AG's VISUM-page</a> (06.09.2011)
+</li></ul>
+<a name="Missing" id="Missing"></a><h1> <span class="mw-headline">Missing</span></h1>
+<ul><li> Attributes of connectors
+</li><li> Importing POIs/Shapes
+</li><li> what is exactly imported (how edge attributes are determined)
+</li><li> other traffic modes
+</li><li> Network quality
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 33/1000000
+Post-expand include size: 884/2097152 bytes
+Template argument size: 369/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:101-0!1!0!!en!2!edit=0 and timestamp 20120717235329 -->
+</div><hr/><div id="lastmod">This page was last modified on 19 March 2012, at 14:24.</div>

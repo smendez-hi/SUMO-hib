@@ -1,0 +1,172 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Networks/Import/OpenStreetMapDownload</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>From <a href="http://www.openstreetmap.org/" class="external free" title="http://www.openstreetmap.org/" rel="nofollow">http://www.openstreetmap.org/</a>:
+</p>
+<blockquote>
+<i>"<a href="http://www.openstreetmap.org/" class="external text" title="http://www.openstreetmap.org/" rel="nofollow">OpenStreetMap</a> is a free editable map of the whole world. It is made by people like you."</i> 
+
+<i>"<a href="http://www.openstreetmap.org/" class="external text" title="http://www.openstreetmap.org/" rel="nofollow">OpenStreetMap</a> creates and provides free geographic data such as street maps to anyone who wants them. The project was started because most maps you think of as free actually have legal or technical restrictions on their use, holding back people from using them in creative, productive, or unexpected ways."</i>
+</blockquote>
+<p>The amount of data contained within <a href="http://www.openstreetmap.org/" class="external text" title="http://www.openstreetmap.org/" rel="nofollow">OpenStreetMap</a>, and their quality, is really amazing. Even though no demand data is available, the quality of the road networks makes it worth to regard <a href="http://www.openstreetmap.org/" class="external text" title="http://www.openstreetmap.org/" rel="nofollow">OpenStreetMap</a> as a data source for traffic simulations, especially if one is interested in multi- or inter-modal simulations.
+</p><p>This page describes how OpenStreetMap data can be obtained. OSM data must be converted before it can be used with Sumo (see <a href="../../Networks/Import/OpenStreetMap.html" title="Networks/Import/OpenStreetMap">Networks/Import/OpenStreetMap</a>). The page <a href="../../OpenStreetMap_file.html" title="OpenStreetMap file">OpenStreetMap file</a> gives further general information on the data format.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#OpenStreetMap_API"><span class="tocnumber">1</span> <span class="toctext">OpenStreetMap API</span></a></li>
+<li class="toclevel-1"><a href="#Downloading_a_City"><span class="tocnumber">2</span> <span class="toctext">Downloading a City</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Obtaining_an_area_Id"><span class="tocnumber">2.1</span> <span class="toctext">Obtaining an area Id</span></a></li>
+<li class="toclevel-2"><a href="#Downloading_an_area_by_Id"><span class="tocnumber">2.2</span> <span class="toctext">Downloading an area by Id</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Downloading_a_Rectangular_Area"><span class="tocnumber">3</span> <span class="toctext">Downloading a Rectangular Area</span></a></li>
+<li class="toclevel-1"><a href="#Downloading_a_Rectangular_Area_Using_the_command_line"><span class="tocnumber">4</span> <span class="toctext">Downloading a Rectangular Area Using the command line</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Obtain_the_geo-coordinates"><span class="tocnumber">4.1</span> <span class="toctext">Obtain the geo-coordinates</span></a></li>
+<li class="toclevel-2"><a href="#Download_the_area"><span class="tocnumber">4.2</span> <span class="toctext">Download the area</span></a></li>
+<li class="toclevel-2"><a href="#Downloading_a_large_area"><span class="tocnumber">4.3</span> <span class="toctext">Downloading a large area</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="OpenStreetMap_API" id="OpenStreetMap_API"></a><h1> <span class="mw-headline">OpenStreetMap API</span></h1>
+<p>OSM-data can be downloaded using a web browser or preferably with a program such as <a href="http://wget.addictivecode.org/" class="external text" title="http://wget.addictivecode.org/" rel="nofollow">wget</a>.
+For detailed information refer to the <a href="http://wiki.openstreetmap.org/wiki/API" class="external text" title="http://wiki.openstreetmap.org/wiki/API" rel="nofollow">API overview</a> 
+</p>
+<a name="Downloading_a_City" id="Downloading_a_City"></a><h1> <span class="mw-headline">Downloading a City</span></h1>
+<p>Modelling a single city is a common simulation use case. <a href="http://78.46.81.38/" class="external text" title="http://78.46.81.38/" rel="nofollow">OSM Server Side Script (OSM3S)</a> provides a comfortable interface to obtain the road network and infrastructure within a city boundry (or other administrative region).
+</p><p>This is two step Process: First you must obtain the Id (Identification Number) of the area you want to download. Then you can use that Id to download the area.
+</p>
+<a name="Obtaining_an_area_Id" id="Obtaining_an_area_Id"></a><h2> <span class="mw-headline">Obtaining an area Id</span></h2>
+<p>Copy the following query into the input box on the the <a href="http://78.46.81.38/" class="external text" title="http://78.46.81.38/" rel="nofollow">OSM3S page</a>. Replace <i>Berlin</i> by the city name of your choice and click the accompanying button "Explore".
+</p>
+<pre class="xml">
+ &lt;query type=&quot;relation&quot;&gt;
+ &lt;has-kv k=&quot;boundary&quot; v=&quot;administrative&quot;/&gt;
+ &lt;has-kv k=&quot;name&quot; v=&quot;Berlin&quot;/&gt;
+ &lt;/query&gt;
+ &lt;print mode=&quot;body&quot;/&gt;
+</pre>
+<p>This will prompt you to download or open a file containing the answer to your query. 
+</p>
+<pre class="xml">
+ &lt;relation id=&quot;62422&quot;&gt;
+   &lt;member type=&quot;way&quot; ref=&quot;36991886&quot; role=&quot;outer&quot;/&gt;
+   ...
+   &lt;member type=&quot;way&quot; ref=&quot;44020341&quot; role=&quot;outer&quot;/&gt;
+   &lt;tag k=&quot;de:amtlicher_gemeindeschluessel&quot; v=&quot;11&quot;/&gt;
+   &lt;tag k=&quot;TMC:cid_58:tabcd_1:LocationCode&quot; v=&quot;266&quot;/&gt;
+   &lt;tag k=&quot;type&quot; v=&quot;multipolygon&quot;/&gt;
+   &lt;tag k=&quot;boundary&quot; v=&quot;administrative&quot;/&gt;
+   &lt;tag k=&quot;admin_level&quot; v=&quot;4&quot;/&gt;
+   &lt;tag k=&quot;TMC:cid_58:tabcd_1:Class&quot; v=&quot;Area&quot;/&gt;
+   &lt;tag k=&quot;name&quot; v=&quot;Berlin&quot;/&gt;
+   &lt;tag k=&quot;source&quot; v=&quot;http://wiki.openstreetmap.org/wiki/Import/Catalogue/Kreisgrenzen_Deutschland_2005&quot;/&gt;
+   &lt;tag k=&quot;TMC:cid_58:tabcd_1:LCLversion&quot; v=&quot;9.00&quot;/&gt;
+ &lt;/relation&gt;
+ &lt;relation id=&quot;119876&quot;&gt;
+   &lt;member type=&quot;way&quot; ref=&quot;33628254&quot; role=&quot;outer&quot;/&gt;
+   &lt;tag k=&quot;tiger:PLACEFP&quot; v=&quot;07304&quot;/&gt;
+   &lt;tag k=&quot;tiger:PLACENS&quot; v=&quot;02403860&quot;/&gt;
+   &lt;tag k=&quot;tiger:PLCIDFP&quot; v=&quot;1307304&quot;/&gt;
+   &lt;tag k=&quot;wikipedia&quot; v=&quot;Berlin,_Georgia&quot;/&gt;
+   &lt;tag k=&quot;type&quot; v=&quot;multipolygon&quot;/&gt;
+   &lt;tag k=&quot;place&quot; v=&quot;city&quot;/&gt;
+   &lt;tag k=&quot;boundary&quot; v=&quot;administrative&quot;/&gt;
+   &lt;tag k=&quot;admin_level&quot; v=&quot;8&quot;/&gt;
+   &lt;tag k=&quot;name&quot; v=&quot;Berlin&quot;/&gt;
+   &lt;tag k=&quot;border_type&quot; v=&quot;city&quot;/&gt;
+   &lt;tag k=&quot;created_by&quot; v=&quot;polyshp2osm-multipoly&quot;/&gt;
+   &lt;tag k=&quot;source&quot; v=&quot;TIGER/Line® 2008 Place Shapefiles (http://www.census.gov/geo/www/tiger/)&quot;/&gt;
+   &lt;tag k=&quot;tiger:reviewed&quot; v=&quot;no&quot;/&gt;
+   &lt;tag k=&quot;is_in:country&quot; v=&quot;USA&quot;/&gt;
+   ...
+ &lt;/relation&gt;
+</pre>
+<p>The important parts of result data are the <code> &lt;relation id="..."&gt; </code> elements. This <code>id</code> attribute will be used to download the OSM-data for your chosen city. 
+</p><p><b>Important:</b> as in the <i>Berlin</i>-query above, there may be multiple results. Usually the accompanying tags will be sufficiently helpful to distinguish between <i>Berlin,Germany</i> and <i>Berlin,USA/Georgia</i>. If the output does not contain the region you were looking for, it might be helpful to add the type of region e.g. <i>Berlin, city</i>. If problems persist read on at the <a href="http://78.46.81.38/" class="external text" title="http://78.46.81.38/" rel="nofollow">OSM3S page</a>.
+</p>
+<a name="Downloading_an_area_by_Id" id="Downloading_an_area_by_Id"></a><h2> <span class="mw-headline">Downloading an area by Id</span></h2>
+<p>The Id obtained in the previous step for the city of <i>Berlin</i> was 62422. Technically this is only the Id of the <i>border</i> of Berlin and we must add the number 3,600,000,000 to obtain the Id of the area of berlin.
+<code>
+3,600,000,000 + 62,422 = 3,600,062,422
+</code>
+</p><p>Using this number we construct another query for an input box on the <a href="http://78.46.81.38/" class="external text" title="http://78.46.81.38/" rel="nofollow">OSM3S page</a>.
+</p>
+<pre class="xml">
+ &lt;osm-script timeout=&quot;180&quot; element-limit=&quot;20000000&quot;&gt;
+ &lt;union&gt;
+   &lt;area-query ref=&quot;3600062422&quot;/&gt;
+   &lt;recurse type=&quot;node-relation&quot; into=&quot;rels&quot;/&gt;
+   &lt;recurse type=&quot;node-way&quot;/&gt;
+   &lt;recurse type=&quot;way-relation&quot;/&gt;
+ &lt;/union&gt;
+ &lt;union&gt;
+   &lt;item/&gt;
+   &lt;recurse type=&quot;way-node&quot;/&gt;
+ &lt;/union&gt;
+ &lt;print mode=&quot;body&quot;/&gt;
+ &lt;/osm-script&gt;
+</pre>
+<p>Replace the number for the <code> &lt;area-query ref="..."&gt; </code> by the number from above and click the accompanying button "Download". This will prompt you to download or open a file containing the OSM-data for your city.
+</p><p><br />
+<b>Important:</b> For large cities you may have to adapt the values for <code>timeout</code> and <code>element-limit</code>.
+</p>
+<a name="Downloading_a_Rectangular_Area" id="Downloading_a_Rectangular_Area"></a><h1> <span class="mw-headline">Downloading a Rectangular Area</span></h1>
+<p>The <a href="http://josm.openstreetmap.de/" class="external text" title="http://josm.openstreetmap.de/" rel="nofollow">Java OpenStreetMap Editor (JOSM)</a> is a mature tool for handling OSM-data. It allows for comfortable downloading of rectangular areas using an interactive map. It even supports searching for an area by name (i.e. Berlin).
+</p>
+<a name="Downloading_a_Rectangular_Area_Using_the_command_line" id="Downloading_a_Rectangular_Area_Using_the_command_line"></a><h1> <span class="mw-headline">Downloading a Rectangular Area Using the command line</span></h1>
+<p>Downloading OSM-data via the command line is a two step process: First you must determine the geo-coordinates for your area. Then you can download OSM-data using those coordinates
+</p>
+<a name="Obtain_the_geo-coordinates" id="Obtain_the_geo-coordinates"></a><h2> <span class="mw-headline">Obtain the geo-coordinates</span></h2>
+<p>You need the (longitude, latitude)-numbers for the south-west corner and for the north-east corner of your chosen area.
+You can get them at <a href="http://www.openstreetmap.de/karte.html" class="external text" title="http://www.openstreetmap.de/karte.html" rel="nofollow">this page</a> by pointing your mouse at the appropriate map location and observing the coordinates in the status bar. The inner city of Berlin lies within the following coordinates:
+</p><p><code>
+</p>
+<pre> SW-corner: 13.278 52.473
+ NE-corner: 13.471 52.552
+</pre>
+<p></code>
+</p>
+<a name="Download_the_area" id="Download_the_area"></a><h2> <span class="mw-headline">Download the area</span></h2>
+<p>Construct an <a href="http://en.wikipedia.org/wiki/Uniform_Resource_Identifier" class="external text" title="http://en.wikipedia.org/wiki/Uniform_Resource_Identifier" rel="nofollow">URI (web adress)</a> from the geo-coordinates and download the data from that URI. The URI takes the following form:
+</p><p><code>
+<a href="http://api.openstreetmap.org/api/0.6/map?bbox=" class="external free" title="http://api.openstreetmap.org/api/0.6/map?bbox=" rel="nofollow">http://api.openstreetmap.org/api/0.6/map?bbox=</a>&lt;SW-longitude,SW-latitude,NE-longitude,NE-latitude&gt;
+</code>
+</p><p>for the above example this becomes
+<code>
+<a href="http://api.openstreetmap.org/api/0.6/map?bbox=13.278,52.473,13.471,52.552" class="external free" title="http://api.openstreetmap.org/api/0.6/map?bbox=13.278,52.473,13.471,52.552" rel="nofollow">http://api.openstreetmap.org/api/0.6/map?bbox=13.278,52.473,13.471,52.552</a>
+</code>
+</p><p>you can download your data by entering the URI in a web-browers or by using another program such as <a href="http://wget.addictivecode.org/" class="external text" title="http://wget.addictivecode.org/" rel="nofollow">wget</a>.
+</p><p><code>
+</p>
+<pre>wget.exe "<a href="http://api.openstreetmap.org/api/0.6/map?bbox=13.278,52.473,13.471,52.552" class="external free" title="http://api.openstreetmap.org/api/0.6/map?bbox=13.278,52.473,13.471,52.552" rel="nofollow">http://api.openstreetmap.org/api/0.6/map?bbox=13.278,52.473,13.471,52.552</a>" -O berlin.osm.xml
+</pre>
+<p></code>
+</p><p><b>Important:</b> the API version number <i>0.6</i> will eventually be outdated. Refer to the <a href="http://wiki.openstreetmap.org/wiki/API" class="external text" title="http://wiki.openstreetmap.org/wiki/API" rel="nofollow">openstreetmap API page</a> for the latest version..
+</p>
+<a name="Downloading_a_large_area" id="Downloading_a_large_area"></a><h2> <span class="mw-headline">Downloading a large area</span></h2>
+<p>The OpenStreetMap-API limit the size of an area to extract. The help script <i>osmGet.py</i> located within <i><b>&lt;SUMO_HOME&gt;</b></i>/tools/import/osm allows to extract a larger area by splitting the requests. The call is:
+</p>
+<pre>osmGet.py &lt;PREFIX&gt; &lt;BOUNDING_BOX&gt; &lt;TILES_NUMBER&gt;
+</pre>
+<p>The bounding box must be given as &lt;LAT_MIN&gt;,&lt;LONG_MIN&gt;,&lt;LAT_MAX&gt;,&lt;LONG_MAX&gt;. 
+</p>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />"wget" must be installed and located in the execution path.</div>
+<p>This script will extract OSM-data as <i>n</i> files with <i>n</i> =&lt;TILES_NUMBER&gt;, named "&lt;PREFIX&gt;&lt;INDEX&gt;_&lt;TILES_NUMBER&gt;.osm.xml". 
+These files can be imported by the scripts <i>osmBuild.Py</i> and <i>osmBuildPolys.py</i>, also located in <i><b>&lt;SUMO_HOME&gt;</b></i>/tools/import/osm. This is described in <a href="../../Networks/Import/OpenStreetMap.html#Import_Scripts" title="Networks/Import/OpenStreetMap">Networks/Import/OpenStreetMap#Import Scripts</a>.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 27/1000000
+Post-expand include size: 237/2097152 bytes
+Template argument size: 59/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:343-0!1!0!!en!2!edit=0 and timestamp 20120718063238 -->
+</div><hr/><div id="lastmod">This page was last modified on 6 February 2012, at 15:20.</div>

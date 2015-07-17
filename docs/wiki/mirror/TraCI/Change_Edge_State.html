@@ -1,0 +1,101 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Change Edge State</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Command_0xca:_Change_Edge_State" id="Command_0xca:_Change_Edge_State"></a><h1> <span class="mw-headline"> Command 0xca: Change Edge State </span></h1>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> ubyte
+</td><td align="center"> string
+</td><td width="150" align="center"> ubyte
+</td><td align="center"> &lt;value_type&gt;
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> Variable
+</th><th style="border: 1pt solid;"> Edge ID
+</th><th style="border: 1pt solid;"> Type of the value
+</th><th style="border: 1pt solid;"> New Value
+</th></tr></table>
+<p>Changes the state of an edge. Because it is possible to change different values of a edge, the number of parameter to supply and their types differ between commands. The following values can be changed, the parameter which must be given are also shown in the table.
+</p>
+<table border="2" cellspacing="0" cellpadding="4" rules="all">
+<caption> <b>Overview Changeable Edge Variables</b>
+</caption>
+<tr>
+<th> Variable
+</th><th> ValueType
+</th><th> Description
+</th></tr>
+<tr>
+<td> change global travel time information (0x58)
+</td><td> compound (begin time, end time, value), see below
+</td><td> Inserts the information about the travel time of the named edge valid from begin time to end time into the global edge weights times container.
+</td></tr>
+<tr>
+<td> change global effort information (0x59)
+</td><td> compound (begin time, end time, value), see below
+</td><td> Inserts the information about the effort of the named edge valid from begin time to end time into the global edge weights container.
+</td></tr>
+</table>
+<p><br />
+The message contents are as following:
+</p><p><b>change edge travel time information (0x58)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements (always=3)
+</th><th style="border: 1pt solid;"> value type <i>integer</i>
+</th><th style="border: 1pt solid;"> begin time (in s)
+</th><th style="border: 1pt solid;"> value type <i>integer</i>
+</th><th style="border: 1pt solid;"> end time (in s)
+</th><th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> travel time value (in s)
+</th></tr></table>
+<p><br />
+<b>change edge effort information (0x59)</b>
+</p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr>
+<td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> int
+</td><td align="center"> byte
+</td><td align="center"> double
+</td></tr>
+<tr>
+<th style="border: 1pt solid;"> value type <i>compound</i>
+</th><th style="border: 1pt solid;"> number of elements (always=3)
+</th><th style="border: 1pt solid;"> value type <i>integer</i>
+</th><th style="border: 1pt solid;"> begin time (in s)
+</th><th style="border: 1pt solid;"> value type <i>integer</i>
+</th><th style="border: 1pt solid;"> end time (in s)
+</th><th style="border: 1pt solid;"> value type <i>double</i>
+</th><th style="border: 1pt solid;"> effort value (abstract)
+</th></tr></table>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 2/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:300-0!1!0!!en!2!edit=0 and timestamp 20120718014906 -->
+</div><hr/><div id="lastmod">This page was last modified on 13 July 2011, at 14:05.</div>

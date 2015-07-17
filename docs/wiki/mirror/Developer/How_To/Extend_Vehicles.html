@@ -1,0 +1,89 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Developer/How To/Extend Vehicles</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>This brief document describes how the vehicle class can be extended. We will do this based on extending the vehicle by the capacity to transport persons.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Basics"><span class="tocnumber">1</span> <span class="toctext">Basics</span></a></li>
+<li class="toclevel-1"><a href="#I.2FO"><span class="tocnumber">2</span> <span class="toctext">I/O</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Writing_a_Vehicle"><span class="tocnumber">2.1</span> <span class="toctext">Writing a Vehicle</span></a></li>
+<li class="toclevel-2"><a href="#Loading"><span class="tocnumber">2.2</span> <span class="toctext">Loading</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Usage"><span class="tocnumber">3</span> <span class="toctext">Usage</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Basics" id="Basics"></a><h1> <span class="mw-headline">Basics</span></h1>
+<p>The main vehicle parameter are stored in src/utils/common/SUMOVehicleParameter. At first, we extend the class (.h) by two further parameter:
+</p>
+<pre>/// @brief The vehicle's capacity (persons)
+unsigned int personCapacity;
+
+/// @brief The number of persons in the vehicle
+unsigned int personNumber;
+</pre>
+<p>We also assign default values for those in the constructor (.cpp): 
+</p>
+<pre>... personCapacity(0), personNumber(0), ...
+</pre>
+<p>Our vehicles now have the attribute, and we can use it within the simulation as well as within the routing modules.
+</p>
+<a name="I.2FO" id="I.2FO"></a><h1> <span class="mw-headline">I/O</span></h1>
+<p>The vehicle parser stores whether an information is given or not, for writing it back if necessary. We have to define constants (bitset) which describe whether the value was given (.h):
+</p>
+<pre>const int VEHPARS_PERSON_CAPACITY_SET = 2 &lt;&lt; 14;
+const int VEHPARS_PERSONS_SET = 2 &lt;&lt; 15;
+</pre>
+<a name="Writing_a_Vehicle" id="Writing_a_Vehicle"></a><h2> <span class="mw-headline">Writing a Vehicle</span></h2>
+<p>We extend the vehicle writing method stored in void SUMOVehicleParameter::writeAs(...) const by the new attributes:
+</p>
+<pre>if (wasSet(VEHPARS_PERSON_CAPACITY_SET)) {
+ dev.writeAttr(SUMO_ATTR_PERSON_CAPACITY, personCapacity);
+}
+if (wasSet(VEHPARS_PERSON_NUMBER_SET)) {
+ dev.writeAttr(SUMO_ATTR_PERSON_NUMBER, personNumber);
+}
+</pre>
+<p>You may have noticed that we use the enumeration for two XML-attributes, here: "SUMO_ATTR_PERSON_CAPACITY" and "SUMO_ATTR_PERSON_NUMBER". They have to be defined in src/utils/xml/SUMOXMLDefinitions. In SUMOXMLDefinitions.h we have to extend SumoXMLAttr:
+</p>
+<pre>SUMO_ATTR_PERSON_CAPACITY,
+SUMO_ATTR_PERSON_NUMBER,
+</pre>
+<p>In SUMOXMLDefinitions.cpp we have to extend SumoXMLAttr, too:
+</p>
+<pre>{ "personCapacity", SUMO_ATTR_PERSON_CAPACITY },
+{ "personNumber",   SUMO_ATTR_PERSON_NUMBER },
+</pre>
+<p>The given strings will be later used as XML-attributes.
+</p>
+<a name="Loading" id="Loading"></a><h2> <span class="mw-headline">Loading</span></h2>
+<p>We then extend the vehicle parsing method. It is located in src/utils/xml/SUMOVehicleParserHelper. We have to add the parsing of the new attributes in void SUMOVehicleParserHelper::parseCommonAttributes(...)
+</p>
+<pre>// parse person number
+if (attrs.hasAttribute(SUMO_ATTR_PERSON_NUMBER)) {
+ ret-&gt;setParameter |= VEHPARS_PERSON_NUMBER_SET;
+ ret-&gt;personNumber = attrs.getIntReporting(SUMO_ATTR_PERSON_NUMBER, 0, ok);
+}
+// parse person capacity
+if (attrs.hasAttribute(SUMO_ATTR_PERSON_CAPACITY)) {
+ ret-&gt;setParameter |= VEHPARS_PERSON_CAPACITY_SET;
+ ret-&gt;personCapacity = attrs.getIntReporting(SUMO_ATTR_PERSON_CAPACITY, 0, ok);
+}
+</pre>
+<a name="Usage" id="Usage"></a><h1> <span class="mw-headline">Usage</span></h1>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 6/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:492-0!1!0!!en!2!edit=0 and timestamp 20120718063158 -->
+</div><hr/><div id="lastmod">This page was last modified on 5 June 2012, at 06:06.</div>

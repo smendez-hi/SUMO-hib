@@ -1,0 +1,100 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Purgatory/DFROUTER</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Usage"><span class="tocnumber">1</span> <span class="toctext">Usage</span></a></li>
+<li class="toclevel-1"><a href="#Comments"><span class="tocnumber">2</span> <span class="toctext">Comments</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Why_the_route_distribution_may_be_different_from_what_is_expected"><span class="tocnumber">2.1</span> <span class="toctext">Why the route distribution may be different from what is expected</span></a></li>
+<li class="toclevel-2"><a href="#Why_variable_speed_signs_show_velocities_of_200m.2Fs"><span class="tocnumber">2.2</span> <span class="toctext">Why variable speed signs show velocities of 200m/s</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Behaviour_to_define"><span class="tocnumber">3</span> <span class="toctext">Behaviour to define</span></a></li>
+<li class="toclevel-1"><a href="#Tests"><span class="tocnumber">4</span> <span class="toctext">Tests</span></a>
+<ul>
+<li class="toclevel-2"><a href="#tri_completely_defined"><span class="tocnumber">4.1</span> <span class="toctext">tri_completely_defined</span></a></li>
+<li class="toclevel-2"><a href="#tri_no_first"><span class="tocnumber">4.2</span> <span class="toctext">tri_no_first</span></a></li>
+<li class="toclevel-2"><a href="#tri_last_only"><span class="tocnumber">4.3</span> <span class="toctext">tri_last_only</span></a></li>
+<li class="toclevel-2"><a href="#tri_missing_first_left_values"><span class="tocnumber">4.4</span> <span class="toctext">tri_missing_first_left_values</span></a></li>
+<li class="toclevel-2"><a href="#tri_missing_first_left_noempty"><span class="tocnumber">4.5</span> <span class="toctext">tri_missing_first_left_noempty</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Usage" id="Usage"></a><h2> <span class="mw-headline">Usage</span></h2>
+<p>See <a href="http://sourceforge.net/apps/mediawiki/sumo/index.php?title=DfRouterUsage&amp;action=edit&amp;redlink=1" class="new" title="DfRouterUsage (page does not exist)">DfRouterUsage</a> in the <a href="../SUMO_User_Documentation.html" title="SUMO User Documentation">User Documentation</a>.
+</p>
+<a name="Comments" id="Comments"></a><h2> <span class="mw-headline">Comments</span></h2>
+<a name="Why_the_route_distribution_may_be_different_from_what_is_expected" id="Why_the_route_distribution_may_be_different_from_what_is_expected"></a><h3> <span class="mw-headline">Why the route distribution may be different from what is expected</span></h3>
+<ul><li> The time described by the detectors values may end before what shall be generated; if, for example, routes for a whole day shall be generated (b=0, e=86400, the defaults) but the detectors only contain information for one minute, the route distribution is still estimated for the whole day while detector values are missing. In this case, the distribution may differ from what is expected (being the one during the described time).
+</li></ul>
+<a name="Why_variable_speed_signs_show_velocities_of_200m.2Fs" id="Why_variable_speed_signs_show_velocities_of_200m.2Fs"></a><h3> <span class="mw-headline">Why variable speed signs show velocities of 200m/s</span></h3>
+<ul><li> If the DFROUTER finds a detector entry with v=0, it sets the allowed velocity in the according vss to 200km/h. The idea is not to set a limit when no valid value exists.
+</li></ul>
+<p><br />
+</p>
+<a name="Behaviour_to_define" id="Behaviour_to_define"></a><h2> <span class="mw-headline">Behaviour to define</span></h2>
+<ul><li> What shall be done if a detector value is missing?
+</li></ul>
+<p><br />
+</p>
+<a name="Tests" id="Tests"></a><h2> <span class="mw-headline">Tests</span></h2>
+<a name="tri_completely_defined" id="tri_completely_defined"></a><h3> <span class="mw-headline">tri_completely_defined</span></h3>
+<p>Simple network:
+</p><p><a href="http://sumo.sourceforge.net/wiki_images/dfrouter_tricomplete_net.gif" class="external free" title="http://sumo.sourceforge.net/wiki_images/dfrouter_tricomplete_net.gif" rel="nofollow">http://sumo.sourceforge.net/wiki_images/dfrouter_tricomplete_net.gif</a>
+</p><p>All detector values are supplied correctly
+</p>
+<ul><li><ul><li> tri_flows1_1step_straight: the straight direction has 10 vehicles running
+</li><li> tri_flows1_1step_left: the left direction has 10 vehicles running
+</li><li> tri_flows1_1step_right: the right direction has 10 vehicles running
+</li><li> tri_flows1_1step_equal: all directions have 10 vehicles running
+</li><li> tri_flows1_1step_more_straight: the straight direction has 20, left and right have 10 vehicles running
+</li><li> tri_flows1_1step_more_left: the left direction has 20, straight and right have 10 vehicles running
+</li><li> tri_flows1_1step_more_right: the right direction has 20, straight and left have 10 vehicles running
+</li></ul>
+</li></ul>
+<p>Flows from tri_flows1_1step_more_left (the darker the more):
+</p><p><a href="http://sumo.sourceforge.net/wiki_images/dfrouter_tricomplete_flow_more_left.gif" class="external free" title="http://sumo.sourceforge.net/wiki_images/dfrouter_tricomplete_flow_more_left.gif" rel="nofollow">http://sumo.sourceforge.net/wiki_images/dfrouter_tricomplete_flow_more_left.gif</a>
+</p><p><br />
+</p>
+<a name="tri_no_first" id="tri_no_first"></a><h3> <span class="mw-headline">tri_no_first</span></h3>
+<p>The first detectors of the left/right arms are missing
+</p><p>This is meant to verify whether a detector may lie on a later edge.
+</p><p><br />
+</p>
+<a name="tri_last_only" id="tri_last_only"></a><h3> <span class="mw-headline">tri_last_only</span></h3>
+<p>Only the last detectors of the left/right arms exist.
+</p><p>This is meant to verify whether a detector may lie on a later edge.
+</p><p><br />
+</p>
+<a name="tri_missing_first_left_values" id="tri_missing_first_left_values"></a><h3> <span class="mw-headline">tri_missing_first_left_values</span></h3>
+<p>All detectors exist (as in tri_completely_defined) but the first detector to left has no value. 
+</p><p>The tests show that:
+</p>
+<ul><li> it is reported that this detector has no value as soon as the option "--report-empty-detectors" is set
+</li><li> the routes change as missing values for the first detector are interpreted as flow=0
+</li></ul>
+<p><br />
+</p>
+<a name="tri_missing_first_left_noempty" id="tri_missing_first_left_noempty"></a><h3> <span class="mw-headline">tri_missing_first_left_noempty</span></h3>
+<p>Same as (as in tri_missing_first_left_values) but the option "--remove-empty-detectors" is used.
+</p><p>The tests show that:
+</p>
+<ul><li> it is reported that the detector that has no values is removed from the list of known detectors
+</li><li> the original routes are restored (thos from tri_completely_defined) because the subsequent detectors on the left arm have correct flows
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 12/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:415-0!1!0!!en!2!edit=0 and timestamp 20120718063253 -->
+</div><hr/><div id="lastmod">This page was last modified on 14 July 2011, at 09:34.</div>

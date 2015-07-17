@@ -1,0 +1,78 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Output/QueueOutput</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>The idea behind this output option is to detect the queue in front of the controlled/uncontrolled junction. The queue length is calculated using the end of the last standing vehicle.
+</p>
+<a name="Instantiating_within_the_Simulation" id="Instantiating_within_the_Simulation"></a><h2> <span class="mw-headline">Instantiating within the Simulation</span></h2>
+<p>The simulation is forced to generate this output using the option <span style="color: #111144; font-weight: bold; white-space: pre;">--queue-output <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a></span>. <a href="../../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;FILE&gt;</i></a> is the name of the file the output will be written to. Any other file with this name will be overwritten, the destination folder must exist.
+</p>
+<a name="Generated_Output" id="Generated_Output"></a><h2> <span class="mw-headline">Generated Output</span></h2>
+<p>The generated XML file looks like this:
+</p>
+<pre class="xml">
+&lt;queue-export&gt;
+
+ &lt;data timestep=&quot;&lt;TIME_STEP&gt;&quot;&gt;
+  
+  &lt;lanes&gt;
+  
+    &lt;lane id=&quot;&lt;LANE_ID&gt;&quot; queueing_time=&quot;&lt;LANE_QUEUEING_TIME&gt;&quot; queueing_length=&quot;&lt;LANE_QUEUEING_LENGTH&gt;&quot; 
+    queueing_length_experimental=&quot;&lt;LANE_QUEUEING_LENGTH_EXPERIMENTAL&gt;&quot;/&gt;
+
+    ... next lane ...
+
+  &lt;/lanes&gt;
+ &lt;/data&gt;
+
+ ... next timestep ...
+
+&lt;/queue-export&gt;
+</pre>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> time_step
+</td><td> (simulation) seconds
+</td><td> The time step described by the values within this timestep-element
+</td></tr>
+<tr>
+<td class="inlxml"> id
+</td><td> id
+</td><td> The id of the lane
+</td></tr>
+<tr>
+<td class="inlxml"> queueing_time
+</td><td> seconds
+</td><td> The total waiting time of vehicles due to a queue
+</td></tr>
+<tr>
+<td class="inlxml"> queueing_length
+</td><td> meters
+</td><td> Thus the length from the junction until the final vehicle in line
+</td></tr>
+<tr>
+<td class="inlxml"> queueing_length_experimental
+</td><td> meters
+</td><td> The length of the queue, thus until the last vehicle with a speed lower than 5 km/h
+</td></tr></table>
+<a name="Notes" id="Notes"></a><h2> <span class="mw-headline"> Notes </span></h2>
+<p>This output option should offer some information about the queues in front of the junctions, which can be used in cases of routing or V2X communications.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 15/1000000
+Post-expand include size: 245/2097152 bytes
+Template argument size: 67/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:500-0!1!0!!en!2!edit=0 and timestamp 20120718063325 -->
+</div><hr/><div id="lastmod">This page was last modified on 15 June 2012, at 09:30.</div>

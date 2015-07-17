@@ -1,0 +1,65 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">OpenStreetMap file</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table class="wikitable" style="width:25em; border-width:1px 1px; border-style:solid; border-color:#909090; background-color:#f8f8ff; font-size:90%; margin:1em 0em 1em 2em; padding:3px 6px">
+<caption> <b>OpenStreetMap file</b>
+</caption>
+<tr>
+<td width="45%"> Filename extension </td><td> .osm and .osm.xml
+</td></tr>
+<tr>
+<td> Type of content </td><td> Map
+</td></tr>
+<tr>
+<td> Open format? </td><td> Yes
+</td></tr>
+<tr>
+<td> SUMO specific? </td><td> No
+</td></tr>
+<tr>
+<td> XML Schema
+</td><td> <a href="http://wiki.openstreetmap.org/wiki/API_v0.6/XSD" class="external text" title="http://wiki.openstreetmap.org/wiki/API_v0.6/XSD" rel="nofollow">XSD of API v0.6</a>
+</td></tr>
+<tr>
+<td colspan="2"> <a href="http://wiki.openstreetmap.org/wiki/.osm" class="external text" title="http://wiki.openstreetmap.org/wiki/.osm" rel="nofollow">wiki.openstreetmap.org/wiki/.osm</a>
+</td></tr></table>
+<div class="thumb tright"><div class="thumbinner" style="width:402px;"><a href="images/Eichstaett.osm.png" class="image" title="The screenshot of an OpenStreetMap file opened in JOSM. It shows the map of the German city Eichstätt."><img alt="" src="images/Eichstaett.osm.png" width="400" height="276" border="0" class="thumbimage" /></a>  <div class="thumbcaption"><div class="magnify"><a href="images/Eichstaett.osm.png" class="internal" title="Enlarge"><img src="images//magnify-clip.png" width="15" height="11" alt="" /></a></div>The screenshot of an OpenStreetMap file opened in JOSM. It shows the map of the German city Eichstätt.</div></div></div>
+<p>An <b>OpenStreetMap file</b> contains an extract of the OpenStreetMap database. The data is saved in an XML structure.  The file name typically ends with .osm or .osm.xml.
+</p><p>You can get an OpenStreetMap file in various ways. The page <a href="Networks/Import/OpenStreetMapDownload.html" title="Networks/Import/OpenStreetMapDownload">Networks/Import/OpenStreetMapDownload</a> explains them.
+</p><p>In the context of SUMO, an OpenStreetMap file can provide the map for the traffic simulation. It serves as the basis for a <a href="Networks/SUMO_Road_Networks.html" title="Networks/SUMO Road Networks">SUMO network file</a>. The pages <a href="Networks/Import/OpenStreetMap.html" title="Networks/Import/OpenStreetMap">Networks/Import/OpenStreetMap</a> and <a href="Tutorials/Import_from_OpenStreetMap.html" title="Tutorials/Import from OpenStreetMap">Tutorials/Import from OpenStreetMap</a> show how to convert an OpenStreetMap file to a SUMO network file.
+</p>
+<a name="Traffic_Simulation_Related_Content" id="Traffic_Simulation_Related_Content"></a><h2> <span class="mw-headline"> Traffic Simulation Related Content </span></h2>
+<p>An OpenStreetMap file contains a map with the following features related to traffic simulation:
+</p>
+<ul><li> The nodes and their connections define the position and form of all streets and junctions.
+</li><li> The type of a street specifies its size and importance (key <i>highway</i>).
+</li><li> The speed limit of a street is usually determined implicitly by law. The implicit value may depend on the value of the highway attribute.  In case, the speed limit differs from the implicit legal value, it is given explicitly through the key <i>max_speed</i> of a street.
+</li><li> The total number of lanes (for both directions) has an implicit value depending on the highway property.  If the real value differs from the default value, it can be given through the key <i>lanes</i>.
+</li><li> The position of every traffic light is described as a node with the key-value pair <i>highway=traffic_signals</i>.
+</li><li> One-way streets are marked with the key-value pair <i>oneway=yes</i>.
+</li></ul>
+<p>Compared with the <a href="Networks/SUMO_Road_Networks.html" title="Networks/SUMO Road Networks">SUMO network file</a> format, the OpenStreetMap file format lacks in
+</p>
+<ul><li> The logic of the traffic lights and 
+</li><li> The meaning of lanes and the connections between lanes at a junction.
+</li></ul>
+<a name="Software_for_Viewing.2C_Editing_and_Processing" id="Software_for_Viewing.2C_Editing_and_Processing"></a><h2> <span class="mw-headline"> Software for Viewing, Editing and Processing </span></h2>
+<p>The OpenStreetMap wiki lists <a href="http://wiki.openstreetmap.org/wiki/Category:OSM_processing" class="external text" title="http://wiki.openstreetmap.org/wiki/Category:OSM_processing" rel="nofollow">a few tools to process OpenStreetMap files</a>. As a graphical editor, <b><a href="http://josm.openstreetmap.de/" class="external text" title="http://josm.openstreetmap.de/" rel="nofollow">JOSM</a></b> is very popular. You can modify roads and tags with it and also run some validation checks. The command line editor <b><a href="http://wiki.openstreetmap.org/wiki/Osmosis" class="external text" title="http://wiki.openstreetmap.org/wiki/Osmosis" rel="nofollow">Osmosis</a></b> allows automated processing of OpenStreetMap data (see, for example, <a href="Networks/Import/OpenStreetMap.html#Editing_OSM_networks" title="Networks/Import/OpenStreetMap">Networks/Import/OpenStreetMap#Editing OSM networks</a>).
+</p><p>To use the map in the OpenStreetMap file with SUMO, you must convert it in a <a href="Networks/SUMO_Road_Networks.html" title="Networks/SUMO Road Networks">SUMO network file</a>. Typically you do this with <b><a href="NETCONVERT.html" title="NETCONVERT">NETCONVERT</a></b> (see also <a href="Tutorials/Import_from_OpenStreetMap.html" title="Tutorials/Import from OpenStreetMap">Tutorials/Import from OpenStreetMap</a> and <a href="Networks/Import/OpenStreetMap.html" title="Networks/Import/OpenStreetMap">Networks/Import/OpenStreetMap</a>). You could also use <b><a href="http://eworld.sourceforge.net" class="external text" title="http://eworld.sourceforge.net" rel="nofollow">eWorld</a></b> to manipulate a OpenStreetMap file and convert it in a SUMO network file.
+</p>
+<p style="border:1px solid #909090; padding:1px 4px 3px 4px"><a href="images/CC-BY-SA-small.png" class="image" title="Creative Commons License"><img alt="Creative Commons License" src="images//CC-BY-SA-small.png" width="80" height="15" border="0" /></a>
+This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/" class="external text" title="http://creativecommons.org/licenses/by-sa/3.0/" rel="nofollow">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>. The authors are listed in the history.</p>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 53/1000000
+Post-expand include size: 1038/2097152 bytes
+Template argument size: 622/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:364-0!1!0!!en!2!edit=0 and timestamp 20120718063245 -->
+</div><hr/><div id="lastmod">This page was last modified on 6 February 2012, at 16:19.</div>

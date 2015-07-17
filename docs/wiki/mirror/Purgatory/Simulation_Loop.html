@@ -1,0 +1,230 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Purgatory/Simulation Loop</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>Each simulation time step, the following procedures are performed. Please note that this is description for the current (since 12.01.2010) SVN version; earlier versions differ.
+</p>
+<ul><li> Process TraCI Commands (if TraCI is not disabled)
+</li><li> Save Simulation State if needed (currently only in mesosim)
+</li><li> Execute "Begin of Time Step" Events
+</li><li> Check for Collisions
+</li><li> Reset Junction Requests
+</li><li> Check Traffic Light Changes
+</li><li> Set Traffic Light Signals on Links
+</li><li> Assure all not-free Lanes are known
+</li><li> Compute Vehicle Movement (iterating over all not-free lanes)
+</li><li> Determine which Vehicles have Right-of-way
+</li><li> Move Vehicles
+</li><li> Change Lanes
+</li><li> Check for Collisions
+</li><li> Progress Vehicles Loading
+</li><li> Insert Vehicles
+</li><li> Execute "End of Time Step" Events
+</li><li> Save Output
+</li><li> Increment current Time Step
+</li></ul>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Compute_Vehicle_Movement_.28iterating_over_all_not-free_lanes.29"><span class="tocnumber">1</span> <span class="toctext">Compute Vehicle Movement (iterating over all not-free lanes)</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Interaction_with_the_leading_Vehicle"><span class="tocnumber">1.1</span> <span class="toctext">Interaction with the leading Vehicle</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Interaction_with_LEADER_on_same_lane"><span class="tocnumber">1.1.1</span> <span class="toctext">Interaction with LEADER on same lane</span></a></li>
+<li class="toclevel-3"><a href="#Interaction_with_LEADER_on_consecutive_lanes"><span class="tocnumber">1.1.2</span> <span class="toctext">Interaction with LEADER on consecutive lanes</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Explaining_SUMO"><span class="tocnumber">2</span> <span class="toctext">Explaining SUMO</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Second_try_for_vehicle_movement..."><span class="tocnumber">2.1</span> <span class="toctext">Second try for vehicle movement...</span></a>
+<ul>
+<li class="toclevel-3"><a href="#compute_next_speed.28s.29"><span class="tocnumber">2.1.1</span> <span class="toctext">compute next speed(s)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Compute_Vehicle_Movement_.28iterating_over_all_not-free_lanes.29" id="Compute_Vehicle_Movement_.28iterating_over_all_not-free_lanes.29"></a><h1> <span class="mw-headline">Compute Vehicle Movement (iterating over all not-free lanes)</span></h1>
+<p>A vehicle's (<b>EGO'</b>s) speed during the next time step is constrained by: a) the leading vehicle (<b>LEADER</b>), b) a vehicle on the lane left to <b>EGO'</b>s lane in some cases, c) right-of-way rules at approached intersections, d) speed limits at approached lanes.
+</p>
+<a name="Interaction_with_the_leading_Vehicle" id="Interaction_with_the_leading_Vehicle"></a><h2> <span class="mw-headline">Interaction with the leading Vehicle</span></h2>
+<p>Using a car-following model, and having an <b>EGO</b> vehicle, we need its <b>LEADER</b> which parameter are used within the model's equations. Its pretty easy to determine one on a circular road, but things get more complicated when moving to real-world road networks:
+</p>
+<ul><li> we have to consider leading vehicles on the next lanes that may be approached
+</li></ul>
+<a name="Interaction_with_LEADER_on_same_lane" id="Interaction_with_LEADER_on_same_lane"></a><h3> <span class="mw-headline">Interaction with LEADER on same lane</span></h3>
+<p>We go through the (sorted) list of a lane's vehicles and use the next one as <b>LEADER</b>. This is the first check in computing the next speed. We do this only for the next vehicle in front (<b>LEADER</b>), discarding further vehicles in fron (<b>LEADER+n</b>) - assuming the <b>LEADER'</b>s model would be responsible for keeping <b>EGO</b> collision free by using a safe velocity in respect to his (<b>LEADER'</b>s) <b>LEADER</b>.
+</p><p>Obviously, the first vehicle on the lane (the one nearest to the lane's end) does not have a leading vehicle on this lane. Now, one assumption is that if a vehicle is on a lane which does not allow to continue its route, it brakes so that it does not leave it. This means that for the last vehicle we do not need a <b>LEADER</b> if this last vehicle is on a false lane. Nonetheless, an additional problem may occur for the last vehicle: a vehicle which is only partially at the lane; vehicles are administrated by the lanes and the lane stores and moves only vehicles which front is on the lane - the vehicle's back may nonetheless be (still) on a predecessing lane. We have to check this even in the case a vehicle will not leave the lane.
+</p><p><br />
+</p>
+<a name="Interaction_with_LEADER_on_consecutive_lanes" id="Interaction_with_LEADER_on_consecutive_lanes"></a><h3> <span class="mw-headline">Interaction with LEADER on consecutive lanes</span></h3>
+<p>In the case <b>EGO</b> is on a "correct" lane, we have to look into consequent lanes for <b>LEADER</b>s. The reason is quite simple: assume <b>EGO</b> is turning left, but his <b>LEADER</b> - being on the same lane - goes straight and has no <b>LEADER</b> itself. The <b>LEADER</b> may progress at high speed, but <b>EGO</b> has to watch out for the situation on subsequent lanes.
+</p><p><br />
+</p>
+<a name="Explaining_SUMO" id="Explaining_SUMO"></a><h1> <span class="mw-headline"> Explaining SUMO </span></h1>
+<ul><li> if the speed for a vehicle is computed, the leader has to have the position/speed from the last time step (rule for most car-following models)
+<ul><li> --&gt; we have to ensure, that this applies for leaders on subsequent lanes as well. But: we can not sort edges/lanes due to possible cyclic dependencies
+</li><li> --&gt; we have to do two steps
+<ul><li> a) compute next speed
+</li><li> b) move vehicles
+</li></ul>
+</li><li> dkrajzew: <i>OK, ok, we could do this in one step, too, by keeping the last position on the lane. Maybe in the future...</i>
+</li></ul>
+</li></ul>
+<p><br />
+</p>
+<a name="Second_try_for_vehicle_movement..." id="Second_try_for_vehicle_movement..."></a><h3> <span class="mw-headline">Second try for vehicle movement...</span></h3>
+<a name="compute_next_speed.28s.29" id="compute_next_speed.28s.29"></a><h4> <span class="mw-headline">compute next speed(s)</span></h4>
+<p><b>step#1: examine current lane</b>
+</p><p>At first, we look at the current lane and whether the vehicle is able to leave it. If not, as it is on a false lane, we may have to brake so that we stay on this lane. We then would try to leave the lane to reach a possible continuation lane afterwards. Actually, this distinction between leaving/not leaving a lane is pretty old and contains several code duplications. Probably the distinction should be removed...
+</p><p>In: no information
+</p><p>Out: speed bound by leader on current lane, the lane itself if not appropriate, stops on the current edge, arrivalspeed if current lane; if the lane is not appropriate, an according drive item which only allows to move to the end of the lane is generated.
+</p><p><br />
+</p>
+<ul><li> we <b>remove</b> all information about <b>approaching a link</b>, will be reset in this step, see below
+</li><li> vBeg is the maximum speed after acceleration
+</li><li> if vehicle <b>can not use its current lane</b> to continue the ride
+<ul><li> let the vehicle halt at the end of the lane
+</li></ul>
+</li></ul>
+<dl><dd><dl><dd> --&gt; vBeg depends on edge interaction
+</dd><dd> <b>todo:</b> check whether maxDecel/maxAccel is followed is missing
+</dd></dl>
+</dd></dl>
+<ul><li> if it is his last edge
+<ul><li> compute allowed speed in dependence of the arrivalspeed definition
+</li></ul>
+</li><li> check interaction with a leading vehicle
+<ul><li> if existing: the leader on the vehicle's lane
+</li><li> otherwise: a maybe in-lapping leader on a consecutive lane (is stored in the lane)
+</li><li> otherwise: no leader, keep speed
+</li></ul>
+</li></ul>
+<dl><dd><dl><dd> --&gt; vBeg additionally depends on the leader, if existing
+</dd></dl>
+</dd></dl>
+<ul><li> do not overtake right
+</li></ul>
+<dl><dd> --&gt; vBeg additionally depends on the left-lane leader, if existing
+</dd></dl>
+<ul><li> check stops on current edge
+</li></ul>
+<dl><dd> --&gt; vBeg additionally depends on current edge's stop, if existing
+</dd></dl>
+<ul><li> assure vBeg&gt;=0
+</li></ul>
+<dl><dd> <b>todo:</b> why is it done this way? Should be a part of the model or - less nice - assure here that vBeg&gt;=v-maxDecel*dt
+</dd></dl>
+<ul><li> if vehicle <b>can not use its current lane</b> to continue the ride
+<ul><li> save as a drive item; use vWish for speed, the vehicle will not move across the next link...
+</li></ul>
+</li><li> else (vehicle can continue its drive)
+<ul><li> jump to <i>vsafeCriticalCont</i> for evaluating how speed depends on subsequent lanes/edges
+</li><li> jump to <i>checkRewindLinkLanes</i> for a roll-back of possible continuation due to not having enough space on them...
+</li></ul>
+</li></ul>
+<p><br />
+<b>step#2: examine subsequent lanes</b>
+</p><p>We are now going through the next lanes, and compute possible influences on the vehicle's speed. 
+</p><p>In: speed bound by leader on current lane, the lane itself if not appropriate, stops on the current edge, arrivalspeed if current lane
+</p><p>Out: a list of speed decision points in myLFLinkLanes; each contains the link (if valid) that will be crossed, the speed if the vehicle will be later allowed to cross it and the speed if crossing is not allowed, and some additional parameter.
+</p><p><br />
+</p>
+<ul><li> seen = myLane-&gt;getLength() - myState.myPos; (the place in front of the vehicle on his current lane, what we have seen so far)
+</li><li> we can abort if the vehicle will not enter the next lane (as we have already seen the leader, stops, and stuff); it is assumed that the following conditions must be fulfilled: 
+<ul><li> <i>this!=myLane-&gt;getFirstVehicle()</i> (it is not the first vehicle; <b>todo:</b> why? This is pretty old, too. As the vehicle will not reach the next lane, we can ignore it!!!
+</li><li> <i>&amp;&amp; seen - cfModel.brakeGap(myState.mySpeed) &gt; 0</i> (if the vehicle brakes, it will not enter the next lane; <b>recheck</b> don't get it)
+</li><li> <i>&amp;&amp; seen - SPEED2DIST(boundVSafe) - ACCEL2DIST(cfModel.getMaxAccel()) &gt; 0</i> (the vehicle will not enter next lane even if it accelerates; hmph. ok)
+</li><li> if so: 
+<ul><li> save as a drive item; use vWish for speed, the vehicle will not move across the next link...
+</li><li> return
+</li></ul>
+</li></ul>
+</li><li> nextLane = myLane; (currently examined lane)
+</li><li> maxV = cfModel.maxNextSpeed(myState.mySpeed); (<b>recheck:</b> we have bound the speed already!?)
+</li><li> dist = SPEED2DIST(maxV) + cfModel.brakeGap(maxV); (the distance that interests us; <b>recheck:</b> is this really the upper bound?)
+</li><li> vLinkPass = boundVSafe; (for the following computations, this will be the max. speed we can take if we may continue the drive)
+</li><li> vLinkWait = vLinkPass; (for the following computations, this will be the max. speed we can take if we have to brake)
+</li><li> view = 1; (how many lanes we've seen so far)
+</li><li> go along subsequent edges, following the "best lane continuation"
+<ul><li> if we have to handle a stop on this edge
+<ul><li> adapt speed to the stop (min between current value and stopping speed for both, vLinkPass and vLinkWait)
+</li></ul>
+</li></ul>
+</li></ul>
+<dl><dd><dl><dd><dl><dd> speeds are bound by the stop
+</dd><dd> <b>todo:</b> we did this for the current lane already!!!
+</dd></dl>
+</dd></dl>
+</dd></dl>
+<ul><li><ul><li> if the lane does not allow to continue the drive:
+<ul><li> as in step#1
+</li></ul>
+</li></ul>
+</li></ul>
+<dl><dd><dl><dd><dl><dd> <b>todo:</b> we did this for the current lane already!!!
+</dd></dl>
+</dd></dl>
+</dd></dl>
+<ul><li><ul><li><ul><li> we may quit, here...
+</li></ul>
+</li></ul>
+</li></ul>
+<dl><dd><dl><dd><dl><dd> <b>todo:</b> we did not take into regard the vehicles on this lane, yet!!
+</dd></dl>
+</dd></dl>
+</dd></dl>
+<ul><li><ul><li> the current lane is no boundary; vLinkWait = vLinkPass (<b>haeh</b>, I know it's right, but the explanation's odd)
+</li><li> nextLane = next (subsequent) lane; keep whether it is an internal one, increment view
+</li><li> vmaxNextLane = MAX2(cfModel.ffeV(this, seen, nextLane-&gt;getMaxSpeed()), nextLane-&gt;getMaxSpeed()); (the maximum speed for the next lane; <b>recheck:</b> why so complicated? Don't we just need the next lane's allowed speed?
+</li><li> vsafePredNextLane = interaction with leader on subsequent lane; <b>recheck:</b> here a strange "assertion" is done for the case the distance to leader is &lt;0 - the vehicle's speed is bound to the end of the lane; odd
+</li><li> vLinkPass = MIN3(vLinkPass, vmaxNextLane, vsafePredNextLane); (not faster than already bound, keep car-following, not faster than the next lane allows)
+</li><li> vLinkWait = MIN3(vLinkPass, vLinkWait, cfModel.ffeS(this, seen)); (not faster than already bound, let vehicle decelerate up to the lane's end)
+</li><li> process stops
+</li></ul>
+</li></ul>
+<dl><dd><dl><dd> <i>todo:</i> Again? Why?
+</dd></dl>
+</dd></dl>
+<ul><li><ul><li> adapt speed to arrivalspeed
+</li></ul>
+</li></ul>
+<dl><dd><dl><dd> <i>todo:</i> Recheck, have not validated, yet
+</dd></dl>
+</dd></dl>
+<ul><li><ul><li> compute whether the request to pass to the next lane shall be set (setRequest)
+<ul><li> setRequest |= ((*link)-&gt;getState()!=MSLink::LINKSTATE_TL_RED&amp;&amp;(vLinkPass&gt;0&amp;&amp;dist-seen&gt;0)); (if not in front of red, and passing speed&gt;0 and the end of the lane is not beyond what we have seen; <b>check:</b> is 
+</li></ul>
+</li></ul>
+</li></ul>
+<p>dist-seen&gt;0 secure?
+</p>
+<ul><li><ul><li><ul><li> if we are in front of yellow/green and we can brake, then use vLinkWait, set no request
+</li></ul>
+</li></ul>
+</li></ul>
+<dl><dd><dl><dd><dl><dd> <b>todo:</b> why don't we stop in this case? The vehicle will not pass the intersection...
+</dd></dl>
+</dd></dl>
+</dd></dl>
+<ul><li><ul><li><ul><li> once again, check for dist-seen&gt;0; <b>todo:</b> why? we did this already!?
+</li></ul>
+</li><li> save as a drive item; use vLinkPass and vLinkWait for speeds, and the computed setRequest 
+</li><li> add the currently investigated lane's length to seen
+</li></ul>
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 8/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:317-0!1!0!!en!2!edit=0 and timestamp 20120718063301 -->
+</div><hr/><div id="lastmod">This page was last modified on 25 October 2011, at 15:06.</div>

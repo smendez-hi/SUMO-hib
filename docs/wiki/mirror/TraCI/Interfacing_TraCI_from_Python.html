@@ -1,0 +1,92 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">TraCI/Interfacing TraCI from Python</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>The traci commands are split into the 13 domains gui, lane, poi, simulation, trafficlights, vehicletype, edge, inductionloop, junction, multientryexit, polygon, route, and vehicle, which correspond to individual modules. For a detailed list of available functions see the <a href="http://sumo.sf.net/daily/docs/pydoc/traci.html" class="external text" title="http://sumo.sf.net/daily/docs/pydoc/traci.html" rel="nofollow">pydoc generated documentation</a>.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#First_Steps"><span class="tocnumber">1</span> <span class="toctext">First Steps</span></a></li>
+<li class="toclevel-1"><a href="#Subscriptions"><span class="tocnumber">2</span> <span class="toctext">Subscriptions</span></a></li>
+<li class="toclevel-1"><a href="#Embedded_Python"><span class="tocnumber">3</span> <span class="toctext">Embedded Python</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Linux"><span class="tocnumber">3.1</span> <span class="toctext">Linux</span></a></li>
+<li class="toclevel-2"><a href="#Windows"><span class="tocnumber">3.2</span> <span class="toctext">Windows</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Pitfalls_and_Solutions"><span class="tocnumber">4</span> <span class="toctext">Pitfalls and Solutions</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="First_Steps" id="First_Steps"></a><h2> <span class="mw-headline"> First Steps </span></h2>
+<p>In general it is very easy to interface with SUMO from Python (the following example is a modification of <a href="../Tutorials/TraCI4Traffic_Lights.html" title="Tutorials/TraCI4Traffic Lights">tutorial/traci_tls</a>):
+</p>
+<pre>import traci
+
+PORT = 8813
+traci.init(PORT) 
+step = 0
+while step &lt; 1000:
+   traci.simulationStep()
+   no = traci.inductionloop.getLastStepVehicleNumber("0")
+   traci.trafficlights.setRedYellowGreenState("0", "GrGr")
+   step += 1
+
+traci.close()
+</pre>
+<p>After opening the connection to the port which was given to sumo as the --remote-port Option,
+you can emit various commands and execute simulation steps until you want to finish by
+closing the connection.
+</p>
+<a name="Subscriptions" id="Subscriptions"></a><h2> <span class="mw-headline"> Subscriptions </span></h2>
+<p>Subscriptions can be thought of as a batch mode for retrieving variables. Instead of asking for the same variables over and over again, you can retrieve the values of interest automatically after each time step.
+TraCI subscriptions are handled on a per module basis. That is you can ask for the module for the result of all current subscriptions after each time step. In order to subscribe for variables you need to know their variable ids which can be looked up in the traci/constants.py file.
+</p>
+<pre>import traci
+import traci.constants as tc
+
+PORT = 8813
+traci.init(PORT) 
+traci.vehicle.subscribe(vehID, (tc.VAR_ROAD_ID, tc.VAR_LANEPOSITION))
+print traci.vehicle.getSubscriptionResults(vehID)
+for step in range(3):
+   print "step", step
+   traci.simulationStep()
+   print traci.vehicle.getSubscriptionResults(vehID)
+traci.close()
+</pre>
+<p>The values retrieved are always the ones from the last time step, it is not possible to retrieve older values.
+</p>
+<a name="Embedded_Python" id="Embedded_Python"></a><h2> <span class="mw-headline"> Embedded Python </span></h2>
+<p>As an experimental feature, it is also possible to link SUMO with python directly and have the scripts executed in SUMO. The syntax is completely
+the same, except that you leave out the calls to init and close and you need to start sumo with the option --python-script. This feature does currently <i>not</i> work with the GUI version of sumo.
+</p><p>Since the feature is not well tested yet, you need to enable embedded python explicitly when building SUMO (it is <i>not</i> enabled in the release versions and the nightly build). In order to do so, follow the instructions below
+</p>
+<a name="Linux" id="Linux"></a><h3> <span class="mw-headline"> Linux </span></h3>
+<ul><li> install the python devel package files
+</li><li> call configure using the --with-python option
+</li><li> make &amp;&amp; make install as usual
+</li></ul>
+<a name="Windows" id="Windows"></a><h3> <span class="mw-headline"> Windows </span></h3>
+<ul><li> make sure python is installed and is in your PATH
+</li><li> call tools/build/pythonPropsMSVC.py to generate a python.props file
+</li><li> enable the inclusion of python.props by uncommenting the relevant line in build/msvc10/Win32.props
+</li><li> build as usual
+</li></ul>
+<p>Earlier versions of Visual Studio and 64bit build are currently not directly supported (but the interested programmer should be able to modify the files accordingly).
+</p>
+<a name="Pitfalls_and_Solutions" id="Pitfalls_and_Solutions"></a><h2> <span class="mw-headline"> Pitfalls and Solutions </span></h2>
+<ul><li> Note that strings, if exchanged, have to be ASCII-encoded.
+</li></ul>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 7/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:289-0!1!0!!en!2!edit=0 and timestamp 20120718063405 -->
+</div><hr/><div id="lastmod">This page was last modified on 14 November 2011, at 13:14.</div>

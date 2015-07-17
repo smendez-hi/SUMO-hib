@@ -1,0 +1,93 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Demand/Routes from Observation Points</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>Since version 0.9.5, the SUMO-package contains a routing module named <a href="../DFROUTER.html" title="DFROUTER">DFROUTER</a>. The idea behind this router is that nowadays, most highways are well equipped with induction loops, measuring each of the highways' entering and leaving flows. Given this information one may assume that the flows on the highway are completely known. <a href="../DFROUTER.html" title="DFROUTER">DFROUTER</a> uses directly the information collected from induction loops to rebuild the vehicle amounts and routes. This is done in several steps, being mainly:
+1. Computing (and optionally saving) the detector types in the means that each induction is set to be a source detector, a sink detector or an in-between detector
+2. Computing (and optionally saving) the routes between the detectors
+3. Computing the flow amounts between the detectors
+4. Saving the flow amounts and further control structures
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Computing_Detector_Types"><span class="tocnumber">1</span> <span class="toctext">Computing Detector Types</span></a></li>
+<li class="toclevel-1"><a href="#Computing_Routes"><span class="tocnumber">2</span> <span class="toctext">Computing Routes</span></a></li>
+<li class="toclevel-1"><a href="#Computing_Flows"><span class="tocnumber">3</span> <span class="toctext">Computing Flows</span></a></li>
+<li class="toclevel-1"><a href="#Saving_Flows_and_other_Values"><span class="tocnumber">4</span> <span class="toctext">Saving Flows and other Values</span></a></li>
+<li class="toclevel-1"><a href="#How_to_include_the_files"><span class="tocnumber">5</span> <span class="toctext">How to include the files</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Computing_Detector_Types" id="Computing_Detector_Types"></a><h2> <span class="mw-headline">Computing Detector Types</span></h2>
+<p>The idea behind the <a href="../DFROUTER.html" title="DFROUTER">DFROUTER</a> assumes that a network is completely covered by detectors, meaning that all off- and on-ramps have an induction loop placed on them. Such an information whether an induction loop is a pure source or sink or whether it is placed between such is but not given initially. It must be computed. To do this, the <a href="../DFROUTER.html" title="DFROUTER">DFROUTER</a> needs the underlying network as well as a list of detector definitions where each describes the position of an induction loop. The network, being a previously built SUMO-network, is supplied to the <a href="../DFROUTER.html" title="DFROUTER">DFROUTER</a> as usual using the <span style="color: #111144; font-weight: bold; white-space: pre;">--net-file &lt;SUMO_NET_FILE&gt;</span> (<span style="color: #111144; font-weight: bold; white-space: pre;">-n</span>) option, the list of induction loops using <span style="color: #111144; font-weight: bold; white-space: pre;">----detector-files &lt;DETECTOR_FILE&gt;[,&lt;DETECTOR_FILE&gt;]+</span> (<span style="color: #111144; font-weight: bold; white-space: pre;">---d</span> for short). A detector file should look as follows:
+</p>
+<pre class="xml">
+&lt;detectors&gt;
+   &lt;detector_definition id=&quot;&lt;DETECTOR_ID&gt;&quot; lane=&quot;&lt;LANE_ID&gt;&quot; pos=&quot;&lt;POS&gt;&quot;/&gt;
+... further detectors ...
+&lt;/detectors&gt;
+</pre>
+<p>This means that each detector is initially described using its id, a lane it is placed on, and a position on the lane. To be exact:
+</p>
+<ul><li> id: A string holding the id of the detector
+</li><li> lane: The id of the lane the detector lies on. Must be a lane within the network.
+</li><li> pos: The position on the lane the detector shall be laid on in meters. The position must be a value between -1*lane's length and the lane's length. In the case of a negative value, the position will be computed backward from the lane's end (the position the vehicles drive towards).
+</li></ul>
+<p>Given a network and the list of detectors, <a href="../DFROUTER.html" title="DFROUTER">DFROUTER</a> assigns types to detectors and saves the so extended list into a file if the option <span style="color: #111144; font-weight: bold; white-space: pre;">--detectors-output &lt;DETECTOR_OUTPUT_FILE&gt;</span> is given. This list looks like the input described above except that an aditional attribute is given for each detector, "type", which may have one of the following values: "source", "sink", "between", and "discarded". You can also generate a list of points of interests (POIs) which can be read by <a href="../SUMO-GUI.html" title="SUMO-GUI">SUMO-GUI</a> where each POI represents a detector and is colored by the detector type: green for source detectors, red for sink detectors, blue for in-between detectors, and black for discarded detectors. To force <a href="../DFROUTER.html" title="DFROUTER">DFROUTER</a> to do this, use <span style="color: #111144; font-weight: bold; white-space: pre;">--detectors-poi-output &lt;POI_FILENAME&gt;</span>.
+</p><p>When wished, if for example other parameters chage, the extended &lt;DETECTOR_OUTPUT_FILE&gt; can be fed back again into <a href="../DFROUTER.html" title="DFROUTER">DFROUTER</a> instead of the previous &lt;DETECTOR_FILE&gt;. In this case the detector types do not have to be computed again. To force <a href="../DFROUTER.html" title="DFROUTER">DFROUTER</a> to recompute the types, use <span style="color: #111144; font-weight: bold; white-space: pre;">--revalidate-detectors</span>.
+</p>
+<a name="Computing_Routes" id="Computing_Routes"></a><h2> <span class="mw-headline">Computing Routes</span></h2>
+<p>Now that we do know where vehicles enter and where they leave the network, we may compute routes for each of the pairs. The <a href="../DFROUTER.html" title="DFROUTER">DFROUTER</a> is told to build and save routes using <span style="color: #111144; font-weight: bold; white-space: pre;">--routes-output &lt;ROUTE_OUTPUT_FILE&gt;</span> where &lt;ROUTE_OUTPUT_FILE&gt; is the name of the file the computed routes shall be written to. The generated file only contains routes, no vehicle type definitions and no vehicles. 
+</p><p>Normally, only routes starting at source detectors and ending at sink detectors are computed. Using the option <span style="color: #111144; font-weight: bold; white-space: pre;">--routes-for-all</span> you can force <a href="../DFROUTER.html" title="DFROUTER">DFROUTER</a> to also build routes that start at in-between detectors. The option <span style="color: #111144; font-weight: bold; white-space: pre;">--all-end-follower</span> will make the routes not end at the edge the source detector is placed on, but on all edges that follow this edge. <span style="color: #111144; font-weight: bold; white-space: pre;">--keep-unfinished-routes</span> will also keep those routes where a sink detector could not be found for what may be the case if the network is not completely covered with induction loops.
+</p>
+<a name="Computing_Flows" id="Computing_Flows"></a><h2> <span class="mw-headline">Computing Flows</span></h2>
+<p>The next step is to use the computed routes and flow amounts from the real-world detectors to compute flows across the modelled network. The flows are given to DFROUTER using <span style="color: #111144; font-weight: bold; white-space: pre;">--measure-files <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;STRING&gt;</i></a></span> (or <span style="color: #111144; font-weight: bold; white-space: pre;">-f &lt;DETECTOR_FLOWS&gt;[,&lt;DETECTOR_FLOWS&gt;]+</span>. They are assumed to be stored in CSV-format using ';' as dividing character. The file should look as follows:
+</p>
+<pre>Detector;Time;qPKW;qLKW;vPKW;vLKW
+myDet1;0;10;2;100;80
+... further entries ...
+</pre>
+<p>This means the first time has to name the entries (columns). Their order is not of importance, but at least the following columns must be included:
+</p>
+<ul><li> Detector: A string holding the id of the detector this line describes; should be one of the ids used in &lt;DETECTOR_FILE&gt;
+</li><li> Time: The time period begin that this entry describes (in minutes)
+</li><li> qPKW: The number of passenger cars that drove over the detector within this time period
+</li><li> vPKW: The average speed of passenger cars that drove over the detector within this time period in km/h
+</li></ul>
+<p>The following columns may optionally be included:
+</p>
+<ul><li> qLKW: The number of transport vehicles that drove over the detector within this time period
+</li><li> vLKW: The average speed of transport vehicles that drove over the detector within this time period in km/h
+</li></ul>
+<p>These are not quite the values to be found in induction loop output. We had to constrain the &lt;DETECTOR_FLOWS&gt; files this way because DFROUTER is meant to read very many of such definitions and to do this as fast as possible.
+</p><p>Because in some cases one reads detector flow definitions starting at a certain time but wants the simulation to begin at another, it is possible to add a time offset using <span style="color: #111144; font-weight: bold; white-space: pre;">--time-offset <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span> which is the number of seconds to subtracted from the read times.
+</p>
+<a name="Saving_Flows_and_other_Values" id="Saving_Flows_and_other_Values"></a><h2> <span class="mw-headline">Saving Flows and other Values</span></h2>
+<p>If flow definitions were supplied, we can let the DFROUTER save the computed vehicles together with their routes. Vehicles will be generated at the source detectors which are placed at certain positions of the networks' lanes. Prior to version 0.12.3, emitters (see "Emitter") are used to insert those vehicles into the network. In these versions, DFROUTER can be forced to generate such emitters using <span style="color: #111144; font-weight: bold; white-space: pre;">--emitters-output &lt;EMITTER_OUTPUT_FILE&gt;</span>. This file will contain emitter declarations for each of the source detectors. If no value is given, emitters will not be written. Accompanying, there will be emitter definitions written named "emitter_&lt;DETECTOR_ID&gt;.def.xml" where &lt;DETECTOR_ID&gt; is the id of the according source detector. These definitions are called within the &lt;EMITTER_OUTPUT_FILE&gt; and contain vehicles which depart the emitter in accordance to the read flows and have routes computed using the flows.
+</p><p>Since version 0.12.3, vehicles are generated as part of the route definitions as is standard in the rest of the SUMO suite of applications. In future releases, the use of emitters will not be supported at all.
+</p><p>As some approaches use a speed limit to avoid open-end boundary problems, the DFROUTER can generate a list of speed triggers (see "Variable Speed Signs (VSS)") placed on the positions of sink detectors. The name to save the declaration of these speed triggers into is given using the option <span style="color: #111144; font-weight: bold; white-space: pre;">--variable-speed-sign-output &lt;VSS_OUTPUT_FILE&gt;</span>. The according variable speed sign definitions will be written into files named "vss_&lt;DETECTOR_ID&gt;.def.xml" where &lt;DETECTOR_ID&gt; is the name of the according sink detector.
+</p><p>In order not to end vehicle routes on off-ramps, it is possible to place rerouters (see "Rerouter") at the positions of the sink detectors, too. Giving the option <span style="color: #111144; font-weight: bold; white-space: pre;">--end-reroute-output &lt;REROUTER_OUTPUT_FILE&gt;</span> will generate a list of rerouter declarations. Please remark that in this case, no rerouter definitions are written, because the DFROUTER has no further information about possible routes beyond the area covered by the detectors.
+</p><p>It's quite nice to have the possibility to check whether the simulation does what one wants. To validate whether the same flows are found within the simulation as within the reality, the option <span style="color: #111144; font-weight: bold; white-space: pre;">--validation-output &lt;SUMO_DETECTORS_OUTPUT&gt;</span> may be helpful. It generates a list of detector definitions (E1/induction loops, see "E1-Detectors (Induction Loops)") placed at the positions of sink and in-between detectors. Their output will be saved into files named "validation_det_&lt;DETECTOR_ID&gt;.xml" and should be easily comparable to the detector flows previously fed to the router. The option <span style="color: #111144; font-weight: bold; white-space: pre;">--validation-output.add-sources</span> will let DFROUTER also build E1-detectors for source detectors which are place 1m behind the real-life detector's position.
+</p>
+<a name="How_to_include_the_files" id="How_to_include_the_files"></a><h2> <span class="mw-headline">How to include the files </span></h2>
+<p>For example, a MyConfig.sumo.cfg file should look as follows:
+</p>
+<pre class="xml">
+&lt;input&gt;
+        &lt;net-file value=&quot;MyNet.net.xml&quot;/&gt;
+        &lt;additional-files value=&quot;MyRoute.rou.xml MyDetectors.det.xml MyEmitter.emi.xml&quot; /&gt;
+ &lt;/input&gt;
+</pre>
+<p>As you may notice the route file is listed as additional file and not as separate file.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 111/1000000
+Post-expand include size: 2165/2097152 bytes
+Template argument size: 654/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:230-0!1!0!!en!2!edit=0 and timestamp 20120718063151 -->
+</div><hr/><div id="lastmod">This page was last modified on 26 April 2012, at 00:07.</div>

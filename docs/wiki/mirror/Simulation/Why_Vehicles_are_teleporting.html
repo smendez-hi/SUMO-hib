@@ -1,0 +1,72 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Why Vehicles are teleporting</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>When running a simulation, one may encounter the following warning:
+</p>
+<pre>Warning: Teleporting vehicle '...'; waited too long, lane='...', time=....
+</pre>
+<p>What does it mean?
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Reasons"><span class="tocnumber">1</span> <span class="toctext">Reasons</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Waiting_too_long.2C_aka_Grid-locks"><span class="tocnumber">1.1</span> <span class="toctext">Waiting too long, aka Grid-locks</span></a></li>
+<li class="toclevel-2"><a href="#Collisions"><span class="tocnumber">1.2</span> <span class="toctext">Collisions</span></a></li>
+<li class="toclevel-2"><a href="#False_Leaving_Order"><span class="tocnumber">1.3</span> <span class="toctext">False Leaving Order</span></a></li>
+<li class="toclevel-2"><a href="#Landing_beyond_the_Lane.27s_End"><span class="tocnumber">1.4</span> <span class="toctext">Landing beyond the Lane's End</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#What.27s_happening"><span class="tocnumber">2</span> <span class="toctext">What's happening</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Reasons" id="Reasons"></a><h1> <span class="mw-headline">Reasons</span></h1>
+<p>The following circumstances may force the simulation to "teleport" a vehicle:
+</p>
+<ul><li> the vehicle stood too long in front of an intersection (message: "<i>...'; waited too long, lane='...</i>")
+</li><li> the vehicle has collided with his leader (message: "<i>...'; collision, lane='...</i>")
+</li><li> the vehicle has not left the lane but the one behind did (message: "<i>...'; false leaving order, lane='...</i>")
+</li><li> the vehicle landed beyond it's lane length (message: "<i>...'; beyond lane (X), lane='...</i>")
+</li></ul>
+<a name="Waiting_too_long.2C_aka_Grid-locks" id="Waiting_too_long.2C_aka_Grid-locks"></a><h2> <span class="mw-headline">Waiting too long, aka Grid-locks</span></h2>
+<p>Grid-locks, jamming a simulated scenario are unfortunately something normal to traffic simulations. You can solve this only by assigning different routes. Some further approaches may be invoked in the future to make them occure more seldom.
+</p><p>In the case a vehicle is standing at the first position in front of an intersection, SUMO counts the number of steps the vehicle's velocity stays below 0.1m/s. These steps are the "waiting time". In the case the vehicle moves with a larger speed, this counter is resetted. In the case the vehicle waited longer than a certain swell, the vehicle is teleported, assuming a grid-lock occuren on the intersection.
+</p><p>The swell can be modified using a command line option. The option is <span style="color: #111144; font-weight: bold; white-space: pre;">--time-to-teleport <a href="../Basics/Notation.html#Referenced_Data_Types" title="Basics/Notation"><i>&lt;INT&gt;</i></a></span>. In the case a value lower than 0 is given, no teleportation is done, otherwise the given value will be interpreted as seconds to wait before teleporting a vehicle.
+</p><p>Also, besides plain grid-locks, the imperfection of the lane-change model sometimes yields in a situation where two vehicles try to get to the other lane, and each vehicle is blocking the other one. The simulation behaves as described in prior. An additional possibility to "solve" this is to allow vehicles to be swapped - they are exchanged. To enable this possibility, use the option <span style="color: #111144; font-weight: bold; white-space: pre;">--lanechange.allow-swap</span>.
+</p>
+<a name="Collisions" id="Collisions"></a><h2> <span class="mw-headline">Collisions</span></h2>
+<p>Though SUMO uses a collision-free model, collisions have beed detected. As they yield in an undefined state of the simulation, a vehicle teleportation is performed for solving them.
+</p>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />Collisions are assumed to occur due to bugs in the simulation. Please report if you encounter one.</div>
+<p><br />
+</p>
+<a name="False_Leaving_Order" id="False_Leaving_Order"></a><h2> <span class="mw-headline">False Leaving Order</span></h2>
+<p>A vehicle has driven over his leader and wants to get to the next lane, though his leader has not yet left his one. 
+</p>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />Leaving the lane in a false order is assumed to occur due to bugs in the simulation. Please report if you encounter one.</div>
+<p><br />
+</p>
+<a name="Landing_beyond_the_Lane.27s_End" id="Landing_beyond_the_Lane.27s_End"></a><h2> <span class="mw-headline">Landing beyond the Lane's End</span></h2>
+<p>This can only occur if a vehicle's right-of-way has changed from what the vehicle assumed. An example: the vehicle though it could pass a junction, but a second vehicle (surprisingly) disallows it from passing the junction. In order not to brake with a value larger than the vehicle's deceleration ability, the vehicle continues his ride, but is not able to enter the next lane - in some cases this yields in a position beyond the lane's end. 
+</p>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />Landing beyond the Lane's End is assumed to occur due to bugs in the simulation. Please report if you encounter one.</div>
+<p><br />
+</p>
+<a name="What.27s_happening" id="What.27s_happening"></a><h1> <span class="mw-headline">What's happening</span></h1>
+<p>A teleported vehicle is removed from the network. It is then moved along its route, but no longer being on the street. It is reinserted into the network as soon as this becomes possible. While being teleported, the vehicle is moved along its route with the average speed of the edge it was removed from or - later - it is currently "passing". The vehicle is reinserted into the network if there is enough place to be placed on a lane which allows to continue its drive.
+</p>
+<div style="background: #ffffdd; padding: .5em; border: 1px dashed #ffcc44; margin-right:10px; margin-left:10px;"><b>Note:</b><br />Please note that up to version 0.12, the teleporting speed was higher and that vehicles were reinserted into the network if there was free place on any of the lanes of the edge the vehicle was "above".</div>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 39/1000000
+Post-expand include size: 1371/2097152 bytes
+Template argument size: 628/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:277-0!1!0!!en!2!edit=0 and timestamp 20120717195952 -->
+</div><hr/><div id="lastmod">This page was last modified on 30 September 2011, at 09:24.</div>

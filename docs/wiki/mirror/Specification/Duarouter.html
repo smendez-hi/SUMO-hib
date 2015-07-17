@@ -1,0 +1,37 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Specification/Duarouter</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Inputs"><span class="tocnumber">1</span> <span class="toctext">Inputs</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Network"><span class="tocnumber">1.1</span> <span class="toctext">Network</span></a></li>
+<li class="toclevel-2"><a href="#Demand"><span class="tocnumber">1.2</span> <span class="toctext">Demand</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Output"><span class="tocnumber">2</span> <span class="toctext">Output</span></a></li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Inputs" id="Inputs"></a><h1> <span class="mw-headline"> Inputs </span></h1>
+<a name="Network" id="Network"></a><h2> <span class="mw-headline"> Network </span></h2>
+<p>A good old sumo network maybe with traffic assignment zones (aka taz or districts). They may also be given in a separate file.
+</p>
+<a name="Demand" id="Demand"></a><h2> <span class="mw-headline"> Demand </span></h2>
+<p>In principle the duarouter should understand every route file sumo understands. This includes correct parsing of routes, vehicle types, vehicles, flows, trips, various distributions, stops and persons. Per default it tries to find shortest paths between any two consecutive edges given in a (trip, flow or route) definition. In the "iterative" mode it also tries to add new routes between start and destination.
+</p>
+<a name="Output" id="Output"></a><h1> <span class="mw-headline"> Output </span></h1>
+<p>duarouter always generates a route file and a route alternatives file (with route distributions).
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 5/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:458-0!1!0!!en!2!edit=0 and timestamp 20120718063339 -->
+</div><hr/><div id="lastmod">This page was last modified on 21 February 2012, at 08:23.</div>

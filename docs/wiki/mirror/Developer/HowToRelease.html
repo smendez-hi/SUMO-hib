@@ -1,0 +1,83 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Developer/HowToRelease</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<a name="Packages" id="Packages"></a><h2> <span class="mw-headline">Packages</span></h2>
+<p>for an overview of created packages and contents see <a href="../Downloads.html" title="Downloads">Downloads</a>.
+</p>
+<a name="Release_steps" id="Release_steps"></a><h2> <span class="mw-headline">Release steps</span></h2>
+<p>Below, a list of steps that should be done in order to publish a new release is given. 
+If the first three steps are done one day in advance one may skip the manual packaging and simply use the nightly files.
+</p>
+<ol><li> check the sources
+<ol><li> compile, try to remove warnings and commit the patches
+</li><li> run AStyle and commit changed files
+</li><li> run the tests, check what fails, why and decide whether they're ok (put special attention to the tests which serve as examples, see tests/examples.txt!). If there are errors, patch tests or source accordingly and commit the changes.
+</li></ol>
+</li><li> check the documentation
+<ol><li> update the <a href="../ChangeLog.html" title="ChangeLog">change log</a>
+</li></ol>
+</li><li> patch the version information
+<ol><li> in windows_config.h, also disable the HAVE_VERSION_H macro
+</li><li> in configure.ac
+</li><li> in build/package/sumo.spec
+</li><li> add entries to debian.changelog and sumo.changes
+</li><li> commit the changes
+</li></ol>
+</li><li> build the platform independent part of the distribution; <i>For the impatient: The complete documentation, tests and source distribution build can be achieved via "make dist-complete".</i>
+<ol><li> source distributions (.tar.gz, .zip) ("make dist", rename)
+</li><li> tests distributions (.tar.gz) ("make dist-tests")
+</li><li> docs distributions (.tar.gz) ("make dist-doc")
+</li></ol>
+</li><li> build the binary part of the distribution
+<ol><li> recheck linux compilation with the source distribution
+</li><li> use the source distribution for compilation under windows
+</li><li> build windows binary distribution (zip, includes docs)
+</li></ol>
+</li><li> make new sourceforge-release
+<ol><li> make a new release within the sumo package (named "version x.y.z")
+</li><li> add files to the release
+</li><li> update files at the <a href="https://build.opensuse.org/package/show?package=sumo&amp;project=home%3Abehrisch" class="external text" title="https://build.opensuse.org/package/show?package=sumo&amp;project=home%3Abehrisch" rel="nofollow">opensuse build service</a>
+</li></ol>
+</li><li> inform the users about the new release
+<ol><li> post information about the release to sumo-user@lists.sourceforge.net and sumo-announce@lists.sourceforge.net
+</li><li> post information about the release to news
+</li><li> post information into the <a href="http://sourceforge.net/apps/wordpress/sumo" class="external text" title="http://sourceforge.net/apps/wordpress/sumo" rel="nofollow">blog</a>
+</li><li> patch the <a href="../Downloads.html" title="Downloads">Downloads</a> information also at <a href="../Main_Page.html#Downloads" title="Main Page">Main_Page#Downloads</a> and at the main index.html
+</li><li> patch the direct download link on the static front page
+</li></ol>
+</li><li> unpack the doc.tar.gz into the "doc" folder on the web space
+</li><li> tag all in the svn with a new version tag (includes fixing of externals revision), as follows
+</li></ol>
+<pre>&gt; svn propedit svn:externals src/foreign/
+&gt; svn propedit svn:externals tools/contributed/
+</pre>
+<p>change to something like "tcpip -r123 <a href="https://shawn.svn.sourceforge.net/svnroot/shawn/src/apps/tcpip" class="external free" title="https://shawn.svn.sourceforge.net/svnroot/shawn/src/apps/tcpip" rel="nofollow">https://shawn.svn.sourceforge.net/svnroot/shawn/src/apps/tcpip</a>"
+</p>
+<pre>&gt; svn commit -m "external revisions fixed for 0.9.7 tagging" src/foreign/ tools/contributed/
+&gt; svn cp -m "tagging release 0.13.7" <a href="https://sumo.svn.sourceforge.net/svnroot/sumo/trunk" class="external free" title="https://sumo.svn.sourceforge.net/svnroot/sumo/trunk" rel="nofollow">https://sumo.svn.sourceforge.net/svnroot/sumo/trunk</a> <a href="https://sumo.svn.sourceforge.net/svnroot/sumo/tags/v0_13_7" class="external free" title="https://sumo.svn.sourceforge.net/svnroot/sumo/tags/v0_13_7" rel="nofollow">https://sumo.svn.sourceforge.net/svnroot/sumo/tags/v0_13_7</a>
+</pre>
+<ol><li> close <a href="http://sourceforge.net/apps/trac/sumo/roadmap" class="external text" title="http://sourceforge.net/apps/trac/sumo/roadmap" rel="nofollow">trac milestone</a>
+</li></ol>
+<a name="After-release_steps" id="After-release_steps"></a><h2> <span class="mw-headline">After-release steps</span></h2>
+<p>Things to do after a release:
+</p>
+<ol><li> unfix tcpip revison, by removing the "-r" tag as mentioned above
+</li><li> reenable HAVE_VERSION_H in windows_config.h
+</li><li> rename version to "svn" in configure.ac, sumo.spec, and sumo.dsc
+</li><li> commit changes
+</li><li> drink beer
+</li></ol>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 4/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:15-0!1!0!!en!2!edit=0 and timestamp 20120718063157 -->
+</div><hr/><div id="lastmod">This page was last modified on 14 March 2012, at 08:28.</div>

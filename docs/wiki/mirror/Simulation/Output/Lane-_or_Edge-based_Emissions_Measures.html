@@ -1,0 +1,242 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Simulation/Output/Lane- or Edge-based Emissions Measures</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>The edge/lane based vehicular emission output based on HBEFA database writes absolute and normed values of vehicular pollutant emissions collected on edges or lanes. The absolute values hold the sum of each of the pollutants emitted on each edge/lane, the normed values give the values normed by the interval duration and the edge's/lane's length.
+</p><p>Please note, that each vehicle type in SUMO may belong to a certain <a href="../../Simulation/Models/Emissions/HBEFA-based.html" title="Simulation/Models/Emissions/HBEFA-based">emission class derived from HBEFA</a>. When using the emissions output, you should assure your vehicles reflect a realistic population in the means of vehicle emission class distribution.
+</p>
+<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Instantiating_within_the_Simulation"><span class="tocnumber">1</span> <span class="toctext">Instantiating within the Simulation</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Edge-Based_Emission_Output"><span class="tocnumber">1.1</span> <span class="toctext">Edge-Based Emission Output</span></a></li>
+<li class="toclevel-2"><a href="#Lane-Based_Emission_Output"><span class="tocnumber">1.2</span> <span class="toctext">Lane-Based Emission Output</span></a></li>
+<li class="toclevel-2"><a href="#Attributes.2C_for_both_Edge-_and_Lane-Based_Emission_Output"><span class="tocnumber">1.3</span> <span class="toctext">Attributes, for both Edge- and Lane-Based Emission Output</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Generated_Output"><span class="tocnumber">2</span> <span class="toctext">Generated Output</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Edge-Based_Network_States"><span class="tocnumber">2.1</span> <span class="toctext">Edge-Based Network States</span></a></li>
+<li class="toclevel-2"><a href="#Lane-Based_Network_States"><span class="tocnumber">2.2</span> <span class="toctext">Lane-Based Network States</span></a></li>
+<li class="toclevel-2"><a href="#Value_Descriptions"><span class="tocnumber">2.3</span> <span class="toctext">Value Descriptions</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Notes"><span class="tocnumber">3</span> <span class="toctext">Notes</span></a></li>
+<li class="toclevel-1"><a href="#See_Also"><span class="tocnumber">4</span> <span class="toctext">See Also</span></a></li>
+<li class="toclevel-1"><a href="#Discussion"><span class="tocnumber">5</span> <span class="toctext">Discussion</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Omitting_empty_Edges.2FLanes"><span class="tocnumber">5.1</span> <span class="toctext">Omitting empty Edges/Lanes</span></a></li>
+<li class="toclevel-2"><a href="#Value_Range"><span class="tocnumber">5.2</span> <span class="toctext">Value Range</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<a name="Instantiating_within_the_Simulation" id="Instantiating_within_the_Simulation"></a><h2> <span class="mw-headline">Instantiating within the Simulation</span></h2>
+<a name="Edge-Based_Emission_Output" id="Edge-Based_Emission_Output"></a><h3> <span class="mw-headline">Edge-Based Emission Output</span></h3>
+<p>An edge-based emissions output is defined way within an additional file as following: 
+</p>
+<div class="inlxml">&lt;edgeData id="&lt;DETECTOR_ID&gt;" type="hbefa" freq="&lt;FREQUENCY&gt;" file="&lt;OUTPUT_FILE&gt;" [excludeEmpty="true"]/&gt;</div>
+<a name="Lane-Based_Emission_Output" id="Lane-Based_Emission_Output"></a><h3> <span class="mw-headline">Lane-Based Emission Output</span></h3>
+<p>A lane-based emissions output is defined way within an additional file as following:
+</p>
+<div class="inlxml">&lt;laneData id="&lt;DETECTOR_ID&gt;" type="hbefa" freq="&lt;FREQUENCY&gt;" file="&lt;OUTPUT_FILE&gt;" [excludeEmpty="true"]/&gt;</div>
+<a name="Attributes.2C_for_both_Edge-_and_Lane-Based_Emission_Output" id="Attributes.2C_for_both_Edge-_and_Lane-Based_Emission_Output"></a><h3> <span class="mw-headline">Attributes, for both Edge- and Lane-Based Emission Output</span></h3>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ddddff;"> Attribute Name
+</th><th style="background:#ddddff;"> Value Type
+</th><th style="background:#ddddff;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> <b>id</b>
+</td><td> id (string)
+</td><td> The id of the detector
+</td></tr>
+<tr>
+<td class="inlxml"> <b>freq</b>
+</td><td> int (time)
+</td><td> The aggregation period the values the detector collects shall be summed up.
+</td></tr>
+<tr>
+<td class="inlxml"> <b>file</b>
+</td><td> filename
+</td><td> The path to the output file. The path may be relative.
+</td></tr>
+<tr>
+<td class="inlxml"> begin
+</td><td> int (time)
+</td><td> The time to start writing (intervals starting before this time are discarded). If not given, the simulation's begin is used.
+</td></tr>
+<tr>
+<td class="inlxml"> end
+</td><td> int (time)
+</td><td> The time to end writing (intervals starting at or after this time are discarded). If not given the simulation's end is used.
+</td></tr>
+<tr>
+<td class="inlxml"> excludeEmpty
+</td><td> string (true, false, defaults)
+</td><td> If set to true, edges/lanes which were not use by a vehicle during this period will not be written; <i>default: false</i>. If set to "defaults" default values for travel time and emissions depending on edge length and maximum speed get printed.
+</td></tr></table>
+<a name="Generated_Output" id="Generated_Output"></a><h2> <span class="mw-headline">Generated Output</span></h2>
+<a name="Edge-Based_Network_States" id="Edge-Based_Network_States"></a><h3> <span class="mw-headline">Edge-Based Network States</span></h3>
+<a name="Lane-Based_Network_States" id="Lane-Based_Network_States"></a><h3> <span class="mw-headline">Lane-Based Network States</span></h3>
+<a name="Value_Descriptions" id="Value_Descriptions"></a><h3> <span class="mw-headline">Value Descriptions</span></h3>
+<table cellspacing="0" border="1" align="center" width="80%">
+
+<tr>
+<th style="background:#ffbdee;"> Name
+</th><th style="background:#ffbdee;"> Type
+</th><th style="background:#ffbdee;"> Description
+</th></tr>
+<tr>
+<td class="inlxml"> begin
+</td><td> (simulation) seconds
+</td><td> The first time step the values were collected in
+</td></tr>
+<tr>
+<td class="inlxml"> end
+</td><td> (simulation) seconds
+</td><td> The last time step + DELTA_T in which the reported values were collected
+</td></tr>
+<tr>
+<td class="inlxml"> edge@id
+</td><td> (edge) id
+</td><td> The name of the reported edge
+</td></tr>
+<tr>
+<td class="inlxml"> lane@id
+</td><td> (lane) id
+</td><td> The name of the reported lane
+</td></tr>
+<tr>
+<td class="inlxml"> sampledSeconds
+</td><td> s
+</td><td> Number seconds vehicles were measured on the edge/lane (may be subseconds if a vehicle enters/leaves the edge/lane)
+</td></tr>
+<tr>
+<td class="inlxml"> CO_abs
+</td><td> mg
+</td><td> The complete amount of CO emitted by the vehicles on this lane/edge during the aggregation period
+</td></tr>
+<tr>
+<td class="inlxml"> CO2_abs
+</td><td> mg
+</td><td> The complete amount of CO<sub>2</sub> emitted by the vehicles on this lane/edge during the aggregation period
+</td></tr>
+<tr>
+<td class="inlxml"> HC_abs
+</td><td> mg
+</td><td> The complete amount of HC emitted by the vehicles on this lane/edge during the aggregation period
+</td></tr>
+<tr>
+<td class="inlxml"> PMx_abs
+</td><td> mg
+</td><td> The complete amount of PM<sub>x</sub> emitted by the vehicles on this lane/edge during the aggregation period
+</td></tr>
+<tr>
+<td class="inlxml"> NOx_abs
+</td><td> mg
+</td><td> The complete amount of NO<sub>x</sub> emitted by the vehicles on this lane/edge during the aggregation period
+</td></tr>
+<tr>
+<td class="inlxml"> fuel_abs
+</td><td> ml
+</td><td> The complete amount of fuel the vehicles on this lane/edge during the aggregation period have consumed
+</td></tr>
+<tr>
+<td class="inlxml"> CO_normed
+</td><td> g/km/h
+</td><td> CO emissions during this interval normed by time and edge/lane length
+</td></tr>
+<tr>
+<td class="inlxml"> CO2_normed
+</td><td> g/km/h
+</td><td> CO<sub>2</sub> emissions during this interval normed by time and edge/lane length
+</td></tr>
+<tr>
+<td class="inlxml"> HC_normed
+</td><td> g/km/h
+</td><td> HC emissions during this interval normed by time and edge/lane length
+</td></tr>
+<tr>
+<td class="inlxml"> PMx_normed
+</td><td> g/km/h
+</td><td> PM<sub>x</sub> emissions during this interval normed by time and edge/lane length
+</td></tr>
+<tr>
+<td class="inlxml"> NOx_normed
+</td><td> g/km/h
+</td><td> NO<sub>x</sub> emissions during this interval normed by time and edge/lane length
+</td></tr>
+<tr>
+<td class="inlxml"> fuel_normed
+</td><td> l/km/h
+</td><td> fuel consumption during this interval normed by time and edge/lane length
+</td></tr>
+<tr>
+<td class="inlxml"> CO_perVeh
+</td><td> mg
+</td><td> Assumed CO emissions a vehicle would produce when passing the edge
+</td></tr>
+<tr>
+<td class="inlxml"> CO2_perVeh
+</td><td> mg
+</td><td> Assumed CO<sub>2</sub> emissions a vehicle would produce when passing the edge
+</td></tr>
+<tr>
+<td class="inlxml"> HC_perVeh
+</td><td> mg
+</td><td> Assumed HC emissions a vehicle would produce when passing the edge
+</td></tr>
+<tr>
+<td class="inlxml"> PMx_perVeh
+</td><td> mg
+</td><td> Assumed PM<sub>x</sub> emissions a vehicle would produce when passing the edge
+</td></tr>
+<tr>
+<td class="inlxml"> NOx_perVeh
+</td><td> mg
+</td><td> Assumed NO<sub>x</sub> emissions a vehicle would produce when passing the edge
+</td></tr>
+<tr>
+<td class="inlxml"> fuel_perVeh
+</td><td> ml
+</td><td> Assumed fuel consumption a vehicle would need when passing the edge
+</td></tr></table>
+<a name="Notes" id="Notes"></a><h2> <span class="mw-headline">Notes</span></h2>
+<p>Notes:
+</p>
+<ul><li> Per default, all edges are written, even those on which no vehicle drove. It can be disabled setting the <span class="inlxml">excludeEmpty</span> attribute to true.
+</li><li> The interval end is the interval begin + aggregation time, meaning that values were collected within these steps excluding the end time itself. If the simulation ends before the last interval is over, the interval will be prunned.
+</li><li> The output file will be generated, does not have to exist earlier and will be overwritten if existing without any warning. The folder the output file shall be generated in must exist.
+</li><li> If you need only information about the network states during certain time periods, you may constraint generation of the dumps by giving attributes "<span class="inlxml">begin="&lt;TIME&gt;[,&lt;TIME&gt;]+"</span>" and "<span class="inlxml">end="&lt;TIME&gt;[,&lt;TIME&gt;]+"</span>". When at least one combination is given, dumps will be written only if an according begin/end-pair exists for the current time. This means, only those intervals will be saved for which begin[x]&lt;=INTERVAL_END and end[x]&gt;=INTERVAL_BEGIN. All dumps will cover the complete simulation if no values for begin/end are given.
+</li></ul>
+<p><br />
+</p>
+<a name="See_Also" id="See_Also"></a><h2> <span class="mw-headline">See Also</span></h2>
+<ul><li> <a href="../../Simulation/Output/Lane-_or_Edge-based_Traffic_Measures.html" title="Simulation/Output/Lane- or Edge-based Traffic Measures">edge/lane-based network performace measures output</a> and <a href="../../Simulation/Output/Lane-_or_Edge-based_Noise_Measures.html" title="Simulation/Output/Lane- or Edge-based Noise Measures">edge/lane-based vehicular noise emission output</a> which have similar formats
+</li><li> The <a href="../../Tools/Visualization.html#mpl_dump_onNet.py" title="Tools/Visualization">mpl_dump_onNet.py</a> script can display values of this output as a colored net (and further <a href="../../Tools/Visualization.html" title="Tools/Visualization">visualization tools</a> exist).
+</li></ul>
+<p><br />
+</p>
+<a name="Discussion" id="Discussion"></a><h2> <span class="mw-headline">Discussion</span></h2>
+<a name="Omitting_empty_Edges.2FLanes" id="Omitting_empty_Edges.2FLanes"></a><h3> <span class="mw-headline">Omitting empty Edges/Lanes</span></h3>
+<p><b>17.07.2009</b>: I have excluded computation of mean per-vehicle emission to pass a lane/edge though almost the same functionality is already covered by the "excludeEmpty"-attribute. I am not sure whether this makes sense.
+</p><p>Also, we maybe should then also decide whether or not this also should be done for travel time computation.
+</p>
+<a name="Value_Range" id="Value_Range"></a><h3> <span class="mw-headline">Value Range</span></h3>
+<p><b>17.07.2009</b>: The values generated for absolute (..._abs) emission during the perion and for the mean per-vehicle emission to pass a lane/edge are now given in mg for making lower values visible though only digits after the dot are used. I am not really happy with the results. If a vehicle passes a lane of 390m length at 10m/s, it is assumed it emits less CO than 0.005mg so it does not appear in the outputs; On the other hand, if one looks at a jammed situation, the emissions of CO2 may climb up to CO_perVeh="21246834688.00" (sure, they would get inifite if the vehicle would be really standing). I suppose we have to evaluate how the system behaves.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 19/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:147-0!1!0!!en!2!edit=0 and timestamp 20120718063321 -->
+</div><hr/><div id="lastmod">This page was last modified on 12 March 2012, at 14:09.</div>

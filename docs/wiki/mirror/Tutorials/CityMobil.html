@@ -1,0 +1,29 @@
+<a name="top" id="top"></a>
+				<h1 id="firstHeading" class="firstHeading">Tutorials/CityMobil</h1>
+		<div id="bodyContent">
+			
+			<div id="contentSub"></div>
+												<!-- start content -->
+			<p>The CityMobil subdirectory in SUMO/tools/projects contains the setup for a remote controlled simulation of a parking lot using sumo with its traci interface controlled by a Python script.
+</p><p>The parameters for the application (including the paths to the executables) are in constants.py. If you are running it from the directory in the same source tree where the binaries reside, it should work without changes.
+Before running the application you have to execute
+</p>
+<pre>./createNet.py
+</pre>
+<p>In order to change the layout of the parking lot and the behavior (speed, capacity etc.) of the vehicles, constants.py should be edited and then createNet.py reexecuted.
+</p><p>In order to start the (remote controlled) simulation execute one of the managers agentManager.py or simpleManager.py. If you want a visual display you have to provide the -g option, e.g.
+</p>
+<pre>./simpleManager -g
+</pre>
+<p>Further options are described by starting the scripts with -h.
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 1/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key p_sumo_mediawiki:pcache:idhash:72-0!1!0!!en!2!edit=0 and timestamp 20120718035034 -->
+</div><hr/><div id="lastmod">This page was last modified on 17 October 2011, at 08:27.</div>
