@@ -29,3 +29,7 @@
 
 # Temporals
 *.*~
+
+# Special Folders
+samples/
+autom4te.cache/
